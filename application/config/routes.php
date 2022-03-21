@@ -110,7 +110,8 @@
 	$route['vistaDetalle'] = "back_end/productividad/vistaDetalle";
 	$route['listaDetalle'] = "back_end/productividad/listaDetalle";
 	$route['getDataDetalle'] = "back_end/productividad/getDataDetalle";
-	$route['excel_detalle/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2/$3";
+	// $route['excel_detalle/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2/$3";
+	$route['excel_detalle/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2";
 	$route['formCargaMasivaDetalle'] = "back_end/productividad/formCargaMasivaDetalle";
 	$route['actualizacionProductividad'] = "back_end/productividad/actualizacionProductividad";
 	$route['vistaGraficosProd'] = "back_end/productividad/vistaGraficosProd";
@@ -120,7 +121,8 @@
 	$route['vistaCalidad'] = "back_end/productividad/vistaCalidad";
 	$route['listaCalidad'] = "back_end/productividad/listaCalidad";
 	$route['getDataCalidad'] = "back_end/productividad/getDataCalidad";
-	$route['excel_calidad/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_calidad/$1/$2/$3";
+	// $route['excel_calidad/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_calidad/$1/$2/$3";
+	$route['excel_calidad/(:any)/(:any)'] = "back_end/productividad/excel_calidad/$1/$2";
 	$route['formCargaMasivaCalidad'] = "back_end/productividad/formCargaMasivaCalidad";
 	$route['actualizacionCalidad'] = "back_end/productividad/actualizacionCalidad";
 

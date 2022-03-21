@@ -40,6 +40,11 @@
 	.puntos_cont{
 		text-align: center;
 	}
+	.total_puntos, .titulo_grafico {
+      font-family: ubuntu!important;
+      src: url(Ubuntu-R.ttf) format("truetype");
+     /* margin-bottom: 30px;*/
+    }
 
 </style>
 <script type="text/javascript">
@@ -48,8 +53,8 @@
     var fecha_anio_atras="<?php echo $fecha_anio_atras; ?>";
     var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
 
-    $("#desde_fg").val(fecha_anio_atras);
-    $("#hasta_fg").val(fecha_hoy);
+    // $("#desde_fg").val(fecha_anio_atras);
+    // $("#hasta_fg").val(fecha_hoy);
 
     dataGraficos()
 	function dataGraficos(){
@@ -62,10 +67,10 @@
 	    $.ajax({
         url: base_url+"dataGraficos"+"?"+$.now(),  
         type: 'POST',
-        data:{desde:$("#desde_fg").val(),hasta:$("#hasta_fg").val(),trabajador:trabajador},
+        data:{periodo:$("#periodo").val(),trabajador:trabajador},
         dataType:"json",
         success: function (json) {
-       		$(".puntos_cont").html(`Total puntos : ${json.totalpuntos}`)
+       		$(".puntos_cont").html(`<span class="total_puntos">Total puntos : ${json.totalpuntos}</span>`)
        		
        		google.charts.setOnLoadCallback(rankingTecnicos);
        		google.charts.setOnLoadCallback(puntosPorFechas);
@@ -87,7 +92,7 @@
 	        	 	// isStacked: true,
 	        	 	fontName: 'Nunito',
 	        	 	fontColor:'#32477C',
-	        	 	 fontSize: 12,
+	        	 	fontSize: 12,
 			        colors: ['#32477C', 'green', 'red'],
 			        chartArea:{
 			             left:130,
@@ -310,42 +315,32 @@
 	});
 
 	$(document).off('click', '.btn_excel_graficos').on('click', '.btn_excel_graficos',function(event) {
-      event.preventDefault();
-      var desde = $("#desde_fg").val();
-      var hasta = $("#hasta_fg").val();  
-      
-      if(perfil==4){
+	   event.preventDefault();
+     
+       if(perfil==4){
         trabajador = $("#trabajador").val()
-      }else{
+       }else{
         trabajador = $("#trabajadores").val();
-      }
+       }
 
-      if(desde==""){
-         $.notify("Debe seleccionar una fecha de inicio.", {
-             className:'error',
-             globalPosition: 'top right'
-         });  
-         return false;
-       }
-       if(hasta==""){
-         $.notify("Debe seleccionar una fecha de término.", {
-             className:'error',
-             globalPosition: 'top right'
-         });  
-        return false;
-       }
-      
        if(trabajador==""){
          trabajador="-"
        }
 
-       window.location="excel_detalle/"+desde+"/"+hasta+"/"+trabajador;
+       var periodo = $("#periodo").val();  
+
+       if(periodo==""){
+         periodo="actual"
+       }
+
+       window.location="excel_detalle/"+periodo+"/"+trabajador;
+    
     });
 
 
 </script>
 
-<div class="form-row">
+<div class="form-row cont_graficos">
 
     <div class="col-lg-3">
         <div class="form-group">
@@ -355,7 +350,21 @@
         </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-2">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+            </div>
+              <select id="periodo" name="periodo" class="custom-select custom-select-sm">
+                <option value="actual" selected>Actual </option>
+                <option value="anterior">Anterior</option>
+             </select>
+          </div>
+        </div>
+    </div>
+
+    <!-- <div class="col-lg-3">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -365,7 +374,7 @@
               <input type="date" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_fg" id="hasta_fg">
           </div>
         </div>
-    </div>
+    </div> -->
 
 	<?php  
 	   if($this->session->userdata('id_perfil')<>4){

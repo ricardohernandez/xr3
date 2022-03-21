@@ -177,12 +177,26 @@ class Productividad extends CI_Controller {
 		}
 
 		public function listaDetalle(){
-			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			// $desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			// $hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			// $trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			// if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
+			// if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
-			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
+
 			echo json_encode($this->Productividadmodel->listaDetalle($desde,$hasta,$trabajador));
+
+
 		}	
 
 		public function vistaGraficosProd(){
@@ -199,11 +213,23 @@ class Productividad extends CI_Controller {
 		}
 
 		public function dataGraficos(){
-			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			// $desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			// $hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			// $trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			// if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
+			// if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
-			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
+			
 			echo json_encode(array(
 				"ranking" => $this->Productividadmodel->rankingTecnicos($desde,$hasta,$trabajador),
 				"totalpuntos" => $this->Productividadmodel->totalPuntosPorFecha($desde,$hasta,$trabajador),
@@ -219,16 +245,26 @@ class Productividad extends CI_Controller {
 		}
 
 		public function excel_detalle(){
-			$desde=$this->uri->segment(2);
-			$hasta=$this->uri->segment(3);
-			$trabajador=$this->uri->segment(4);
+			// $desde=$this->uri->segment(2);
+			// $hasta=$this->uri->segment(3);
+			$periodo=$this->uri->segment(2);
+			$trabajador=$this->uri->segment(3);
 
 			if($trabajador=="-"){
 				$trabajador="";
 			}
 
-			$desde=date("Y-m-d",strtotime($desde));
-			$hasta=date("Y-m-d",strtotime($hasta));
+			// $desde=date("Y-m-d",strtotime($desde));
+			// $hasta=date("Y-m-d",strtotime($hasta));
+
+
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
 
 			$data=$this->Productividadmodel->listaDetalle($desde,$hasta,$trabajador);
 
@@ -440,26 +476,46 @@ class Productividad extends CI_Controller {
 		}
 
 		public function listaCalidad(){
-			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			// $desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			// $hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			// if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
+			// if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
-			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
+
 			echo json_encode($this->Productividadmodel->listaCalidad($desde,$hasta,$trabajador));
 		}	
 
 
 		public function excel_calidad(){
-			$desde=$this->uri->segment(2);
-			$hasta=$this->uri->segment(3);
-			$trabajador=$this->uri->segment(4);
+			// $desde=$this->uri->segment(2);
+			// $hasta=$this->uri->segment(3);
+			$periodo=$this->uri->segment(2);
+			$trabajador=$this->uri->segment(3);
 
 			if($trabajador=="-"){
 				$trabajador="";
 			}
 
-			$desde=date("Y-m-d",strtotime($desde));
-			$hasta=date("Y-m-d",strtotime($hasta));
+			// $desde=date("Y-m-d",strtotime($desde));
+			// $hasta=date("Y-m-d",strtotime($hasta));
+
+
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
 
 			$data=$this->Productividadmodel->listaCalidad($desde,$hasta,$trabajador);
 
@@ -521,35 +577,6 @@ class Productividad extends CI_Controller {
 			        </table>
 			    <?php
 			}
-		}
-
-		public function vistaGraficosCalidad(){
-			$this->visitas("Calidad graficos");
-			if($this->input->is_ajax_request()){
-				$fecha_anio_atras= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-		    	$fecha_hoy=date('Y-m-d');
-				$datos=array(	
-					'fecha_anio_atras' => $fecha_anio_atras,
-			        'fecha_hoy' => $fecha_hoy,
-			    );
-				$this->load->view('back_end/productividad/graficos_calidad',$datos);
-			}
-		}
-
-		public function dataGraficosCalidad(){
-			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
-			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
-			echo json_encode(array(
-				"ranking" => $this->Productividadmodel->rankingTecnicos($desde,$hasta,$trabajador),
-				"totalpuntos" => $this->Productividadmodel->totalPuntosPorFecha($desde,$hasta,$trabajador),
-				"puntosPorFechas" => $this->Productividadmodel->puntosPorFechas($desde,$hasta,$trabajador),
-				"puntosTipoOrden" => $this->Productividadmodel->puntosTipoOrden($desde,$hasta,$trabajador),
-				"distribucionTipos" => $this->Productividadmodel->distribucionTipos($desde,$hasta,$trabajador),
-				"distribucionOt" => $this->Productividadmodel->distribucionOt($desde,$hasta,$trabajador),
-			));
 		}
 
 

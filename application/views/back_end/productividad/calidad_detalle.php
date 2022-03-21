@@ -54,8 +54,10 @@
             return json;
           },       
           data: function(param){
-            param.desde = $("#desde_f").val();
-            param.hasta = $("#hasta_f").val();
+            // param.desde = $("#desde_f").val();
+            // param.hasta = $("#hasta_f").val();
+             param.periodo = $("#periodo").val();
+
             if(perfil==4){
               param.trabajador = $("#trabajador").val();
             }else{
@@ -301,34 +303,41 @@
     
     $(document).off('click', '.excel_calidad').on('click', '.excel_calidad',function(event) {
       event.preventDefault();
-      var desde = $("#desde_f").val();
-      var hasta = $("#hasta_f").val();  
+      // var desde = $("#desde_f").val();
+      // var hasta = $("#hasta_f").val();  
       if(perfil==4){
         trabajador = $("#trabajador").val()
       }else{
         trabajador = $("#trabajadores").val();
       }
 
-      if(desde==""){
-         $.notify("Debe seleccionar una fecha de inicio.", {
-             className:'error',
-             globalPosition: 'top right'
-         });  
-         return false;
-       }
-       if(hasta==""){
-         $.notify("Debe seleccionar una fecha de término.", {
-             className:'error',
-             globalPosition: 'top right'
-         });  
-        return false;
-       }
+      // if(desde==""){
+      //    $.notify("Debe seleccionar una fecha de inicio.", {
+      //        className:'error',
+      //        globalPosition: 'top right'
+      //    });  
+      //    return false;
+      //  }
+      //  if(hasta==""){
+      //    $.notify("Debe seleccionar una fecha de término.", {
+      //        className:'error',
+      //        globalPosition: 'top right'
+      //    });  
+      //   return false;
+      //  }
       
        if(trabajador==""){
          trabajador="-"
        }
 
-       window.location="excel_calidad/"+desde+"/"+hasta+"/"+trabajador;
+       var periodo = $("#periodo").val();  
+
+       if(periodo==""){
+         periodo="actual"
+       }
+
+       // window.location="excel_calidad/"+desde+"/"+hasta+"/"+trabajador;
+       window.location="excel_calidad/"+periodo+"/"+trabajador;
     });
 
     $.getJSON("listaTrabajadores", function(data) {
@@ -341,7 +350,6 @@
          allowClear:true,
         });
     });
-
 
     $(document).off('click', '.ejemplo_planilla_calidad').on('click', '.ejemplo_planilla_calidad',function(event) {
         $('#ejemplo_modal_calidad').modal('toggle'); 
@@ -488,7 +496,22 @@
       ?>
       
 
-      <div class="col-lg-3">
+      <div class="col-lg-2">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+            </div>
+              <select id="periodo" name="periodo" class="custom-select custom-select-sm">
+                <option value="actual" selected>Actual </option>
+                <option value="anterior">Anterior</option>
+             </select>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- <div class="col-lg-3">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -498,7 +521,7 @@
               <input type="date" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
           </div>
         </div>
-      </div>
+      </div> -->
 
       <?php  
        if($this->session->userdata('id_perfil')<>4){
@@ -551,10 +574,10 @@
 <!-- LISTADO -->
   <div class="row">
     <div class="col-lg-6 offset-lg-3">
-          <center><span class="titulo_fecha_actualizacion_dias">
-            <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
-            </div>
-          </span></center>
+        <center><span class="titulo_fecha_actualizacion_dias">
+          <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
+          </div>
+        </span></center>
     </div>
   </div>
 
@@ -578,7 +601,6 @@
             <th class="centered">Última actualización</th>   
           </tr>
         </thead>
-
 
       </table>
     </div>
