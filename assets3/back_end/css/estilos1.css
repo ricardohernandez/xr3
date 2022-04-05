@@ -619,8 +619,8 @@
     margin-top: -26px;
     text-align: center;
     padding: 10px!important;
-    color:#fff!important;
-    background-color: #32477C!important;
+    color:#32477C!important;
+    /*background-color: #32477C!important;*/
     opacity: 1!important;
     z-index: 9999999;
   }
@@ -970,3 +970,4 @@
 .nav a{
   text-decoration: none!important;
 }
+

@@ -19,7 +19,9 @@
 	$route['cargaIngresos'] = "inicio/cargaIngresos";
 	$route['cargaIngresos'] = "inicio/cargaIngresos";
 	$route['infoUsuario'] = "inicio/infoUsuario";
-	
+	$route['cambiarPass'] = "inicio/cambiarPass";
+	$route['verComo'] = "inicio/verComo";
+
 /*******ADMIN BACK END*******/
 
 	$route['admin_xr3'] = "admin";
@@ -110,7 +112,6 @@
 	$route['vistaDetalle'] = "back_end/productividad/vistaDetalle";
 	$route['listaDetalle'] = "back_end/productividad/listaDetalle";
 	$route['getDataDetalle'] = "back_end/productividad/getDataDetalle";
-	// $route['excel_detalle/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2/$3";
 	$route['excel_detalle/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2";
 	$route['formCargaMasivaDetalle'] = "back_end/productividad/formCargaMasivaDetalle";
 	$route['actualizacionProductividad'] = "back_end/productividad/actualizacionProductividad";
@@ -118,13 +119,35 @@
 	$route['dataGraficos'] = "back_end/productividad/dataGraficos";
 	$route['listaTrabajadores'] = "back_end/productividad/listaTrabajadores";
 
-	$route['vistaCalidad'] = "back_end/productividad/vistaCalidad";
-	$route['listaCalidad'] = "back_end/productividad/listaCalidad";
-	$route['getDataCalidad'] = "back_end/productividad/getDataCalidad";
-	// $route['excel_calidad/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_calidad/$1/$2/$3";
-	$route['excel_calidad/(:any)/(:any)'] = "back_end/productividad/excel_calidad/$1/$2";
-	$route['formCargaMasivaCalidad'] = "back_end/productividad/formCargaMasivaCalidad";
-	$route['actualizacionCalidad'] = "back_end/productividad/actualizacionCalidad";
+	$route['vistaResumen'] = "back_end/productividad/vistaResumen";
+	$route['getCabeceras'] = "back_end/productividad/getCabeceras";
+	$route['listaResumen'] = "back_end/productividad/listaResumen";
+
+/******************CALIDAD*************************/
+
+	$route['calidad'] = "back_end/calidad/index";
+	$route['vistaCalidad'] = "back_end/calidad/vistaCalidad";
+	$route['listaCalidad'] = "back_end/calidad/listaCalidad";
+	$route['getDataCalidad'] = "back_end/calidad/getDataCalidad";
+	$route['excel_calidad/(:any)/(:any)/(:any)'] = "back_end/calidad/excel_calidad/$1/$2/$3";
+	$route['formCargaMasivaCalidad'] = "back_end/calidad/formCargaMasivaCalidad";
+	$route['actualizacionCalidad'] = "back_end/calidad/actualizacionCalidad";
+	$route['vistaGraficosCalidad'] = "back_end/calidad/vistaGraficosCalidad";
+	$route['dataGraficosCalidad'] = "back_end/calidad/dataGraficosCalidad";
+	$route['getCabecerasCalidad'] = "back_end/calidad/getCabecerasCalidad";
+	$route['listaResumenCalidad'] = "back_end/calidad/listaResumenCalidad";
+	$route['graficoHFC'] = "back_end/calidad/graficoHFC";
+	$route['graficoFTTH'] = "back_end/calidad/graficoFTTH";
+	$route['dataGraficos'] = "back_end/calidad/dataGraficos";
+	$route['listaTrabajadoresCalidad'] = "back_end/calidad/listaTrabajadoresCalidad";
+
+/******************TICKET*************************/
+	$route['ticket'] = "back_end/ticket/index";
+	$route['getTicketInicio'] = "back_end/ticket/getTicketInicio";
+	$route['getTicketList'] = "back_end/ticket/getTicketList";
+	$route['formTicket'] = "back_end/ticket/formTicket";
+	$route['eliminaTicket'] = "back_end/ticket/eliminaTicket";
+	$route['getDataTicket'] = "back_end/ticket/getDataTicket";
 
 /******************LICENCIAS*************************/
 	$route['licencias'] = "back_end/licencias/index";

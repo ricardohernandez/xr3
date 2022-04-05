@@ -40,8 +40,8 @@
 	      {
 	       "class":"centered center margen-td","data": function(row,type,val,meta){
 	          //btn='<center><a data-toggle="modal" href="#modal_jefe" data-hash_jefe="'+row.hash_jefe+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar"></a>';
-	          //btn='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_registro" data-hash_jefe="'+row.hash_jefe+'"></a></center>';
-	          return "";
+	          btn='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_registro" data-hash_jefe="'+row.hash_jefe+'"></a></center>';
+	          return btn;
 	        }
 	      },
         { "data": "id_jefe" ,"class":"margen-td centered"},

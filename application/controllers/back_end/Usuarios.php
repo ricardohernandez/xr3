@@ -8,6 +8,7 @@ class Usuarios extends CI_Controller {
 			redirect("inicio");
 		}
 		$this->load->model("back_end/Usuariosmodel");
+		$this->load->model("back_end/Iniciomodel");
 		$this->load->library('user_agent');
 	}
 
@@ -230,6 +231,7 @@ class Usuarios extends CI_Controller {
 		    $datos = array(
 		        'titulo' => "Mantenedor Usuarios",
 		        'contenido' => "usuarios/inicio",
+		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
 			
@@ -526,7 +528,7 @@ class Usuarios extends CI_Controller {
 		    	$fecha_hoy=date('d-m-Y');
 				$datos=array(	
 					'fecha_anio_atras' => $fecha_anio_atras,
-			        'fecha_hoy' => $fecha_hoy
+			        'fecha_hoy' => $fecha_hoy,
 			    );
 				$this->load->view('back_end/usuarios/cargos',$datos);
 			}

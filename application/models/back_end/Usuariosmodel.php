@@ -17,6 +17,7 @@ class Usuariosmodel extends CI_Model {
 		public function listaUsuarios($estado){
 			$this->db->select("sha1(u.id) as hash_usuario,
 				u.*,
+				concat(substr(replace(u.rut,'-',''),1,char_length(replace(u.rut,'-',''))-1),'-',substr(replace(u.rut,'-',''),char_length(replace(u.rut,'-','')))) as 'rut',
 				up.perfil as perfil,
 				upr.proyecto as proyecto,
 				CONCAT(u.nombres,' ',u.apellidos)  'nombre',
@@ -466,7 +467,7 @@ class Usuariosmodel extends CI_Model {
 				CONCAT(u.nombres,' ',u.apellidos)  'nombre'");
 			
 			if($this->session->userdata('id_perfil')<>1){
-				$this->db->where('perfil<>', 1);
+				$this->db->where('id_perfil<>', 1);
 			}
 			$this->db->order_by('nombre', 'asc');
 			$res=$this->db->get('usuarios u');

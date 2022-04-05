@@ -19,19 +19,13 @@
 <script type="text/javascript">
   $(function(){
 
-    var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
+    const perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const base = "<?php echo base_url() ?>";
-    var fecha_hoy="<?php echo $fecha_hoy; ?>";
-    var fecha_anio_atras="<?php echo $fecha_anio_atras; ?>";
-    
-    $("#desde_f").val(fecha_anio_atras);
-    $("#hasta_f").val(fecha_hoy);
-
+  
     $('#rut').Rut({
       on_error: function(){ alert('Rut incorrecto'); },
       format_on: 'keyup'
     });
-
 
   /*****DATATABLE*****/   
     var lista_calidad = $('#lista_calidad').DataTable({
@@ -51,12 +45,24 @@
           "dataSrc": function (json) {
             $(".btn_filtro_calidad").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
             $(".btn_filtro_calidad").prop("disabled" , false);
+
+            var desde_actual="<?php echo $desde_actual; ?>"
+            var hasta_actual="<?php echo $hasta_actual; ?>"
+            var desde_anterior="<?php echo $desde_anterior; ?>"
+            var hasta_anterior="<?php echo $hasta_anterior; ?>"
+            var periodo =$("#periodo").val()
+
+            if(periodo=="actual"){
+              $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+            }else if(periodo=="anterior"){
+              $("#fecha_f").val(`${desde_anterior.substring(0,5)} - ${hasta_anterior.substring(0,5)}`);
+            }
+
             return json;
           },       
           data: function(param){
-            // param.desde = $("#desde_f").val();
-            // param.hasta = $("#hasta_f").val();
-             param.periodo = $("#periodo").val();
+            param.periodo = $("#periodo").val();
+            param.jefe = $("#jefe_det").val();
 
             if(perfil==4){
               param.trabajador = $("#trabajador").val();
@@ -65,32 +71,7 @@
             }
           }
         },    
-        "footerCallback": function ( row, data, start, end, display ) {
-          // var api = this.api(), data;
-          // var largo = api.columns(':visible').count();
-
-          // for (var i = 1; i <= (largo); i++) {
-          //   if(i==7){
-          //     var intVal = function ( i ) {
-          //         return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
-          //     };
-
-          //     total = api .column( i )  .data()   .reduce( function (a, b) {
-          //        return intVal(a) + intVal(b);
-          //     },0);
-
-          //     if(total==0){
-          //     }else if(total==1){
-          //       $( api.column( i ).footer() ).html("<center><b style='color:green;font-size:10px;text-align:center;'>"+total+"</b></center>");
-          //     }else if(total>1){
-          //       $( api.column( i ).footer() ).html("<center><b style='color:#CE3735;font-size:10px;text-align:center;'>"+total+"</b></center>");
-          //     }
-          //   }
-
-          // }
-        },
-
-       "columns": [
+        "columns": [
           { "data": "tecnico" ,"class":"margen-td centered"},
           { "data": "comuna" ,"class":"margen-td centered"},
           { "data": "ot" ,"class":"margen-td centered"},
@@ -102,6 +83,8 @@
           { "data": "descripcion_2davisita" ,"class":"margen-td centered"},
           { "data": "cierre_2davisita" ,"class":"margen-td centered"},
           { "data": "diferencia_dias" ,"class":"margen-td centered"},
+          { "data": "tipo_red" ,"class":"margen-td centered"},
+          { "data": "falla" ,"class":"margen-td centered"},
           { "data": "ultima_actualizacion" ,"class":"margen-td centered"}
         ]
       }); 
@@ -141,8 +124,6 @@
         }
       }, 4000 ); 
 
-
-     
 
   /*********INGRESO************/
 
@@ -303,44 +284,25 @@
     
     $(document).off('click', '.excel_calidad').on('click', '.excel_calidad',function(event) {
       event.preventDefault();
-      // var desde = $("#desde_f").val();
-      // var hasta = $("#hasta_f").val();  
-      if(perfil==4){
-        trabajador = $("#trabajador").val()
+
+      if(perfil<=3){
+        trabajador = $("#trabajadores").val()
       }else{
-        trabajador = $("#trabajadores").val();
+        trabajador = $("#trabajador").val();
       }
 
-      // if(desde==""){
-      //    $.notify("Debe seleccionar una fecha de inicio.", {
-      //        className:'error',
-      //        globalPosition: 'top right'
-      //    });  
-      //    return false;
-      //  }
-      //  if(hasta==""){
-      //    $.notify("Debe seleccionar una fecha de término.", {
-      //        className:'error',
-      //        globalPosition: 'top right'
-      //    });  
-      //   return false;
-      //  }
-      
-       if(trabajador==""){
+      var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
+      jefe = jefe=="" ? "-" : jefe;
+
+      if(trabajador=="" || trabajador==undefined){
          trabajador="-"
-       }
+      }
 
-       var periodo = $("#periodo").val();  
-
-       if(periodo==""){
-         periodo="actual"
-       }
-
-       // window.location="excel_calidad/"+desde+"/"+hasta+"/"+trabajador;
-       window.location="excel_calidad/"+periodo+"/"+trabajador;
+      var periodo = $("#periodo").val()=="" ? "actual" : $("#periodo").val()
+      window.location="excel_calidad/"+periodo+"/"+trabajador+"/"+jefe;
     });
 
-    $.getJSON("listaTrabajadores", function(data) {
+    $.getJSON(base + "listaTrabajadoresCalidad", { jefe : $("#jefe_det").val() } , function(data) {
       response = data;
     }).done(function() {
         $("#trabajadores").select2({
@@ -356,125 +318,122 @@
     });     
 
     $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
-        var myFormData = new FormData();
-        myFormData.append('userfile', $('#userfile').prop('files')[0]);
-        $.ajax({
-            url: "formCargaMasivaCalidad"+"?"+$.now(),  
-            type: 'POST',
-            data: myFormData,
-            cache: false,
-            tryCount : 0,
-            retryLimit : 3,
-            processData: false,
-            contentType : false,
-            dataType:"json",
-            beforeSend:function(){
-              $(".btn_file_cs").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
-            },  
-            success: function (data) {
-               $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad ').prop("disabled",false);
-                if(data.res=="ok"){
-                  $.notify(data.msg, {
-                      className:data.tipo,
-                      globalPosition: 'top center',
-                      autoHideDelay: 20000,
-                  });
-                  lista_calidad.ajax.reload();
-                  actualizacionCalidad()
-                }else{
-                  $.notify(data.msg, {
-                      className:data.tipo,
-                      globalPosition: 'top center',
-                      autoHideDelay: 10000,
-                  });
-                }
-
-                $("#userfile").val(null);
-
-            },
-            error : function(xhr, textStatus, errorThrown ) {
-              $("#userfile").val(null);
-              if (textStatus == 'timeout') {
-                  this.tryCount++;
-                  if (this.tryCount <= this.retryLimit) {
-                      $.notify("Reintentando...", {
-                        className:'info',
-                        globalPosition: 'top center'
-                      });
-                      $.ajax(this);
-                      $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad').prop("disabled",false);
-                      return;
-                  } else{
-                     $.notify("Problemas cargando el archivo, intente nuevamente.", {
-                        className:'warn',
-                        globalPosition: 'top center',
-                        autoHideDelay: 10000,
-                      });
-                  }    
-                  return;
-              }
-
-              if (xhr.status == 500) {
-                 $.notify("Problemas cargando el archivo, intente nuevamente.", {
-                    className:'warn',
+      var myFormData = new FormData();
+      myFormData.append('userfile', $('#userfile_calidad').prop('files')[0]);
+      $.ajax({
+          url: "formCargaMasivaCalidad"+"?"+$.now(),  
+          type: 'POST',
+          data: myFormData,
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          processData: false,
+          contentType : false,
+          dataType:"json",
+          beforeSend:function(){
+            $(".btn_file_cs").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
+          },  
+          success: function (data) {
+             $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
+              if(data.res=="ok"){
+                $.notify(data.msg, {
+                    className:data.tipo,
+                    globalPosition: 'top center',
+                    autoHideDelay: 20000,
+                });
+                lista_calidad.ajax.reload();
+                actualizacionCalidad()
+              }else{
+                $.notify(data.msg, {
+                    className:data.tipo,
                     globalPosition: 'top center',
                     autoHideDelay: 10000,
-                 });
-              $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad').prop("disabled",false);
-              }
-          },timeout:120000
-        });
-      })
-
-      actualizacionCalidad()
-
-      function actualizacionCalidad(){
-        $.ajax({
-            url: "actualizacionCalidad"+"?"+$.now(),  
-            type: 'POST',
-            cache: false,
-            tryCount : 0,
-            retryLimit : 3,
-            dataType:"json",
-            beforeSend:function(){
-            },
-            success: function (data) {
-              if(data.res=="ok"){
-                $(".actualizacion_calidad").html("<b>Última actualización planilla : "+data.datos+"</b>");
-              }
-            },
-            error : function(xhr, textStatus, errorThrown ) {
-              if (textStatus == 'timeout') {
-                  this.tryCount++;
-                  if (this.tryCount <= this.retryLimit) {
-                      $.notify("Reintentando...", {
-                        className:'info',
-                        globalPosition: 'top right'
-                      });
-                      $.ajax(this);
-                      return;
-                  } else{
-                     $.notify("Problemas en el servidor, intente nuevamente.", {
-                        className:'warn',
-                        globalPosition: 'top right'
-                      });     
-                  }    
-                  return;
+                });
               }
 
-              if (xhr.status == 500) {
-                  $.notify("Problemas en el servidor, intente más tarde.", {
-                    className:'warn',
-                    globalPosition: 'top right'
-                  });
-              }
-            },timeout:5000
-        }); 
-      }
+              $("#userfile_calidad").val(null);
+
+          },
+          error : function(xhr, textStatus, errorThrown ) {
+            $("#userfile_calidad").val(null);
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    $.notify("Reintentando...", {
+                      className:'info',
+                      globalPosition: 'top center'
+                    });
+                    $.ajax(this);
+                    $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
+                    return;
+                } else{
+                   $.notify("Problemas cargando el archivo, intente nuevamente.", {
+                      className:'warn',
+                      globalPosition: 'top center',
+                      autoHideDelay: 10000,
+                    });
+                }    
+                return;
+            }
+
+            if (xhr.status == 500) {
+               $.notify("Problemas cargando el archivo, intente nuevamente.", {
+                  className:'warn',
+                  globalPosition: 'top center',
+                  autoHideDelay: 10000,
+               });
+            $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
+            }
+        },timeout:120000
+      });
+    })
+
+    actualizacionCalidad()
+
+    function actualizacionCalidad(){
+      $.ajax({
+          url: "actualizacionCalidad"+"?"+$.now(),  
+          type: 'POST',
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          dataType:"json",
+          beforeSend:function(){
+          },
+          success: function (data) {
+            if(data.res=="ok"){
+              $(".actualizacion_calidad").html("<b>Última actualización planilla : "+data.datos+"</b>");
+            }
+          },
+          error : function(xhr, textStatus, errorThrown ) {
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    $.notify("Reintentando...", {
+                      className:'info',
+                      globalPosition: 'top right'
+                    });
+                    $.ajax(this);
+                    return;
+                } else{
+                   $.notify("Problemas en el servidor, intente nuevamente.", {
+                      className:'warn',
+                      globalPosition: 'top right'
+                    });     
+                }    
+                return;
+            }
+
+            if (xhr.status == 500) {
+                $.notify("Problemas en el servidor, intente más tarde.", {
+                  className:'warn',
+                  globalPosition: 'top right'
+                });
+            }
+          },timeout:5000
+      }); 
+    }
       
-
-
-
   })
 </script>
 
@@ -485,17 +444,16 @@
       <?php
         if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
           ?>
-          <div class="col-xs-6 col-sm-6 col-md-1 col-lg-2">  
-             <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
-             <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
-             <i class="fa fa-file-import"></i> Cargar base calidad 
+          <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">  
+             <input type="file" id="userfile_calidad" name="userfile" class="file_cs" style="display:none;" />
+             <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile_calidad').click();">
+             <i class="fa fa-file-import"></i> Cargar base
           </div>
-          <i class="fa-solid fa-circle-info ejemplo_planilla_calidad" title="Ver ejemplo" ></i>
+          <!-- <i class="fa-solid fa-circle-info ejemplo_planilla_calidad" title="Ver ejemplo" ></i> -->
           <?php
         }
       ?>
       
-
       <div class="col-lg-2">
         <div class="form-group">
           <div class="input-group">
@@ -510,18 +468,15 @@
         </div>
       </div>
 
-
-      <!-- <div class="col-lg-3">
+      <div class="col-lg-1">
         <div class="form-group">
           <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
-            </div>
-              <input type="date" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="date" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
+              <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
           </div>
         </div>
-      </div> -->
+      </div>
+
+      
 
       <?php  
        if($this->session->userdata('id_perfil')<>4){
@@ -545,6 +500,45 @@
             </div>
         <?php
        }
+      ?>
+
+      <?php  
+        if($this->session->userdata('id_perfil')<3){
+      ?>
+
+        <div class="col-lg-2">
+          <div class="form-group">
+            <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+              <option value="" selected>Seleccione Jefe | Todos</option>
+              <?php  
+                foreach($jefes as $j){
+                  ?>
+                    <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                  <?php
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+
+      <?php
+        }elseif($this->session->userdata('id_perfil')==3){
+          ?>
+          <div class="col-lg-2">
+            <div class="form-group">
+              <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+                <?php  
+                  foreach($jefes as $j){
+                    ?>
+                      <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                    <?php
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <?php
+        }
       ?>
 
       <div class="col-12 col-lg-2">  
@@ -598,6 +592,8 @@
             <th class="centered">Descripción 2da vis.</th> 
             <th class="centered">Cierre 2da vis.</th> 
             <th class="centered">Diferencia Días</th> 
+            <th class="centered">Tipo red</th> 
+            <th class="centered">Falla</th> 
             <th class="centered">Última actualización</th>   
           </tr>
         </thead>

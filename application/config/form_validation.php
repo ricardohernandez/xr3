@@ -140,5 +140,21 @@ $config = array(
                     )
             ),
                
-
+            'formTicket' => array(
+               array(
+                     'field'   => 'titulo',
+                     'label'   => 'Título',
+                     'rules'   => 'trim|required'
+                    ),
+               array(
+                     'field'   => 'descripcion',
+                     'label'   => 'Descripción',
+                     'rules'   => 'trim|required'
+                    ),
+                array(
+                     'field'   => 'tipo',
+                     'label'   => 'Tipo',
+                     'rules'   => 'trim|required'
+                    )
+            ),
  );

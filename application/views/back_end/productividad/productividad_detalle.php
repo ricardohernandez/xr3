@@ -21,12 +21,7 @@
 
     var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const base = "<?php echo base_url() ?>";
-    var fecha_hoy="<?php echo $fecha_hoy; ?>";
-    var fecha_anio_atras="<?php echo $fecha_anio_atras; ?>";
-    
-    $("#desde_f").val(fecha_anio_atras);
-    $("#hasta_f").val(fecha_hoy);
-
+   
     $('#rut').Rut({
       on_error: function(){ alert('Rut incorrecto'); },
       format_on: 'keyup'
@@ -52,11 +47,25 @@
           "dataSrc": function (json) {
             $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
             $(".btn_filtro_detalle").prop("disabled" , false);
+
+            var desde_actual="<?php echo $desde_actual; ?>"
+            var hasta_actual="<?php echo $hasta_actual; ?>"
+            var desde_anterior="<?php echo $desde_anterior; ?>"
+            var hasta_anterior="<?php echo $hasta_anterior; ?>"
+            var periodo =$("#periodo").val()
+
+            if(periodo=="actual"){
+              $("#desde_f").val(desde_actual);
+              $("#hasta_f").val(hasta_actual);
+            }else if(periodo=="anterior"){
+              $("#desde_f").val(desde_anterior);
+              $("#hasta_f").val(hasta_anterior);
+            }
+
             return json;
           },       
           data: function(param){
-            // param.desde = $("#desde_f").val();
-            // param.hasta = $("#hasta_f").val();
+            
             param.periodo = $("#periodo").val();
 
             if(perfil==4){
@@ -302,7 +311,7 @@
   /********OTROS**********/
     
     $(document).off('click', '.excel_detalle').on('click', '.excel_detalle',function(event) {
-          event.preventDefault();
+       event.preventDefault();
       // var desde = $("#desde_f").val();
       // var hasta = $("#hasta_f").val();  
       if(perfil==4){
@@ -487,10 +496,10 @@
       <?php
         if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
           ?>
-          <div class="col-xs-6 col-sm-6 col-md-1 col-lg-2">  
+          <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">  
              <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
              <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
-             <i class="fa fa-file-import"></i> Cargar base productividad 
+             <i class="fa fa-file-import"></i> Cargar base  
           </div>
           <i class="fa-solid fa-circle-info ejemplo_planilla" title="Ver ejemplo" ></i>
           <?php
@@ -510,6 +519,16 @@
           </div>
         </div>
       </div>
+
+      <div class="col-lg-2">
+        <div class="form-group">
+          <div class="input-group">
+              <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
+              <input type="text" disabled placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
+          </div>
+        </div>
+      </div>
+
       
       <!-- <div class="col-lg-3">
         <div class="form-group">

@@ -214,6 +214,7 @@ class Productividadmodel extends CI_Model {
 				"Fecha",
 				"Puntos",
 				array('role'=> 'annotation'),
+				array('role'=> 'annotationText'),
 			);
 
 			foreach($res->result_array() as $key){
@@ -221,6 +222,8 @@ class Productividadmodel extends CI_Model {
 			    $temp[] = (string)$key["fecha"]; 
 			    $temp[] = (int) $key['puntos'];
 		 	    $temp[] = (string) $v = ($key['puntos']==0) ? null: $key['puntos'];
+		 	    $temp[] = strtotime($key["fecha"]);
+
 			    $array[] = $temp;
 			}
 			return $array;
@@ -392,57 +395,135 @@ class Productividadmodel extends CI_Model {
 		}
 
 
-	/*************CALIDAD*******************/
+	
 
-		public function listaCalidad($desde,$hasta,$trabajador){
+	/*************RESUMEN*******************/
 
+	
+		public function date_range($first, $last, $step = '+1 day', $output_format = 'd/m/Y' ) {
+		    $dates = array();
+		    $current = strtotime($first);
+		    $last = strtotime($last);
+		    while( $current <= $last ) {
+		        $dates[] = date($output_format, $current);
+		        $current = strtotime($step, $current);
+		    }
+
+		    return $dates;
+		}
+
+		
+
+		function dia($dia){
+			switch ($dia) {
+				case '1':$dia="L";break;
+				case '2':$dia="M";break;
+				case '3':$dia="M";break;
+				case '4':$dia="J";break;
+				case '5':$dia="V";break;
+				case '6':$dia="S";break;
+				case '0':$dia="D";break;
+
+			}
+			return $dia;
+		}
+
+		function meses($mes){
+			switch ($mes) {
+				case '1':$mes="En";break;
+				case '2':$mes="Feb";break;
+				case '3':$mes="Mar";break;
+				case '4':$mes="Ab";break;
+				case '5':$mes="May";break;
+				case '6':$mes="Jun";break;
+				case '7':$mes="Jul";break;
+				case '8':$mes="Ago";break;
+				case '9':$mes="Sep";break;
+				case '10':$mes="Oct";break;
+				case '11':$mes="Nov";break;
+				case '12':$mes="Dic";break;
+			}
+			return $mes;
+		}
+
+		function fecha_to_str($fecha){
+			$fecha1=explode('-',$fecha);
+			$anio=$fecha1[0];  
+			$mes=$fecha1[1];  
+			$dia=$fecha1[2];  
+			$dia_semana=date('w', strtotime($fecha));
+			// return $this->dia($dia_semana)."".$this->meses($mes)." ".$dia;
+			return $this->dia($dia_semana)."".$dia."-".$mes;
+		}
+
+		public function cabecerasResumen($desde,$hasta,$trabajador){
+			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
+			$cabeceras = array();
+			$cabeceras[] = "Zona";
+			$cabeceras[] = "Trabajador";
+
+			foreach($array_fechas as $fecha){
+				$cabeceras[] = $this->fecha_to_str($fecha);
+			}
+			
+			$cabeceras[] = "Total";
+			return $cabeceras;
+		}
+		
+		public function listaResumen($desde,$hasta,$trabajador){
 			$this->db->select("sha1(p.id) as hash,
-				p.*,
-				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
-		        if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%Y-%m-%d'),'') as 'fecha',
-		        if(p.fecha_2davisita!='0000-00-00', DATE_FORMAT(p.fecha_2davisita,'%Y-%m-%d'),'') as 'fecha_2davisita'
-			");
-
+				p.id as id,
+				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
+				a.area as area,
+				if(sum(puntaje)!=0,sum(puntaje),'')  as total,
+				p.rut_tecnico as rut_tecnico,
+				if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%d-%m-%Y'),'') as 'fecha'");
 			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
+			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');
 
-			if($desde!="" and $hasta!=""){
-				$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
-			}
+			if($desde!="" and $hasta!=""){$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	}
+			if($trabajador!=""){$this->db->where('p.rut_tecnico', $trabajador);}
 
-			if($trabajador!=""){
-				$this->db->where('p.rut_tecnico', $trabajador);
-			}
+			$this->db->order_by('u.nombres', 'asc');
+			$this->db->group_by('u.id');
+			$res=$this->db->get('productividad p');
 
-			$this->db->order_by('p.fecha', 'desc');
-			$res=$this->db->get('productividad_calidad p');
-			if($res->num_rows()>0){
-				return $res->result_array();
+			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
+			$array = array();
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+
+				$temp["Zona"] = $key["area"];
+				$temp["Trabajador"] = $key["trabajador"];
+
+				foreach($array_fechas as $fecha){
+						$this->db->select("if(sum(puntaje)!=0,sum(puntaje),0)  as puntaje");
+						$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.$key["rut_tecnico"].'"');
+						$res2=$this->db->get('productividad');
+						
+						if($res2->num_rows()>0){
+							$puntaje=0;
+							foreach($res2->result_array() as $key2){
+								$puntaje = $puntaje+$key2["puntaje"];
+							}
+						
+							$temp[$this->fecha_to_str($fecha)] = $puntaje;
+						}else{
+							$temp[$this->fecha_to_str($fecha)] = "";
+						}
+				}
+				$temp["Total"] = $key["total"];
+				$array[]=$temp;
+
 			}
-			return FALSE;
+			return $array;
 		}
 
-		public function formCalidad($data){
-			if($this->db->insert('productividad_calidad', $data)){
-				return TRUE;
-			}
-			return FALSE;
-		}
 
-		public function existeOrdenCalidad($orden){
-			$this->db->where('ot', $orden);
-			$res=$this->db->get('productividad_calidad');
-			if($res->num_rows()>0){
-				return TRUE;
-			}
-			return FALSE;
-		}
 
-		public function actualizacionCalidad(){
-		    $this->db->select('ultima_actualizacion');
-		    $this->db->order_by('id', 'desc');
-		    $res=$this->db->get('productividad_calidad',1);
-		    $row = $res->row_array();
-		    return $row["ultima_actualizacion"];
+		public function detalleResumen(){
+
 		}
 
 }

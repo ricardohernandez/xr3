@@ -36,9 +36,9 @@ class Checklist extends CI_Controller {
 	      	redirect("./login");
 	    }
 
-	    if($this->session->userdata('id_perfil')==4){
-	     	redirect("./productividad");
-	    }
+	    // if($this->session->userdata('id_perfil')==4){
+	    //  	redirect("./productividad");
+	    // }
 	}
 
 	
@@ -50,6 +50,7 @@ class Checklist extends CI_Controller {
     	    $datos = array(
 		        'titulo' => "CheckList de herramientas",
 		        'contenido' => "checklist/inicio",
+		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
 		}

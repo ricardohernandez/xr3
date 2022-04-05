@@ -126,7 +126,7 @@
 			function puntosPorFechas(){
 
 				var puntosPorFechas = google.visualization.arrayToDataTable(json.puntosPorFechas);
-	       		puntosPorFechas.sort([{column: 0, desc: false}])
+	       		puntosPorFechas.sort([{column: 3, desc: false}])
 
 	        	var options = {
 		            // isStacked: true,

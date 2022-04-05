@@ -1058,6 +1058,8 @@
                   <option value="m">M</option>
                   <option value="l">L</option>
                   <option value="xl">XL</option>
+                  <option value="xxl">XXL</option>
+                  <option value="xxxl">XXXL</option>
                 </select>
                 </div>
               </div>
@@ -1072,6 +1074,8 @@
                   <option value="m">M</option>
                   <option value="l">L</option>
                   <option value="xl">XL</option>
+                  <option value="xxl">XXL</option>
+                  <option value="xxxl">XXXL</option>
                 </select>
                 </div>
               </div>

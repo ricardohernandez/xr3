@@ -56,6 +56,44 @@ class InicioModel extends CI_Model {
 			return FALSE;
 		}
 
+		public function verificacionJefe($id){
+			$this->db->where('id_jefe', $id);
+			$res=$this->db->get('usuarios_jefes');
+			if($res->num_rows()>0){
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function idJefe($idJefe){
+			$this->db->where('id_jefe', $idJefe);
+			$res=$this->db->get('usuarios_jefes');
+			if($res->num_rows()>0){
+				$row=$res->row_array();
+				return $row["id"];
+			}
+			return FALSE;
+		}
+
+		public function getUserPass($id){
+			$this->db->select("contrasena");
+			$this->db->where("id",$id);
+			$this->db->where("estado","1");
+			$res=$this->db->get("usuarios");
+			return $res->row_array();
+		}
+
+		public function updatePass($id,$data){
+			$this->db->where('id', $id);
+		    if($this->db->update('usuarios', $data)){
+		    	return TRUE;
+		    }else{
+		    	return FALSE;
+		    }
+		}
+
+
+
 	
 	/*********INICIO************/
 
@@ -203,6 +241,13 @@ class InicioModel extends CI_Model {
 			}
 			return FALSE;
 		}
+
+		public function listaPerfiles(){
+	      $this->db->order_by('perfil', 'asc');
+	      $res=$this->db->get('usuarios_perfiles');
+	      return $res->result_array();
+	    }
+	    
 
 }
 

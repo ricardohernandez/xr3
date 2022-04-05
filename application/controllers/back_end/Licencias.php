@@ -5,6 +5,7 @@ class Licencias extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("back_end/Licenciasmodel");
+		$this->load->model("back_end/Iniciomodel");
 		$this->load->helper(array('fechas','str'));
 		$this->load->library('user_agent');
 	}
@@ -48,6 +49,7 @@ class Licencias extends CI_Controller {
 	    $datos = array(
 	        'titulo' => "Licencias",
 	        'contenido' => "licencias/inicio",
+	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 		);  
 		$this->load->view('plantillas/plantilla_back_end',$datos);
 		
