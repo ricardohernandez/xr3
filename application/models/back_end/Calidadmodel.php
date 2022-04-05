@@ -206,7 +206,7 @@ class Calidadmodel extends CI_Model {
 		}
 	}
 
-	public function listaResumenCalidad($desde,$hasta,$trabajador,$jefe,$tipo_red){
+	public function listaResumenCalidad($desde,$hasta,$trabajador,$jefe,$tipo_red,$desde_prod,$hasta_prod){
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
@@ -269,8 +269,9 @@ class Calidadmodel extends CI_Model {
 	        	format(SUM(puntaje),0,'de_DE') as puntaje
 		        FROM productividad pr
 		        WHERE pr.rut_tecnico=p.rut_tecnico and
-		        pr.fecha BETWEEN '".$desde."' AND '".$hasta."'
+		        pr.fecha BETWEEN '".$desde_prod."' AND '".$hasta_prod."'
 	        ) as productividad,
+
 		");
 
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');

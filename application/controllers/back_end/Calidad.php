@@ -492,36 +492,49 @@ class Calidad extends CI_Controller {
 			if(date("d")>"24"){
 				$desde_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 				$hasta_actual= date('Y-m-24');
+				$desde_actual_prod = date('Y-m-d', strtotime(date('Y-m-25')));
+				$hasta_actual_prod = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
 			}else{
 				$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 				$hasta_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_actual_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta_actual_prod = date('Y-m-d',  strtotime(date('Y-m-24')));
 			}
 
-			$array[] = $this->Calidadmodel->listaResumenCalidad($desde_actual,$hasta_actual,$trabajador,$jefe,$tipo_red);
+			$array[] = $this->Calidadmodel->listaResumenCalidad($desde_actual,$hasta_actual,$trabajador,$jefe,$tipo_red,$desde_actual_prod,$hasta_actual_prod);
 
 		}elseif($periodo=="anterior"){
 			
 			if(date("d")>"24"){
 				$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_1_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_1_prod = date('Y-m-d', strtotime(date('Y-m-24')));
+
 			}else{
 				$desde_anterior_1= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_1_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_1_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 			}
 			
-			$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$tipo_red);
+			$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$tipo_red,$desde_anterior_1_prod,$hasta_anterior_1_prod);
 
 		}elseif($periodo=="sub_anterior"){
 			
 			if(date("d")>"24"){
 				$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_2_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_2_prod  =  date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 			}else{
 				$desde_anterior_2= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_2_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_2_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 			}
 			
-			$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$tipo_red);
+			$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$tipo_red,$desde_anterior_2_prod,$hasta_anterior_2_prod);
 
 		}
 
