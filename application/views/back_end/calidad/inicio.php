@@ -374,15 +374,24 @@
 
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-       <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-        <li id="menu_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Calidad  </a></li>   
-        <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Graficos Calidad  </a></li>   
+      <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
+        <li id="menu_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Calidad </a></li>   
+        <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Graficos Calidad </a></li>   
+      
+         <!--  <?php  
+            if($this->session->userdata('rut')=="169868220" || $this->session->userdata('rut')=="119752949"){
+          ?>
+            <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Graficos Calidad </a></li>   
+          <?php  
+            }
+          ?> -->
+
       </ul>  
     </div> 
   </div>
 
   <div class="row">
-   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="contenedor_principal">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

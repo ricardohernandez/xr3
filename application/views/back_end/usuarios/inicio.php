@@ -454,10 +454,18 @@
           if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
             ?>
               <li id="menu_jefes" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Jefes </a></li>
+            <?php
+          }
+        ?>
+
+        <?php  
+          if($this->session->userdata('id_perfil')==1){
+            ?>
               <li id="menu_perfiles" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Perfiles </a></li>   
             <?php
           }
         ?>
+        
        
         <li id="menu_herramientas" class="active"><a> <i class="fa fa-th-list"></i> Mant. Herramientas</a></li>   
 

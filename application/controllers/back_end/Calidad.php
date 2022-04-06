@@ -415,7 +415,11 @@ class Calidad extends CI_Controller {
 		$cabeceras= array(
 			"Periodo",
 			"Calidad",
+			"Ordenes",
+			"Fallos",
+			/*array('role'=> 'annotation'),
 			array('role'=> 'annotation'),
+			array('role'=> 'annotation'),*/
 			array('role'=> 'annotationText'),
 		);
 
@@ -463,10 +467,13 @@ class Calidad extends CI_Controller {
 		$cabeceras= array(
 			"Periodo",
 			"Calidad",
+			"Ordenes",
+			"Fallos",
+			/*array('role'=> 'annotation'),
 			array('role'=> 'annotation'),
+			array('role'=> 'annotation'),*/
 			array('role'=> 'annotationText'),
 		);
-
 
 		$list [] = $cabeceras;
 

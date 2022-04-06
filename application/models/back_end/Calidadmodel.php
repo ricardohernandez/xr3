@@ -84,23 +84,36 @@ class Calidadmodel extends CI_Model {
 		$hasta_str= date('d-m', strtotime($hasta));
 
 		$this->db->select("
-				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
-				CONCAT('".$desde_str."','|','".$hasta_str."') as 'periodo',
+			CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
+			CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
 
-	            CONCAT(ROUND((
-		            SUM(CASE 
-		        		WHEN p.falla ='si' 
-		        		and p.tipo_red='HFC' 
-		        		THEN 1
-		            ELSE 0
-		            END)
-		            /
-		            SUM(CASE 
-		                WHEN p.tipo_red ='HFC'
-		                THEN 1
-		                ELSE 0
-		            END)
-	            * 100 ),2),'%') AS 'calidad'",FALSE);
+			SUM(CASE 
+        		WHEN p.falla ='si' 
+        		and p.tipo_red='HFC' 
+        		THEN 1
+            ELSE 0
+            END) as fallos,
+
+            SUM(CASE 
+                WHEN p.tipo_red ='HFC'
+                THEN 1
+                ELSE 0
+            END) as ordenes,
+
+	        CONCAT(ROUND((
+	            SUM(CASE 
+	        		WHEN p.falla ='si' 
+	        		and p.tipo_red='HFC' 
+	        		THEN 1
+	            ELSE 0
+	            END)
+	            /
+	            SUM(CASE 
+	                WHEN p.tipo_red ='HFC'
+	                THEN 1
+	                ELSE 0
+	            END)
+	        * 100 ),2),'%') AS 'calidad'",FALSE);
 
 		$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 
@@ -129,8 +142,12 @@ class Calidadmodel extends CI_Model {
 				if($key["trabajador"]!=""){
 					$temp = array();
 				    $temp[] = (string)$key["periodo"]; 
-				    $temp[] = (int) $key['calidad'];
-			 	    $temp[] = (string) $v = ($key['calidad']==0) ? null: $key['calidad'];
+				    $temp[] = (float)$key["calidad"]; 
+				    $temp[] = (int) $key['ordenes'];
+				    $temp[] = (int) $key['fallos'];
+			 	   /* $temp[] = (string) $v = ($key['calidad']==0) ? null: $key['calidad'];
+			 	    $temp[] = (string) $v = ($key['ordenes']==0) ? null: $key['ordenes'];
+			 	    $temp[] = (string) $v = ($key['fallos']==0) ? null: $key['fallos'];*/
 			 	    $temp[] = strtotime($desde);
 				    $array[] = $temp;
 
@@ -148,8 +165,22 @@ class Calidadmodel extends CI_Model {
 
 		$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
-				CONCAT('".$desde_str."','|','".$hasta_str."') as 'periodo',
+				CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
 
+				SUM(CASE 
+	        		WHEN p.falla ='si' 
+	        		and p.tipo_red='FTTH' 
+	        		THEN 1
+	            ELSE 0
+	            END) as fallos,
+
+	            SUM(CASE 
+	                WHEN p.tipo_red ='FTTH'
+	                THEN 1
+	                ELSE 0
+	            END) as ordenes,
+
+            
 		        CONCAT(ROUND((
 		            SUM(CASE 
 		        		WHEN p.falla ='si' 
@@ -193,8 +224,12 @@ class Calidadmodel extends CI_Model {
 				if($key["trabajador"]!=""){
 					$temp = array();
 				    $temp[] = (string)$key["periodo"]; 
-				    $temp[] = (int) $key['calidad'];
-			 	    $temp[] = (string) $v = ($key['calidad']==0) ? null: $key['calidad'];
+				    $temp[] = (float)$key["calidad"]; 
+				    $temp[] = (int) $key['ordenes'];
+				    $temp[] = (int) $key['fallos'];
+			 	   /* $temp[] = (string) $v = ($key['calidad']==0) ? null: $key['calidad'];
+			 	    $temp[] = (string) $v = ($key['ordenes']==0) ? null: $key['ordenes'];
+			 	    $temp[] = (string) $v = ($key['fallos']==0) ? null: $key['fallos'];*/
 			 	    $temp[] = strtotime($desde);
 				    $array[] = $temp;
 
@@ -270,16 +305,14 @@ class Calidadmodel extends CI_Model {
 		        FROM productividad pr
 		        WHERE pr.rut_tecnico=p.rut_tecnico and
 		        pr.fecha BETWEEN '".$desde_prod."' AND '".$hasta_prod."'
-	        ) as productividad,
-
+	        ) as productividad
 		");
-
+											
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 		$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
 		$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 		/*$this->db->where('p.rut_tecnico', '173397666');*/
 		/*$this->db->group_by('YEAR(fecha), MONTH(fecha)');*/
-
 
 		if($trabajador!=""){
 			$this->db->where('p.rut_tecnico', $trabajador);
@@ -296,6 +329,7 @@ class Calidadmodel extends CI_Model {
 		$this->db->group_by('p.rut_tecnico');
 
 		$res=$this->db->get('productividad_calidad p');
+
 		if($res->num_rows()>0){
 			foreach($res->result_array() as $key){
 				if($key["trabajador"]!=""){
@@ -305,6 +339,7 @@ class Calidadmodel extends CI_Model {
 				}
 			}
 		}
+
 	}
 
 	public function listaJefes(){

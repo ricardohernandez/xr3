@@ -17,7 +17,7 @@
   var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
 
 
-  /******GRAFICO HFC POR PERIODO***************/
+  /*********GRAFICO HFC**********/
 
 		google.charts.setOnLoadCallback(graficoHFC);
 
@@ -33,84 +33,159 @@
         dataType:"json",
         success: function (json) {
 					var graficoHFC = google.visualization.arrayToDataTable(json);
-       		graficoHFC.sort([{column: 3, desc: false}])
+       		graficoHFC.sort([{column: 4, desc: false}])
 
-        	var options = {
-	            // isStacked: true,
-	            title: '',
-	            width: "100%",
-	            height: 320,
-	            is3D:true,
-	            colors:["#32477C"],
-	            fontName: 'Nunito',
-	            bar: {groupWidth: "25%"},
-	            annotations: {
-	                 textStyle: {
-	                  fontSize: 10,
-	                  color: '#32477C',
-	                  auraColor: 'transparent'
-	                },
-	                alwaysOutside: false,  
-	                  stem:{
-	                    color: 'transparent',
-	                    length: 8
-	                  },   
-	            },
-	            chartArea:{
-	             left:40,
-	             right:40,
-	             bottom:40,
-	             top:10,
-	             width:"100%",
-	             height:"100%",
-	            },
+       		var options = {
+		        isStacked: true,
+            width: "100%",
+            height: 240,
+            is3D:true,
+            colors:["#32477C","#DC3912"],
+            fontName: 'Nunito',
+            bar: {groupWidth: "25%"},
+            annotations: {
+                 textStyle: {
+                  fontSize: 10,
+                  color: '#32477C',
+                  auraColor: 'transparent'
+                },
+                alwaysOutside: false,  
+                  stem:{
+                    color: 'transparent',
+                    length: 8
+                  },   
+            },
+            chartArea:{
+             left:40,
+             right:40,
+             bottom:40,
+             top:50,
+             width:"100%",
+             height:"100%",
+            },
 
-	            backgroundColor: '#fff',
-	            titleTextStyle: {
-	             color: '#32477C',
-	             fontSize: 13, 
-	             fontWidth: 'normal',
-	             bold:true
-	            },
+            backgroundColor: '#fff',
+            titleTextStyle: {
+             color: '#32477C',
+             fontSize: 13, 
+             fontWidth: 'normal',
+             bold:true
+            },
 
-	            legend: {
-	             'position':'none',
-	             'alignment':'center',
-	              textStyle: {
-	                fontSize: 12,
-	                bold:true,
-	                color:'#32477C'
-	              }
-	            }, 
+            legend: {
+             'position':'top',
+             'alignment':'center',
+              textStyle: {
+                fontSize: 12,
+                bold:true,
+                color:'#32477C'
+              }
+            }, 
 
-	            hAxis: {
-	              textStyle:{
-	                color: '#32477C', 
+            hAxis: {
+              textStyle:{
+                color: '#32477C', 
+                fontSize: 10,
+                bold:true,
+              },
+            },
+            vAxis: {
+              textStyle:{
+                color: '#32477C',
+                bold:true,
+                fontSize: 10
+              },
+            },
+
+            tooltip:{textStyle:{fontSize:12},isHtml: true},
+
+            vAxes: {
+           		0: 
+	           		{
+         		    textStyle:{color: '#32477C',bold:false,fontSize: 11},
+                  gridlines: {color:'#ccc', count:10},
+							    viewWindowMode:'explicit',
+		           		/*viewWindow: {
+						        min: 0,
+						        max: 30000
+						      },*/
+								},
+		  	  	    1: 
+ 			  	    	{
+         		   	  textStyle:{color: '#32477C',bold:false,fontSize: 11},
+ 			  	        	gridlines: {color:'transparent', count:10},
+ 			  	    	    /*viewWindow: {
+								        min: 0,
+								        max: 100
+								    },*/
+       			  	  }
+       			},
+
+			      isStacked: true,        
+			      seriesType:'bars',
+	          series: {
+				      0: {
+				        type: 'line',
+				        color: 'grey',
+				        curveType: 'function',
+				        lineWidth: 2,
+				        pointSize: 5,
+				        pointShape: 'square',
+				        targetAxisIndex:0,
+				        annotations: {
+		              stem:{
+                       length: 4
+                  },   
+		      		  }
+				      },
+				      1: {
+				        type: 'bars',
+				        color: '#32477C',
+				        targetAxisIndex:1,
+				        annotations: {
+				        style: 'line',
+						    textStyle: {
 	                fontSize: 10,
-	                bold:true,
+	                color: 'black',
+	                strokeSize: 1,
+	                auraColor: 'transparent'
 	              },
-
-	            },
-
-	            vAxis: {
-	              textStyle:{
-	                color: '#32477C',
-	                bold:true,
-	                fontSize: 10
+	              alwaysOutside: false,  
+	              stem:{
+                  color: 'transparent',
+                  length: 8
+                },   
+				        }
+				      },
+				      2: {
+				        type: 'bars',
+				        color: '#ED7D31',
+				        targetAxisIndex:1,
+				        annotations: {
+				        style: 'line',
+						    textStyle: {
+	                fontSize: 10,
+	                color: 'black',
+	                strokeSize: 1,
+	                auraColor: 'transparent'
 	              },
-	              
-	            },
+	              alwaysOutside: false,  
+	              stem:{
+                    color: 'transparent',
+                    length: 8
+                  },   
+				        }
+				      }
+			      },
+			    };
 
-	            tooltip:{textStyle:{fontSize:15},isHtml: true},
-	        };
-
-			    var chart = new google.visualization.ColumnChart(document.getElementById('graficoHFC'));
+			    var chart = new google.visualization.ComboChart(document.getElementById('graficoHFC'));
 			    chart.draw(graficoHFC, options);
         }
       })
 	  }
 
-	/******GRAFICO FTTH POR PERIODO***************/
+	/*****GRAFICO FTTH*****/
 
 		google.charts.setOnLoadCallback(graficoFTTH);
 
@@ -126,78 +201,153 @@
         dataType:"json",
         success: function (json) {
 					var graficoFTTH = google.visualization.arrayToDataTable(json);
-       		graficoFTTH.sort([{column: 3, desc: false}])
+       		graficoFTTH.sort([{column: 4, desc: false}])
 
         	var options = {
-	            // isStacked: true,
-	            title: '',
-	            width: "100%",
-	            height: 320,
-	            is3D:true,
-	            colors:["#32477C"],
-	            fontName: 'Nunito',
-	            bar: {groupWidth: "25%"},
-	            annotations: {
-	                 textStyle: {
-	                  fontSize: 10,
-	                  color: '#32477C',
-	                  auraColor: 'transparent'
-	                },
-	                alwaysOutside: false,  
-	                  stem:{
-	                    color: 'transparent',
-	                    length: 8
-	                  },   
-	            },
-	            chartArea:{
-	             left:40,
-	             right:40,
-	             bottom:40,
-	             top:10,
-	             width:"100%",
-	             height:"100%",
-	            },
+		        isStacked: true,
+            width: "100%",
+            height: 240,
+            is3D:true,
+            colors:["#32477C","#DC3912"],
+            fontName: 'Nunito',
+            bar: {groupWidth: "25%"},
+            annotations: {
+                 textStyle: {
+                  fontSize: 10,
+                  color: '#32477C',
+                  auraColor: 'transparent'
+                },
+                alwaysOutside: false,  
+                  stem:{
+                    color: 'transparent',
+                    length: 8
+                  },   
+            },
+            chartArea:{
+             left:40,
+             right:40,
+             bottom:40,
+             top:50,
+             width:"100%",
+             height:"100%",
+            },
 
-	            backgroundColor: '#fff',
-	            titleTextStyle: {
-	             color: '#32477C',
-	             fontSize: 13, 
-	             fontWidth: 'normal',
-	             bold:true
-	            },
+            backgroundColor: '#fff',
+            titleTextStyle: {
+             color: '#32477C',
+             fontSize: 13, 
+             fontWidth: 'normal',
+             bold:true
+            },
 
-	            legend: {
-	             'position':'none',
-	             'alignment':'center',
-	              textStyle: {
-	                fontSize: 12,
-	                bold:true,
-	                color:'#32477C'
-	              }
-	            }, 
+            legend: {
+             'position':'top',
+             'alignment':'center',
+              textStyle: {
+                fontSize: 12,
+                bold:true,
+                color:'#32477C'
+              }
+            }, 
 
-	            hAxis: {
-	              textStyle:{
-	                color: '#32477C', 
+            hAxis: {
+              textStyle:{
+                color: '#32477C', 
+                fontSize: 10,
+                bold:true,
+              },
+            },
+            vAxis: {
+              textStyle:{
+                color: '#32477C',
+                bold:true,
+                fontSize: 10
+              },
+            },
+
+            tooltip:{textStyle:{fontSize:12},isHtml: true},
+
+            vAxes: {
+           		0: 
+	           		{
+         		    textStyle:{color: '#32477C',bold:false,fontSize: 11},
+                  gridlines: {color:'#ccc', count:10},
+							    viewWindowMode:'explicit',
+		           		/*viewWindow: {
+						        min: 0,
+						        max: 30000
+						      },*/
+								},
+		  	  	    1: 
+ 			  	    	{
+         		   	  textStyle:{color: '#32477C',bold:false,fontSize: 11},
+ 			  	        	gridlines: {color:'transparent', count:10},
+ 			  	    	    /*viewWindow: {
+								        min: 0,
+								        max: 100
+								    },*/
+       			  	  }
+       			},
+
+			      isStacked: true,        
+			      seriesType:'bars',
+	          series: {
+				      0: {
+				        type: 'line',
+				        color: 'grey',
+				        curveType: 'function',
+				        lineWidth: 2,
+				        pointSize: 5,
+				        pointShape: 'square',
+				        targetAxisIndex:0,
+				        annotations: {
+		              stem:{
+                       length: 4
+                  },   
+		      		  }
+				      },
+				      1: {
+				        type: 'bars',
+				        color: '#32477C',
+				        targetAxisIndex:1,
+				        annotations: {
+				        style: 'line',
+						    textStyle: {
 	                fontSize: 10,
-	                bold:true,
+	                color: 'black',
+	                strokeSize: 1,
+	                auraColor: 'transparent'
 	              },
-
-	            },
-
-	            vAxis: {
-	              textStyle:{
-	                color: '#32477C',
-	                bold:true,
-	                fontSize: 10
+	              alwaysOutside: false,  
+	              stem:{
+                  color: 'transparent',
+                  length: 8
+                },   
+				        }
+				      },
+				      2: {
+				        type: 'bars',
+				        color: '#ED7D31',
+				        targetAxisIndex:1,
+				        annotations: {
+				        style: 'line',
+						    textStyle: {
+	                fontSize: 10,
+	                color: 'black',
+	                strokeSize: 1,
+	                auraColor: 'transparent'
 	              },
-	              
-	            },
+	              alwaysOutside: false,  
+	              stem:{
+                    color: 'transparent',
+                    length: 8
+                  },   
+				        }
+				      }
+			      },
+			    };
 
-	            tooltip:{textStyle:{fontSize:15},isHtml: true},
-	        };
-
-			    var chart = new google.visualization.ColumnChart(document.getElementById('graficoFTTH'));
+			    var chart = new google.visualization.ComboChart(document.getElementById('graficoFTTH'));
 			    chart.draw(graficoFTTH, options);
         }
       })
@@ -210,7 +360,7 @@
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
        /*"aaSorting" : [[0,"asc"]],*/
-       "scrollY": "65vh",
+       "scrollY": "60vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -363,7 +513,7 @@
     </div>
   </div>
 
-  <div class="col-lg-1">
+  <div class="col-lg-2">
     <div class="form-group">
       <select id="tipo_red" name="tipo_red" class="custom-select custom-select-sm">
         <option value="" selected>Tipo red | Ambas </option>
@@ -424,11 +574,11 @@
 
 		        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
 	            <div class="short-div">
-	            		<h6 class="titulo_grafico">Grafico calidad HFC Últimos 3 periodos</h6>
+	            		<h6 class="titulo_grafico">Calidad v/s producción HFC Últimos 3 periodos</h6>
 		    					<div id="graficoHFC"></div>
 		          </div>
 	            <div class="short-div">
-	            	<h6 class="titulo_grafico">Grafico calidad FTTH Últimos 3 periodos</h6>
+	            		<h6 class="titulo_grafico">Calidad v/s producción FTTH Últimos 3 periodos</h6>
 	    			  	<div id="graficoFTTH"></div>
 	            </div>
 		        </div>
