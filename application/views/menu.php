@@ -126,7 +126,7 @@
 	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>calidad"> Calidad</a></li>
 	          		 	<li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO (Control de asistencia operacional)</a></li>
 	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_ots"> Checklist herramientas</a></li>
-	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li>
+	                <!-- <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li> -->
 	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>productividad"> Productividad</a></li>
 
 	            </ul>
@@ -200,7 +200,7 @@
                   <ul class="nav__dropdown-menu"> 
                   	<li><a  class="menu_list" href="<?php echo base_url() ?>calidad"> Calidad</a></li>
 	          		    <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO (Control de asistencia operacional)</a></li>
-                    <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li>
+                    <!-- <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li> -->
                     <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_ots"> Checklist herramientas</a></li>
                   	<li><a  class="menu_list" href="<?php echo base_url() ?>productividad"> Productividad</a></li>
                     <!-- <li class="nav__dropdown">

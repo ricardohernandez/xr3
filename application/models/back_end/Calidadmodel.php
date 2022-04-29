@@ -80,7 +80,7 @@ class Calidadmodel extends CI_Model {
 		return $this->dia($dia_semana)."".$dia."-".$mes;
 	}
 
-	public function graficoHFC($desde,$hasta,$trabajador,$jefe){
+	public function graficoHFC($desde,$hasta,$trabajador,$jefe,$proyecto){
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
@@ -128,6 +128,10 @@ class Calidadmodel extends CI_Model {
 			$this->db->where('u.id_jefe', $jefe);
 		}
 
+		if($proyecto!=""){
+			$this->db->where('u.id_proyecto', $proyecto);
+		}
+
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 		$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
 		/*$this->db->where('p.rut_tecnico', '173397666');*/
@@ -160,7 +164,7 @@ class Calidadmodel extends CI_Model {
 		}
 	}
 	
-	public function graficoFTTH($desde,$hasta,$trabajador,$jefe){
+	public function graficoFTTH($desde,$hasta,$trabajador,$jefe,$proyecto){
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
@@ -210,6 +214,10 @@ class Calidadmodel extends CI_Model {
 			$this->db->where('u.id_jefe', $jefe);
 		}
 
+		if($proyecto!=""){
+			$this->db->where('u.id_proyecto', $proyecto);
+		}
+
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 		$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
 		/*$this->db->where('p.rut_tecnico', '173397666');*/
@@ -242,7 +250,7 @@ class Calidadmodel extends CI_Model {
 		}
 	}
 
-	public function listaResumenCalidad($desde,$hasta,$trabajador,$jefe,$tipo_red,$desde_prod,$hasta_prod){
+	public function listaResumenCalidad($desde,$hasta,$trabajador,$jefe,$tipo_red,$desde_prod,$hasta_prod,$proyecto){
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
@@ -324,12 +332,15 @@ class Calidadmodel extends CI_Model {
 			$this->db->where('u.id_jefe', $jefe);
 		}
 
+		if($proyecto!=""){
+			$this->db->where('u.id_proyecto', $proyecto);
+		}
+
 		if($tipo_red!=""){
 			$this->db->where('p.tipo_red', $tipo_red);
 		}
 
 		$this->db->group_by('p.rut_tecnico');
-
 		$res=$this->db->get('productividad_calidad p');
 
 		if($res->num_rows()>0){
@@ -344,6 +355,15 @@ class Calidadmodel extends CI_Model {
 
 	}
 
+	public function listaProyectos(){
+		$this->db->order_by('proyecto', 'asc');
+		$res=$this->db->get('usuarios_proyectos');
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
+
 	public function listaJefes(){
 		$this->db->select("sha1(uj.id) as hash_jefes,
 			uj.id as id_jefe,
@@ -353,12 +373,13 @@ class Calidadmodel extends CI_Model {
 
 		$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
 
-		if($this->session->userdata('id_perfil')==3){
+		/*if($this->session->userdata('id_perfil')==3){
 			if($this->session->userdata('verificacionJefe')=="1"){
 				$this->db->where('uj.id', $this->session->userdata('id_jefe'));
 			}
-		}
+		}*/
 
+		$this->db->where('(u.id_cargo=32 or u.id_cargo=10 or u.id_cargo=18)');
 		$this->db->order_by('nombre_jefe', 'asc');
 		$res=$this->db->get('usuarios_jefes uj');
 		if($res->num_rows()>0){

@@ -24,20 +24,20 @@
   var periodo =$("#periodo").val()
   var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
 
-
-  /*********GRAFICO HFC**********/
+  /*****GRAFICO HFC**********/
 
 		google.charts.setOnLoadCallback(graficoHFC);
 
 		function graficoHFC(){
 			var periodo = $("#periodo").val();
 			var jefe = $("#jefe").val();
+      var proyecto = $("#proyecto").val();
       var trabajador = perfil <= 3 ? $("#trabajadores").val() : $("#trabajador").val();
 
 			$.ajax({
         url: base_url+"graficoHFC"+"?"+$.now(),  
         type: 'POST',
-        data:{periodo:periodo,trabajador:trabajador,jefe:jefe},
+        data:{periodo:periodo,trabajador:trabajador,jefe:jefe,proyecto:proyecto},
         dataType:"json",
         success: function (json) {
 					var graficoHFC = google.visualization.arrayToDataTable(json);
@@ -199,13 +199,14 @@
 
 		function graficoFTTH(){
 			var periodo = $("#periodo").val();
-			var jefe = $("#jefe").val();
+      var jefe = $("#jefe").val();
+      var proyecto = $("#proyecto").val();
       var trabajador = perfil <= 3 ? $("#trabajadores").val() : $("#trabajador").val();
 
 			$.ajax({
         url: base_url+"graficoFTTH"+"?"+$.now(),  
         type: 'POST',
-        data:{periodo:periodo,trabajador:trabajador,jefe:jefe},
+        data:{periodo:periodo,trabajador:trabajador,jefe:jefe,proyecto:proyecto},
         dataType:"json",
         success: function (json) {
 					var graficoFTTH = google.visualization.arrayToDataTable(json);
@@ -365,8 +366,6 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    
-
   /*****DATATABLE*****/   
     var tabla_resumen_calidad = $('#tabla_resumen_calidad').DataTable({
        "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
@@ -410,6 +409,7 @@
             param.periodo = $("#periodo").val();
             param.jefe = $("#jefe").val();
             param.tipo_red = $("#tipo_red").val();
+            param.proyecto = $("#proyecto").val();
 
             if(perfil==4){
               param.trabajador = $("#trabajador").val();
@@ -533,6 +533,13 @@
 		    });
 	  });
 
+    $(document).off('change', '#periodo , #trabajadores ,#jefe , #tipo_red, #proyecto').on('change', '#periodo , #trabajadores ,#jefe , #tipo_red ,#proyecto', function(event) {
+      tabla_resumen_calidad.ajax.reload()
+      graficoHFC()
+      graficoFTTH()
+    }); 
+
+
 </script>
 
 <div class="form-row cont_graficos">
@@ -543,8 +550,8 @@
             <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
           </div>
             <select id="periodo" name="periodo" class="custom-select custom-select-sm">
-              <option value="actual" selected>Actual </option>
-              <option value="anterior">Anterior</option>
+              <option value="actual">Actual </option>
+              <option selected value="anterior">Anterior</option>
               <option value="sub_anterior">Sub anterior</option>
            </select>
         </div>
@@ -626,6 +633,21 @@
 
   <div class="col-lg-2">
     <div class="form-group">
+      <select id="proyecto" name="proyecto" class="custom-select custom-select-sm">
+        <option value="" selected>Seleccione proyecto | Todos </option>
+        <?php  
+          foreach($proyectos as $p){
+            ?>
+              <option  value="<?php echo $p["id"]?>" ><?php echo $p["proyecto"]?> </option>
+            <?php
+          }
+        ?>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-lg-1">
+    <div class="form-group">
       <select id="tipo_red" name="tipo_red" class="custom-select custom-select-sm">
         <option value="" selected>Tipo red | Ambas </option>
         <option value="hfc" >HFC </option>
@@ -634,20 +656,19 @@
     </div>
   </div>
 
-  
   <div class="col-12 col-lg-2">  
     <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_detalle_calidad" class="buscador_detalle_calidad form-control form-control-sm">
     </div>
   </div>
 
-  <div class="col-6 col-lg-1">
+  <!-- <div class="col-6 col-lg-1">
       <div class="form-group">
         <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_calidad btn_xr3">
             <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
         </button>
       </div>
-  </div>
+  </div> -->
 
 </div>     
 

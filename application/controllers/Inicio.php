@@ -94,6 +94,7 @@ class Inicio extends CI_Controller {
 								$this->session->set_userdata("correo_empresa",$dato["correo_empresa"]);	
 								$this->session->set_userdata("correo_personal",$dato["correo_personal"]);	
 								$this->session->set_userdata("id_perfil",$dato["id_perfil"]);	
+								$this->session->set_userdata("cargo",$dato["id_cargo"]);	
 								$this->session->set_userdata("foto",$dato["foto"]);	
 
 								if($this->Iniciomodel->verificacionJefe($dato["id"])){
@@ -128,7 +129,8 @@ class Inicio extends CI_Controller {
 								$this->session->set_userdata("correo_personal",$dato["correo_personal"]);	
 								$this->session->set_userdata("id_perfil",$dato["id_perfil"]);	
 								$this->session->set_userdata("foto",$dato["foto"]);	
-
+								$this->session->set_userdata("cargo",$dato["id_cargo"]);	
+								
 								if($this->Iniciomodel->verificacionJefe($dato["id"])){
 									$this->session->set_userdata("verificacionJefe","1");	
 									$this->session->set_userdata("id_jefe",$this->Iniciomodel->idJefe($dato["id"]));	

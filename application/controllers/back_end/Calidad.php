@@ -48,558 +48,524 @@ class Calidad extends CI_Controller {
 		
 	}
 
+	/***********DETALLE CALIDAD*****************/
 
-	public function vistaCalidad(){
-		$this->visitas("Calidad");
-		if($this->input->is_ajax_request()){
+		public function vistaCalidad(){
+			$this->visitas("Calidad");
+			if($this->input->is_ajax_request()){
 
-			if(date("d")>"24"){
-				$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta_actual = date('d-m-Y', strtotime(date('Y-m-24')));
-				$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}else{
-				$desde_actual = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				$desde_anterior = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				if(date("d")>"24"){
+					$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta_actual = date('d-m-Y', strtotime(date('Y-m-24')));
+					$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}else{
+					$desde_actual = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+					$desde_anterior = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}
+				
+				$datos=array(	
+					'desde_actual' => $desde_actual,
+			        'hasta_actual' => $hasta_actual,
+			        'desde_anterior' => $desde_anterior,
+			        'hasta_anterior' => $hasta_anterior,
+			        'jefes' => $this->Calidadmodel->listaJefes(),
+			    );
+				$this->load->view('back_end/calidad/calidad_detalle',$datos);
 			}
-			
-			$datos=array(	
-				'desde_actual' => $desde_actual,
-		        'hasta_actual' => $hasta_actual,
-		        'desde_anterior' => $desde_anterior,
-		        'hasta_anterior' => $hasta_anterior,
-		        'jefes' => $this->Calidadmodel->listaJefes(),
-		    );
-			$this->load->view('back_end/calidad/calidad_detalle',$datos);
-		}
-	}
-
-	public function formCargaMasivaCalidad(){
-
-		if (!function_exists('str_contains')) {
-		    function str_contains(string $haystack, string $needle): bool
-		    {
-		        return '' === $needle || false !== strpos($haystack, $needle);
-		    }
 		}
 
-		if($_FILES['userfile']['name']==""){
-		    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
-		}
-		$fname = $_FILES['userfile']['name'];
-		if (strpos($fname, ".") == false) {
-	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
-        }
-        $chk_ext = explode(".",$fname);
+		public function formCargaMasivaCalidad(){
 
-        if($chk_ext[1]!="csv"){
-        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
-        }
+			if (!function_exists('str_contains')) {
+			    function str_contains(string $haystack, string $needle): bool
+			    {
+			        return '' === $needle || false !== strpos($haystack, $needle);
+			    }
+			}
 
-        $fname = $_FILES['userfile']['name'];
-        $chk_ext = explode(".",$fname);
+			if($_FILES['userfile']['name']==""){
+			    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+			}
+			$fname = $_FILES['userfile']['name'];
+			if (strpos($fname, ".") == false) {
+		        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
+	        }
+	        $chk_ext = explode(".",$fname);
 
-        if(strtolower(end($chk_ext)) == "csv")  {
-            $filename = $_FILES['userfile']['tmp_name'];
-            $handle = fopen($filename, "r");
-            $i=0;$z=0;$y=0;     
-         
-            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
-			    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
+	        if($chk_ext[1]!="csv"){
+	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
+	        }
 
-            	if(count($data)!=13){
-            		echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido, 13 columnas esperadas,".count($data)." obtenidas."));exit;
-            	}
+	        $fname = $_FILES['userfile']['name'];
+	        $chk_ext = explode(".",$fname);
 
-                if(!empty($data[0])){
-            	    $rut = $data[0];
-					$rutf=str_replace('-', '', $rut);
+	        if(strtolower(end($chk_ext)) == "csv")  {
+	            $filename = $_FILES['userfile']['tmp_name'];
+	            $handle = fopen($filename, "r");
+	            $i=0;$z=0;$y=0;     
+	         
+	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
+				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 
-					if (str_contains($data[3], '/')) { 
+	            	if(count($data)!=13){
+	            		echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido, 13 columnas esperadas,".count($data)." obtenidas."));exit;
+	            	}
 
-						$fecha=explode('/',trim($data[3]));
-					    $dia=$fecha[0];
-						$mes=$fecha[1]; 
-						$anio=$fecha[2]; 
-						$fechaf1 = $anio."/".$mes."/".$dia;
+	                if(!empty($data[0])){
+	            	    $rut = $data[0];
+						$rutf=str_replace('-', '', $rut);
 
-					}elseif(str_contains($data[3], '-')){
+						if (str_contains($data[3], '/')) { 
 
-						$fecha=explode('-',trim($data[3]));
-						$dia=$fecha[0];
-						$mes=$fecha[1]; 
-						$anio=$fecha[2]; 
-						$fechaf1 = $anio."-".$mes."-".$dia;
+							$fecha=explode('/',trim($data[3]));
+						    $dia=$fecha[0];
+							$mes=$fecha[1]; 
+							$anio=$fecha[2]; 
+							$fechaf1 = $anio."/".$mes."/".$dia;
 
-					}else{
-						$fechaf1 = "1970-01-01";
-					}
+						}elseif(str_contains($data[3], '-')){
 
-					if (str_contains($data[7], '/')) { 
+							$fecha=explode('-',trim($data[3]));
+							$dia=$fecha[0];
+							$mes=$fecha[1]; 
+							$anio=$fecha[2]; 
+							$fechaf1 = $anio."-".$mes."-".$dia;
 
-						$fecha=explode('/',trim($data[7]));
-					    $dia=$fecha[0];
-						$mes=$fecha[1]; 
-						$anio=$fecha[2]; 
-						$fechaf2 = $anio."/".$mes."/".$dia;
+						}else{
+							$fechaf1 = "1970-01-01";
+						}
 
-					}elseif(str_contains($data[7], '-')){
+						if (str_contains($data[7], '/')) { 
 
-						$fecha=explode('-',trim($data[7]));
-						$dia=$fecha[0];
-						$mes=$fecha[1]; 
-						$anio=$fecha[2]; 
-						$fechaf2 = $anio."-".$mes."-".$dia;
+							$fecha=explode('/',trim($data[7]));
+						    $dia=$fecha[0];
+							$mes=$fecha[1]; 
+							$anio=$fecha[2]; 
+							$fechaf2 = $anio."/".$mes."/".$dia;
 
-					}else{
-						$fechaf2 = "1970-01-01";
-					}
+						}elseif(str_contains($data[7], '-')){
 
-					if(trim($data[11]==0) || trim($data[11]=="0")){
-						$falla ="no";
-					}elseif(trim($data[11]==1) || trim($data[11]=="1")){
-						$falla = "si";
-					}else{
-						$falla = "error";
-					}
+							$fecha=explode('-',trim($data[7]));
+							$dia=$fecha[0];
+							$mes=$fecha[1]; 
+							$anio=$fecha[2]; 
+							$fechaf2 = $anio."-".$mes."-".$dia;
 
-					// echo $fechaf;
-					// echo "<br>";
+						}else{
+							$fechaf2 = "1970-01-01";
+						}
 
-				    $arr=array(
-				    	"rut_tecnico"=>$rutf,
-						"comuna"=>$data[1],
-						"ot"=>$data[2],
-						"fecha"=>$fechaf1,
-						"descripcion"=>($data[4]),
-						"cierre"=>$data[5],
-						"ot_2davisita"=>$data[6],
-						"fecha_2davisita"=>$fechaf2,
-						"descripcion_2davisita"=>($data[8]),
-						"cierre_2davisita"=>$data[9],
-						"diferencia_dias"=>$data[12],
-						"tipo_red"=>$data[10],
-						"falla"=>$falla,
-						"ultima_actualizacion"=>$ultima_actualizacion
-					);	
+						if(trim($data[11]==0) || trim($data[11]=="0")){
+							$falla ="no";
+						}elseif(trim($data[11]==1) || trim($data[11]=="1")){
+							$falla = "si";
+						}else{
+							$falla = "error";
+						}
 
-				    if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
-				    	$this->Calidadmodel->formCalidad($arr);
-				    	$i++;
-				    }
-			  	 	
-			  	 	$arr=array();
+						// echo $fechaf;
+						// echo "<br>";
+
+					    $arr=array(
+					    	"rut_tecnico"=>$rutf,
+							"comuna"=>$data[1],
+							"ot"=>$data[2],
+							"fecha"=>$fechaf1,
+							"descripcion"=>($data[4]),
+							"cierre"=>$data[5],
+							"ot_2davisita"=>$data[6],
+							"fecha_2davisita"=>$fechaf2,
+							"descripcion_2davisita"=>($data[8]),
+							"cierre_2davisita"=>$data[9],
+							"diferencia_dias"=>$data[12],
+							"tipo_red"=>$data[10],
+							"falla"=>$falla,
+							"ultima_actualizacion"=>$ultima_actualizacion
+						);	
+
+					    if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
+					    	$this->Calidadmodel->formCalidad($arr);
+					    	$i++;
+					    }
+				  	 	
+				  	 	$arr=array();
+		            }
+		            
 	            }
-	            
-            }
 
-            if($i==0){
-            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
-            }
+	            if($i==0){
+	            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
+	            }
 
-            fclose($handle); 
-           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
-        }else{
-        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
-        }   
-	}
-
-	public function actualizacionCalidad(){
-	    if($this->input->is_ajax_request()){
-	      $data=$this->Calidadmodel->actualizacionCalidad();
-	      if($data){
-	        echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-	      }else{
-	        echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-	      } 
-	    }else{
-	      exit('No direct script access allowed');
-	    }
-	}
-
-	public function listaCalidad(){
-		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
-		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-
-		if(date("d")>"24"){
-			if($periodo=="actual"){
-				$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
-			}elseif($periodo=="anterior"){
-				$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}
-
-		}else{
-			if($periodo=="actual"){
-				$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}elseif($periodo=="anterior"){
-				$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-			}
+	            fclose($handle); 
+	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+	        }else{
+	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
+	        }   
 		}
 
-		echo json_encode($this->Calidadmodel->listaCalidad($desde,$hasta,$trabajador,$jefe));
-	}	
-
-	public function listaTrabajadoresCalidad(){
-		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
- 	    echo $this->Calidadmodel->listaTrabajadoresCalidad($jefe);exit;
-	}
-
-
-	public function excel_calidad(){
-		$periodo=$this->uri->segment(2);
-		$trabajador=$this->uri->segment(3);
-		$jefe=$this->uri->segment(4);
-
-		if($trabajador=="-"){
-			$trabajador="";
+		public function actualizacionCalidad(){
+		    if($this->input->is_ajax_request()){
+		      $data=$this->Calidadmodel->actualizacionCalidad();
+		      if($data){
+		        echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+		      }else{
+		        echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+		      } 
+		    }else{
+		      exit('No direct script access allowed');
+		    }
 		}
 
-		if($jefe=="-"){
-			$jefe="";
-		}
-
-		if(date("d")>"24"){
-			if($periodo=="actual"){
-				$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
-			}elseif($periodo=="anterior"){
-				$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}
-
-		}else{
-			if($periodo=="actual"){
-				$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}elseif($periodo=="anterior"){
-				$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-			}
-		}
-
-		$data=$this->Calidadmodel->listaCalidad($desde,$hasta,$trabajador,$jefe);
-
-		if(!$data){
-			echo "Sin datos disponibles.";
-			return FALSE;
-		}else{
-
-			$nombre="reporte-calidad-".date("d-m-Y",strtotime($desde))."-".date("d-m-Y",strtotime($hasta)).".xls";
-			header("Content-type: application/vnd.ms-excel;  charset=utf-8");
-			header("Content-Disposition: attachment; filename=$nombre");
-			?>
-			<style type="text/css">
-			.head{font-size:13px;height: 30px; background-color:#32477C;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
-			td{font-size:12px;text-align:center;   vertical-align:middle;}
-			
-			</style>
-			<h3>Reporte calidad <?php echo date("d-m-Y",strtotime($desde)); ?> - <?php echo date("d-m-Y",strtotime($hasta)); ?></h3>
-				<table align='center' border="1"> 
-			        <tr style="background-color:#F9F9F9">
-		                <th class="head">T&eacute;cnico</th> 
-			            <th class="head">Comuna</th> 
-			            <th class="head">Orden</th> 
-			            <th class="head">Fecha</th> 
-			            <th class="head">Descripci&oacute;n</th> 
-			            <th class="head">Cierre</th> 
-			            <th class="head">Orden 2da vis.</th> 
-			            <th class="head">Fecha 2da vis.</th> 
-			            <th class="head">Descripci&oacute;n 2da vis.</th> 
-			            <th class="head">Cierre 2da vis.</th> 
-			            <th class="head">Diferencia D&iacute;as</th> 
-			            <th class="head">Tipo red</th> 
-			            <th class="head">Falla</th> 
-			            <th class="head">&Uacute;ltima actualizaci&oacute;n</th>   
-			        </tr>
-			        </thead>	
-					<tbody>
-			        <?php 
-			        	if($data !=FALSE){
-				      		foreach($data as $d){
-			      			?>
-			      			 <tr>
-								 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
-								 <td><?php echo utf8_decode($d["comuna"]); ?></td>
-								 <td><?php echo utf8_decode($d["ot"]); ?></td>
-								 <td><?php echo utf8_decode($d["fecha"]); ?></td>
-								 <td><?php echo utf8_decode($d["descripcion"]); ?></td>
-								 <td><?php echo utf8_decode($d["cierre"]); ?></td>
-								 <td><?php echo utf8_decode($d["ot_2davisita"]); ?></td>
-								 <td><?php echo utf8_decode($d["fecha_2davisita"]); ?></td>
-								 <td><?php echo utf8_decode($d["descripcion_2davisita"]); ?></td>
-								 <td><?php echo utf8_decode($d["cierre_2davisita"]); ?></td>
-								 <td><?php echo utf8_decode($d["diferencia_dias"]); ?></td>
-								 <td><?php echo utf8_decode($d["tipo_red"]); ?></td>
-								 <td><?php echo utf8_decode($d["falla"]); ?></td>
-								 <td><?php echo utf8_decode($d["ultima_actualizacion"]); ?></td>
-							 </tr>
-			      			<?php
-			      			}
-			      		}
-			          ?>
-			        </tbody>
-		        </table>
-		    <?php
-		}
-	}
-
-	public function vistaGraficosCalidad(){
-		$this->visitas("Calidad graficos");
-		if($this->input->is_ajax_request()){
+		public function listaCalidad(){
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
+			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
 
 			if(date("d")>"24"){
-				$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta_actual = date('d-m-Y', strtotime(date('Y-m-24')));
-				$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				$desde_anterior2 = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior2 = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				if($periodo=="actual"){
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo=="anterior"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}
+
 			}else{
-				$desde_actual = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				$desde_anterior = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
-				$desde_anterior2 = date('d-m-Y', strtotime('-4 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior2 = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-24'))));
+				if($periodo=="actual"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}
 			}
-			
-			$datos=array(	
-				'desde_actual' => $desde_actual,
-		        'hasta_actual' => $hasta_actual,
-		        'desde_anterior' => $desde_anterior,
-		        'hasta_anterior' => $hasta_anterior,
-		        'desde_anterior2' => $desde_anterior2,
-		        'hasta_anterior2' => $hasta_anterior2,
-		        'jefes' => $this->Calidadmodel->listaJefes(),
-		    );
 
-			$this->load->view('back_end/calidad/calidad_graficos',$datos);
-		}
-	}
+			echo json_encode($this->Calidadmodel->listaCalidad($desde,$hasta,$trabajador,$jefe));
+		}	
 
-	public function graficoHFC(){
-		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
-		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-		$array= array();
-
-		if(date("d")>"24"){
-			$desde_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-			$hasta_actual= date('Y-m-24');
-			$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-			$array[] = $this->Calidadmodel->graficoHFC($desde_actual,$hasta_actual,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe);
-		}else{
-			$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-			$hasta_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			$desde_anterior_1= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-			$desde_anterior_2= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
-			$array[] = $this->Calidadmodel->graficoHFC($desde_actual,$hasta_actual,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe);
-		}
-		
-		$list = array();
-
-		$cabeceras= array(
-			"Periodo",
-			"Calidad",
-			"Ordenes",
-			"Fallos",
-			/*array('role'=> 'annotation'),
-			array('role'=> 'annotation'),
-			array('role'=> 'annotation'),*/
-			array('role'=> 'annotationText'),
-		);
-
-		$list [] = $cabeceras;
-
-		foreach($array as $arr) {
-		    if(is_array($arr)) {
-		        $list = array_merge($list, $arr);
-		    }
-		}
-		echo json_encode($list);exit;
-	}	
-
-
-	public function graficoFTTH(){
-		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
-		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-
-		$array= array();
-		if(date("d")>"24"){
-			$desde_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-			$hasta_actual= date('Y-m-24');
-			$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_actual,$hasta_actual,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe);
-		}else{
-			$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-			$hasta_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			$desde_anterior_1= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-			$desde_anterior_2= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
-			$hasta_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_actual,$hasta_actual,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe);
-		}
-		
-		$list = array();
-
-		$cabeceras= array(
-			"Periodo",
-			"Calidad",
-			"Ordenes",
-			"Fallos",
-			/*array('role'=> 'annotation'),
-			array('role'=> 'annotation'),
-			array('role'=> 'annotation'),*/
-			array('role'=> 'annotationText'),
-		);
-
-		$list [] = $cabeceras;
-
-		foreach($array as $arr) {
-		    if(is_array($arr)) {
-		        $list = array_merge($list, $arr);
-		    }
+		public function listaTrabajadoresCalidad(){
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+	 	    echo $this->Calidadmodel->listaTrabajadoresCalidad($jefe);exit;
 		}
 
-		echo json_encode($list);exit;
-	}	
 
-	public function listaResumenCalidad(){
-		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
-		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-		$tipo_red=$this->security->xss_clean(strip_tags($this->input->get_post("tipo_red")));
+		public function excel_calidad(){
+			$periodo=$this->uri->segment(2);
+			$trabajador=$this->uri->segment(3);
+			$jefe=$this->uri->segment(4);
 
-		$array=array();
+			if($trabajador=="-"){
+				$trabajador="";
+			}
 
-		if($periodo=="actual"){
+			if($jefe=="-"){
+				$jefe="";
+			}
+
+			if(date("d")>"24"){
+				if($periodo=="actual"){
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo=="anterior"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}
+
+			}else{
+				if($periodo=="actual"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}
+			}
+
+			$data=$this->Calidadmodel->listaCalidad($desde,$hasta,$trabajador,$jefe);
+
+			if(!$data){
+				echo "Sin datos disponibles.";
+				return FALSE;
+			}else{
+
+				$nombre="reporte-calidad-".date("d-m-Y",strtotime($desde))."-".date("d-m-Y",strtotime($hasta)).".xls";
+				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
+				header("Content-Disposition: attachment; filename=$nombre");
+				?>
+				<style type="text/css">
+				.head{font-size:13px;height: 30px; background-color:#32477C;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
+				td{font-size:12px;text-align:center;   vertical-align:middle;}
+				
+				</style>
+				<h3>Reporte calidad <?php echo date("d-m-Y",strtotime($desde)); ?> - <?php echo date("d-m-Y",strtotime($hasta)); ?></h3>
+					<table align='center' border="1"> 
+				        <tr style="background-color:#F9F9F9">
+			                <th class="head">T&eacute;cnico</th> 
+				            <th class="head">Comuna</th> 
+				            <th class="head">Orden</th> 
+				            <th class="head">Fecha</th> 
+				            <th class="head">Descripci&oacute;n</th> 
+				            <th class="head">Cierre</th> 
+				            <th class="head">Orden 2da vis.</th> 
+				            <th class="head">Fecha 2da vis.</th> 
+				            <th class="head">Descripci&oacute;n 2da vis.</th> 
+				            <th class="head">Cierre 2da vis.</th> 
+				            <th class="head">Diferencia D&iacute;as</th> 
+				            <th class="head">Tipo red</th> 
+				            <th class="head">Falla</th> 
+				            <th class="head">&Uacute;ltima actualizaci&oacute;n</th>   
+				        </tr>
+				        </thead>	
+						<tbody>
+				        <?php 
+				        	if($data !=FALSE){
+					      		foreach($data as $d){
+				      			?>
+				      			 <tr>
+									 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
+									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
+									 <td><?php echo utf8_decode($d["ot"]); ?></td>
+									 <td><?php echo utf8_decode($d["fecha"]); ?></td>
+									 <td><?php echo utf8_decode($d["descripcion"]); ?></td>
+									 <td><?php echo utf8_decode($d["cierre"]); ?></td>
+									 <td><?php echo utf8_decode($d["ot_2davisita"]); ?></td>
+									 <td><?php echo utf8_decode($d["fecha_2davisita"]); ?></td>
+									 <td><?php echo utf8_decode($d["descripcion_2davisita"]); ?></td>
+									 <td><?php echo utf8_decode($d["cierre_2davisita"]); ?></td>
+									 <td><?php echo utf8_decode($d["diferencia_dias"]); ?></td>
+									 <td><?php echo utf8_decode($d["tipo_red"]); ?></td>
+									 <td><?php echo utf8_decode($d["falla"]); ?></td>
+									 <td><?php echo utf8_decode($d["ultima_actualizacion"]); ?></td>
+								 </tr>
+				      			<?php
+				      			}
+				      		}
+				          ?>
+				        </tbody>
+			        </table>
+			    <?php
+			}
+		}
+
+	/***********GRAFICOS CALIDAD*****************/
+
+		public function vistaGraficosCalidad(){
+			$this->visitas("Calidad graficos");
+			if($this->input->is_ajax_request()){
+
+				if(date("d")>"24"){
+					$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta_actual = date('d-m-Y', strtotime(date('Y-m-24')));
+					$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+					$desde_anterior2 = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior2 = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}else{
+					$desde_actual = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+					$desde_anterior = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
+					$desde_anterior2 = date('d-m-Y', strtotime('-4 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior2 = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-24'))));
+				}
+				
+				$datos=array(	
+					'desde_actual' => $desde_actual,
+			        'hasta_actual' => $hasta_actual,
+			        'desde_anterior' => $desde_anterior,
+			        'hasta_anterior' => $hasta_anterior,
+			        'desde_anterior2' => $desde_anterior2,
+			        'hasta_anterior2' => $hasta_anterior2,
+			        'jefes' => $this->Calidadmodel->listaJefes(),
+			        'proyectos' => $this->Calidadmodel->listaProyectos(),
+			    );
+
+				$this->load->view('back_end/calidad/calidad_graficos',$datos);
+			}
+		}
+
+		public function graficoHFC(){
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
+			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+			$proyecto=$this->security->xss_clean(strip_tags($this->input->get_post("proyecto")));
+
+			$array= array();
 
 			if(date("d")>"24"){
 				$desde_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 				$hasta_actual= date('Y-m-24');
-				$desde_actual_prod = date('Y-m-d', strtotime(date('Y-m-25')));
-				$hasta_actual_prod = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$array[] = $this->Calidadmodel->graficoHFC($desde_actual,$hasta_actual,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$proyecto);
 			}else{
 				$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 				$hasta_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				$desde_actual_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta_actual_prod = date('Y-m-d',  strtotime(date('Y-m-24')));
-			}
-
-			$array[] = $this->Calidadmodel->listaResumenCalidad($desde_actual,$hasta_actual,$trabajador,$jefe,$tipo_red,$desde_actual_prod,$hasta_actual_prod);
-
-		}elseif($periodo=="anterior"){
-			
-			if(date("d")>"24"){
-				$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				$desde_anterior_1_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior_1_prod = date('Y-m-d', strtotime(date('Y-m-24')));
-
-			}else{
 				$desde_anterior_1= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-				$desde_anterior_1_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior_1_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}
-			
-			$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$tipo_red,$desde_anterior_1_prod,$hasta_anterior_1_prod);
-
-		}elseif($periodo=="sub_anterior"){
-			
-			if(date("d")>"24"){
-				$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
-				$desde_anterior_2_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior_2_prod  =  date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-			}else{
 				$desde_anterior_2= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
-				$desde_anterior_2_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-				$hasta_anterior_2_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$array[] = $this->Calidadmodel->graficoHFC($desde_actual,$hasta_actual,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$proyecto);
 			}
 			
-			$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$tipo_red,$desde_anterior_2_prod,$hasta_anterior_2_prod);
+			$list = array();
 
-		}
+			$cabeceras= array(
+				"Periodo",
+				"Calidad",
+				"Ordenes",
+				"Fallos",
+				/*array('role'=> 'annotation'),
+				array('role'=> 'annotation'),
+				array('role'=> 'annotation'),*/
+				array('role'=> 'annotationText'),
+			);
 
-		$list = array();
+			$list [] = $cabeceras;
 
-		foreach($array as $arr) {
-		    if(is_array($arr)) {
-		        $list = array_merge($list, $arr);
-		    }
-		}
-
-		echo json_encode($list);exit;
-
-	}	
-
-	/*public function getCabecerasCalidad(){
-		$data=json_decode(file_get_contents('php://input'),1);
-		$periodo=@$data["periodo"];
-		$trabajador=@$data["trabajador"];
-
-		echo json_encode(array(
-  	    	"data" =>$this->Calidadmodel->getCabecerasCalidad()
-  	    ));exit;
-
-	}*/
+			foreach($array as $arr) {
+			    if(is_array($arr)) {
+			        $list = array_merge($list, $arr);
+			    }
+			}
+			echo json_encode($list);exit;
+		}	
 
 
-	/*public function listaResumenCalidad(){
-		$periodo=$this->input->get_post("periodo");
-		$trabajador=$this->input->get_post("trabajador");
+		public function graficoFTTH(){
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
+			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+			$proyecto=$this->security->xss_clean(strip_tags($this->input->get_post("proyecto")));
 
-		if(date("d")>"24"){
+			$array= array();
+			if(date("d")>"24"){
+				$desde_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta_actual= date('Y-m-24');
+				$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$array[] = $this->Calidadmodel->graficoFTTH($desde_actual,$hasta_actual,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$proyecto);
+			}else{
+				$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_1= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$desde_anterior_2= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+				$array[] = $this->Calidadmodel->graficoFTTH($desde_actual,$hasta_actual,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$proyecto);
+				$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$proyecto);
+			}
+			
+			$list = array();
 
-			if($periodo=="actual"){
-				$desde = date('Y-m-d', strtotime(date('Y-m-25')));
-				$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
-			}elseif($periodo=="anterior"){
-				$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+			$cabeceras= array(
+				"Periodo",
+				"Calidad",
+				"Ordenes",
+				"Fallos",
+				/*array('role'=> 'annotation'),
+				array('role'=> 'annotation'),
+				array('role'=> 'annotation'),*/
+				array('role'=> 'annotationText'),
+			);
+
+			$list [] = $cabeceras;
+
+			foreach($array as $arr) {
+			    if(is_array($arr)) {
+			        $list = array_merge($list, $arr);
+			    }
 			}
 
-		}else{
-			if($periodo=="actual"){
-				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-				$hasta= date('Y-m-d');
-			}elseif($periodo=="anterior"){
-				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-			}
-		}
+			echo json_encode($list);exit;
+		}	
 
-		echo json_encode(array(
-  	    	"data" =>$this->Calidadmodel->listaResumenCalidad("2022-02-25","2022-03-24","")
-  	    ));exit;
-  	    
-	}*/
+		public function listaResumenCalidad(){
+			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
+			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+			$tipo_red=$this->security->xss_clean(strip_tags($this->input->get_post("tipo_red")));
+			$proyecto=$this->security->xss_clean(strip_tags($this->input->get_post("proyecto")));
+
+			$array=array();
+
+			if($periodo=="actual"){
+
+				if(date("d")>"24"){
+					$desde_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta_actual= date('Y-m-24');
+					$desde_actual_prod = date('Y-m-d', strtotime(date('Y-m-25')));
+					$hasta_actual_prod = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
+				}else{
+					$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_actual = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+					$desde_actual_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta_actual_prod = date('Y-m-d',  strtotime(date('Y-m-24')));
+				}
+
+				$array[] = $this->Calidadmodel->listaResumenCalidad($desde_actual,$hasta_actual,$trabajador,$jefe,$tipo_red,$desde_actual_prod,$hasta_actual_prod,$proyecto);
+
+			}elseif($periodo=="anterior"){
+				
+				if(date("d")>"24"){
+					$desde_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_1= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+					$desde_anterior_1_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_1_prod = date('Y-m-d', strtotime(date('Y-m-24')));
+
+				}else{
+					$desde_anterior_1= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_1= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+					$desde_anterior_1_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_1_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}
+				
+				$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe,$tipo_red,$desde_anterior_1_prod,$hasta_anterior_1_prod,$proyecto);
+
+			}elseif($periodo=="sub_anterior"){
+				
+				if(date("d")>"24"){
+					$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+					$desde_anterior_2_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_2_prod  =  date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				}else{
+					$desde_anterior_2= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+					$desde_anterior_2_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_2_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}
+				
+				$array[]  = $this->Calidadmodel->listaResumenCalidad($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe,$tipo_red,$desde_anterior_2_prod,$hasta_anterior_2_prod,$proyecto);
+
+			}
+
+			$list = array();
+
+			foreach($array as $arr) {
+			    if(is_array($arr)) {
+			        $list = array_merge($list, $arr);
+			    }
+			}
+
+			echo json_encode($list);exit;
+
+		}	
 
 
 
