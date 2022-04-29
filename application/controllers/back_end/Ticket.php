@@ -18,12 +18,12 @@ class Ticket extends CI_Controller {
 	}
 	
 	public function acceso(){
-		if(!$this->session->userdata('id')){
+		if($this->session->userdata('id')){
+	      	if($this->session->userdata('id_perfil')>3){
+	      		redirect("./login");
+	      	}
+	      }else{
 	      	redirect("./login");
-	    }
-
-	    if($this->session->userdata('id_perfil')>2){
-	     	redirect("./inicio");
 	    }
 	}
 

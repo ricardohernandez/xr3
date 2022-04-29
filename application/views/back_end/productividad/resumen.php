@@ -49,6 +49,11 @@
 	}
   }
 
+  .actualizacion_productividad{
+      display: inline-block;
+      font-size: 11px;
+  }
+
 </style>
 <script type="text/javascript">
   $(function(){
@@ -105,7 +110,7 @@
 
               for (var i in columnNames) {
                 let str = columnNames[i];
-                if(str[0]=="D"){
+                if(str[0]=="D" && columnNames[i]!="Días"){
                   clase = "finde_resumen"
                 }else{
                   clase = ""
@@ -144,39 +149,7 @@
                       { width: "10%", targets: 1 },
                       // { visible: false, targets: -1},
                 ],
-                // "rowCallback": function( row, data, index ) {
-                  //    count=0;
-                  //    $.each(data, function(i, item) {
-                  //     if(data[i]=="1"){
-                  //      $(row).find('td:eq('+count+')').addClass("azul").html("")
-                  //     }
-                  //     count++;
-                  //   });
-                  // },
-                  // "footerCallback": function ( row, data, start, end, display ) {
-                  //   var api = this.api(), data;
-                  //   var largo = api.columns(':visible').count();
-
-                  //   for (var i = 1; i <= (largo); i++) {
-                  //     if(i>2){
-                  //       var intVal = function ( i ) {
-                  //           return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
-                  //       };
-
-                  //       total = api .column( i )  .data()   .reduce( function (a, b) {
-                  //          return intVal(a) + intVal(b);
-                  //       },0);
-
-                  //       if(total==0){
-                  //       }else if(total==1){
-                  //         $( api.column( i ).footer() ).html("<center><b style='color:green;font-size:10px;text-align:center;'>"+total+"</b></center>");
-                  //       }else if(total>1){
-                  //         $( api.column( i ).footer() ).html("<center><b style='color:#CE3735;font-size:10px;text-align:center;'>"+total+"</b></center>");
-                  //       }
-                  //     }
-
-                  //   }
-                // },
+              
                 "ajax": {
                   "url":"<?php echo base_url();?>listaResumen",
                   "dataSrc": "data",
@@ -187,28 +160,25 @@
                     var desde_anterior="<?php echo $desde_anterior; ?>"
                     var hasta_anterior="<?php echo $hasta_anterior; ?>"
                     var periodo =$("#periodo_resumen").val()
-
+                    var jefe =$("#jefe_det").val()
+                  
                     if(periodo=="actual"){
-                      $("#desde_f").val(desde_actual);
-                      $("#hasta_f").val(hasta_actual);
+                      $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
                     }else if(periodo=="anterior"){
-                      $(".desde_f").val(desde_anterior);
-                      $(".hasta_f").val(hasta_anterior);
+                      $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
                     }
 
-			              param.periodo = periodo;
+                    param.periodo = periodo;
+                    param.jefe = jefe;
 
   			            if(perfil==4){
   			              param.trabajador = $("#trabajador_resumen").val();
   			            }else{
   			              param.trabajador = $("#trabajadores_resumen").val();
   			            }
-
                  }
               },    
-              
             });
-
 
           }else{
             $("#tabla_resumen").DataTable().clear().draw()
@@ -229,12 +199,7 @@
     procesaDatatable(false)
 
 
-     
-
-  /*********INGRESO************/
-
-
-    $.getJSON("listaTrabajadores", function(data) {
+    $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_det").val() } , function(data) {
       response = data;
     }).done(function() {
         $("#trabajadores_resumen").select2({
@@ -243,10 +208,63 @@
          width: 'resolve',
          allowClear:true,
         });
+    });  
+
+    $(document).off('click', '.btn_filtro_resumen').on('click', '.btn_filtro_resumen',function(event) {
+      event.preventDefault();
+       $(this).prop("disabled" , true);
+       $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
+       procesaDatatable(true)
     });
 
-      
-    $(document).off('change', '#periodo_resumen').on('change', '#periodo_resumen',function(event) {
+    
+    actualizacionProductividad()
+
+    function actualizacionProductividad(){
+      $.ajax({
+          url: "actualizacionProductividad"+"?"+$.now(),  
+          type: 'POST',
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          dataType:"json",
+          beforeSend:function(){
+          },
+          success: function (data) {
+            if(data.res=="ok"){
+              $(".actualizacion_productividad").html("<b>Última actualización planilla : "+data.datos+"</b>");
+            }
+          },
+          error : function(xhr, textStatus, errorThrown ) {
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    $.notify("Reintentando...", {
+                      className:'info',
+                      globalPosition: 'top right'
+                    });
+                    $.ajax(this);
+                    return;
+                } else{
+                   $.notify("Problemas en el servidor, intente nuevamente.", {
+                      className:'warn',
+                      globalPosition: 'top right'
+                    });     
+                }    
+                return;
+            }
+
+            if (xhr.status == 500) {
+                $.notify("Problemas en el servidor, intente más tarde.", {
+                  className:'warn',
+                  globalPosition: 'top right'
+                });
+            }
+          },timeout:5000
+      }); 
+    }
+
+    /*$(document).off('change', '#periodo_resumen').on('change', '#periodo_resumen',function(event) {
       $(".btn_filtro_resumen").prop("disabled" , true);
       $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...');
       procesaDatatable(true)
@@ -256,17 +274,14 @@
       $(".btn_filtro_resumen").prop("disabled" , true);
       $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...');
       procesaDatatable(true)
-    }); 
+    }); */
      
-
-
   })
 </script>
 
 <!-- FILTROS -->
   
     <div class="form-row">
-
      
       <div class="col-lg-2">
         <div class="form-group">
@@ -282,68 +297,111 @@
         </div>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-lg-1">
         <div class="form-group">
           <div class="input-group">
-              <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm desde_f"  name="desde_f" id="desde_f">
-              <input type="text" disabled placeholder="Hasta" class="fecha_normal form-control form-control-sm hasta_f"  name="hasta_f" id="hasta_f">
+            <input type="text" disabled placeholder="Periodo" class="fecha_normal form-control form-control-sm fecha_f"  name="fecha_f" id="fecha_f">
           </div>
         </div>
       </div>
-
-      <!-- <div class="col-lg-3">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
-            </div>
-              <input type="date" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="date" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
-          </div>
-        </div>
-      </div> -->
 
       <?php  
        if($this->session->userdata('id_perfil')<>4){
           ?>
-            <div class="col-lg-2">  
-              <div class="form-group">
-                <select id="trabajadores_resumen" name="trabajadores_resumen" style="width:100%!important;">
-                    <option value="">Seleccione Trabajador | Todos</option>
-                </select>
-              </div>
+          <div class="col-lg-2">  
+            <div class="form-group">
+              <select id="trabajadores_resumen" name="trabajadores_resumen" style="width:100%!important;">
+                  <option value="">Seleccione Trabajador | Todos</option>
+              </select>
             </div>
+          </div>
           <?php
        }else{
         ?>
-           <div class="col-lg-2">  
-              <div class="form-group">
-                <select id="trabajador_resumen" name="trabajador_resumen" class="custom-select custom-select-sm" >
-                    <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
-                </select>
-              </div>
+          <div class="col-lg-2">  
+            <div class="form-group">
+              <select id="trabajador_resumen" name="trabajador_resumen" class="custom-select custom-select-sm" >
+                  <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+              </select>
             </div>
+          </div>
         <?php
        }
       ?>
 
-      <div class="col-12 col-lg-2">  
-       <div class="form-group">
-        <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
+      <?php  
+        if($this->session->userdata('id_perfil')<3){
+      ?>
+
+        <div class="col-lg-2">
+          <div class="form-group">
+            <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+              <option value="" selected>Seleccione Jefe | Todos</option>
+              <?php  
+                foreach($jefes as $j){
+                  ?>
+                    <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                  <?php
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+
+      <?php
+        }elseif($this->session->userdata('id_perfil')==3){
+          ?>
+          <div class="col-lg-2">
+            <div class="form-group">
+              <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+                <?php  
+                  foreach($jefes as $j){
+                    ?>
+                      <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                    <?php
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <?php
+        }
+      ?>
+
+      <div class="col-6 col-lg-1">
+        <div class="form-group">
+         <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_resumen btn_xr3">
+         <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
+         </button>
        </div>
       </div>
 
+     <!--  <div class="col-6 col-lg-1">  
+        <div class="form-group">
+         <button type="button"  class="btn-block btn btn-sm btn-primary excel_detalle btn_xr3">
+         <i class="fa fa-save"></i> Excel
+         </button>
+        </div>
+      </div> -->
 
       </div>            
 
 
-   <div class="row">
-    <div class="col-lg-12">
-      <div class="row">
-        <div class="col-lg-12">
-          <table id="tabla_resumen" class="table-bordered dt-responsive nowrap dataTable stripe row-border order-column" style="width:100%"></table>
-        </div>
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3">
+        <center><span class="titulo_fecha_actualizacion_dias">
+          <div class="alert alert-primary actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
+          </div>
+        </span></center>
       </div>
     </div>
 
-  </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12">
+            <table id="tabla_resumen" class="table-bordered dt-responsive nowrap dataTable stripe row-border order-column" style="width:100%"></table>
+          </div>
+        </div>
+      </div>
+    </div>

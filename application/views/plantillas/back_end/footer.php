@@ -16,7 +16,8 @@
 <script src="<?php echo base_url();?>assets3/back_end/js/easing.min.js"></script>
 <script src="<?php echo base_url();?>assets3/back_end/js/owl-carousel.min.js"></script>
 <script src="<?php echo base_url();?>assets3/back_end/js/scripts1.js"></script>
-
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js" charset="UTF-8"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.bootstrap4.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/select.dataTables.min.css">

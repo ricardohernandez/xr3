@@ -21,6 +21,7 @@
 	$route['infoUsuario'] = "inicio/infoUsuario";
 	$route['cambiarPass'] = "inicio/cambiarPass";
 	$route['verComo'] = "inicio/verComo";
+	$route['recuperarPass'] = "inicio/recuperarPass";
 
 /*******ADMIN BACK END*******/
 
@@ -43,7 +44,6 @@
 
 	$route['checklist_ots'] = "back_end/checklist/index";
 	$route['vistaChecklist'] = "back_end/checklist/vistaChecklist";
-
 	$route['listaOTS'] = "back_end/checklist/listaOTS";
 	$route['getDataOTS'] = "back_end/checklist/getDataOTS";
 	$route['formOTS'] = "back_end/checklist/formOTS";
@@ -52,12 +52,24 @@
 	$route['datosTecnico'] = "back_end/checklist/datosTecnico";
 	$route['formCargaMasiva'] = "back_end/checklist/formCargaMasiva";
 	$route['excel_checklist/(:any)/(:any)'] = "back_end/checklist/excel_checklist/$1/$2";
-
-
 	$route['vistaGraficos'] = "back_end/checklist/vistaGraficos";
 	$route['dataEstadosChecklist'] = "back_end/checklist/dataEstadosChecklist";
 	$route['dataTecnicos'] = "back_end/checklist/dataTecnicos";
 
+
+	$route['checklistHFC'] = "back_end/checklistHFC/index";
+	$route['vistaChecklistHFC'] = "back_end/checklistHFC/vistaChecklistHFC";
+	$route['listaChecklistHFC'] = "back_end/checklistHFC/listaChecklistHFC";
+	$route['getDataChecklistHFC'] = "back_end/checklistHFC/getDataChecklistHFC";
+	$route['formChecklistHFC'] = "back_end/checklistHFC/formChecklistHFC";
+	$route['eliminaChecklistHFC'] = "back_end/checklistHFC/eliminaChecklistHFC";
+	$route['datosAuditorChecklistHFC'] = "back_end/checklistHFC/datosAuditorChecklistHFC";
+	$route['datosTecnicoChecklistHFC'] = "back_end/checklistHFC/datosTecnicoChecklistHFC";
+	$route['formCargaMasivaChecklistHFC'] = "back_end/checklistHFC/formCargaMasivaChecklistHFC";
+	$route['excel_checklistHFC/(:any)/(:any)'] = "back_end/checklistHFC/excel_checklistHFC/$1/$2";
+	$route['vistaGraficosChecklistHFC'] = "back_end/checklistHFC/vistaGraficosChecklistHFC";
+	$route['dataEstadosChecklistHFC'] = "back_end/checklistHFC/dataEstadosChecklistHFC";
+	$route['dataTecnicosChecklistHFC'] = "back_end/checklistHFC/dataTecnicosChecklistHFC";
 
 /*******USUARIOS*******/
 	$route['mantenedor_usuarios'] = "back_end/usuarios/index";
@@ -112,7 +124,7 @@
 	$route['vistaDetalle'] = "back_end/productividad/vistaDetalle";
 	$route['listaDetalle'] = "back_end/productividad/listaDetalle";
 	$route['getDataDetalle'] = "back_end/productividad/getDataDetalle";
-	$route['excel_detalle/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2";
+	$route['excel_detalle/(:any)/(:any)/(:any)'] = "back_end/productividad/excel_detalle/$1/$2/$3";
 	$route['formCargaMasivaDetalle'] = "back_end/productividad/formCargaMasivaDetalle";
 	$route['actualizacionProductividad'] = "back_end/productividad/actualizacionProductividad";
 	$route['vistaGraficosProd'] = "back_end/productividad/vistaGraficosProd";
@@ -138,7 +150,6 @@
 	$route['listaResumenCalidad'] = "back_end/calidad/listaResumenCalidad";
 	$route['graficoHFC'] = "back_end/calidad/graficoHFC";
 	$route['graficoFTTH'] = "back_end/calidad/graficoFTTH";
-	$route['dataGraficos'] = "back_end/calidad/dataGraficos";
 	$route['listaTrabajadoresCalidad'] = "back_end/calidad/listaTrabajadoresCalidad";
 
 /******************TICKET*************************/
@@ -149,23 +160,40 @@
 	$route['eliminaTicket'] = "back_end/ticket/eliminaTicket";
 	$route['getDataTicket'] = "back_end/ticket/getDataTicket";
 
+/*****************TURNOS*******/
+	$route['cao'] = "back_end/cao/index";
+	$route['vistaTurnos'] = "back_end/cao/vistaTurnos";
+	$route['listaTrabajadoresTurnos'] = "back_end/cao/listaTrabajadoresTurnos";
+	$route['getCabecerasTurnos'] = "back_end/cao/getCabecerasTurnos";
+	$route['listaTurnos'] = "back_end/cao/listaTurnos";
+	$route['formTurnos'] = "back_end/cao/formTurnos";
+	$route['getDataTurnos'] = "back_end/cao/getDataTurnos";
+	$route['eliminarTurnos'] = "back_end/cao/eliminarTurnos";
+	$route['excel_turnos/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/cao/excel_turnos/$1/$2/$3/$4/$5";
+
 /******************LICENCIAS*************************/
-	$route['licencias'] = "back_end/licencias/index";
-	$route['getLicenciasInicio'] = "back_end/licencias/getLicenciasInicio";
-	$route['getLicenciasList'] = "back_end/licencias/getLicenciasList";
-	$route['formIngreso'] = "back_end/licencias/formIngreso";
-	$route['eliminaLicencias'] = "back_end/licencias/eliminaLicencias";
-	$route['getDataRegistro'] = "back_end/licencias/getDataRegistro";
-	$route['listaUsuariosS2'] = "back_end/licencias/listaUsuariosS2";
+	$route['vistaLicencias'] = "back_end/cao/vistaLicencias";
+	$route['getLicenciasList'] = "back_end/cao/getLicenciasList";
+	$route['formIngresoLicencias'] = "back_end/cao/formIngresoLicencias";
+	$route['eliminaLicencias'] = "back_end/cao/eliminaLicencias";
+	$route['getDataRegistroLicencias'] = "back_end/cao/getDataRegistroLicencias";
+	$route['listaUsuariosS2'] = "back_end/cao/listaUsuariosS2";
 
 /******************VACACIONES*************************/
-	$route['vacaciones'] = "back_end/vacaciones/index";
-	$route['getVacacionesInicio'] = "back_end/vacaciones/getVacacionesInicio";
-	$route['getVacacionesList'] = "back_end/vacaciones/getVacacionesList";
-	$route['formIngreso'] = "back_end/vacaciones/formIngreso";
-	$route['eliminaVacaciones'] = "back_end/vacaciones/eliminaVacaciones";
-	$route['getDataRegistro'] = "back_end/vacaciones/getDataRegistro";
-	$route['listaUsuariosS2'] = "back_end/vacaciones/listaUsuariosS2";
+	$route['vistaVacaciones'] = "back_end/cao/vistaVacaciones";
+	$route['getVacacionesList'] = "back_end/cao/getVacacionesList";
+	$route['formIngresoVacaciones'] = "back_end/cao/formIngresoVacaciones";
+	$route['eliminaVacaciones'] = "back_end/cao/eliminaVacaciones";
+	$route['getDataRegistroVacaciones'] = "back_end/cao/getDataRegistroVacaciones";
+
+/******************MANTENEDOR TURNOS*************************/
+	$route['vistaMantenedorTurnos'] = "back_end/cao/vistaMantenedorTurnos";
+	$route['getMantenedorTurnosList'] = "back_end/cao/getMantenedorTurnosList";
+	$route['formMantenedorTurnos'] = "back_end/cao/formMantenedorTurnos";
+	$route['eliminaMantenedorTurnos'] = "back_end/cao/eliminaMantenedorTurnos";
+	$route['getDataMantenedorTurnos'] = "back_end/cao/getDataMantenedorTurnos";
+
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

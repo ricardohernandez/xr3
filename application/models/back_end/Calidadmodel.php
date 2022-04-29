@@ -37,6 +37,7 @@ class Calidadmodel extends CI_Model {
 			$this->db->where('u.id_jefe', $jefe);
 		}
 
+		$this->db->where('falla', "si");
 		$this->db->order_by('p.fecha', 'desc');
 		$res=$this->db->get('productividad_calidad p');
 		if($res->num_rows()>0){
@@ -298,16 +299,17 @@ class Calidadmodel extends CI_Model {
 	                THEN 1
 	                ELSE 0
 	            END)
-            * 100 ),2),'%') AS 'calidad_FTTH',
-
-	        (SELECT 
-	        	format(SUM(puntaje),0,'de_DE') as puntaje
-		        FROM productividad pr
-		        WHERE pr.rut_tecnico=p.rut_tecnico and
-		        pr.fecha BETWEEN '".$desde_prod."' AND '".$hasta_prod."'
-	        ) as productividad
+            * 100 ),2),'%') AS 'calidad_FTTH'
 		");
-											
+
+		/*(SELECT 
+        	(SUM(puntaje)) as puntaje
+	        FROM productividad pr
+	        WHERE pr.rut_tecnico=p.rut_tecnico and
+	        pr.fecha BETWEEN '".$desde_prod."' AND '".$hasta_prod."'
+        ) as productividad*/
+		 
+		/*format(SUM(puntaje),0,'de_DE') as puntaje*/
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 		$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
 		$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
@@ -351,8 +353,10 @@ class Calidadmodel extends CI_Model {
 
 		$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
 
-		if($this->session->userdata('verificacionJefe')=="1"){
-			$this->db->where('uj.id', $this->session->userdata('id_jefe'));
+		if($this->session->userdata('id_perfil')==3){
+			if($this->session->userdata('verificacionJefe')=="1"){
+				$this->db->where('uj.id', $this->session->userdata('id_jefe'));
+			}
 		}
 
 		$this->db->order_by('nombre_jefe', 'asc');

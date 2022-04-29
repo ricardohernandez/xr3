@@ -6,6 +6,14 @@
     text-align: left;
     padding:10px 2px;
   }
+
+  .tfoot_totales{
+     background-color: #32477C;
+     color:#fff;
+  }
+  .tfoot_totales th{
+    font-size: 13px!important;
+  }
 </style>
 <script type="text/javascript">
   var base_url = "<?php echo base_url() ?>"
@@ -353,6 +361,12 @@
       })
 	  }
 
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    
+
   /*****DATATABLE*****/   
     var tabla_resumen_calidad = $('#tabla_resumen_calidad').DataTable({
        "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
@@ -360,11 +374,12 @@
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
        /*"aaSorting" : [[0,"asc"]],*/
-       "scrollY": "60vh",
+       "scrollY": "55vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "info":false,
        /*"columnDefs": [{ orderable: false, targets: 0 }  ],*/
        "ajax": {
           "url":"<?php echo base_url();?>listaResumenCalidad",
@@ -387,6 +402,7 @@
             	$("#fecha_g").val(`${desde_anterior2.substring(0,5)} - ${hasta_anterior2.substring(0,5)}`);
             }
 
+            /*console.log(json)*/
             return json;
           },       
           data: function(param){
@@ -402,6 +418,81 @@
             }
           }
         },    
+
+        "footerCallback": function ( row, data, start, end, display ) {
+          var api = this.api(), data;
+          var largo = api.columns(':visible').count();
+           for (var i = 1; i <= (largo); i++) {
+
+
+              if(i==2 || i==3 || i==5 || i==6/* || i==8*/){   
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
+                };
+
+                total = api .column( i )  .data()   .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                }, 0 );
+
+                $( api.column( i ).footer() ).html(numberWithCommas(total));
+              }
+                
+              if(i==4){
+                v1 = api .column(2).data().reduce( function (a, b) {return intVal(a) + intVal(b); }, 0 );
+                v2 = api .column(3).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
+                avg = (v2 / v1)*100;
+                if(typeof avg === 'number'){
+                  $( api.column(4).footer() ).html(avg.toFixed(2)+"%")
+                }else{
+                  $( api.column(4).footer() ).html("-")
+                }
+              }
+
+              if(i==7){
+                v1 = api .column(5).data().reduce( function (a, b) {return intVal(a) + intVal(b); }, 0 );
+                v2 = api .column(6).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
+                avg = (v2 / v1)*100;
+                $( api.column(7).footer() ).html(avg.toFixed(2)+"%")
+              }
+
+              /*if(i==2 || i==3 || i==5 || i==6 || i==8){   
+
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
+                };
+
+                total = api .column( i )  .data()   .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                }, 0 );
+
+
+                $( api.column( i ).footer() ).html(numberWithCommas(total));
+              }*/
+
+              /*if(i==4 || i==7){
+
+                var numRows = api
+                .column( i )
+                .data()
+                .filter( function ( value, index ) {
+                    return value != null ? true : false;
+                }).count();
+
+                var intVal = function ( i ) {
+                 
+                      return typeof i === 'string' ? i.replace(/[\$,%]/g, '')*1 : typeof i === 'number' ? i : 0;
+                };
+
+                total = api .column( i )  .data()   .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                }, 0 );
+
+                avg = total / numRows;
+                avg = avg.toFixed(2)
+                $( api.column( i ).footer() ).html(avg+"%")
+              }*/
+          }
+        },
      
        "columns": [
           { "data": "trabajador" , "width" : "20%" , "class":"margen-td centered"},
@@ -412,7 +503,7 @@
           { "data": "q_FTTH" ,"class":"margen-td centered"},
           { "data": "fallos_FTTH" ,"class":"margen-td centered"},
           { "data": "calidad_FTTH" ,"class":"margen-td centered"},
-          { "data": "productividad" ,"class":"margen-td centered"},
+          /*{ "data": "productividad" ,"class":"margen-td centered"},*/
        
         ]
       }); 
@@ -431,7 +522,7 @@
 		});
 
 
-		$.getJSON("listaTrabajadores", function(data) {
+		$.getJSON("listaTrabajadoresCalidad", function(data) {
 	      response = data;
 		}).done(function() {
 		    $("#trabajadores").select2({
@@ -467,7 +558,7 @@
   </div>
 
 	<?php  
-    if($this->session->userdata('id_perfil')<>4){
+    if($this->session->userdata('id_perfil')<=3){
   ?>
 
     <div class="col-lg-2">  
@@ -495,7 +586,7 @@
 	?>
 
 	<?php  
-    if($this->session->userdata('id_perfil')<=3){
+    if($this->session->userdata('id_perfil')<3){
   ?>
 
   <div class="col-lg-2">
@@ -513,6 +604,26 @@
     </div>
   </div>
 
+   <?php
+    }elseif($this->session->userdata('id_perfil')==3){
+      ?>
+      <div class="col-lg-2">
+        <div class="form-group">
+          <select id="jefe" name="jefe" class="custom-select custom-select-sm">
+            <?php  
+              foreach($jefes as $j){
+                ?>
+                  <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                <?php
+              }
+            ?>
+          </select>
+        </div>
+      </div>
+      <?php
+    }
+  ?>
+
   <div class="col-lg-2">
     <div class="form-group">
       <select id="tipo_red" name="tipo_red" class="custom-select custom-select-sm">
@@ -523,9 +634,6 @@
     </div>
   </div>
 
-  <?php
-  	}
-  ?>
   
   <div class="col-12 col-lg-2">  
     <div class="form-group">
@@ -551,34 +659,44 @@
 					  <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
 					  	<table id="tabla_resumen_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
 				        <thead>
-				        	<th>
-				        			<th class="" colspan="1"></th> 
-				        			<th class="" colspan="3">HFC</th> 
-				        			<th class="" colspan="3">FTTH</th> 
-				        			<th class="">Productividad</th> 
-				        	</th>
+				        
 				          <tr>    
 				            <th class="centered">Técnico</th> 
 				            <th class="centered">Periodo</th> 
-				            <th class="centered">Q</th> 
+				            <th class="centered">Ordenes</th> 
 				            <th class="centered">Fallos </th> 
 				            <th class="centered">Calidad </th> 
-				            <th class="centered">Q</th> 
+				            <th class="centered">Ordenes</th> 
 				            <th class="centered">Fallos</th> 
 				            <th class="centered">Calidad </th> 
-				            <th class="centered">Puntos</th> 
+				           <!--  <th class="centered">Puntos</th>  -->
 				          </tr>
 				        </thead>
+
+                <tfoot class="tfoot_totales">
+                  <tr>
+                      <th class="">Totales</th>
+                      <th class=""></th>
+                      <th class=""></th>
+                      <th class=""></th>
+                      <th class=""></th>
+                      <th class=""></th>
+                      <th class=""></th>
+                      <th class=""></th>
+                     <!--  <th class=""></th> -->
+                  </tr>
+                </tfoot>
+
 		          </table>
 				  	</div>
 
 		        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
 	            <div class="short-div">
-	            		<h6 class="titulo_grafico">Calidad v/s producción HFC Últimos 3 periodos</h6>
+	            		<h6 class="titulo_grafico">Calidad HFC Últimos 3 periodos</h6>
 		    					<div id="graficoHFC"></div>
 		          </div>
 	            <div class="short-div">
-	            		<h6 class="titulo_grafico">Calidad v/s producción FTTH Últimos 3 periodos</h6>
+	            		<h6 class="titulo_grafico">Calidad FTTH Últimos 3 periodos</h6>
 	    			  	<div id="graficoFTTH"></div>
 	            </div>
 		        </div>

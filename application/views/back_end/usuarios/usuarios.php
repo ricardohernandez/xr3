@@ -237,7 +237,6 @@
   }
 </style>
 
-
 <script type="text/javascript">
   $(function(){
 
@@ -327,7 +326,7 @@
        "iDisplayLength":-1, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
-       "aaSorting" : [[31,"desc"]],
+       "aaSorting" : [[32,"desc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -381,6 +380,7 @@
           { "data": "proyecto" ,"class":"margen-td centered"},
           { "data": "jefe" ,"class":"margen-td centered"},
           { "data": "codigo" ,"class":"margen-td centered"},
+          { "data": "nivel_tecnico" ,"class":"margen-td centered"},
           { "data": "domicilio" ,"class":"margen-td centered"},
           { "data": "comuna" ,"class":"margen-td centered"},
           { "data": "ciudad" ,"class":"margen-td centered"},
@@ -573,11 +573,10 @@
               $("#fecha_nacimiento").val(data.datos[dato].fecha_nacimiento);
               $("#fecha_ingreso").val(data.datos[dato].fecha_ingreso);
               $("#codigo").val(data.datos[dato].codigo);
-
               $("#sexo  option[value='"+data.datos[dato].sexo+"'").prop("selected", true);
               $("#estado_civil  option[value='"+data.datos[dato].estado_civil+"'").prop("selected", true);
               $("#perfil  option[value='"+data.datos[dato].id_perfil+"'").prop("selected", true);
-
+              $("#nivel_tecnico  option[value='"+data.datos[dato].id_nivel_tecnico+"'").prop("selected", true);
               $("#cargo  option[value='"+data.datos[dato].id_cargo+"'").prop("selected", true);
               $("#area  option[value='"+data.datos[dato].id_area+"'").prop("selected", true);
               $("#proyecto  option[value='"+data.datos[dato].id_proyecto+"'").prop("selected", true);
@@ -658,53 +657,52 @@
 
 <!-- FILTROS -->
   
-    <div class="form-row">
+  <div class="form-row">
 
-      <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
-         <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
-         <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
-         <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
-      </div> -->
+    <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
+       <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
+       <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
+       <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
+    </div> -->
 
-      <div class="col-lg-2">  
-        <div class="form-group">
-           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ots btn_xr3">
-           <i class="fa fa-plus-circle"></i>  Crear 
-           </button>
-        </div>
-      </div>
-
-
-      <div class="col-12 col-lg-3">  
-       <div class="form-group">
-        <input type="text" placeholder="Busqueda" id="buscador_ots" class="buscador_ots form-control form-control-sm">
-       </div>
-      </div>
-
-      <div class="col-12 col-lg-2">  
-        <div class="custom-control custom-checkbox" style="margin-top: 4px;">
-          <input type="checkbox"  class="custom-control-input check_estado" id="check_estado" name="check_estado">
-          <label class="custom-control-label" for="check_estado">Incluir inactivos</label>
-        </div>
-      </div>
-
-      <div class="col-6 col-lg-2">
-        <div class="form-group">
-         <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_usuarios btn_xr3">
-         <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
+    <div class="col-lg-2">  
+      <div class="form-group">
+         <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ots btn_xr3">
+         <i class="fa fa-plus-circle"></i>  Crear 
          </button>
-       </div>
       </div>
+    </div>
 
-      <div class="col-6 col-lg-2">  
-        <div class="form-group">
-         <button type="button"  class="btn-block btn btn-sm btn-primary excel_usuarios btn_xr3">
-         <i class="fa fa-save"></i> Excel
-         </button>
-        </div>
+    <div class="col-12 col-lg-3">  
+     <div class="form-group">
+      <input type="text" placeholder="Busqueda" id="buscador_ots" class="buscador_ots form-control form-control-sm">
+     </div>
+    </div>
+
+    <div class="col-12 col-lg-2">  
+      <div class="custom-control custom-checkbox" style="margin-top: 4px;">
+        <input type="checkbox"  class="custom-control-input check_estado" id="check_estado" name="check_estado">
+        <label class="custom-control-label" for="check_estado">Incluir inactivos</label>
       </div>
-      
-      </div>            
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="form-group">
+       <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_usuarios btn_xr3">
+       <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
+       </button>
+     </div>
+    </div>
+
+    <div class="col-6 col-lg-2">  
+      <div class="form-group">
+       <button type="button"  class="btn-block btn btn-sm btn-primary excel_usuarios btn_xr3">
+       <i class="fa fa-save"></i> Excel
+       </button>
+      </div>
+    </div>
+    
+    </div>            
 
 <!-- LISTADO -->
 
@@ -727,6 +725,7 @@
             <th class="centered">Proyecto</th> 
             <th class="centered">Jefe</th> 
             <th class="centered">Código</th> 
+            <th class="centered">Nivel Técnico</th> 
             <th class="centered">Domicilio</th> 
             <th class="centered">Comuna</th> 
             <th class="centered">Cuidad</th> 
@@ -745,17 +744,15 @@
             <th class="centered">Talla cazadora</th>   
             <th class="centered">Estado</th>   
             <th class="centered">Última actualización</th>   
-   
           </tr>
         </thead>
       </table>
     </div>
   </div>
 
-
 <!--  FORMULARIO-->
   <div id="modal_usuario" data-backdrop="static"  data-keyboard="false"   class="modal fade">
-   <?php echo form_open_multipart("formUsuario",array("id"=>"formUsuario","class"=>"formUsuario"))?>
+    <?php echo form_open_multipart("formUsuario",array("id"=>"formUsuario","class"=>"formUsuario"))?>
 
     <div class="modal-dialog modal_usuario modal-dialog-scrollable">
       <div class="modal-content">
@@ -904,6 +901,22 @@
                       foreach($jefes as $j){
                         ?>
                           <option value="<?php echo $j["id_jefe"]; ?>"><?php echo $j["nombre_jefe"]; ?></option>
+                        <?php
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-lg-3">               
+                <div class="form-group">
+                  <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Nivel técnico</label>
+                  <select id="nivel_tecnico" name="nivel_tecnico" class="custom-select custom-select-sm">
+                  <option value="" selected>Seleccione </option>
+                      <?php 
+                      foreach($nivelesTecnicos as $n){
+                        ?>
+                          <option value="<?php echo $n["id"]; ?>"><?php echo $n["nivel"]; ?></option>
                         <?php
                       }
                     ?>
@@ -1107,10 +1120,8 @@
                 </div>
               </div> 
 
-
             </div>
           </fieldset> 
-         
         </div>
       </div>
     </div>

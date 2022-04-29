@@ -324,17 +324,16 @@
     });
 
 
-    $("#menu_calidad").addClass('disabled_sub');
+    $("#menu_graficos").addClass('disabled_sub');
     $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
     $(".menu_lista li").removeClass('menuActivo');       
-    $("#menu_calidad").addClass('menuActivo');  
+    $("#menu_graficos").addClass('menuActivo');  
 
-    $.get("vistaCalidad", function( data ) {
+    $.get("vistaGraficosCalidad", function( data ) {
       $(".contenedor_app").html(data);    
-      $("#menu_calidad").removeClass('disabled_sub');
+      $("#menu_graficos").removeClass('disabled_sub');
     });
- 
-    
+  
     $(document).off('click', '#menu_calidad').on('click', '#menu_calidad',function(event) {
       event.preventDefault();
       $("#menu_calidad").addClass('disabled_sub');
@@ -375,17 +374,8 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-        <li id="menu_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Calidad </a></li>   
         <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Graficos Calidad </a></li>   
-      
-         <!--  <?php  
-            if($this->session->userdata('rut')=="169868220" || $this->session->userdata('rut')=="119752949"){
-          ?>
-            <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Graficos Calidad </a></li>   
-          <?php  
-            }
-          ?> -->
-
+        <li id="menu_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Calidad </a></li>   
       </ul>  
     </div> 
   </div>

@@ -9,6 +9,16 @@ $config = array(
                     )
             ),
 
+           'formChecklistHFC' => array(
+               array(
+                     'field'   => 'tecnico',
+                     'label'   => 'Técnico',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+           
+           
+
           	'formHerramientas' => array(
                array(
                      'field'   => 'tipo',
@@ -119,6 +129,43 @@ $config = array(
                     )
             ),
 
+           
+            'formTicket' => array(
+               array(
+                     'field'   => 'titulo',
+                     'label'   => 'Título',
+                     'rules'   => 'trim|required'
+                    ),
+               array(
+                     'field'   => 'descripcion',
+                     'label'   => 'Descripción',
+                     'rules'   => 'trim|required'
+                    ),
+                array(
+                     'field'   => 'tipo',
+                     'label'   => 'Tipo',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
+            'formTurnos' => array(
+               array(
+                     'field'   => 'trabajador',
+                     'label'   => 'Trabajador',
+                     'rules'   => 'trim|required'
+                    ),
+               array(
+                     'field'   => 'fecha',
+                     'label'   => 'Fecha',
+                     'rules'   => 'trim|required'
+                    ),
+                array(
+                     'field'   => 'turno',
+                     'label'   => 'Turno',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
             'formIngresoLicencia' => array(
                array(
                      'field'   => 'usuarios',
@@ -139,22 +186,31 @@ $config = array(
                      'rules'   => 'trim|required'
                     )
             ),
-               
-            'formTicket' => array(
+
+            'formMantenedorTurnos' => array(
                array(
-                     'field'   => 'titulo',
-                     'label'   => 'Título',
+                     'field'   => 'codigo',
+                     'label'   => 'Código',
                      'rules'   => 'trim|required'
                     ),
                array(
-                     'field'   => 'descripcion',
-                     'label'   => 'Descripción',
+                     'field'   => 'rango_horario',
+                     'label'   => 'Rango horario',
                      'rules'   => 'trim|required'
                     ),
-                array(
-                     'field'   => 'tipo',
-                     'label'   => 'Tipo',
+               array(
+                     'field'   => 'estado',
+                     'label'   => 'Estado',
                      'rules'   => 'trim|required'
-                    )
+                    ),
+               array(
+                     'field'   => 'suma',
+                     'label'   => 'Suma',
+                     'rules'   => 'trim|required'
+                    ),
             ),
+
+            
+               
  );
+

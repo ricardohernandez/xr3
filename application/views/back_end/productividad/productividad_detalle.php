@@ -27,8 +27,6 @@
       format_on: 'keyup'
     });
 
-    
-
   /*****DATATABLE*****/   
     var lista_detalle = $('#lista_detalle').DataTable({
        "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
@@ -55,11 +53,9 @@
             var periodo =$("#periodo").val()
 
             if(periodo=="actual"){
-              $("#desde_f").val(desde_actual);
-              $("#hasta_f").val(hasta_actual);
+              $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
             }else if(periodo=="anterior"){
-              $("#desde_f").val(desde_anterior);
-              $("#hasta_f").val(hasta_anterior);
+              $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
             }
 
             return json;
@@ -67,6 +63,7 @@
           data: function(param){
             
             param.periodo = $("#periodo").val();
+            param.jefe = $("#jefe_det").val();
 
             if(perfil==4){
               param.trabajador = $("#trabajador").val();
@@ -320,37 +317,36 @@
         trabajador = $("#trabajadores").val();
       }
 
-      // if(desde==""){
-      //    $.notify("Debe seleccionar una fecha de inicio.", {
-      //        className:'error',
-      //        globalPosition: 'top right'
-      //    });  
-      //    return false;
-      //  }
-      //  if(hasta==""){
-      //    $.notify("Debe seleccionar una fecha de término.", {
-      //        className:'error',
-      //        globalPosition: 'top right'
-      //    });  
-      //   return false;
-      //  }
-      
-       if(trabajador==""){
+      var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
+      jefe = jefe=="" ? "-" : jefe;
+
+      if(trabajador==""){
          trabajador="-"
-       }
+      }
 
-       var periodo = $("#periodo").val();  
+      var periodo = $("#periodo").val();  
 
-       if(periodo==""){
+      if(periodo==""){
          periodo="actual"
-       }
+      }
 
-       // window.location="excel_detalle/"+desde+"/"+hasta+"/"+trabajador;
-       window.location="excel_detalle/"+periodo+"/"+trabajador;
+      // window.location="excel_detalle/"+desde+"/"+hasta+"/"+trabajador;
+      window.location="excel_detalle/"+periodo+"/"+trabajador+"/"+jefe;
 
     });
 
-    $.getJSON("listaTrabajadores", function(data) {
+    $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_det").val() } , function(data) {
+      response = data;
+    }).done(function() {
+        $("#trabajadores").select2({
+         placeholder: 'Seleccione Trabajador | Todos',
+         data: response,
+         width: 'resolve',
+         allowClear:true,
+        });
+    });
+
+    /*$.getJSON("listaTrabajadores", function(data) {
       response = data;
     }).done(function() {
         $("#trabajadores").select2({
@@ -359,7 +355,7 @@
          width: 'resolve',
            allowClear:true,
         });
-    });
+    });*/
 
 
     $(document).off('click', '.ejemplo_planilla').on('click', '.ejemplo_planilla',function(event) {
@@ -484,8 +480,6 @@
       }
       
 
-
-
   })
 </script>
 
@@ -501,7 +495,7 @@
              <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
              <i class="fa fa-file-import"></i> Cargar base  
           </div>
-          <i class="fa-solid fa-circle-info ejemplo_planilla" title="Ver ejemplo" ></i>
+          <!-- <i class="fa-solid fa-circle-info ejemplo_planilla" title="Ver ejemplo" ></i> -->
           <?php
         }
       ?>
@@ -520,27 +514,15 @@
         </div>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-lg-1">
         <div class="form-group">
           <div class="input-group">
-              <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="text" disabled placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
+              <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
           </div>
         </div>
       </div>
 
-      
-      <!-- <div class="col-lg-3">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
-            </div>
-              <input type="date" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="date" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
-          </div>
-        </div>
-      </div> -->
+ 
 
       <?php  
        if($this->session->userdata('id_perfil')<>4){
@@ -564,6 +546,45 @@
             </div>
         <?php
        }
+      ?>
+
+      <?php  
+        if($this->session->userdata('id_perfil')<3){
+      ?>
+
+        <div class="col-lg-2">
+          <div class="form-group">
+            <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+              <option value="" selected>Seleccione Jefe | Todos</option>
+              <?php  
+                foreach($jefes as $j){
+                  ?>
+                    <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                  <?php
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+
+      <?php
+        }elseif($this->session->userdata('id_perfil')==3){
+          ?>
+          <div class="col-lg-2">
+            <div class="form-group">
+              <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+                <?php  
+                  foreach($jefes as $j){
+                    ?>
+                      <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                    <?php
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <?php
+        }
       ?>
 
       <div class="col-12 col-lg-2">  

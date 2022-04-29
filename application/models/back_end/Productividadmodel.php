@@ -15,7 +15,7 @@ class Productividadmodel extends CI_Model {
 
 	/*************PRODUCTIVIDAD*************/
 
-		public function listaDetalle($desde,$hasta,$trabajador){
+		public function listaDetalle($desde,$hasta,$trabajador,$jefe){
 
 			$this->db->select("sha1(p.id) as hash,
 				p.*,
@@ -23,7 +23,6 @@ class Productividadmodel extends CI_Model {
 		        if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%Y-%m-%d'),'') as 'fecha'
 			");
 
-			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
@@ -32,6 +31,13 @@ class Productividadmodel extends CI_Model {
 			if($trabajador!=""){
 				$this->db->where('p.rut_tecnico', $trabajador);
 			}
+
+
+			if($jefe!=""){
+				$this->db->where('u.id_jefe', $jefe);
+			}
+
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 			$this->db->order_by('p.fecha', 'desc');
 			$res=$this->db->get('productividad p');
 			// echo $this->db->last_query();
@@ -64,7 +70,7 @@ class Productividadmodel extends CI_Model {
 			return $row["id"];
 		}
 
-		public function listaTrabajadores(){
+		public function listaTrabajadores($jefe){
 			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				empresa,id,rut,
 			    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
@@ -73,6 +79,10 @@ class Productividadmodel extends CI_Model {
 			
 			if($this->session->userdata('id_perfil')==4){
 				$this->db->where('rut', $this->session->userdata('rut'));
+			}
+
+			if($jefe!=""){
+				$this->db->where('id_jefe', $jefe);
 			}
 
 			$this->db->order_by('nombres', 'asc');
@@ -90,8 +100,9 @@ class Productividadmodel extends CI_Model {
 			return FALSE;
 		}
 
+	/********GRAFICOS*************/
 
-		public function rankingTecnicos($desde,$hasta,$trabajador){
+		public function rankingTecnicos($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("
 			    CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as 'tecnico',
 
@@ -116,6 +127,10 @@ class Productividadmodel extends CI_Model {
 
 			if($trabajador!=""){
 				$this->db->where('p.rut_tecnico', $trabajador);
+			}
+
+			if($jefe!=""){
+				$this->db->where('u.id_jefe', $jefe);
 			}
 
 			$this->db->group_by('p.rut_tecnico');
@@ -146,56 +161,15 @@ class Productividadmodel extends CI_Model {
 			return $array;
 		}
 
-		// public function graficoLicencias($empresa){
-			// 	$this->db->select("MONTH(fecha_inicio) as mes,
-			// 		 YEAR(fecha_inicio) as anio,
-			// 		 count(if(id_tipo_licencia= '1', 1 , NULL)) as 'Enfermedad',
-			// 		 count(if(id_tipo_licencia = '2', 1 , NULL)) as 'Accidente',
-			// 		 count(if(id_tipo_licencia = '3', 1 , NULL)) as 'Pre/post natal' ",
-			// 	 FALSE);
 
-			// 	$this->db->from('usuario_licencias lic');
-			// 	$this->db->join('usuario u', 'u.id = lic.id_usuario', 'left');
-			// 	$this->db->where('fecha_inicio > (NOW() - INTERVAL 5 MONTH)');
-			// 	$this->db->where('u.empresa', $empresa);
-			// 	$this->db->group_by('MONTH(fecha_inicio)');
-			// 	$this->db->group_by('YEAR(fecha_inicio)');
-			// 	$this->db->order_by('fecha_inicio', 'asc');
-			// 	$res=$this->db->get();
-			// 	$array = array();
-				
-			// 	$array[]= array(
-			// 		"Fecha",
-			// 		"Enfermedad",
-			// 		array('role'=> 'annotation'),
-			// 		"Accidente",
-			// 		array('role'=> 'annotation'),
-			// 		"Pre/post natal",
-			// 		array('role'=> 'annotation')
-			// 	);
-
-			// 	foreach($res->result_array() as $key){
-			// 		$temp = array();
-			// 	    $temp[] = (string)$this->mes_corto($key["mes"])."-".substr($key["anio"], 2, 4); 
-			// 	    $temp[] = (int) $key['Enfermedad'];
-			//  	    $temp[] = (string) $v = ($key['Enfermedad']==0) ? null: $key['Enfermedad'];
-			// 	    $temp[] = (int) $key['Accidente'];
-			//  	    $temp[] = (string) $v = ($key['Accidente']==0) ? null: $key['Accidente'];
-			// 	    $temp[] = (int) $key['Pre/post natal'];
-			//  	    $temp[] = (string) $v = ($key['Pre/post natal']==0) ? null: $key['Pre/post natal'];
-			// 	    $array[] = $temp;
-			// 	}
-
-			// 	return $array;
-		// }
-		
-
-		public function puntosPorFechas($desde,$hasta,$trabajador){
+		public function puntosPorFechas($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("if(fecha!='0000-00-00', DATE_FORMAT(fecha,'%d-%m-%Y'),'') as 'fecha',
 				 SUM(puntaje) as puntos
 
 		         ",
 			 FALSE);
+
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");	
@@ -205,9 +179,13 @@ class Productividadmodel extends CI_Model {
 				$this->db->where('rut_tecnico', $trabajador);
 			}
 
+			if($jefe!=""){
+				$this->db->where('u.id_jefe', $jefe);
+			}
+
 			$this->db->group_by('(fecha)');
 			$this->db->order_by('fecha', 'asc');
-			$res=$this->db->get("productividad");
+			$res=$this->db->get("productividad p");
 			$array = array();
 			
 			$array[]= array(
@@ -229,7 +207,7 @@ class Productividadmodel extends CI_Model {
 			return $array;
 		}
 
-		public function distribucionTipos($desde,$hasta,$trabajador){
+		public function distribucionTipos($desde,$hasta,$trabajador,$jefe){
 		
 			if($trabajador!=""){
 				$this->db->select('
@@ -241,14 +219,14 @@ class Productividadmodel extends CI_Model {
 					) as altas,
 
 					(SELECT count(id)
-						from productividad 
+						from productividad
 						WHERE tipo_actividad REGEXP "Reparación" 
 						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
 						and rut_tecnico="'.$trabajador.'"
 					) as reparaciones,
 
 					(SELECT count(id)
-						from productividad 
+						from productividad
 						WHERE tipo_actividad NOT LIKE "%Alta%" and tipo_actividad NOT LIKE "%Reparación%"
 						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
 						and rut_tecnico="'.$trabajador.'"
@@ -256,23 +234,54 @@ class Productividadmodel extends CI_Model {
 				');
 
 			}else{
-				$this->db->select('
-					(SELECT count(id)
-						from productividad 
-						where tipo_actividad REGEXP "Alta" 
-						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
-					) as altas,
-					(SELECT count(id)
-						from productividad 
-						where tipo_actividad REGEXP "Reparación" 
-						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
-					) as reparaciones,
-					(SELECT count(id)
-						from productividad 
-						WHERE tipo_actividad NOT LIKE "%Alta%" and tipo_actividad NOT LIKE "%Reparación%"
-						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
-					) as otros
-				');
+
+				if($jefe!=""){
+
+					$this->db->select('
+						(SELECT count(p.id)
+							from productividad p
+							LEFT JOIN usuarios as u ON u.rut=p.rut_tecnico
+							where tipo_actividad REGEXP "Alta" 
+							and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+							and u.id_jefe = "'.$jefe.'"
+						) as altas,
+						(SELECT count(p.id)
+							from productividad p
+							LEFT JOIN usuarios as u ON u.rut=p.rut_tecnico
+							where tipo_actividad REGEXP "Reparación" 
+							and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+							and u.id_jefe = "'.$jefe.'"
+						) as reparaciones,
+						(SELECT count(p.id)
+							from productividad p
+							LEFT JOIN usuarios as u ON u.rut=p.rut_tecnico
+							WHERE tipo_actividad NOT LIKE "%Alta%" and tipo_actividad NOT LIKE "%Reparación%"
+							and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+							and u.id_jefe = "'.$jefe.'"
+						) as otros
+					');
+
+				}else{
+					$this->db->select('
+						(SELECT count(id)
+							from productividad 
+							where tipo_actividad REGEXP "Alta" 
+							and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+						) as altas,
+						(SELECT count(id)
+							from productividad 
+							where tipo_actividad REGEXP "Reparación" 
+							and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+						) as reparaciones,
+						(SELECT count(id)
+							from productividad 
+							WHERE tipo_actividad NOT LIKE "%Alta%" and tipo_actividad NOT LIKE "%Reparación%"
+							and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+						) as otros
+					');
+				}
+
+				
 			}
 
 			$this->db->group_by('altas');
@@ -290,7 +299,7 @@ class Productividadmodel extends CI_Model {
 			return $filas;
 		}
 
-		public function distribucionOt($desde,$hasta,$trabajador){
+		public function distribucionOt($desde,$hasta,$trabajador,$jefe){
 			if($trabajador!=""){
 
 				$this->db->select('
@@ -309,7 +318,26 @@ class Productividadmodel extends CI_Model {
 
 			}else{
 
-				$this->db->select('
+				if($jefe!=""){
+
+					$this->db->select('
+					(SELECT count(p.id)
+						from productividad p
+						LEFT JOIN usuarios as u ON u.rut=p.rut_tecnico
+						where estado_ot REGEXP "OT OK" 
+						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+						and u.id_jefe = "'.$jefe.'"
+					) as ok,
+					(SELECT count(p.id)
+						from productividad p
+						LEFT JOIN usuarios as u ON u.rut=p.rut_tecnico
+						where estado_ot REGEXP "DRIVE NO DETECTA REGISTRO" 
+						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
+						and u.id_jefe = "'.$jefe.'"
+					) as no_ok');
+
+				}else{
+					$this->db->select('
 					(SELECT count(id)
 						from productividad 
 						where estado_ot REGEXP "OT OK" 
@@ -320,6 +348,8 @@ class Productividadmodel extends CI_Model {
 						where estado_ot REGEXP "DRIVE NO DETECTA REGISTRO" 
 						and fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"
 					) as no_ok');
+			}	
+				
 
 			}
 
@@ -337,10 +367,12 @@ class Productividadmodel extends CI_Model {
 			return $filas;
 		}
 
-		public function puntosTipoOrden($desde,$hasta,$trabajador){
+		public function puntosTipoOrden($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("tipo_actividad,
 				 SUM(puntaje) as puntos",
 			 FALSE);
+
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");	
@@ -350,9 +382,13 @@ class Productividadmodel extends CI_Model {
 				$this->db->where('rut_tecnico', $trabajador);
 			}
 
+			if($jefe!=""){
+				$this->db->where('u.id_jefe', $jefe);
+			}
+
 			$this->db->group_by('tipo_actividad');
 			$this->db->order_by('tipo_actividad', 'asc');
-			$res=$this->db->get("productividad");
+			$res=$this->db->get("productividad p");
 			$array = array();
 			
 			$array[]= array(
@@ -369,9 +405,9 @@ class Productividadmodel extends CI_Model {
 			return $array;
 		}
 
-		public function totalPuntosPorFecha($desde,$hasta,$trabajador){
+		public function totalPuntosPorFecha($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("format(SUM(puntaje),0,'de_DE') as puntos", FALSE);
-
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 			if($desde!="" and $hasta!=""){
 				$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 			}
@@ -380,8 +416,12 @@ class Productividadmodel extends CI_Model {
 				$this->db->where('rut_tecnico', $trabajador);
 			}
 
+			if($jefe!=""){
+				$this->db->where('u.id_jefe', $jefe);
+			}
+
 			$this->db->order_by('fecha', 'asc');
-			$res=$this->db->get("productividad");
+			$res=$this->db->get("productividad p");
 			$row=$res->row_array();
 			return $row["puntos"];
 		}
@@ -394,7 +434,28 @@ class Productividadmodel extends CI_Model {
 		    return $row["ultima_actualizacion"];
 		}
 
+		public function listaJefes(){
+			$this->db->select("sha1(uj.id) as hash_jefes,
+				uj.id as id_jefe,
+				uj.id_jefe as id_usuario_jefe,
+				CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'
+				");
 
+			$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
+
+			if($this->session->userdata('id_perfil')==3){
+				if($this->session->userdata('verificacionJefe')=="1"){
+					$this->db->where('uj.id', $this->session->userdata('id_jefe'));
+				}
+			}
+
+			$this->db->order_by('nombre_jefe', 'asc');
+			$res=$this->db->get('usuarios_jefes uj');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
 	
 
 	/*************RESUMEN*******************/
@@ -461,6 +522,8 @@ class Productividadmodel extends CI_Model {
 			$cabeceras = array();
 			$cabeceras[] = "Zona";
 			$cabeceras[] = "Trabajador";
+			$cabeceras[] = "Días";
+			$cabeceras[] = "Promedio";
 
 			foreach($array_fechas as $fecha){
 				$cabeceras[] = $this->fecha_to_str($fecha);
@@ -470,7 +533,7 @@ class Productividadmodel extends CI_Model {
 			return $cabeceras;
 		}
 		
-		public function listaResumen($desde,$hasta,$trabajador){
+		public function listaResumen($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(p.id) as hash,
 				p.id as id,
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
@@ -483,6 +546,7 @@ class Productividadmodel extends CI_Model {
 
 			if($desde!="" and $hasta!=""){$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	}
 			if($trabajador!=""){$this->db->where('p.rut_tecnico', $trabajador);}
+			if($jefe!=""){	$this->db->where('u.id_jefe', $jefe);}
 
 			$this->db->order_by('u.nombres', 'asc');
 			$this->db->group_by('u.id');
@@ -496,7 +560,8 @@ class Productividadmodel extends CI_Model {
 
 				$temp["Zona"] = $key["area"];
 				$temp["Trabajador"] = $key["trabajador"];
-
+				$dias = 0;
+				$puntajes = array();
 				foreach($array_fechas as $fecha){
 						$this->db->select("if(sum(puntaje)!=0,sum(puntaje),0)  as puntaje");
 						$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.$key["rut_tecnico"].'"');
@@ -507,12 +572,25 @@ class Productividadmodel extends CI_Model {
 							foreach($res2->result_array() as $key2){
 								$puntaje = $puntaje+$key2["puntaje"];
 							}
-						
+							if($puntaje!=0){
+								$dias++;
+								$puntajes[] = $puntaje;
+							}
+
 							$temp[$this->fecha_to_str($fecha)] = $puntaje;
 						}else{
 							$temp[$this->fecha_to_str($fecha)] = "";
 						}
+
+						$temp["Días"] = $dias;
+
+						$a = array_filter($puntajes);
+						if(count($a)) {
+						   $temp["Promedio"] = round(array_sum($a)/count($a),2);
+						}
+						
 				}
+
 				$temp["Total"] = $key["total"];
 				$array[]=$temp;
 

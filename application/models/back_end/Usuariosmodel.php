@@ -32,6 +32,7 @@ class Usuariosmodel extends CI_Model {
 		          WHEN u.estado=0 THEN 'Baja'
 		          ELSE ''
 		        END AS estado_str,			
+		        utn.nivel as nivel_tecnico
 				");
 			
 			$this->db->join('usuarios_perfiles as up', 'up.id = u.id_perfil', 'left');
@@ -42,6 +43,7 @@ class Usuariosmodel extends CI_Model {
 
 			$this->db->join('usuarios_cargos uc', 'uc.id = u.id_cargo', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
+			$this->db->join('usuarios_tecnicos_niveles utn', 'utn.id = u.id_nivel_tecnico', 'left');
 
 			if($this->session->userdata('id_perfil')<>1){
 				$this->db->where('u.id_perfil<>', 1);
@@ -101,6 +103,15 @@ class Usuariosmodel extends CI_Model {
 			$this->db->where('sha1(id)', $hash);
 			if($this->db->update('usuarios', $data)){
 				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function listaNivelesTecnicos(){
+			$this->db->order_by('nivel', 'asc');
+			$res=$this->db->get('usuarios_tecnicos_niveles');
+			if($res->num_rows()>0){
+				return $res->result_array();
 			}
 			return FALSE;
 		}
@@ -181,14 +192,14 @@ class Usuariosmodel extends CI_Model {
 		public function getIdJefePorNombre($nombre_jefe){
 			$nombre = explode(" ", trim($nombre_jefe));
 			$this->db->select('uj.id_jefe as id_jefe,rut,nombres,apellidos');
-			print_r($nombre);
+			/*print_r($nombre);*/
 
 			$this->db->like('u.nombres', trim($nombre[0]) , 'both');
 			$this->db->like('u.apellidos', trim($nombre[1]) , 'both');
 			$this->db->join('usuarios_jefes uj', 'uj.id_jefe = u.id', 'left');
 			$res=$this->db->get('usuarios u');
-			echo $this->db->last_query();
-			echo "<br>";
+			/*echo $this->db->last_query();
+			echo "<br>";*/
 			$row=$res->row_array();
 			return $row["id_jefe"];
 		}

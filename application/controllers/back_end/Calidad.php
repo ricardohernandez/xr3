@@ -157,10 +157,12 @@ class Calidad extends CI_Controller {
 						$fechaf2 = "1970-01-01";
 					}
 
-					if($data[11]=="0"){
+					if(trim($data[11]==0) || trim($data[11]=="0")){
 						$falla ="no";
-					}else{
+					}elseif(trim($data[11]==1) || trim($data[11]=="1")){
 						$falla = "si";
+					}else{
+						$falla = "error";
 					}
 
 					// echo $fechaf;
@@ -396,7 +398,7 @@ class Calidad extends CI_Controller {
 			$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 			$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 			$array[] = $this->Calidadmodel->graficoHFC($desde_actual,$hasta_actual,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_1,$desde_anterior_1,$trabajador,$jefe);
+			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe);
 			$array[] = $this->Calidadmodel->graficoHFC($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe);
 		}else{
 			$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
@@ -448,7 +450,7 @@ class Calidad extends CI_Controller {
 			$desde_anterior_2= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 			$hasta_anterior_2= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 			$array[] = $this->Calidadmodel->graficoFTTH($desde_actual,$hasta_actual,$trabajador,$jefe);
-			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_1,$desde_anterior_1,$trabajador,$jefe);
+			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_1,$hasta_anterior_1,$trabajador,$jefe);
 			$array[] = $this->Calidadmodel->graficoFTTH($desde_anterior_2,$hasta_anterior_2,$trabajador,$jefe);
 		}else{
 			$desde_actual = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));

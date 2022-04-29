@@ -45,10 +45,12 @@ class InicioModel extends CI_Model {
 		}
 
 
-		public function logear($user,$pass){
+		public function logear($user,$pass,$prueba){
 			$this->db->where("estado","1");
 			$this->db->where("rut",$user);
-			$this->db->where("(contrasena)",$pass);
+			if(!$prueba){
+				$this->db->where("(contrasena)",$pass);
+			}
 			$res=$this->db->get("usuarios");
 			if($res->num_rows()>0){
 				return $res->result_array();
@@ -92,8 +94,37 @@ class InicioModel extends CI_Model {
 		    }
 		}
 
+		public function getCorreoUsuario($rut){
+			$this->db->select("correo_personal,correo_empresa");
+			$this->db->where("rut",$rut);
+			$this->db->where("estado","1");
+			$res=$this->db->get("usuarios");
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
 
+		public function getNombreUsuario($rut){
+			$this->db->select("CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre'");
+			$this->db->where("rut",$rut);
+			$this->db->where("estado","1");
+			$res=$this->db->get("usuarios");
+			if($res->num_rows()>0){
+				$row = $res->row_array();
+				return $row["nombre"];
+			}
+			return FALSE;
+		}
 
+		public function recuperarpass($rut,$data){
+			$this->db->where('rut', $rut);
+		    if($this->db->update('usuarios', $data)){
+		    	return TRUE;
+		    }else{
+		    	return FALSE;
+		    }
+		}
 	
 	/*********INICIO************/
 

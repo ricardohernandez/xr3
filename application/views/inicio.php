@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Inicio</title>
+<title><?php echo $titulo ?></title>
 <meta charset="utf-8">
 <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/font-icons.css" />
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/style2222.css" />
 <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
-<link rel="shortcut icon" href="<?php echo base_url();?>assets3/front_end/img/favicon.ico">
+<link rel="shortcut icon" href="<?php echo base_url();?>assets3/front_end/img/favicon2.jpg">
 <link rel="apple-touch-icon" href="<?php echo base_url();?>assets3/front_end/img/apple-touch-icon.png">
 <link rel="apple-touch-icon" sizes="72x72" href="<?php echo base_url();?>assets3/front_end/img/apple-touch-icon-72x72.png">
 <link rel="apple-touch-icon" sizes="114x114" href="<?php echo base_url();?>assets3/front_end/img/apple-touch-icon-114x114.png">

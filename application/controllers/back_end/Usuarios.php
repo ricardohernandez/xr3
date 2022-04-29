@@ -25,103 +25,25 @@ class Usuarios extends CI_Controller {
 	}
 
 	public function checkLogin(){
-		// if($this->session->userdata('rutUsuario')==""){
-		// 	echo json_encode(array('res'=>"sess"));exit;
-		// }
+		if(!$this->session->userdata('id')){
+			echo json_encode(array('res'=>"sess"));exit;
+		}
 	}
 
 	
 	public function acceso(){
-      if(!$this->session->userdata('id')){
+      if($this->session->userdata('id')){
+      	if($this->session->userdata('id_perfil')>3){
+      		redirect("./login");
+      	}
+      }else{
       	redirect("./login");
       }
 	}
 
 	//USUARIOS
-		// public function formCargaMasiva(){
-		// 	sleep(1);
-		// 	if($_FILES['userfile']['name']==""){
-		// 	    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
-		// 	}
-		// 	$fname = $_FILES['userfile']['name'];
-		// 	if (strpos($fname, ".") == false) {
-		 //        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo válido."));exit;
-		 //        }
-		 //        $chk_ext = explode(".",$fname);
 
-		 //        if($chk_ext[1]!="csv"){
-		 //        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
-		 //        }
-
-		 //        $fname = $_FILES['userfile']['name'];
-		 //        $chk_ext = explode(".",$fname);
-
-		 //        if(strtolower(end($chk_ext)) == "csv")  {
-		 //            $filename = $_FILES['userfile']['tmp_name'];
-		 //            $handle = fopen($filename, "r");
-		 //            $i=0;$z=0;$y=0;     
-		         
-		 //            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
-		 //                $i++;
-
-			//                 if(!empty($data[0])){
-		                	  
-		 //                	    $cargo = $data[8];
-		 //                	    $area = $data[9];
-		 //                	    $proyecto = $data[10];
-		 //                	    $rut = $data[4];
-			// 					$rut=str_replace('.', '', $rut);
-			// 					$rutf=str_replace('-', '', $rut);
-
-		 //                	    $id_cargo=$this->Usuariosmodel->getIdCargoPorNombre($cargo);
-		 //                	    $id_area=$this->Usuariosmodel->getIdAreaPorNombre($area);
-		 //                	    $id_proyecto=$this->Usuariosmodel->getIdProyectoPorNombre($proyecto);
-		 //                	    $ultima_actualizacion=date("Y-m-d G:i:s");
-
-		// 				    $arr=array("id_cargo"=>$id_cargo,
-		// 						"id_proyecto"=>$id_proyecto,
-		// 						"id_area"=>$id_area,
-		// 						"id_perfil"=>0,
-		// 						"id_jefe"=>0,
-		// 						"nombres"=>$data[0],
-		// 						"apellidos"=>$data[1],
-		// 						"rut"=>$rutf,
-		// 						"contrasena" => sha1($rutf),
-		// 						"empresa"=>$data[2],
-		// 						"comuna"=>$data[13],
-		// 						"sexo"=>"",
-		// 						"nacionalidad"=>"",
-		// 						"estado_civil"=>"",
-		// 						"domicilio"=>"",
-		// 						"ciudad"=>"",
-		// 						"sucursal"=>"",
-		// 						"celular_empresa"=>"",
-		// 						"celular_personal"=>$data[17],
-		// 						"correo_empresa"=>"",
-		// 						"correo_personal"=>$data[18],
-		// 						"fecha_nacimiento"=>date("Y-m-d",strtotime($data[19])),
-		// 						"fecha_ingreso"=>date("Y-m-d",strtotime($data[20])),
-		// 						"fecha_salida"=>"0000-00-00",
-		// 						"talla_zapato"=>"",
-		// 						"talla_pantalon"=>"",
-		// 						"talla_polera"=>"",
-		// 						"talla_cazadora"=>"",
-		// 						"estado"=>1,
-		// 						"ultima_actualizacion"=>$ultima_actualizacion
-		// 					);	
-		// 			  	 	$this->Usuariosmodel->formUsuario($arr);
-		// 			  	 	$arr=array();
-		// 	            }
-	        	    
-		 //            }
-		 //            fclose($handle); 
-		 //           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito."));exit;
-
-		 //        }else{
-		 //        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
-		 //        }   
-			// }
-
+		
 		public function formCargaMasiva(){
 			//print_r($_FILES);exit;
 			sleep(1);
@@ -222,7 +144,6 @@ class Usuarios extends CI_Controller {
 	        }else{
 	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
 	        }   
-		
 		}
 
 		public function index(){
@@ -234,7 +155,6 @@ class Usuarios extends CI_Controller {
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
-			
 		}
 
 	    public function vistaUsuarios(){
@@ -250,6 +170,7 @@ class Usuarios extends CI_Controller {
 			        'areas' => $this->Usuariosmodel->getAreas(),
 			        'proyectos' => $this->Usuariosmodel->getProyectos(),
 			        'jefes' => $this->Usuariosmodel->getJefes(),
+			        'nivelesTecnicos' => $this->Usuariosmodel->listaNivelesTecnicos(),
 			    );
 				$this->load->view('back_end/usuarios/usuarios',$datos);
 			}
@@ -274,6 +195,7 @@ class Usuarios extends CI_Controller {
 				$nacionalidad=$this->security->xss_clean(strip_tags($this->input->post("nacionalidad")));
 				$estado_civil=$this->security->xss_clean(strip_tags($this->input->post("estado_civil")));
 				$codigo=$this->security->xss_clean(strip_tags($this->input->post("codigo")));
+				$nivel_tecnico=$this->security->xss_clean(strip_tags($this->input->post("nivel_tecnico")));
 				$cargo=$this->security->xss_clean(strip_tags($this->input->post("cargo")));
 				$area=$this->security->xss_clean(strip_tags($this->input->post("area")));
 				$proyecto=$this->security->xss_clean(strip_tags($this->input->post("proyecto")));
@@ -317,6 +239,7 @@ class Usuarios extends CI_Controller {
 						"empresa"=>$empresa,
 						"comuna"=>$comuna,
 						"codigo"=>$codigo,
+						"id_nivel_tecnico"=>$nivel_tecnico,
 						"sexo"=>$sexo,
 						"nacionalidad"=>$nacionalidad,
 						"estado_civil"=>$estado_civil,
@@ -453,6 +376,7 @@ class Usuarios extends CI_Controller {
 						    <th class="head">Proyecto</th> 
 						    <th class="head">Jefe</th> 
 						    <th class="head">C&oacute;digo</th> 
+						    <th class="head">Nivel técnico</th> 
 						    <th class="head">Domicilio</th> 
 						    <th class="head">Comuna</th> 
 						    <th class="head">Ciudad</th> 
@@ -491,6 +415,7 @@ class Usuarios extends CI_Controller {
 									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									 <td><?php echo utf8_decode($d["jefe"]); ?></td>
 									 <td><?php echo utf8_decode($d["codigo"]); ?></td>
+									 <td><?php echo utf8_decode($d["nivel_tecnico"]); ?></td>
 									 <td><?php echo utf8_decode($d["domicilio"]); ?></td>
 									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
 									 <td><?php echo utf8_decode($d["ciudad"]); ?></td>

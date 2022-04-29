@@ -71,6 +71,9 @@
             }
           }
         },    
+
+       
+                
         "columns": [
           { "data": "tecnico" ,"class":"margen-td centered"},
           { "data": "comuna" ,"class":"margen-td centered"},
@@ -384,7 +387,7 @@
                });
             $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
             }
-        },timeout:120000
+        },timeout:520000
       });
     })
 
@@ -448,8 +451,10 @@
              <input type="file" id="userfile_calidad" name="userfile" class="file_cs" style="display:none;" />
              <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile_calidad').click();">
              <i class="fa fa-file-import"></i> Cargar base
+
           </div>
-          <!-- <i class="fa-solid fa-circle-info ejemplo_planilla_calidad" title="Ver ejemplo" ></i> -->
+         
+
           <?php
         }
       ?>
@@ -476,10 +481,8 @@
         </div>
       </div>
 
-      
-
       <?php  
-       if($this->session->userdata('id_perfil')<>4){
+       if($this->session->userdata('id_perfil')<=3){
           ?>
             <div class="col-lg-2">  
               <div class="form-group">
@@ -571,7 +574,7 @@
         <center><span class="titulo_fecha_actualizacion_dias">
           <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
           </div>
-        </span></center>
+        </span> <i class="fa-solid fa-circle-info ejemplo_planilla_calidad" title="Ver ejemplo" ></i></center>
     </div>
   </div>
 
@@ -618,10 +621,10 @@
           <a href="./planilla_ejemplo/csv_planilla.png" target="_blank"><img src="./planilla_ejemplo/csv_planilla.png" width="500px"></a><br><br>
 
           <h6>*El orden de campos es el siguiente.</h6>
-          <a href="./planilla_ejemplo/cab.png" target="_blank"><img src="./planilla_ejemplo/cab.png" width="800px"></a><br><br>
+          <a href="./planilla_ejemplo/cabecera_calidad.png" target="_blank"><img src="./planilla_ejemplo/cabecera_calidad.png" width="800px"></a><br><br>
 
           <h6>*Finalmente subir archivo CSV , solo el detalle de datos.</h6>
-          <a href="./planilla_ejemplo/campos_calidad.png" target="_blank"><img src="./planilla_ejemplo/campos_calidad.png" width="800px"></a>
+          <a href="./planilla_ejemplo/campos_calidad2.png" target="_blank"><img src="./planilla_ejemplo/campos_calidad2.png" width="800px"></a>
         </div></center>
         <center><div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

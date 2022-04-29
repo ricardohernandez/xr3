@@ -276,12 +276,15 @@
     }
 
   }
+    
+     .select2-container--default .select2-selection--single .select2-selection__placeholder{
+    color: #000!important;
+  }
+  
 </style>
 
 <script type="text/javascript">
   $(function(){
-    const perfil = "<?php echo $this->session->userdata('id_perfil'); ?>"
-
     $.extend(true,$.fn.dataTable.defaults,{
       info:true,
       paging:false,
@@ -323,71 +326,67 @@
      },
     });
 
-    $("#menu_graficos").addClass('disabled_sub');
+    $("#menu_turnos").addClass('disabled_sub');
     $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
     $(".menu_lista li").removeClass('menuActivo');       
-    $("#menu_graficos").addClass('menuActivo');  
+    $("#menu_turnos").addClass('menuActivo');  
 
-    $.get("vistaGraficosProd", function( data ) {
+    $.get("vistaTurnos", function( data ) {
       $(".contenedor_app").html(data);    
-      $("#menu_graficos").removeClass('disabled_sub');
+      $("#menu_turnos").removeClass('disabled_sub');
     });
-   
     
-    $(document).off('click', '#menu_resumen').on('click', '#menu_resumen',function(event) {
+    $(document).off('click', '#menu_turnos').on('click', '#menu_turnos',function(event) {
       event.preventDefault();
-      $("#menu_resumen").addClass('disabled_sub');
+      $("#menu_turnos").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_resumen").addClass('menuActivo');  
+      $("#menu_turnos").addClass('menuActivo');  
 
-      $.get("vistaResumen", function( data ) {
+      $.get("vistaTurnos", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_resumen").removeClass('disabled_sub');
+        $("#menu_turnos").removeClass('disabled_sub');
       });
     });
 
-
-    $(document).off('click', '#menu_detalle').on('click', '#menu_detalle',function(event) {
+    $(document).off('click', '#menu_licencias').on('click', '#menu_licencias',function(event) {
       event.preventDefault();
-      $("#menu_detalle").addClass('disabled_sub');
+      $("#menu_licencias").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_detalle").addClass('menuActivo');  
+      $("#menu_licencias").addClass('menuActivo');  
 
-      $.get("vistaDetalle", function( data ) {
+      $.get("vistaLicencias", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_detalle").removeClass('disabled_sub');
+        $("#menu_licencias").removeClass('disabled_sub');
       });
     });
 
-    // $(document).off('click', '#menu_calidad').on('click', '#menu_calidad',function(event) {
-    //   event.preventDefault();
-    //   $("#menu_calidad").addClass('disabled_sub');
-    //   $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-    //   $(".menu_lista li").removeClass('menuActivo');       
-    //   $("#menu_calidad").addClass('menuActivo');  
-
-    //   $.get("vistaCalidad", function( data ) {
-    //     $(".contenedor_app").html(data);    
-    //     $("#menu_calidad").removeClass('disabled_sub');
-    //   });
-    // });
-
-
-    $(document).off('click', '#menu_graficos').on('click', '#menu_graficos',function(event) {
+    $(document).off('click', '#menu_vacaciones').on('click', '#menu_vacaciones',function(event) {
       event.preventDefault();
-      $("#menu_graficos").addClass('disabled_sub');
+      $("#menu_vacaciones").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_graficos").addClass('menuActivo');  
+      $("#menu_vacaciones").addClass('menuActivo');  
 
-      $.get("vistaGraficosProd", function( data ) {
+      $.get("vistaVacaciones", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_graficos").removeClass('disabled_sub');
+        $("#menu_vacaciones").removeClass('disabled_sub');
       });
     });
 
+    $(document).off('click', '#menu_mantenedor_turnos').on('click', '#menu_mantenedor_turnos',function(event) {
+      event.preventDefault();
+      $("#menu_mantenedor_turnos").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_mantenedor_turnos").addClass('menuActivo');  
+
+      $.get("vistaMantenedorTurnos", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_mantenedor_turnos").removeClass('disabled_sub');
+      });
+    });
 
   })
 </script>
@@ -402,16 +401,23 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-        <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Graficos Productividad </a></li>   
-        <li id="menu_resumen" class="active"><a> <i class="fa fa-list-alt"></i> Resumen Productividad </a></li>   
-        <li id="menu_detalle" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Productividad </a></li>   
-        <!-- <li id="menu_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Calidad  </a></li>    -->
+        <li id="menu_turnos" class="active"><a> <i class="fa fa-list-alt"></i> Turnos </a></li>   
+
+        <?php  
+        if($this->session->userdata('id_perfil')<=3){
+        ?>
+          <li id="menu_licencias" class="active"><a> <i class="fa fa-list-alt"></i> Licencias</a></li>   
+          <li id="menu_vacaciones" class="active"><a> <i class="fa fa-list-alt"></i> Vacaciones </a></li>   
+          <li id="menu_mantenedor_turnos" class="active"><a> <i class="fa fa-list-alt"></i> Mantenedor de turnos y ausencias  </a></li>   
+        <?php  
+        }
+        ?>
       </ul>  
     </div> 
   </div>
 
   <div class="row">
-   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="contenedor_principal">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
