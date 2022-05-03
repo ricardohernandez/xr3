@@ -141,7 +141,7 @@
                   sProcessing:"<i id='processingIcon' class='fa fa-cog fa-spin fa-4x'></i>",
                 },
                 fixedColumns:   {
-                   leftColumns: 2,
+                   leftColumns: 4,
                    heightMatch: 'none'
                 },
                 columnDefs: [
@@ -264,6 +264,10 @@
       }); 
     }
 
+    $(document).off('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_det').on('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_det', function(event) {
+      procesaDatatable(true)
+    }); 
+
     /*$(document).off('change', '#periodo_resumen').on('change', '#periodo_resumen',function(event) {
       $(".btn_filtro_resumen").prop("disabled" , true);
       $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...');
@@ -306,30 +310,6 @@
       </div>
 
       <?php  
-       if($this->session->userdata('id_perfil')<>4){
-          ?>
-          <div class="col-lg-2">  
-            <div class="form-group">
-              <select id="trabajadores_resumen" name="trabajadores_resumen" style="width:100%!important;">
-                  <option value="">Seleccione Trabajador | Todos</option>
-              </select>
-            </div>
-          </div>
-          <?php
-       }else{
-        ?>
-          <div class="col-lg-2">  
-            <div class="form-group">
-              <select id="trabajador_resumen" name="trabajador_resumen" class="custom-select custom-select-sm" >
-                  <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
-              </select>
-            </div>
-          </div>
-        <?php
-       }
-      ?>
-
-      <?php  
         if($this->session->userdata('id_perfil')<3){
       ?>
 
@@ -368,13 +348,39 @@
         }
       ?>
 
-      <div class="col-6 col-lg-1">
+      <?php  
+       if($this->session->userdata('id_perfil')<>4){
+          ?>
+          <div class="col-lg-2">  
+            <div class="form-group">
+              <select id="trabajadores_resumen" name="trabajadores_resumen" style="width:100%!important;">
+                  <option value="">Seleccione Trabajador | Todos</option>
+              </select>
+            </div>
+          </div>
+          <?php
+       }else{
+        ?>
+          <div class="col-lg-2">  
+            <div class="form-group">
+              <select id="trabajador_resumen" name="trabajador_resumen" class="custom-select custom-select-sm" >
+                  <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+              </select>
+            </div>
+          </div>
+        <?php
+       }
+      ?>
+
+      
+
+     <!--  <div class="col-6 col-lg-1">
         <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_resumen btn_xr3">
          <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
          </button>
        </div>
-      </div>
+      </div> -->
 
      <!--  <div class="col-6 col-lg-1">  
         <div class="form-group">

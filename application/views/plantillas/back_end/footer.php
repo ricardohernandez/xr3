@@ -1,6 +1,6 @@
-<!-- <footer class="footer text-center">
-	<p> &copy; KM-Telecomunicaciones &copy; <?php echo date("Y");?></p>
-</footer> -->
+<footer class="footer text-center">
+	<p> &copy; PTO Plataforma técnica operacional  <?php echo date("Y");?></p>
+</footer>
 </div>
 <script src="<?php echo base_url();?>assets3/back_end/js/rut.min.js"></script>
 <script src="<?php echo base_url();?>assets3/back_end/js/popper.min.js" charset="UTF-8"></script>
@@ -28,6 +28,5 @@
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/fontawesome-all.min.css">
 <script src="<?php echo base_url();?>assets3/back_end/js/dataTables.select.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/select2.min.css">
-
 </body>
 </html>

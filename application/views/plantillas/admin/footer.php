@@ -1,7 +1,7 @@
   <footer class="main-footer d-flex p-3 px-2 bg-white border-top">
     <div class="col text-center">
     <span class="copyright ml-auto my-auto mr-2">Copyright © <?php echo date("Y") ?>
-      <a href="https://designrevision.com" rel="nofollow"> <?php echo @$empresa ?></a>
+      <a href="!#" rel="nofollow"> <?php echo @$empresa ?></a>
     </span>
   </div>
   </footer>

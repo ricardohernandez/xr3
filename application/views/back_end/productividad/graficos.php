@@ -405,6 +405,19 @@
   }
 
 
+  $(document).off('change', '#periodo').on('change', '#periodo', function(event) {
+      dataGraficos()
+  }); 
+
+  $(document).off('change', '#jefe_graficos').on('change', '#jefe_graficos', function(event) {
+      dataGraficos()
+  }); 
+
+  $(document).off('change', '#trabajadores').on('change', '#trabajadores', function(event) {
+      dataGraficos()
+  }); 
+   
+
 </script>
 
 <div class="form-row cont_graficos">
@@ -504,13 +517,13 @@
 	  	  }
 		?>
 
-    <div class="col-6 col-lg-1">
+   <!--  <div class="col-6 col-lg-1">
         <div class="form-group">
 	        <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_graficos btn_xr3">
 	            <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
 	        </button>
         </div>
-    </div>
+    </div> -->
 
     <div class="col-6 col-lg-1">
         <div class="form-group">

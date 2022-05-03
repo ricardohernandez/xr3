@@ -14,13 +14,12 @@
   }
 
   .contenedor_app{
-    border: 1px solid #dce4ec;
+   /* border: 1px solid #dce4ec;*/
     background-color: #F8F8F8;
     padding: 10px 5px;
-    margin-bottom: 40px;
+  /*  margin-bottom: 40px;*/
     border-radius: 1px;
     min-height: calc(100vh - 110px)
-
   }
   .btn-top{
     margin-top: 1px;
@@ -300,7 +299,7 @@
       bDeferRender: true,
       select : true,
      "oLanguage": { 
-      "sProcessing":     "Procesando...",
+      "sProcessing":     "<i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#32477C;'></i>",
       "sLengthMenu":     "Mostrar: _MENU_ ",
       "sZeroRecords":    "No se encontraron resultados",
       "sEmptyTable":     "Ningún dato disponible en esta tabla",

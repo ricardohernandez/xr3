@@ -7,6 +7,7 @@
     padding:0.1rem 0.1rem!important;
     border-bottom: none!important;
   }
+  
 
   .form-control-sm {
     height: calc(1.9em + 0.5rem + 2px)!important;

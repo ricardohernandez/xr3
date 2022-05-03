@@ -33,7 +33,7 @@
        "iDisplayLength":100, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": true,
-       "aaSorting" : [[3,"desc"]],
+       "aaSorting" : [[4,"desc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -50,7 +50,7 @@
             var hasta_actual="<?php echo $hasta_actual; ?>"
             var desde_anterior="<?php echo $desde_anterior; ?>"
             var hasta_anterior="<?php echo $hasta_anterior; ?>"
-            var periodo =$("#periodo").val()
+            var periodo =$("#periodo_detalle").val()
 
             if(periodo=="actual"){
               $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
@@ -61,7 +61,7 @@
             return json;
           },       
           data: function(param){
-            param.periodo = $("#periodo").val();
+            param.periodo = $("#periodo_detalle").val();
             param.jefe = $("#jefe_det").val();
 
             if(perfil==4){
@@ -76,6 +76,7 @@
                 
         "columns": [
           { "data": "tecnico" ,"class":"margen-td centered"},
+          { "data": "rut_tecnico" ,"class":"margen-td centered"},
           { "data": "comuna" ,"class":"margen-td centered"},
           { "data": "ot" ,"class":"margen-td centered"},
           { "data": "fecha" ,"class":"margen-td centered"},
@@ -301,7 +302,7 @@
          trabajador="-"
       }
 
-      var periodo = $("#periodo").val()=="" ? "actual" : $("#periodo").val()
+      var periodo = $("#periodo_detalle").val()=="" ? "actual" : $("#periodo_detalle").val()
       window.location="excel_calidad/"+periodo+"/"+trabajador+"/"+jefe;
     });
 
@@ -436,6 +437,12 @@
           },timeout:5000
       }); 
     }
+
+
+
+    $(document).off('change', '#periodo_detalle , #trabajadores ,#jefe_det').on('change', '#periodo_detalle , #trabajadores ,#jefe_det', function(event) {
+      lista_calidad.ajax.reload()
+    }); 
       
   })
 </script>
@@ -465,7 +472,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
             </div>
-              <select id="periodo" name="periodo" class="custom-select custom-select-sm">
+              <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual </option>
                 <option value="anterior">Anterior</option>
              </select>
@@ -481,29 +488,6 @@
         </div>
       </div>
 
-      <?php  
-       if($this->session->userdata('id_perfil')<=3){
-          ?>
-            <div class="col-lg-2">  
-              <div class="form-group">
-                <select id="trabajadores" name="trabajadores" style="width:100%!important;">
-                    <option value="">Seleccione Trabajador | Todos</option>
-                </select>
-              </div>
-            </div>
-          <?php
-       }else{
-        ?>
-           <div class="col-lg-2">  
-              <div class="form-group">
-                <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
-                    <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
-                </select>
-              </div>
-            </div>
-        <?php
-       }
-      ?>
 
       <?php  
         if($this->session->userdata('id_perfil')<3){
@@ -544,19 +528,44 @@
         }
       ?>
 
+      <?php  
+       if($this->session->userdata('id_perfil')<=3){
+          ?>
+            <div class="col-lg-2">  
+              <div class="form-group">
+                <select id="trabajadores" name="trabajadores" style="width:100%!important;">
+                    <option value="">Seleccione Trabajador | Todos</option>
+                </select>
+              </div>
+            </div>
+          <?php
+       }else{
+        ?>
+           <div class="col-lg-2">  
+              <div class="form-group">
+                <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
+                    <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+                </select>
+              </div>
+            </div>
+        <?php
+       }
+      ?>
+
+
       <div class="col-12 col-lg-2">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
        </div>
       </div>
 
-      <div class="col-6 col-lg-1">
+      <!-- <div class="col-6 col-lg-1">
         <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_calidad btn_xr3">
          <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
          </button>
        </div>
-      </div>
+      </div> -->
 
       <div class="col-6 col-lg-1">  
         <div class="form-group">
@@ -585,6 +594,7 @@
           <tr>    
            <!--  <th class="centered" style="width: 50px;"></th>     -->
             <th class="centered">Técnico</th> 
+            <th class="centered">RUT</th> 
             <th class="centered">Comuna</th> 
             <th class="centered">Orden</th> 
             <th class="centered">Fecha</th> 

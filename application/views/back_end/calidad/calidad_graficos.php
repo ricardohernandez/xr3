@@ -6,6 +6,10 @@
     text-align: left;
     padding:10px 2px;
   }
+   
+  .border-left-primary {
+      border-left: 0.25rem solid #32477C!important;
+  }
 
   .tfoot_totales{
      background-color: #32477C;
@@ -13,6 +17,10 @@
   }
   .tfoot_totales th{
     font-size: 13px!important;
+  }
+  .actualizacion_calidad{
+      display: inline-block;
+      font-size: 11px;
   }
 </style>
 <script type="text/javascript">
@@ -46,7 +54,7 @@
        		var options = {
 		        isStacked: true,
             width: "100%",
-            height: 240,
+            height: 260,
             is3D:true,
             colors:["#32477C","#DC3912"],
             fontName: 'Nunito',
@@ -215,7 +223,7 @@
         	var options = {
 		        isStacked: true,
             width: "100%",
-            height: 240,
+            height: 260,
             is3D:true,
             colors:["#32477C","#DC3912"],
             fontName: 'Nunito',
@@ -368,8 +376,8 @@
 
   /*****DATATABLE*****/   
     var tabla_resumen_calidad = $('#tabla_resumen_calidad').DataTable({
-       "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
-       "iDisplayLength":100, 
+       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
+       "iDisplayLength":-1, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
        /*"aaSorting" : [[0,"asc"]],*/
@@ -378,7 +386,7 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
-       "info":false,
+       "info":true,
        /*"columnDefs": [{ orderable: false, targets: 0 }  ],*/
        "ajax": {
           "url":"<?php echo base_url();?>listaResumenCalidad",
@@ -437,38 +445,6 @@
                 $( api.column( i ).footer() ).html(numberWithCommas(total));
               }
                 
-              if(i==4){
-                v1 = api .column(2).data().reduce( function (a, b) {return intVal(a) + intVal(b); }, 0 );
-                v2 = api .column(3).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
-                avg = (v2 / v1)*100;
-                if(typeof avg === 'number'){
-                  $( api.column(4).footer() ).html(avg.toFixed(2)+"%")
-                }else{
-                  $( api.column(4).footer() ).html("-")
-                }
-              }
-
-              if(i==7){
-                v1 = api .column(5).data().reduce( function (a, b) {return intVal(a) + intVal(b); }, 0 );
-                v2 = api .column(6).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
-                avg = (v2 / v1)*100;
-                $( api.column(7).footer() ).html(avg.toFixed(2)+"%")
-              }
-
-              /*if(i==2 || i==3 || i==5 || i==6 || i==8){   
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
-                };
-
-                total = api .column( i )  .data()   .reduce( function (a, b) {
-                        return intVal(a) + intVal(b);
-                }, 0 );
-
-
-                $( api.column( i ).footer() ).html(numberWithCommas(total));
-              }*/
-
               /*if(i==4 || i==7){
 
                 var numRows = api
@@ -491,6 +467,25 @@
                 avg = avg.toFixed(2)
                 $( api.column( i ).footer() ).html(avg+"%")
               }*/
+
+              if(i==4){
+                v1 = api .column(2).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
+                v2 = api .column(3).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
+                avg = (v2 / v1)*100;
+                if(typeof avg === 'number'){
+                  $( api.column(4).footer() ).html(avg.toFixed(2)+"%")
+                }else{
+                  $( api.column(4).footer() ).html("-")
+                }
+              }
+
+              if(i==7){
+                v1 = api .column(5).data().reduce( function (a, b) {return intVal(a) + intVal(b); }, 0 );
+                v2 = api .column(6).data().reduce( function (a, b) { return intVal(a) + intVal(b); }, 0 );
+                avg = (v2 / v1)*100;
+                $( api.column(7).footer() ).html(avg.toFixed(2)+"%")
+              }
+
           }
         },
      
@@ -512,17 +507,7 @@
       tabla_resumen_calidad.search($(this).val().trim()).draw();
     });
 
-
-		$(document).off('click', '.btn_filtro_calidad').on('click', '.btn_filtro_calidad',function(event) {
-	      event.preventDefault();
-	       $(".btn_filtro_calidad").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando').prop("disabled" , true);
-	       tabla_resumen_calidad.ajax.reload()
-	       graficoHFC()
-	       graficoFTTH()
-		});
-
-
-		$.getJSON("listaTrabajadoresCalidad", function(data) {
+    $.getJSON(base_url + "listaTrabajadoresCalidad" , function(data) {
 	      response = data;
 		}).done(function() {
 		    $("#trabajadores").select2({
@@ -533,12 +518,87 @@
 		    });
 	  });
 
-    $(document).off('change', '#periodo , #trabajadores ,#jefe , #tipo_red, #proyecto').on('change', '#periodo , #trabajadores ,#jefe , #tipo_red ,#proyecto', function(event) {
+    $(document).off('change', '#periodo').on('change', '#periodo', function(event) {
       tabla_resumen_calidad.ajax.reload()
       graficoHFC()
       graficoFTTH()
     }); 
 
+    $(document).off('change', '#jefe').on('change', '#jefe', function(event) {
+      tabla_resumen_calidad.ajax.reload()
+      graficoHFC()
+      graficoFTTH()
+    }); 
+
+    $(document).off('change', '#jefe').on('change', '#jefe', function(event) {
+      tabla_resumen_calidad.ajax.reload()
+      graficoHFC()
+      graficoFTTH()
+    }); 
+
+    $(document).off('change', '#trabajadores').on('change', '#trabajadores', function(event) {
+      tabla_resumen_calidad.ajax.reload()
+      graficoHFC()
+      graficoFTTH()
+    }); 
+
+    $(document).off('change', '#proyecto').on('change', '#proyecto', function(event) {
+      tabla_resumen_calidad.ajax.reload()
+      graficoHFC()
+      graficoFTTH()
+    }); 
+
+    $(document).off('change', '#tipo_red').on('change', '#tipo_red', function(event) {
+      tabla_resumen_calidad.ajax.reload()
+      graficoHFC()
+      graficoFTTH()
+    }); 
+
+    actualizacionCalidad()
+
+    function actualizacionCalidad(){
+      $.ajax({
+          url: "actualizacionCalidad"+"?"+$.now(),  
+          type: 'POST',
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          dataType:"json",
+          beforeSend:function(){
+          },
+          success: function (data) {
+            if(data.res=="ok"){
+              $(".actualizacion_calidad").html("<b>Última actualización planilla : "+data.datos+"</b>");
+            }
+          },
+          error : function(xhr, textStatus, errorThrown ) {
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    $.notify("Reintentando...", {
+                      className:'info',
+                      globalPosition: 'top right'
+                    });
+                    $.ajax(this);
+                    return;
+                } else{
+                   $.notify("Problemas en el servidor, intente nuevamente.", {
+                      className:'warn',
+                      globalPosition: 'top right'
+                    });     
+                }    
+                return;
+            }
+
+            if (xhr.status == 500) {
+                $.notify("Problemas en el servidor, intente más tarde.", {
+                  className:'warn',
+                  globalPosition: 'top right'
+                });
+            }
+          },timeout:5000
+      }); 
+    }
 
 </script>
 
@@ -550,8 +610,8 @@
             <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
           </div>
             <select id="periodo" name="periodo" class="custom-select custom-select-sm">
-              <option value="actual">Actual </option>
-              <option selected value="anterior">Anterior</option>
+              <option selected value="actual">Actual </option>
+              <option value="anterior">Anterior</option>
               <option value="sub_anterior">Sub anterior</option>
            </select>
         </div>
@@ -563,34 +623,6 @@
         <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_g" id="fecha_g">
     </div>
   </div>
-
-	<?php  
-    if($this->session->userdata('id_perfil')<=3){
-  ?>
-
-    <div class="col-lg-2">  
-      <div class="form-group">
-        <select id="trabajadores" name="trabajadores" style="width:100%!important;">
-            <option value="">Seleccione Trabajador | Todos</option>
-        </select>
-      </div>
-    </div>
-
-  <?php
-  	}else{
-  ?>
-
-    <div class="col-lg-2">  
-      <div class="form-group">
-        <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
-            <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
-        </select>
-      </div>
-    </div>
-
-  <?php
-    }
-	?>
 
 	<?php  
     if($this->session->userdata('id_perfil')<3){
@@ -631,6 +663,35 @@
     }
   ?>
 
+
+  <?php  
+    if($this->session->userdata('id_perfil')<=3){
+  ?>
+
+    <div class="col-lg-2">  
+      <div class="form-group">
+        <select id="trabajadores" name="trabajadores" style="width:100%!important;">
+            <option value="">Seleccione Trabajador | Todos</option>
+        </select>
+      </div>
+    </div>
+
+  <?php
+    }else{
+  ?>
+
+    <div class="col-lg-2">  
+      <div class="form-group">
+        <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
+            <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+        </select>
+      </div>
+    </div>
+
+  <?php
+    }
+  ?>
+
   <div class="col-lg-2">
     <div class="form-group">
       <select id="proyecto" name="proyecto" class="custom-select custom-select-sm">
@@ -646,21 +707,21 @@
     </div>
   </div>
 
-  <div class="col-lg-1">
+  <div class="col-lg-2">
     <div class="form-group">
       <select id="tipo_red" name="tipo_red" class="custom-select custom-select-sm">
-        <option value="" selected>Tipo red | Ambas </option>
+        <option value="" selected>Tipo red</option>
         <option value="hfc" >HFC </option>
         <option value="ftth" >FTTH </option>
       </select>
     </div>
   </div>
 
-  <div class="col-12 col-lg-2">  
+  <!-- <div class="col-12 col-lg-2">  
     <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_detalle_calidad" class="buscador_detalle_calidad form-control form-control-sm">
     </div>
-  </div>
+  </div> -->
 
   <!-- <div class="col-6 col-lg-1">
       <div class="form-group">
@@ -673,54 +734,67 @@
 </div>     
 
 <div class="row">
-	<div class="col mb-2">
-	  <div class="card border-left-primary shadow mb-2">
+	<div class="col">
+	  <div class="card border-left-primary shadow">
 	    <div class="card-body" style="padding: .4rem;">
 	      <div class="row">
-					  <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-					  	<table id="tabla_resumen_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-				        <thead>
-				        
-				          <tr>    
-				            <th class="centered">Técnico</th> 
-				            <th class="centered">Periodo</th> 
-				            <th class="centered">Ordenes</th> 
-				            <th class="centered">Fallos </th> 
-				            <th class="centered">Calidad </th> 
-				            <th class="centered">Ordenes</th> 
-				            <th class="centered">Fallos</th> 
-				            <th class="centered">Calidad </th> 
-				           <!--  <th class="centered">Puntos</th>  -->
-				          </tr>
-				        </thead>
 
-                <tfoot class="tfoot_totales">
-                  <tr>
-                      <th class="">Totales</th>
-                      <th class=""></th>
-                      <th class=""></th>
-                      <th class=""></th>
-                      <th class=""></th>
-                      <th class=""></th>
-                      <th class=""></th>
-                      <th class=""></th>
-                     <!--  <th class=""></th> -->
-                  </tr>
-                </tfoot>
+          <div class="col-lg-6 offset-lg-3">
+              <center><span class="titulo_fecha_actualizacion_dias">
+                <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
+                </div>
+          </div>
+          
+      	  <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+				  	<table id="tabla_resumen_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+			        <thead>
+			          
+                <tr>    
+                  <th colspan="2" class="centered"></th> 
+                  <th colspan="3" class="centered"><center>HFC</center></th> 
+                  <th colspan="3" class="centered"><center>FTTH</center></th> 
+                </tr>
 
-		          </table>
-				  	</div>
+			          <tr>    
+			            <th class="centered">Técnico</th> 
+			            <th class="centered">Periodo</th> 
+			            <th class="centered">Ordenes</th> 
+			            <th class="centered">Fallos </th> 
+			            <th class="centered">Calidad </th> 
+			            <th class="centered">Ordenes</th> 
+			            <th class="centered">Fallos</th> 
+			            <th class="centered">Calidad </th> 
+			           <!--  <th class="centered">Puntos</th>  -->
+			          </tr>
+			        </thead>
 
-		        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-	            <div class="short-div">
-	            		<h6 class="titulo_grafico">Calidad HFC Últimos 3 periodos</h6>
-		    					<div id="graficoHFC"></div>
-		          </div>
-	            <div class="short-div">
-	            		<h6 class="titulo_grafico">Calidad FTTH Últimos 3 periodos</h6>
-	    			  	<div id="graficoFTTH"></div>
-	            </div>
-		        </div>
+              <tfoot class="tfoot_totales">
+                <tr>
+                    <th class="">Totales</th>
+                    <th class=""></th>
+                    <th class=""></th>
+                    <th class=""></th>
+                    <th class=""></th>
+                    <th class=""></th>
+                    <th class=""></th>
+                    <th class=""></th>
+                   <!--  <th class=""></th> -->
+                </tr>
+              </tfoot>
+
+	          </table>
+			  	</div>
+
+	        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="short-div">
+            		<h6 class="titulo_grafico">Calidad HFC Últimos 3 periodos</h6>
+	    					<div id="graficoHFC"></div>
+	          </div>
+            <div class="short-div">
+            		<h6 class="titulo_grafico">Calidad FTTH Últimos 3 periodos</h6>
+    			  	<div id="graficoFTTH"></div>
+            </div>
+	        </div>
 
 	      </div>
 	    </div>

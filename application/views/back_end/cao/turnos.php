@@ -70,7 +70,7 @@
       font-size: 11px!important;
     }
     .modal_turnos{
-      width: 45%!important;
+      width: 55%!important;
     }
   }
 </style>
@@ -496,6 +496,11 @@
 
       window.location="excel_turnos/"+desde+"/"+hasta+"/"+jefe+"/"+nivel_tecnico+"/"+trabajador;
     });
+
+    $(document).off('change', '#desde_t ,#hasta_t , #trabajadores_t ,#jefe_t,#nivel_tecnico').on('change', '#desde_t ,#hasta_t , #trabajadores_t ,#jefe_t,#nivel_tecnico', function(event) {
+       procesaDatatable(true)
+    }); 
+
   })
 </script>
 
@@ -534,7 +539,7 @@
     <?php  
        if($this->session->userdata('id_perfil')<>4){
           ?>
-          <div class="col-lg-2">  
+          <div class="col-lg-3">  
             <div class="form-group">
               <select id="trabajadores_t" name="trabajadores_t" style="width:100%!important;">
                   <option value="">Seleccione Trabajador | Todos</option>
@@ -607,13 +612,13 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-1">
+    <!--  <div class="col-6 col-lg-1">
       <div class="form-group">
        <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_turnos btn_xr3">
        <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
        </button>
      </div>
-    </div>
+    </div> -->
 
     <div class="col-6 col-lg-1">
       <div class="form-group">

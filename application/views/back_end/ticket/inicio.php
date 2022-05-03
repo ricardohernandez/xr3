@@ -14,14 +14,14 @@
   }
 
   .contenedor_app{
-    border: 1px solid #dce4ec;
+   /* border: 1px solid #dce4ec;*/
     background-color: #F8F8F8;
     padding: 10px 5px;
-    margin-bottom: 40px;
+  /*  margin-bottom: 40px;*/
     border-radius: 1px;
     min-height: calc(100vh - 110px)
-
   }
+  .btn-to
   .btn-top{
     margin-top: 1px;
   }

@@ -96,7 +96,7 @@
     }
     .logo_empresa{
     	width: 70px;
-    	margin-top: -10px;
+    	margin-top: -10px!important;
     }
   }
 </style>
@@ -116,33 +116,38 @@
 	          <a href="#" class="sidenav__menu-url">Aplicaciones</a>
 	            <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	            <ul class="sidenav__menu-dropdown">
-	              <!-- <li class="">
-	                <a class="sidenav__menu-url" href="#!">SUBMENU</a>
-	                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
-	                <ul class="sidenav__menu-dropdown">
-	                   <li><a class="sidenav__menu-url" href="">APP</a></li>
-	                </ul>
-	                </li> -->
-	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>calidad"> Calidad</a></li>
-	          		 	<li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO (Control de asistencia operacional)</a></li>
-	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_ots"> Checklist herramientas</a></li>
-	                <!-- <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li> -->
-	                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>productividad"> Productividad</a></li>
-
+                <!-- <li class="">
+                <a class="sidenav__menu-url" href="#!">SUBMENU</a>
+                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                <ul class="sidenav__menu-dropdown">
+                   <li><a class="sidenav__menu-url" href="">APP</a></li>
+                </ul>
+                </li> -->
+	                <?php  
+		          			if($this->session->userdata('id_perfil')<=3){
+		         	    ?>
+          		 	<li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
+	          		 	<?php
+					          }
+					        ?>
+                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_ots"> CLH - Checklist herramientas</a></li>
+                <!-- <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li> -->
+                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>calidad"> RCO - reporte calidad operaciones</a></li>
+                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>productividad"> RPO - Reporte productividad operaciones</a></li>
 	            </ul>
 	        </li>
 
 	        <?php  
 	          if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
 	            ?>
-	                    <li>
-	                    <a href="#" class="sidenav__menu-url">Editores</a>
-	                    <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
-	                    <ul class="sidenav__menu-dropdown">
-	                        <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>admin_xr3#noticias"> Noticias</a></li>
-	                        <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>admin_xr3#informaciones"> Informaciones</a></li>
-	                    </ul>
-	                  </li>
+              <li>
+                <a href="#" class="sidenav__menu-url">Editores</a>
+                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                <ul class="sidenav__menu-dropdown">
+                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>admin_xr3#noticias"> Noticias</a></li>
+                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>admin_xr3#informaciones"> Informaciones</a></li>
+                </ul>
+              </li>
 	            <?php
 	          }
 	        ?>
@@ -198,11 +203,16 @@
                 <li class="nav__dropdown ">
                 <a href="#">Aplicaciones</a>
                   <ul class="nav__dropdown-menu"> 
-                  	<li><a  class="menu_list" href="<?php echo base_url() ?>calidad"> Calidad</a></li>
-	          		    <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO (Control de asistencia operacional)</a></li>
-                    <!-- <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_hfc"> Checklist HFC</a></li> -->
-                    <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_ots"> Checklist herramientas</a></li>
-                  	<li><a  class="menu_list" href="<?php echo base_url() ?>productividad"> Productividad</a></li>
+                  	<?php  
+		          				if($this->session->userdata('id_perfil')<=3){
+			         	    ?>
+	          		    <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
+	          		    <?php
+						          }
+						        ?>
+                    <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_ots"> CLH - Checklist herramientas</a></li>
+                  	<li><a  class="menu_list" href="<?php echo base_url() ?>calidad"> RCO - Reporte calidad operaciones</a></li>
+                  	<li><a  class="menu_list" href="<?php echo base_url() ?>productividad"> RPO - Reporte productividad operaciones</a></li>
                     <!-- <li class="nav__dropdown">
                       <a class="menu_list" href="#!">sub</a>
                       <ul class="nav__dropdown-menu">

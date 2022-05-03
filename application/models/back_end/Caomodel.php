@@ -29,12 +29,18 @@ class Caomodel extends CI_Model {
 			
 			return $cabeceras;
 		}
-		
+			
+		/*CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',
+		SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1') , ' ' , 
+		LEFT(SUBSTRING_INDEX(u.apellidos,' ', '-1'), 1) , '. ')  as 'trabajador',*/
+
 		public function listaTurnos($desde,$hasta,$jefe,$trabajador,$nivel_tecnico,$tipo){
 			$this->db->select("sha1(c.id) as hash,
 				c.id as id,
 				c.rut_tecnico as rut_tecnico,
-				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1') , ' ' , LEFT(SUBSTRING_INDEX(u.apellidos,' ', '-1'), 1) , '. ')  as 'trabajador',
+				CONCAT(u.nombres,' ',u.apellidos)  'trabajador',
+				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', 1),' ',SUBSTRING_INDEX(u.apellidos, ' ', 1))  'trabajador',
+
 				CONCAT(LEFT(u2.nombres, 1),'. ',SUBSTRING_INDEX(u2.apellidos, ' ', 1))  'jefe',
 				if(c.fecha!='0000-00-00', DATE_FORMAT(c.fecha,'%d-%m-%Y'),'') as 'fecha',
 				upr.proyecto as proyecto,
@@ -220,7 +226,7 @@ class Caomodel extends CI_Model {
 				foreach($res->result_array() as $key){
 					$temp=array();
 					$temp["id"]=$key["rut"];
-					$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_corto"];
+					$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_completo"];
 					$array[]=$temp;
 				}
 				return json_encode($array);

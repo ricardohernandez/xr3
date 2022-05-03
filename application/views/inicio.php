@@ -150,8 +150,7 @@
 	        <div class="col-lg-12">
 	          <aside class="widget widget-logo">
 	            <p class="copyright">
-	              © <?php echo date("Y")?> 
-	              KMO-XR3 
+	              &copy; PTO Plataforma técnica operacional  <?php echo date("Y");?>
 	            </p>
 	          </aside>
 	        </div>

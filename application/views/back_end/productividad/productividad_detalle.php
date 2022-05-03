@@ -379,7 +379,7 @@
               $(".btn_file_cs").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
             },  
             success: function (data) {
-               $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad ').prop("disabled",false);
+               $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
                 if(data.res=="ok"){
                   $.notify(data.msg, {
                       className:data.tipo,
@@ -427,7 +427,7 @@
                     globalPosition: 'top center',
                     autoHideDelay: 10000,
                  });
-              $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad').prop("disabled",false);
+              $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base').prop("disabled",false);
               }
           },timeout:120000
         });
@@ -479,6 +479,10 @@
         }); 
       }
       
+    $(document).off('change', '#periodo , #trabajadores ,#jefe_det').on('change', '#periodo , #trabajadores ,#jefe_det', function(event) {
+      lista_detalle.ajax.reload()
+    }); 
+
 
   })
 </script>
@@ -523,31 +527,6 @@
       </div>
 
  
-
-      <?php  
-       if($this->session->userdata('id_perfil')<>4){
-          ?>
-            <div class="col-lg-2">  
-              <div class="form-group">
-                <select id="trabajadores" name="trabajadores" style="width:100%!important;">
-                    <option value="">Seleccione Trabajador | Todos</option>
-                </select>
-              </div>
-            </div>
-          <?php
-       }else{
-        ?>
-           <div class="col-lg-2">  
-              <div class="form-group">
-                <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
-                    <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
-                </select>
-              </div>
-            </div>
-        <?php
-       }
-      ?>
-
       <?php  
         if($this->session->userdata('id_perfil')<3){
       ?>
@@ -587,19 +566,43 @@
         }
       ?>
 
+      <?php  
+       if($this->session->userdata('id_perfil')<>4){
+          ?>
+            <div class="col-lg-2">  
+              <div class="form-group">
+                <select id="trabajadores" name="trabajadores" style="width:100%!important;">
+                    <option value="">Seleccione Trabajador | Todos</option>
+                </select>
+              </div>
+            </div>
+          <?php
+       }else{
+        ?>
+           <div class="col-lg-2">  
+              <div class="form-group">
+                <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
+                    <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+                </select>
+              </div>
+            </div>
+        <?php
+       }
+      ?>
+
       <div class="col-12 col-lg-2">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_detalle" class="buscador_detalle form-control form-control-sm">
        </div>
       </div>
 
-      <div class="col-6 col-lg-1">
+      <!-- <div class="col-6 col-lg-1">
         <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_detalle btn_xr3">
          <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
          </button>
        </div>
-      </div>
+      </div> -->
 
       <div class="col-6 col-lg-1">  
         <div class="form-group">
@@ -640,20 +643,6 @@
           </tr>
         </thead>
 
-        <tfoot>
-          <tr>    
-            <th class="centered"></th> 
-            <th class="centered"></th> 
-            <th class="centered"></th> 
-            <th class="centered"> </th> 
-            <th class="centered"></th> 
-            <th class="centered"></th> 
-            <th class="centered"></th> 
-            <th class="centered"></th> 
-            <th class="centered"></th> 
-            <th class="centered"></th>   
-          </tr>
-        </tfoot>
 
       </table>
     </div>

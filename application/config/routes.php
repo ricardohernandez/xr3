@@ -56,7 +56,6 @@
 	$route['dataEstadosChecklist'] = "back_end/checklist/dataEstadosChecklist";
 	$route['dataTecnicos'] = "back_end/checklist/dataTecnicos";
 
-
 	$route['checklistHFC'] = "back_end/checklistHFC/index";
 	$route['vistaChecklistHFC'] = "back_end/checklistHFC/vistaChecklistHFC";
 	$route['listaChecklistHFC'] = "back_end/checklistHFC/listaChecklistHFC";
