@@ -55,10 +55,6 @@
       padding: 10px;
   }
 
-  footer p {
-      margin-top: 2px;
-      opacity: .9;
-  }
  
   .footer {
       /*position: absolute;*/
@@ -384,12 +380,12 @@
       display: block;
       padding: 10px 15px;
   }
-  @media (min-width: 768px){
+  /* @media (min-width: 768px){
     .nav-tabs-int>li>a {
         font-size: 13px!important;
         padding: 9px 16px!important;
     }
-  }
+  }*/
   .menuActivo a {
       background-color: #32477C!important;
       color: #fff!important;
@@ -501,18 +497,10 @@
     width:100px;
   }
 
-
  @media (max-width:768px) {
     .nav-tabs-int li{
       width: 100%;
     }
- 
-    .nav-tabs-int>li>a {
-        font-size: 14px!important;
-        padding: 13px 8px!important;
-    }
-   
-
     .input-sm {
       height: 35px!important;
       padding: 5px 12px!important;
@@ -521,7 +509,6 @@
       padding: 5px 10px!important;
       font-size: 12px;
     }
-
     .select2-results__option {
       padding: 5px!important; 
       font-size: 13px; 
@@ -529,20 +516,20 @@
     .select2-container--default .select2-selection--single .select2-selection__rendered {
       font-size: 13px!important;
     }
-
     .select2-selection__clear{
       font-size: 16px!important;
     }
-
-   
+    .nav-tabs-int>li>a {
+       font-size: 12px!important;
+       padding: 6px 11px!important;
+    }
   }
 
   @media (min-width:768px) {
     .nav-tabs-int>li>a {
        font-size: 13px!important;
-       padding: 9px 16px!important;
+       padding: 9px 15px!important;
     }
-   
 
     .input-sm {
         height: 26px!important;
@@ -561,8 +548,6 @@
     .select2-container--default .select2-selection--single .select2-selection__rendered {
       font-size: 13px!important;
     }
-
-    
    
    } 
 
@@ -960,11 +945,37 @@
 }
 
 
-  .select2-container--default .select2-selection--single .select2-selection__rendered {
-      font-size: 12px!important;
-  }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 12px!important;
+}
 
 .nav a{
   text-decoration: none!important;
+}
+
+@media (max-width: 768px){
+  .logo_empresa{
+     width: 70px;
+     margin-top: 15px!important;
+  }
+
+  footer p {
+      margin-top: 2px;
+      opacity: .9;
+      font-size: 13px;
+  }
+}
+
+@media (min-width: 768px){
+  .logo_empresa{
+    width: 70px;
+    margin-top: -15px!important;
+  }
+
+
+  footer p {
+      margin-top: 2px;
+      opacity: .9;
+  }
 }
 

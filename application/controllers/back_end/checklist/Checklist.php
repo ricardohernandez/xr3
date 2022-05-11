@@ -7,7 +7,7 @@ class Checklist extends CI_Controller {
 		if($this->uri->segment("1")==""){
 			redirect("inicio");
 		}
-		$this->load->model("back_end/Checklistmodel");
+		$this->load->model("back_end/checklist/Checklistmodel");
 		$this->load->model("back_end/Iniciomodel");
 		$this->load->helper(array('fechas','str'));
 		$this->load->library('user_agent');
@@ -43,13 +43,13 @@ class Checklist extends CI_Controller {
 
 	
 
-	/*********REGISTRO OTS************/
+	/********* CHECKLIST HERRAMIENTAS************/
 		
 	    public function index(){
 	    	$this->acceso();
     	    $datos = array(
 		        'titulo' => "CheckList de herramientas",
-		        'contenido' => "checklist/inicio",
+		        'contenido' => "checklist/checklist_herramientas/inicio",
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
@@ -72,7 +72,7 @@ class Checklist extends CI_Controller {
 		   	    'comunas' => $comunas,
 		   	    'checklist' => $checklist
 		   	);
-			$this->load->view('back_end/checklist/checklist/inicio',$datos);
+			$this->load->view('back_end/checklist/checklist_herramientas/checklist/inicio',$datos);
 		}
 
 		public function listaOTS(){
@@ -265,7 +265,7 @@ class Checklist extends CI_Controller {
 				return FALSE;
 			}else{
 
-				$nombre="reporte-ots-".date("d-m-Y",strtotime($desde))."-".date("d-m-Y",strtotime($hasta)).".xls";
+				$nombre="reporte-checklist-herramientas".date("d-m-Y",strtotime($desde))."-".date("d-m-Y",strtotime($hasta)).".xls";
 				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
 				header("Content-Disposition: attachment; filename=$nombre");
 				?>
@@ -340,7 +340,7 @@ class Checklist extends CI_Controller {
 				        'fecha_hoy' => $fecha_hoy,
 				   	);
 
-					$this->load->view('back_end/checklist/graficos/inicio',$datos);
+					$this->load->view('back_end/checklist/checklist_herramientas/graficos/inicio',$datos);
 				}
 			}
 

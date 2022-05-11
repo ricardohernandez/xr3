@@ -1,4 +1,13 @@
 <style type="text/css">
+  #processingIcon{
+    color:#32477C;
+    opacity:.3;
+    margin-top:230px!important;
+  }
+  #processingIconTable{
+    color:#32477C;
+    opacity:.8;
+  }
   html, body{
     min-height: calc(100vh - 110px)
   }
@@ -19,7 +28,7 @@
     padding: 10px 5px;
   /*  margin-bottom: 40px;*/
     border-radius: 1px;
-    min-height: calc(100vh - 110px)
+    min-height: calc(90vh - 110px)
   }
   .btn-top{
     margin-top: 1px;
@@ -296,7 +305,7 @@
       bDeferRender: true,
       select : true,
      "oLanguage": { 
-      "sProcessing":     "<i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#32477C;'></i>",
+      "sProcessing":     "<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
       "sLengthMenu":     "Mostrar: _MENU_ ",
       "sZeroRecords":    "No se encontraron resultados",
       "sEmptyTable":     "Ningún dato disponible en esta tabla",
@@ -322,9 +331,9 @@
      },
     });
 
-    $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+    $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
     $("#menu_usuarios").addClass('disabled_sub');
-    $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+    $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
     $(".menu_lista li").removeClass('menuActivo');       
     $("#menu_usuarios").addClass('menuActivo');  
 
@@ -337,7 +346,7 @@
     $(document).off('click', '#menu_usuarios').on('click', '#menu_usuarios',function(event) {
       event.preventDefault();
       $("#menu_usuarios").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_usuarios").addClass('menuActivo');  
 
@@ -352,7 +361,7 @@
     $(document).off('click', '#menu_cargos').on('click', '#menu_cargos',function(event) {
       event.preventDefault();
       $("#menu_cargos").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_cargos").addClass('menuActivo');  
 
@@ -365,7 +374,7 @@
     $(document).off('click', '#menu_proyectos').on('click', '#menu_proyectos',function(event) {
       event.preventDefault();
       $("#menu_proyectos").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_proyectos").addClass('menuActivo');  
 
@@ -378,7 +387,7 @@
     $(document).off('click', '#menu_areas').on('click', '#menu_areas',function(event) {
       event.preventDefault();
       $("#menu_areas").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_areas").addClass('menuActivo');  
 
@@ -391,7 +400,7 @@
     $(document).off('click', '#menu_jefes').on('click', '#menu_jefes',function(event) {
       event.preventDefault();
       $("#menu_jefes").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_jefes").addClass('menuActivo');  
 
@@ -404,7 +413,7 @@
     $(document).off('click', '#menu_perfiles').on('click', '#menu_perfiles',function(event) {
       event.preventDefault();
       $("#menu_perfiles").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_perfiles").addClass('menuActivo');  
 
@@ -418,7 +427,7 @@
     $(document).off('click', '#menu_herramientas').on('click', '#menu_herramientas',function(event) {
       event.preventDefault();
       $("#menu_herramientas").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
        $(".menu_lista li").removeClass('menuActivo');    
       $("#menu_herramientas").addClass('menuActivo');  
      

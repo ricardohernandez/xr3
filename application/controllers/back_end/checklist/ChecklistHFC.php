@@ -7,7 +7,7 @@ class checklistHFC extends CI_Controller {
 		if($this->uri->segment("1")==""){
 			redirect("inicio");
 		}
-		$this->load->model("back_end/Checklisthfcmodel");
+		$this->load->model("back_end/checklist/Checklisthfcmodel");
 		$this->load->model("back_end/Iniciomodel");
 		$this->load->helper(array('fechas','str'));
 		$this->load->library('user_agent');
@@ -41,7 +41,63 @@ class checklistHFC extends CI_Controller {
 	    // }
 	}
 
-	
+	public function formCargaMasivaChecklistHFC(){
+		if (!function_exists('str_contains')) {
+		    function str_contains(string $haystack, string $needle): bool
+		    {
+		        return '' === $needle || false !== strpos($haystack, $needle);
+		    }
+		}
+
+		if($_FILES['userfile']['name']==""){
+		    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+		}
+		$fname = $_FILES['userfile']['name'];
+		if (strpos($fname, ".") == false) {
+	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
+        }
+        $chk_ext = explode(".",$fname);
+
+        if($chk_ext[1]!="csv"){
+        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
+        }
+
+        $fname = $_FILES['userfile']['name'];
+        $chk_ext = explode(".",$fname);
+
+        if(strtolower(end($chk_ext)) == "csv")  {
+            $filename = $_FILES['userfile']['tmp_name'];
+            $handle = fopen($filename, "r");
+            $i=0;$z=0;$y=0;     
+         
+            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
+
+                if(!empty($data[0])){
+            	  
+				    $arr=array(
+				    	"tipo"=>"0",
+				    	"descripcion"=>$data[0],
+				    	"valor"=>"0",
+					);	
+
+				    $this->Checklisthfcmodel->formChecklistLista($arr);
+				    $i++;
+			  	 	$arr=array();
+	            }
+	            
+            }
+
+            if($i==0){
+            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
+            }
+
+            fclose($handle); 
+           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+        }else{
+        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
+        }   
+	}
+
 
 	/*********REGISTRO OTS************/
 		
@@ -49,7 +105,7 @@ class checklistHFC extends CI_Controller {
 	    	$this->acceso();
     	    $datos = array(
 		        'titulo' => "CheckList HFC",
-		        'contenido' => "checklist_hfc/inicio",
+		        'contenido' => "checklist/checklist_hfc/inicio",
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
@@ -72,7 +128,7 @@ class checklistHFC extends CI_Controller {
 		   	    'comunas' => $comunas,
 		   	    'checklist' => $checklist
 		   	);
-			$this->load->view('back_end/checklist_hfc/checklist/inicio',$datos);
+			$this->load->view('back_end/checklist/checklist_hfc/checklist/inicio',$datos);
 		}
 
 		public function listaChecklistHFC(){
@@ -94,6 +150,11 @@ class checklistHFC extends CI_Controller {
 				$checkcorreo=$this->security->xss_clean(strip_tags($this->input->post("checkcorreo")));
 				$ultima_actualizacion=date("Y-m-d G:i:s");
 
+
+				$n_ot=$this->security->xss_clean(strip_tags($this->input->post("n_ot")));
+				$tipo_actividad=$this->security->xss_clean(strip_tags($this->input->post("tipo_actividad")));
+				$direccion=$this->security->xss_clean(strip_tags($this->input->post("direccion")));
+
 				$estado=$this->input->post("estado");
 				$observacion=$this->input->post("observacion");
 
@@ -104,6 +165,9 @@ class checklistHFC extends CI_Controller {
 					$data_insert=array("auditor_id"=>$auditor,
 						"fecha"=>$fecha,
 						"ultima_actualizacion"=>$ultima_actualizacion,
+						"n_ot"=>$n_ot,
+						"tipo_actividad"=>$tipo_actividad,
+						"direccion"=>$direccion,
 						"tecnico_id"=>$tecnico);	
 
 					if($hash==""){
@@ -165,6 +229,9 @@ class checklistHFC extends CI_Controller {
 
 						$data_mod=array("auditor_id"=>$auditor,
 							"fecha"=>$fecha,
+							"n_ot"=>$n_ot,
+							"tipo_actividad"=>$tipo_actividad,
+							"direccion"=>$direccion,
 						    "ultima_actualizacion"=>$ultima_actualizacion,		
 							"tecnico_id"=>$tecnico);	
 
@@ -286,7 +353,9 @@ class checklistHFC extends CI_Controller {
 				            <th class="head">T&eacute;cnico zona</th>   
 				            <th class="head">T&eacute;cnico c&oacute;digo</th>   
 				            <th class="head">T&eacute;cnico comuna</th>   
-				          
+				            <th class="head">N OT</th>   
+				            <th class="head">Tipo actividad</th>   
+				            <th class="head">Direcci&oacute;n</th>   
 				            <th class="head">Tipo</th>   
 				            <th class="head">Descripci&oacute;n Check</th>   
 				            <th class="head">Estado</th>   
@@ -307,7 +376,9 @@ class checklistHFC extends CI_Controller {
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
 									 <td><?php echo utf8_decode($d["codigo"]); ?></td>
 									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
-
+									 <td><?php echo utf8_decode($d["n_ot"]); ?></td>
+									 <td><?php echo utf8_decode($d["tipo_actividad"]); ?></td>
+									 <td><?php echo utf8_decode($d["direccion"]); ?></td>
 									 <td><?php echo utf8_decode($d["tipo"]); ?></td>
 									 <td><?php echo utf8_decode($d["descripcion"]); ?></td>
 									 <td><?php echo utf8_decode($d["estado"]); ?></td>
@@ -339,7 +410,7 @@ class checklistHFC extends CI_Controller {
 				        'fecha_hoy' => $fecha_hoy,
 				   	);
 
-					$this->load->view('back_end/checklist_hfc/graficos/inicio',$datos);
+					$this->load->view('back_end/checklist/checklist_hfc/graficos/inicio',$datos);
 				}
 			}
 

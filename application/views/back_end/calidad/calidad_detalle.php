@@ -28,8 +28,8 @@
     });
 
   /*****DATATABLE*****/   
-    var lista_calidad = $('#lista_calidad').DataTable({
-       "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+    var lista_detalle_calidad = $('#lista_detalle_calidad').DataTable({
+       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
        "iDisplayLength":100, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": true,
@@ -94,14 +94,14 @@
       }); 
   
       $(document).on('keyup paste', '#buscador_calidad', function() {
-        lista_calidad.search($(this).val().trim()).draw();
+        lista_detalle_calidad.search($(this).val().trim()).draw();
       });
 
       $(document).off('click', '.btn_filtro_calidad').on('click', '.btn_filtro_calidad',function(event) {
         event.preventDefault();
          $(this).prop("disabled" , true);
          $(".btn_filtro_calidad").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
-         lista_calidad.ajax.reload();
+         lista_detalle_calidad.ajax.reload();
       });
 
 
@@ -110,21 +110,21 @@
       }
 
       setTimeout( function () {
-        var lista_calidad = $.fn.dataTable.fnTables(true);
-        if ( lista_calidad.length > 0 ) {
-            $(lista_calidad).dataTable().fnAdjustColumnSizing();
+        var lista_detalle_calidad = $.fn.dataTable.fnTables(true);
+        if ( lista_detalle_calidad.length > 0 ) {
+            $(lista_detalle_calidad).dataTable().fnAdjustColumnSizing();
       }}, 200 ); 
 
       setTimeout( function () {
-        var lista_calidad = $.fn.dataTable.fnTables(true);
-        if ( lista_calidad.length > 0 ) {
-            $(lista_calidad).dataTable().fnAdjustColumnSizing();
+        var lista_detalle_calidad = $.fn.dataTable.fnTables(true);
+        if ( lista_detalle_calidad.length > 0 ) {
+            $(lista_detalle_calidad).dataTable().fnAdjustColumnSizing();
       }}, 2000 ); 
 
       setTimeout( function () {
-        var lista_calidad = $.fn.dataTable.fnTables(true);
-        if ( lista_calidad.length > 0 ) {
-            $(lista_calidad).dataTable().fnAdjustColumnSizing();
+        var lista_detalle_calidad = $.fn.dataTable.fnTables(true);
+        if ( lista_detalle_calidad.length > 0 ) {
+            $(lista_detalle_calidad).dataTable().fnAdjustColumnSizing();
         }
       }, 4000 ); 
 
@@ -183,7 +183,7 @@
                   });
                 
                   $('#modal_calidad').modal("toggle");
-                  lista_calidad.ajax.reload();
+                  lista_detalle_calidad.ajax.reload();
             }
 
             $(".btn_guardar_calidad").attr("disabled", false);
@@ -345,7 +345,7 @@
                     globalPosition: 'top center',
                     autoHideDelay: 20000,
                 });
-                lista_calidad.ajax.reload();
+                lista_detalle_calidad.ajax.reload();
                 actualizacionCalidad()
               }else{
                 $.notify(data.msg, {
@@ -441,7 +441,7 @@
 
 
     $(document).off('change', '#periodo_detalle , #trabajadores ,#jefe_det').on('change', '#periodo_detalle , #trabajadores ,#jefe_det', function(event) {
-      lista_calidad.ajax.reload()
+      lista_detalle_calidad.ajax.reload()
     }); 
       
   })
@@ -589,7 +589,7 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <table id="lista_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+      <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
           <tr>    
            <!--  <th class="centered" style="width: 50px;"></th>     -->

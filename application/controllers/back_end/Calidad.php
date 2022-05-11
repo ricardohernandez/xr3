@@ -51,6 +51,7 @@ class Calidad extends CI_Controller {
 	/***********DETALLE CALIDAD*****************/
 
 		public function vistaCalidad(){
+
 			$this->visitas("Calidad");
 			if($this->input->is_ajax_request()){
 
@@ -105,8 +106,19 @@ class Calidad extends CI_Controller {
 	        if(strtolower(end($chk_ext)) == "csv")  {
 	            $filename = $_FILES['userfile']['tmp_name'];
 	            $handle = fopen($filename, "r");
-	            $i=0;$z=0;$y=0;     
-	         
+	            $i=0;$z=0;  
+	         	
+
+	         	if(date("d")>"24"){
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}else{
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}
+
+	         	$this->Calidadmodel->eliminarPeriodoActual($desde,$hasta);
+
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 
@@ -186,22 +198,45 @@ class Calidad extends CI_Controller {
 							"ultima_actualizacion"=>$ultima_actualizacion
 						);	
 
+
 					    if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
 					    	$this->Calidadmodel->formCalidad($arr);
 					    	$i++;
-					    }
-				  	 	
+					    }/*else{
+
+					    	$data_bd = $this->Calidadmodel->dataPorOt(trim($data[2]));
+
+					    	if($data_bd!=FALSE){
+					    		foreach($data_bd as $d){
+						    		if($d["falla"]=="no" and $falla=="si"){
+
+						    			$data_mod = array(
+											"ot_2davisita"=>$data[6],
+											"fecha_2davisita"=>$fechaf2,
+											"descripcion_2davisita"=>($data[8]),
+											"cierre_2davisita"=>$data[9],
+											"diferencia_dias"=>$data[12],
+											"falla"=>$falla,
+											"ultima_actualizacion"=>$ultima_actualizacion
+										);	
+
+										if($this->Calidadmodel->formActualizaCalidad($d["id"], $data_mod)){
+											$data_mod = array();
+											$z++;
+										}
+						    		}
+						    	}
+					    	}
+
+					    }*/
+
 				  	 	$arr=array();
 		            }
-		            
-	            }
-
-	            if($i==0){
-	            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
 	            }
 
 	            fclose($handle); 
 	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+
 	        }else{
 	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
 	        }   
@@ -354,6 +389,7 @@ class Calidad extends CI_Controller {
 	/***********GRAFICOS CALIDAD*****************/
 
 		public function vistaGraficosCalidad(){
+			
 			$this->visitas("Calidad graficos");
 			if($this->input->is_ajax_request()){
 

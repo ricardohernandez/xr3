@@ -92,29 +92,29 @@
         
 
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-        $("#menu_checklist_hfc").addClass('menuActivo');  
+        $("#menu_checklist_ftth").addClass('menuActivo');  
         $("#menu_graficos").removeClass('menuActivo');   
         $("#menu_herramientas").removeClass('menuActivo');  
         $("#menu_usuarios").removeClass('menuActivo');   
 
-        $.get("vistaChecklistHFC", function( data ) {
+        $.get("vistaChecklistFTTH", function( data ) {
           $(".contenedor_app").html(data);    
-          $("#menu_checklist_hfc").removeClass('disabled_sub');
+          $("#menu_checklist_ftth").removeClass('disabled_sub');
         });
         
       
-      $(document).off('click', '#menu_checklist_hfc').on('click', '#menu_checklist_hfc',function(event) {
+      $(document).off('click', '#menu_checklist_ftth').on('click', '#menu_checklist_ftth',function(event) {
         event.preventDefault();
-        $("#menu_checklist_hfc").addClass('disabled_sub');
+        $("#menu_checklist_ftth").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-        $("#menu_checklist_hfc").addClass('menuActivo');  
+        $("#menu_checklist_ftth").addClass('menuActivo');  
         $("#menu_graficos").removeClass('menuActivo');   
         $("#menu_herramientas").removeClass('menuActivo');  
         $("#menu_usuarios").removeClass('menuActivo');   
 
-        $.get("vistaChecklistHFC", function( data ) {
+        $.get("vistaChecklistFTTH", function( data ) {
           $(".contenedor_app").html(data);    
-          $("#menu_checklist_hfc").removeClass('disabled_sub');
+          $("#menu_checklist_ftth").removeClass('disabled_sub');
         });
       });
 
@@ -123,11 +123,11 @@
         $("#menu_graficos").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
         $("#menu_graficos").addClass('menuActivo');  
-        $("#menu_checklist_hfc").removeClass('menuActivo');   
+        $("#menu_checklist_ftth").removeClass('menuActivo');   
         $("#menu_herramientas").removeClass('menuActivo');  
         $("#menu_usuarios").removeClass('menuActivo');   
 
-        $.get("vistaGraficos", function( data ) {
+        $.get("vistaGraficosChecklistFTTH", function( data ) {
           $(".contenedor_app").html(data);    
           $("#menu_graficos").removeClass('disabled_sub');
         });
@@ -150,7 +150,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int">
-        <li id="menu_checklist_hfc" class="active"><a> <i class="fa fa-th-list"></i> Checklist HFC</a></li>   
+        <li id="menu_checklist_ftth" class="active"><a> <i class="fa fa-th-list"></i> Checklist FTTH</a></li>   
         <li id="menu_graficos" class="active"><a> <i class="fa fa-th-list"></i> Graficos </a></li>   
       </ul>  
     </div> 

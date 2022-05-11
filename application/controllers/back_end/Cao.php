@@ -107,35 +107,68 @@ class Cao extends CI_Controller {
 			$hash_turnos = $this->security->xss_clean(strip_tags($this->input->post("hash_turnos")));
 			$rut_tecnico = $this->security->xss_clean(strip_tags($this->input->post("trabajador")));
 			$fecha = $this->security->xss_clean(strip_tags($this->input->post("fecha")));
+			$fecha2 = $this->security->xss_clean(strip_tags($this->input->post("fecha2")));
 			$turno = $this->security->xss_clean(strip_tags($this->input->post("turno")));
 			$id_digitador = $this->session->userdata("id");
 			$ultima_actualizacion = date("Y-m-d G:i:s")." | ".$this->session->userdata("nombres")." ".$this->session->userdata("apellidos");
 
 			if ($this->form_validation->run("formTurnos") == FALSE){
 				echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
-			}else{	
-
-				$data=array("rut_tecnico"=>$rut_tecnico,
-					"id_turno"=>$turno,
-					"fecha"=>$fecha,
-					"id_digitador"=>$id_digitador,
-					"ultima_actualizacion"=>$ultima_actualizacion
-				);	
+			}else{		
 
 				if($hash_turnos==""){
 
-					if($this->Caomodel->existeTurno($rut_tecnico,$fecha)){
-						echo json_encode(array('res'=>"error", 'msg' => "Ya existe registro para este técnico y fecha."));exit;
+					if($fecha2!=""){
+
+						$fechas = arrayRangoFechas($fecha,$fecha2,"+1 day", "Y-m-d");
+
+						foreach($fechas as $fecha){
+							if($this->Caomodel->existeTurno($rut_tecnico,$fecha)){
+								$this->Caomodel->eliminarTurnosPorFecha($rut_tecnico,$fecha);
+							}
+							
+							$data_t=array("rut_tecnico" => $rut_tecnico, 
+								"id_turno" => $turno,
+								"fecha" => $fecha,
+								"id_digitador" => $id_digitador,
+								"ultima_actualizacion" => $ultima_actualizacion);
+							
+							$this->Caomodel->formTurnos($data_t);
+							$data_t =array();
+						}
+
+						echo json_encode(array('res'=>"ok", 'msg' => OK_MSG));exit;	
+					}else{
+						
+						if($this->Caomodel->existeTurno($rut_tecnico,$fecha)){
+							echo json_encode(array('res'=>"error", 'msg' => "Ya existe registro para este técnico y fecha."));exit;
+						}
+
+						$data=array("rut_tecnico"=>$rut_tecnico,
+							"id_turno"=>$turno,
+							"fecha"=>$fecha,
+							"id_digitador"=>$id_digitador,
+							"ultima_actualizacion"=>$ultima_actualizacion
+						);	
+
+						$id=$this->Caomodel->formTurnos($data);
+						if($id!=FALSE){
+							echo json_encode(array('res'=>"ok", 'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+
 					}
 
-					$id=$this->Caomodel->formTurnos($data);
-					if($id!=FALSE){
-						echo json_encode(array('res'=>"ok", 'msg' => OK_MSG));exit;
-					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-					}
 					
 				}else{
+
+					$data=array("rut_tecnico"=>$rut_tecnico,
+						"id_turno"=>$turno,
+						"fecha"=>$fecha,
+						"id_digitador"=>$id_digitador,
+						"ultima_actualizacion"=>$ultima_actualizacion
+					);	
 
 					if($this->Caomodel->existeTurnoMod($hash_turnos,$rut_tecnico,$fecha)){
 						echo json_encode(array('res'=>"error", 'msg' => "Ya existe registro para este técnico y fecha."));exit;

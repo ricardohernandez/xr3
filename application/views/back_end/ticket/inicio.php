@@ -1,48 +1,3 @@
-<style type="text/css">
-  html, body{
-    min-height: calc(100vh - 110px)
-  }
-
-  .disabled_sub{
-      pointer-events:none;
-      opacity:0.4;
-  }
-
-  ::selection {
-    background: #8AC007; 
-    color:#fff;
-  }
-
-  .contenedor_app{
-   /* border: 1px solid #dce4ec;*/
-    background-color: #F8F8F8;
-    padding: 10px 5px;
-  /*  margin-bottom: 40px;*/
-    border-radius: 1px;
-    min-height: calc(100vh - 110px)
-  }
-  .btn-to
-  .btn-top{
-    margin-top: 1px;
-  }
-  .btn-xs {
-    padding: 0px 5px!important;
-    font-size: 12px;
-  }
-  hr{
-    margin-top: 9px!important;
-    margin-bottom: 3px!important;;
-  }
-  .loader{
-    margin-top:150px;
-    height:100px;
-    width:100px;
-  }
-   
-
-</style>
-
-
 <script type="text/javascript">
   $(function(){
 
@@ -63,7 +18,7 @@
       bDeferRender: true,
       select : true,
      "oLanguage": { 
-      "sProcessing":     "Procesando...",
+      "sProcessing":     "<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
       "sLengthMenu":     "Mostrar: _MENU_ ",
       "sZeroRecords":    "No se encontraron resultados",
       "sEmptyTable":     "Ningún dato disponible en esta tabla",
@@ -90,7 +45,7 @@
     });
 
     $("#menu_ticket").addClass('disabled_sub');
-	  $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+	  $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
 	  $(".menu_lista li").removeClass('menuActivo');       
 	  $("#menu_ticket").addClass('menuActivo');  
 
@@ -103,7 +58,7 @@
     $(document).off('click', '#menu_ticket').on('click', '#menu_ticket',function(event) {
       event.preventDefault();
       $("#menu_ticket").addClass('disabled_sub');
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_ticket").addClass('menuActivo');  
 

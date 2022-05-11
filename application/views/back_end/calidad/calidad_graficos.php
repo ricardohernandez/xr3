@@ -6,11 +6,7 @@
     text-align: left;
     padding:10px 2px;
   }
-   
-  .border-left-primary {
-      border-left: 0.25rem solid #32477C!important;
-  }
-
+  
   .tfoot_totales{
      background-color: #32477C;
      color:#fff;
@@ -21,6 +17,10 @@
   .actualizacion_calidad{
       display: inline-block;
       font-size: 11px;
+  }
+  div.dataTables_wrapper div.dataTables_info {
+    padding-top: 0.1em!important; 
+    white-space: nowrap;
   }
 </style>
 <script type="text/javascript">
@@ -377,7 +377,7 @@
   /*****DATATABLE*****/   
     var tabla_resumen_calidad = $('#tabla_resumen_calidad').DataTable({
        /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":-1, 
+       "iDisplayLength":200, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
        /*"aaSorting" : [[0,"asc"]],*/
@@ -663,7 +663,6 @@
     }
   ?>
 
-
   <?php  
     if($this->session->userdata('id_perfil')<=3){
   ?>
@@ -710,7 +709,7 @@
   <div class="col-lg-2">
     <div class="form-group">
       <select id="tipo_red" name="tipo_red" class="custom-select custom-select-sm">
-        <option value="" selected>Tipo red</option>
+        <option value="" selected>Segmento técnico </option>
         <option value="hfc" >HFC </option>
         <option value="ftth" >FTTH </option>
       </select>
@@ -738,14 +737,14 @@
 	  <div class="card border-left-primary shadow">
 	    <div class="card-body" style="padding: .4rem;">
 	      <div class="row">
-
-          <div class="col-lg-6 offset-lg-3">
-              <center><span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
-                </div>
-          </div>
-          
       	  <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+
+           <div class="col-lg-12">
+              <center><span class="titulo_fecha_actualizacion_dias">
+              <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
+              </div>
+           </div>
+
 				  	<table id="tabla_resumen_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
 			        <thead>
 			          

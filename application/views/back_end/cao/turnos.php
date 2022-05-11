@@ -70,8 +70,12 @@
       font-size: 11px!important;
     }
     .modal_turnos{
-      width: 55%!important;
+      width: 65%!important;
     }
+  }
+
+  .fecha2_cont{
+    display: none;
   }
 </style>
 
@@ -173,7 +177,7 @@
                 scrollCollapse: true,
                 paging:false,
                 oLanguage: { 
-                  sProcessing:"<i id='processingIcon' class='fa fa-cog fa-spin fa-4x'></i>",
+                  sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
                 /*fixedColumns:   {
                    leftColumns: 2,
@@ -253,6 +257,7 @@
       $("#trabajador").val("").trigger('change');
       $(".eliminar_turnos_contenedor").hide();
       $("#formTurnos input,#formTurnos select,#formTurnos button,#formTurnos").prop("disabled", false);
+      $(".fecha2_cont").show();
     });     
 
     $(document).off('submit', '#formTurnos').on('submit', '#formTurnos',function(event) {
@@ -342,6 +347,8 @@
       $("#hash_turnos").val(hash_turnos);
       $("#modal_turnos").modal("toggle");
       $(".eliminar_turnos_contenedor").show();
+      $(".fecha2_cont").hide();
+
       $.ajax({
         url: "getDataTurnos"+"?"+$.now(),  
         type: 'POST',
@@ -652,21 +659,37 @@
             <legend class="form-ing-border">Ingreso de turnos </legend>
               <div class="form-row">
 
-                <div class="col-lg-4">  
+                <div class="col-lg-3">  
                   <div class="form-group">
                     <select id="trabajador" name="trabajador" style="width:100%!important;">
                         <option value="">Seleccione Trabajador | Todos</option>
                     </select>
                   </div>
                 </div>
-              
-                <div class="col-lg-4">
+                
+                <div class="col-lg-3">
                   <div class="form-group">
-                   <input type="date" placeholder="Fecha" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha" id="fecha">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha inicio<span></span> 
+                      </div>
+                       <input type="date" placeholder="Fecha inicio" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha" id="fecha">
+                    </div>
                   </div>
                 </div>
 
-                <div class="col-lg-4">               
+                 <div class="col-lg-3 fecha2_cont">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha término<span></span> 
+                      </div>
+                      <input type="date" placeholder="Fecha término" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha2" id="fecha2">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">               
                   <div class="form-group">
                     <select id="turno" name="turno" class="custom-select custom-select-sm">
                     <option value="" selected>Seleccione </option>
@@ -680,6 +703,7 @@
                     </select>
                   </div>
                 </div>
+
               </div>
             </fieldset> 
           </div>

@@ -71,7 +71,7 @@ foreach($data as $dato){
      <br>
      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
       <p style="text-align:center;">
-      <a style="color: #32477C;text-decoration: underline;font-size:18px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;" href="<?php echo base_url();?>ticket">Ir a aplicación </a>
+      <a style="color: #32477C;text-decoration: underline;font-size:18px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;" href="https://xr3t.cl/ticket">Ir a aplicación </a>
       </p>
      </table>
 

@@ -138,7 +138,7 @@
                 scrollCollapse: true,
                 paging:false,
                 oLanguage: { 
-                  sProcessing:"<i id='processingIcon' class='fa fa-cog fa-spin fa-4x'></i>",
+                  sProcessing:"<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
                 fixedColumns:   {
                    leftColumns: 4,

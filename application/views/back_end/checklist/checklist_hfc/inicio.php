@@ -92,29 +92,29 @@
         
 
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-        $("#menu_checklist").addClass('menuActivo');  
+        $("#menu_checklist_hfc").addClass('menuActivo');  
         $("#menu_graficos").removeClass('menuActivo');   
         $("#menu_herramientas").removeClass('menuActivo');  
         $("#menu_usuarios").removeClass('menuActivo');   
 
-        $.get("vistaChecklist", function( data ) {
+        $.get("vistaChecklistHFC", function( data ) {
           $(".contenedor_app").html(data);    
-          $("#menu_checklist").removeClass('disabled_sub');
+          $("#menu_checklist_hfc").removeClass('disabled_sub');
         });
         
       
-      $(document).off('click', '#menu_checklist').on('click', '#menu_checklist',function(event) {
+      $(document).off('click', '#menu_checklist_hfc').on('click', '#menu_checklist_hfc',function(event) {
         event.preventDefault();
-        $("#menu_checklist").addClass('disabled_sub');
+        $("#menu_checklist_hfc").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-        $("#menu_checklist").addClass('menuActivo');  
+        $("#menu_checklist_hfc").addClass('menuActivo');  
         $("#menu_graficos").removeClass('menuActivo');   
         $("#menu_herramientas").removeClass('menuActivo');  
         $("#menu_usuarios").removeClass('menuActivo');   
 
-        $.get("vistaChecklist", function( data ) {
+        $.get("vistaChecklistHFC", function( data ) {
           $(".contenedor_app").html(data);    
-          $("#menu_checklist").removeClass('disabled_sub');
+          $("#menu_checklist_hfc").removeClass('disabled_sub');
         });
       });
 
@@ -123,31 +123,17 @@
         $("#menu_graficos").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
         $("#menu_graficos").addClass('menuActivo');  
-        $("#menu_checklist").removeClass('menuActivo');   
+        $("#menu_checklist_hfc").removeClass('menuActivo');   
         $("#menu_herramientas").removeClass('menuActivo');  
         $("#menu_usuarios").removeClass('menuActivo');   
 
-        $.get("vistaGraficos", function( data ) {
+        $.get("vistaGraficosChecklistHFC", function( data ) {
           $(".contenedor_app").html(data);    
           $("#menu_graficos").removeClass('disabled_sub');
         });
       });
 
 
-      $(document).off('click', '#menu_usuarios').on('click', '#menu_usuarios',function(event) {
-        event.preventDefault();
-        $("#menu_usuarios").addClass('disabled_sub');
-        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-        $("#menu_usuarios").addClass('menuActivo');  
-        $("#menu_checklist").removeClass('menuActivo');   
-        $("#menu_graficos").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');   
-
-        $.get("vistaUsuarios", function( data ) {
-          $(".contenedor_app").html(data);    
-          $("#menu_usuarios").removeClass('disabled_sub');
-        });
-      });
 
 
 
@@ -164,7 +150,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int">
-        <li id="menu_checklist" class="active"><a> <i class="fa fa-th-list"></i> Checklist </a></li>   
+        <li id="menu_checklist_hfc" class="active"><a> <i class="fa fa-th-list"></i> Checklist HFC</a></li>   
         <li id="menu_graficos" class="active"><a> <i class="fa fa-th-list"></i> Graficos </a></li>   
       </ul>  
     </div> 

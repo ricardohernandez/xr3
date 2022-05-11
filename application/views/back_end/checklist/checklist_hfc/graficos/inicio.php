@@ -8,12 +8,12 @@
 </style>
 <script type="text/javascript">
 	base_url = "<?php echo base_url() ?>"
-	google.charts.setOnLoadCallback(graficoEstadosChecklist);
-	google.charts.setOnLoadCallback(graficoTecnicos);
+	google.charts.setOnLoadCallback(graficoEstadosChecklistHFC);
+	google.charts.setOnLoadCallback(graficoTecnicosHFC);
 
-    function graficoEstadosChecklist(){
+    function graficoEstadosChecklistHFC(){
 	    $.ajax({
-        url: base_url+"dataEstadosChecklist"+"?"+$.now(),  
+        url: base_url+"dataEstadosChecklistHFC"+"?"+$.now(),  
         type: 'POST',
         data:{},
         dataType:"json",
@@ -62,7 +62,7 @@
 	}
 
 
-	function graficoTecnicos(){
+	function graficoTecnicosHFC(){
 	    $.ajax({
         url: base_url+"dataTecnicosChecklistHFC"+"?"+$.now(),  
         type: 'POST',

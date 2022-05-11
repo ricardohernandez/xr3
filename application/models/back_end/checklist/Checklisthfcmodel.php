@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Checklistmodel extends CI_Model {
+class Checklisthfcmodel extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
@@ -13,9 +13,9 @@ class Checklistmodel extends CI_Model {
 		return FALSE;
 	}
 
-	/*************OTS*************/
+	/*************CHECKLIST HFC*************/
 
-		public function listaOTS($desde,$hasta){
+		public function listaChecklistHFC($desde,$hasta){
 
 			$this->db->select("sha1(o.id) as hash,
 				o.*,
@@ -38,7 +38,7 @@ class Checklistmodel extends CI_Model {
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 			}
 
-			$res=$this->db->get('checklist_ots o');
+			$res=$this->db->get('checklist_hfc o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -46,7 +46,7 @@ class Checklistmodel extends CI_Model {
 		}
 
 
-		public function getDataOTS($hash){
+		public function getDataChecklistHFC($hash){
 			$this->db->select("sha1(o.id) as hash,
 				o.*,
 				cd.*,
@@ -63,17 +63,17 @@ class Checklistmodel extends CI_Model {
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
 
 			$this->db->where('sha1(o.id)', $hash);
-			$res=$this->db->get('checklist_ots o');
+			$res=$this->db->get('checklist_hfc o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
 			return FALSE;
 		}
 
-		public function listaOTSDetalle($desde,$hasta){
+		public function listaChecklistHFCDetalle($desde,$hasta){
 			$this->db->select("sha1(o.id) as hash,
 				o.*,			
 				u.rut as rut,
@@ -101,15 +101,15 @@ class Checklistmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_detalle cd', 'cd.id_ots = o.id', 'left');
-			$this->db->join('checklist_listado cl', 'cl.id = cd.id_check', 'left');
-			$this->db->join('checklist_tipos ct', 'ct.id = cl.tipo', 'left');
+			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('checklist_hfc_listado cl', 'cl.id = cd.id_check', 'left');
+			$this->db->join('checklist_hfc_tipos ct', 'ct.id = cl.tipo', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 			}
 
-			$res=$this->db->get('checklist_ots o');
+			$res=$this->db->get('checklist_hfc o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -122,18 +122,18 @@ class Checklistmodel extends CI_Model {
 				u.*,
 				up.perfil as perfil,
 				upr.proyecto as proyecto,
-				uj.jefe as jefe,
+				uj.id_jefe as jefe,
 				uc.cargo as cargo,
 				ua.area as area,
 				if(u.fecha_nacimiento!='1970-01-01' and u.fecha_nacimiento!='0000-00-00',u.fecha_nacimiento,'') as 'fecha_nacimiento',
 				if(u.fecha_ingreso!='1970-01-01' and u.fecha_ingreso!='0000-00-00',u.fecha_ingreso,'') as 'fecha_ingreso',
 				if(u.fecha_salida!='1970-01-01' and u.fecha_salida!='0000-00-00',u.fecha_salida,'') as 'fecha_salida',
+								
 				CASE 
 		          WHEN u.estado=1 THEN 'Activo'
 		          WHEN u.estado=0 THEN 'No Activo'
 		          ELSE ''
-		        END AS estado_str,			
-				");
+		        END AS estado_str");
 			
 			$this->db->join('usuarios_perfiles as up', 'up.id = u.id_perfil', 'left');
 			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
@@ -149,8 +149,15 @@ class Checklistmodel extends CI_Model {
 		}
 
 
-		public function formOTS($data){
-			if($this->db->insert('checklist_ots', $data)){
+		public function formChecklistHFC($data){
+			if($this->db->insert('checklist_hfc', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		}
+
+		public function formChecklistLista($data){
+			if($this->db->insert('checklist_hfc_listado', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
@@ -158,21 +165,13 @@ class Checklistmodel extends CI_Model {
 
 		public function actualizarOTS($hash,$data){
 			$this->db->where('sha1(id)', $hash);
-			if($this->db->update('checklist_ots', $data)){
+			if($this->db->update('checklist_hfc', $data)){
 				return TRUE;
 			}
 			return FALSE;
 		}
 
 		
-		public function eliminaPreventa($hash){
-			$this->db->where('sha1(id)', $hash);
-		    if($this ->db->delete('checklist_ots')){
-		    	return TRUE;
-		    }
-		    return FALSE;
-		}
-
 
 		public function listaComunas(){
 			$this->db->order_by('titulo', 'asc');
@@ -198,14 +197,14 @@ class Checklistmodel extends CI_Model {
 
 		public function getIdTipo($tipo){
 			$this->db->where('tipo', $tipo);
-			$res=$this->db->get("checklist_tipos");
+			$res=$this->db->get("checklist_hfc_tipos");
 			$row=$res->row_array();
 			return $row["id"];
 		}
 
 		public function getIdPorHash($hash){
 			$this->db->where('sha1(id)', $hash);
-			$res=$this->db->get("checklist_ots");
+			$res=$this->db->get("checklist_hfc");
 			if($res->num_rows()>0){
 				$row=$res->row_array();
 				return $row["id"];
@@ -217,7 +216,7 @@ class Checklistmodel extends CI_Model {
 
 
 		public function insertarItemChecklist($data){
-			if($this->db->insert('checklist_listado', $data)){
+			if($this->db->insert('checklist_hfc_listado', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
@@ -231,7 +230,7 @@ class Checklistmodel extends CI_Model {
 		}
 		
 		public function insertaDetalleOTS($data){
-			if($this->db->insert('checklist_detalle', $data)){
+			if($this->db->insert('checklist_hfc_detalle', $data)){
 				return TRUE;
 			}
 			return FALSE;
@@ -243,14 +242,15 @@ class Checklistmodel extends CI_Model {
 				c.*,
 				ct.tipo as tipo');
 
-			$this->db->join('checklist_tipos ct', 'ct.id = c.tipo', 'left');
-			$res=$this->db->get('checklist_listado c');
+			$this->db->join('checklist_hfc_tipos ct', 'ct.id = c.tipo', 'left');
+			$this->db->order_by('c.id', 'asc');
+			$res=$this->db->get('checklist_hfc_listado c');
 			return $res->result_array();
 		}
 
 		public function existeDetalleOTS($id){
 			$this->db->where('id_ots', $id);
-			$res=$this->db->get('checklist_detalle');
+			$res=$this->db->get('checklist_hfc_detalle');
 			if($res->num_rows()>0){
 				return TRUE;
 			}
@@ -260,7 +260,7 @@ class Checklistmodel extends CI_Model {
 		public function getIddetalle($id_ots,$id_check){
 			$this->db->where('(id_ots)', $id_ots);
 			$this->db->where('(id_check)', $id_check);
-			$res=$this->db->get("checklist_detalle");
+			$res=$this->db->get("checklist_hfc_detalle");
 			if($res->num_rows()>0){
 				$row=$res->row_array();
 				return $row["id"];
@@ -271,7 +271,7 @@ class Checklistmodel extends CI_Model {
 
 		public function actualizaDetalleOTS($id,$data){
 			$this->db->where('(id)', $id);
-			if($this->db->update('checklist_detalle', $data)){
+			if($this->db->update('checklist_hfc_detalle', $data)){
 				// echo $this->db->last_query();;
 				// echo "<br>";
 				return TRUE;
@@ -280,12 +280,12 @@ class Checklistmodel extends CI_Model {
 		}
 
 		
-		public function eliminaOTS($hash){
+		public function eliminaChecklistHFC($hash){
 			$this->db->where('sha1(id)', $hash);
-		    if($this ->db->delete('checklist_ots')){
+		    if($this ->db->delete('checklist_hfc')){
 		    	
 		    	$this->db->where('sha1(id_ots)', $hash);
-			    if($this ->db->delete('checklist_detalle')){
+			    if($this ->db->delete('checklist_hfc_detalle')){
 			    	return TRUE;
 			    }
 
@@ -295,7 +295,7 @@ class Checklistmodel extends CI_Model {
 
 	/*************REPORTE*********/
 
-		public function dataEstadosChecklist(){
+		public function dataEstadosChecklistHFC(){
 			$this->db->select("
 				CASE 
 		          WHEN cd.estado=0 THEN 'OK'
@@ -305,7 +305,7 @@ class Checklistmodel extends CI_Model {
 				");
 
 			$this->db->group_by('cd.estado');
-			$res=$this->db->get('checklist_detalle cd');
+			$res=$this->db->get('checklist_hfc_detalle cd');
 			$cabeceras = array("Tipo","Cantidad");
 			$array=array();
 			$array[]=$cabeceras;
@@ -321,8 +321,7 @@ class Checklistmodel extends CI_Model {
 
 		}
 
-		public function dataTecnicos(){
-
+		public function dataTecnicosChecklistHFC(){
 			$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 
@@ -335,13 +334,12 @@ class Checklistmodel extends CI_Model {
 	             WHEN cd.estado = 1 THEN 1
 	             ELSE 0
 	            END) AS cantidad_nook
-			
 				");
 
 			$this->db->group_by('c.tecnico_id');
-			$this->db->join('checklist_ots c', 'c.id = cd.id_ots', 'left');	
+			$this->db->join('checklist_hfc c', 'c.id = cd.id_ots', 'left');	
 			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
-			$res=$this->db->get('checklist_detalle cd');
+			$res=$this->db->get('checklist_hfc_detalle cd');
 
 			$cabeceras = array("Técnico","OK",array('role'=> 'annotation'),"No OK",array('role'=> 'annotation'));
 			$array=array();

@@ -16,7 +16,14 @@ $config = array(
                      'rules'   => 'trim|required'
                     )
             ),
-           
+
+            'formChecklistFTTH' => array(
+               array(
+                     'field'   => 'tecnico',
+                     'label'   => 'Técnico',
+                     'rules'   => 'trim|required'
+                    )
+            ),
            
 
           	'formHerramientas' => array(
@@ -208,6 +215,14 @@ $config = array(
                      'label'   => 'Suma',
                      'rules'   => 'trim|required'
                     ),
+            ),
+
+            'formIngresoCapacitacion' => array(
+               array(
+                     'field'   => 'nombre_archivo',
+                     'label'   => 'Nombre de archivo',
+                     'rules'   => 'trim|required'
+                    )
             ),
 
             

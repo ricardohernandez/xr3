@@ -26,8 +26,9 @@ class Calidadmodel extends CI_Model {
 			concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_tecnico',
 			p.*,
 			CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
-	        if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%Y-%m-%d'),'') as 'fecha',
-	        if(p.fecha_2davisita!='0000-00-00', DATE_FORMAT(p.fecha_2davisita,'%Y-%m-%d'),'') as 'fecha_2davisita'
+	        if(p.diferencia_dias!='0', p.diferencia_dias,'') as 'diferencia_dias',
+	        if(p.fecha!='0000-00-00' and p.fecha!='1970-01-01', DATE_FORMAT(p.fecha,'%Y-%m-%d'),'') as 'fecha',
+	        if(p.fecha_2davisita!='0000-00-00'  and p.fecha_2davisita!='1970-01-01' , DATE_FORMAT(p.fecha_2davisita,'%Y-%m-%d'),'') as 'fecha_2davisita'
 		");
 
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
@@ -101,7 +102,31 @@ class Calidadmodel extends CI_Model {
 		return $this->dia($dia_semana)."".$dia."-".$mes;
 	}
 
-	
+	public function dataPorOt($ot){
+		$this->db->where('ot', $ot);
+		$res = $this->db->get('productividad_calidad');
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}else{
+			return FALSE;
+		}
+	}
+
+	public function eliminarPeriodoActual($desde,$hasta){
+		$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");
+	    if($this ->db->delete('productividad_calidad')){
+	    	return TRUE;
+	    }
+	    return FALSE;
+	}
+
+	public function formActualizaCalidad($id,$data){
+		$this->db->where('id', $id);
+		if($this->db->update('productividad_calidad', $data)){
+			return TRUE;
+		}
+		return FALSE;
+	}
 
 	public function getRutTecnicoJefe($id_jefe){
 		$this->db->select('us.rut rut');
