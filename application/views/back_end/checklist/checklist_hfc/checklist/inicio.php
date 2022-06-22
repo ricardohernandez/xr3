@@ -1,13 +1,19 @@
 <style type="text/css">
   .red{
-    background-color: #DC3545;
+    background-color: #CC0000;
     color: #fff;
   }
+
+  .grey{
+    background-color: grey;
+    color: #fff;
+  }
+
   @media(min-width: 768px){
     .borrar_hfc{
       display: inline;
       font-size: 15px!important;
-      color:#CD2D00;
+      color:#CC0000;
       margin-left: 10px;
       text-decoration: none!important;
     }
@@ -17,6 +23,15 @@
       margin:0 auto!important;
       font-size: 15px!important;
     }
+
+    .pdf_chk{
+      cursor : pointer;
+      display: inline;
+      font-size: 15px!important;
+      margin-left: 15px;
+      color: #000;
+    }
+
     .modal_hfc{
       width: 94%!important;
     }
@@ -28,7 +43,7 @@
     .borrar_hfc{
       display: inline;
       font-size: 15px!important;
-      color:#CD2D00;
+      color:#CC0000;
       margin-left: 20px;
       text-decoration: none!important;
     }
@@ -37,6 +52,15 @@
       text-align: center!important;
       font-size: 18px!important;
     }
+
+    .pdf_chk{
+      cursor : pointer;
+      display: inline;
+      font-size: 15px!important;
+      margin-left: 15px;
+      color: #000;
+    }
+    
     .modal_hfc{
       width: 94%!important;
     }
@@ -44,6 +68,27 @@
       font-size: 11px!important;
     }
   }
+
+
+  .img_galeria{
+    margin-left: 10px;
+    width: 100%;
+    height: 40px;
+  }
+  
+  .contenedor_fotos_galeria{
+    margin-bottom: 10px;
+  }
+
+  .elimina_galeria{
+   /* display: none;*/
+    color: #CC0000;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+  }
+
 </style>
 
 <script type="text/javascript">
@@ -67,10 +112,9 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
-       columnDefs: [
-          { orderable: false, targets: 0 }
+       "columnDefs" : [
+          { orderable: false , targets: 0 }
        ],
-
        "ajax": {
           "url":"<?php echo base_url();?>listaChecklistHFC",
           "dataSrc": function (json) {
@@ -85,17 +129,18 @@
         },    
 
        "columns": [
-         
           {
            "class":"centered center margen-td","data": function(row,type,val,meta){
               btn='<center><a data-toggle="modal" href="#modal_hfc" data-hash="'+row.hash+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar_hfc"></a>';
               if(id_perfil==1 || id_perfil==2){
-                btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_hfc" data-hash="'+row.hash+'"></a></center>';
+                btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_hfc" data-hash="'+row.hash+'"></a>';
               }
+
+              btn+='<a href="#!" data-hash="'+row.hash+'" title="PDF" class="fa fa-file-pdf pdf_chk"></a></center>';
+
               return btn;
             }
           },
-
           { "data": "auditor" ,"class":"margen-td centered"},
           { "data": "cargo" ,"class":"margen-td centered"},
           { "data": "fecha" ,"class":"margen-td centered"},
@@ -149,97 +194,140 @@
         $("#hash_hfc").val("");
         $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", false);
         $(".estado").removeClass("red");
+        $(".btn_guardar_hfc").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
+        $(".estado").removeClass("grey");
+        $(".contenedor_galeria").html("").hide();
     });     
 
     $(document).off('submit', '#formChecklistHFC').on('submit', '#formChecklistHFC',function(event) {
       var url="<?php echo base_url()?>";
       var formElement = document.querySelector("#formChecklistHFC");
       var formData = new FormData(formElement);
-        $.ajax({
-            url: $('#formChecklistHFC').attr('action')+"?"+$.now(),  
-            type: 'POST',
-            data: formData,
-            cache: false,
-            processData: false,
-            dataType: "json",
-            contentType : false,
-            beforeSend:function(){
-              $(".btn_guardar_hfc").attr("disabled", true);
-              $(".cierra_modal_hfc").attr("disabled", true);
-              $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", true);
-            },
-            success: function (data) {
-             if(data.res == "error"){
 
-                $(".btn_guardar_hfc").attr("disabled", false);
+      var $archivos = $("#archivos_secundarios");
+      if (parseInt($archivos.get(0).files.length) > 5){
+         alert("El máximo permitido son 5 imágenes.");
+         return false;
+      }
+      
+      document.getElementById('archivos_secundarios').value= null;
+  
+      $.ajax({
+          url: $('#formChecklistHFC').attr('action')+"?"+$.now(),  
+          type: 'POST',
+          data: formData,
+          cache: false,
+          processData: false,
+          dataType: "json",
+          contentType : false,
+          beforeSend:function(){
+            $(".btn_guardar_hfc").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').attr("disabled", true);
+            $(".cierra_modal_hfc").attr("disabled", true);
+            $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", true);
+          },
+          success: function (data) {
+           if(data.res == "error"){
+
+              $(".btn_guardar_hfc").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
+              $(".cierra_modal_hfc").attr("disabled", false);
+
+              $.notify(data.msg, {
+                className:'error',
+                globalPosition: 'top right',
+                autoHideDelay:5000,
+              });
+
+              $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", false);
+
+
+            }else if(data.res == "ok"){
+                $(".btn_guardar_hfc").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
                 $(".cierra_modal_hfc").attr("disabled", false);
 
-                $.notify(data.msg, {
-                  className:'error',
+                $.notify("Datos ingresados correctamente.", {
+                  className:'success',
                   globalPosition: 'top right',
                   autoHideDelay:5000,
                 });
 
-                $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", false);
+                $("#hash_hfc").val(data.hash);
+                getDataChecklist(data.hash)
+                listaChecklistHFC.ajax.reload();
+          }
 
-
-              }else if(data.res == "ok"){
-                  $(".btn_guardar_hfc").attr("disabled", false);
-                  $(".cierra_modal_hfc").attr("disabled", false);
-
-                  $.notify("Datos ingresados correctamente.", {
-                    className:'success',
-                    globalPosition: 'top right',
-                    autoHideDelay:5000,
+          $(".btn_guardar_hfc").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
+          $(".cierra_modal_hfc").attr("disabled", false);
+          $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", false);
+        },
+        error : function(xhr, textStatus, errorThrown ) {
+          if (textStatus == 'timeout') {
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                  $.notify("Reintentando...", {
+                    className:'info',
+                    globalPosition: 'top right'
                   });
+                  $.ajax(this);
+                  return;
+              } else{
+                 $.notify("Problemas en el servidor, intente nuevamente.", {
+                    className:'warn',
+                    globalPosition: 'top right'
+                  });     
+                  $('#modal_hfc').modal("toggle");
+              }    
+              return;
+          }
 
-                  $("#hash_hfc").val(data.hash);
-                  // $('#modal_hfc').modal("toggle");
-                  listaChecklistHFC.ajax.reload();
-            }
-
-            $(".btn_guardar_hfc").attr("disabled", false);
-            $(".cierra_modal_hfc").attr("disabled", false);
-            $("#formChecklistHFC input,#formChecklistHFC select,#formChecklistHFC button,#formChecklistHFC").prop("disabled", false);
-          },
-          error : function(xhr, textStatus, errorThrown ) {
-            if (textStatus == 'timeout') {
-                this.tryCount++;
-                if (this.tryCount <= this.retryLimit) {
-                    $.notify("Reintentando...", {
-                      className:'info',
-                      globalPosition: 'top right'
-                    });
-                    $.ajax(this);
-                    return;
-                } else{
-                   $.notify("Problemas en el servidor, intente nuevamente.", {
-                      className:'warn',
-                      globalPosition: 'top right'
-                    });     
-                    $('#modal_hfc').modal("toggle");
-                }    
-                return;
-            }
-
-            if (xhr.status == 500) {
-                $.notify("Problemas en el servidor, intente más tarde.", {
-                  className:'warn',
-                  globalPosition: 'top right'
-                });
-                $('#modal_hfc').modal("toggle");
-            }
-          },timeout:25000
-        });
+          if (xhr.status == 500) {
+              $.notify("Problemas en el servidor, intente más tarde.", {
+                className:'warn',
+                globalPosition: 'top right'
+              });
+              $('#modal_hfc').modal("toggle");
+          }
+        },timeout:105000
+      });
       return false; 
     });
 
-   $(document).off('click', '.btn_modificar_hfc').on('click', '.btn_modificar_hfc',function(event) {
+
+    $(document).off('click', '.btn_modificar_hfc').on('click', '.btn_modificar_hfc',function(event) {
       $("#hash_hfc").val("");
       hash = $(this).attr("data-hash");
       $("#hash_hfc").val(hash);
       $(".estado").removeClass("red");
-        
+      $(".estado").removeClass("grey");
+      $(".contenedor_galeria").html("");  
+      getDataChecklist(hash)
+    });
+
+  
+    $(document).off('click', '.elimina_galeria').on('click', '.elimina_galeria',function(event) {
+       id=$(this).attr("data-id");
+       if(confirm("¿Esta seguro que desea eliminar esta imágen?")){
+          $.post('eliminaImagenChecklistHFC'+"?"+$.now(),{"id": id}, function(data) {
+            if(data.res=="ok"){
+             
+              $.notify(data.msg, {
+                className:'success',
+                globalPosition: 'top right'
+              });
+
+              getDataFotos($("#hash_hfc").val())
+              
+            }else{
+              $.notify(data.msg, {
+                className:'danger',
+                globalPosition: 'top right'
+              });
+            }
+          },"json");
+        }
+    });
+
+    function getDataChecklist(hash){
+      $(".contenedor_galeria").html("");  
       $.ajax({
         url: "getDataChecklistHFC"+"?"+$.now(),  
         type: 'POST',
@@ -272,17 +360,28 @@
               $("#estado_"+data.datos[dato].id_check+" option[value='"+data.datos[dato].estado+"'").prop("selected", true);
 
               $("#n_ot").val(data.datos[dato].n_ot);
-              $("#tipo_actividad").val(data.datos[dato].tipo_actividad);
+              $("#tipo_actividad  option[value='"+data.datos[dato].tipo_actividad+"'").prop("selected", true);
               $("#direccion").val(data.datos[dato].direccion);
 
               if($("#estado_"+data.datos[dato].id_check).val()=="1"){
                 $("#estado_"+data.datos[dato].id_check).addClass("red");
               }
 
+              if($("#estado_"+data.datos[dato].id_check).val()=="2"){
+                $("#estado_"+data.datos[dato].id_check).addClass("grey");
+              }
+
               $("#observacion_"+data.datos[dato].id_check).val(data.datos[dato].observacion);
             } 
 
-            listaChecklistHFC.ajax.reload();
+            for(dato in data.galeria){
+               html="<div class='col-2 contenedor_fotos_galeria'>"+
+               "<span class='elimina_galeria fa fa-trash' data-id='"+data.galeria[dato].id_galeria+"'></span>"+
+               "<a target='_blank' href='"+base+"archivos/checklist_hfc/"+data.galeria[dato].imagen+"'><img class='img_galeria img-thumbnail rounded ' src='"+base+"archivos/checklist_hfc/"+data.galeria[dato].imagen+"' width='100px'></a>"+
+               "</div>";
+               $(".contenedor_galeria").append(html).show();
+               html="";
+            }
           }
         },
         error : function(xhr, textStatus, errorThrown ) {
@@ -314,7 +413,58 @@
           }
         },timeout:25000
       }); 
-    });
+    }
+
+    function getDataFotos(hash){
+      $(".contenedor_galeria").html("");  
+      $.ajax({
+        url: "getDataChecklistHFC"+"?"+$.now(),  
+        type: 'POST',
+        cache: false,
+        tryCount : 0,
+        retryLimit : 3,
+        data:{hash : hash},
+        dataType:"json",
+        success: function (data) {
+          if(data.res=="ok"){
+            for(dato in data.galeria){
+               html="<div class='col-2 contenedor_fotos_galeria'>"+
+               "<span class='elimina_galeria fa fa-trash' data-id='"+data.galeria[dato].id_galeria+"'></span>"+
+               "<a target='_blank' href='"+base+"archivos/checklist_hfc/"+data.galeria[dato].imagen+"'><img class='img_galeria img-thumbnail rounded ' src='"+base+"archivos/checklist_hfc/"+data.galeria[dato].imagen+"' width='100px'></a>"+
+               "</div>";
+               $(".contenedor_galeria").append(html).show();
+               html="";
+            }
+          }
+        },
+        error : function(xhr, textStatus, errorThrown ) {
+          if (textStatus == 'timeout') {
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                  $.notify("Reintentando...", {
+                    className:'info',
+                    globalPosition: 'top right'
+                  });
+                  $.ajax(this);
+                  return;
+              } else{
+                 $.notify("Problemas en el servidor, intente nuevamente.", {
+                    className:'warn',
+                    globalPosition: 'top right'
+                  });     
+              }    
+              return;
+          }
+
+          if (xhr.status == 500) {
+              $.notify("Problemas en el servidor, intente más tarde.", {
+                className:'warn',
+                globalPosition: 'top right'
+              });
+          }
+        },timeout:25000
+      }); 
+    }
 
 
     $(document).off('click', '.borrar_hfc').on('click', '.borrar_hfc',function(event) {
@@ -363,6 +513,23 @@
         
     });  
 
+    $(document).off('click', '.pdf_chk').on('click', '.pdf_chk',function(event) {
+      const hash = $(this).data("hash")
+
+      $.post('generaPdfChecklistHFCURL'+"?"+$.now(),{"hash": hash}, function(data) {
+        if(data.res=="ok"){
+
+          window.open(base + data.url, '_blank');
+                  
+        }else{
+          $.notify(data.msg, {
+            className:'danger',
+            globalPosition: 'top right'
+          });
+        }
+      },"json");
+
+     });  
 
 
   /********OTROS**********/
@@ -481,7 +648,7 @@
       });
 
 
-  /*********TABLA DETALLE******/
+  /*********TABLA DETALLE**********/
 
      var tabla_detalle = $('#tabla_detalle').DataTable({
        "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
@@ -489,6 +656,13 @@
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
        "aaSorting" : [],
+
+       "columnDefs" : [
+          { orderable: false , targets: 0 },
+          { orderable: false , targets: 1 },
+          { orderable: false , targets: 2 },
+          { orderable: false , targets: 3 },
+       ],
        // "scrollY": "60vh",
        // "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -511,23 +685,8 @@
       }
 
       setTimeout( function () {
-        var tabla_detalle = $.fn.dataTable.fnTables(true);
-        if ( tabla_detalle.length > 0 ) {
-            $(tabla_detalle).dataTable().fnAdjustColumnSizing();
-      }}, 200 ); 
-
-      setTimeout( function () {
-        var tabla_detalle = $.fn.dataTable.fnTables(true);
-        if ( tabla_detalle.length > 0 ) {
-            $(tabla_detalle).dataTable().fnAdjustColumnSizing();
-      }}, 2000 ); 
-
-      setTimeout( function () {
-        var tabla_detalle = $.fn.dataTable.fnTables(true);
-        if ( tabla_detalle.length > 0 ) {
-            $(tabla_detalle).dataTable().fnAdjustColumnSizing();
-        }
-      }, 4000 ); 
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+      }, 500 );
 
       $(document).on('keyup paste', '#buscador_hfc', function() {
         tabla_detalle.search($(this).val().trim()).draw();
@@ -603,7 +762,7 @@
             <th class="centered">Técnico</th>   
             <th class="centered">Técnico zona</th>   
             <th class="centered">Técnico código</th>   
-            <th class="centered">Técnico comuna</th>   
+            <th class="centered">Técnico proyecto</th>   
             <th class="centered">N° OT</th>   
             <th class="centered">Tipo actividad</th>   
             <th class="centered">Dirección </th>   
@@ -624,18 +783,30 @@
       <div class="modal-content">
 
        <div class="modal-header">
-        <div class="col-xs-12 col-sm-12 col-lg-4 offset-lg-4 mt-0">
+        <div class="col-xs-12 col-sm-12 col-lg-6 offset-lg-3 mt-0">
           <div class="form-row">
-            <div class="col-9 col-lg-6">
+
+            <div class="col-4 col-lg-4">
+              <div class="form-group">  
+                <div class="form-check mt-1">
+                  <input type="checkbox" name="checkcorreo" class="form-check-input mt-2" id="checkcorreo">
+                  <label class="form-check-label" style="font-size: 14px;" for="checkcorreo">¿Enviar correo?</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-9 col-lg-4">
                 <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_hfc">
                  <i class="fa fa-save"></i> Guardar
                 </button>
             </div>
-            <div class="col-3 col-lg-6">
+
+            <div class="col-3 col-lg-4">
               <button class="btn-block btn btn-sm btn-danger cierra_modal_hfc" data-dismiss="modal" aria-hidden="true">
-             <!--   <i class="fa fa-window-close"></i>  -->Cerrar
+               <i class="fa fa-window-close"></i> Cerrar
               </button>
             </div>
+
           </div>
         </div>
 
@@ -715,7 +886,7 @@
 
               <div class="col-lg-2">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Téc. Comuna</label>
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Téc. Proyecto</label>
                 <input placeholder="Técnico comuna" readonly type="text" name="tecnico_comuna"  id="tecnico_comuna" class="form-control form-control-sm" autocomplete="off" />
                 </div>
               </div>
@@ -730,7 +901,16 @@
               <div class="col-lg-2">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo Actividad </label>
-                <input placeholder="Tipo Actividad" type="text" name="tipo_actividad"  id="tipo_actividad" class="form-control form-control-sm" autocomplete="off" />
+                <select id="tipo_actividad" name="tipo_actividad" class="custom-select custom-select-sm">
+                  <option value="" selected>Seleccione...</option>
+                      <?php 
+                      foreach($tipos_actividad as $ta){
+                        ?>
+                          <option value="<?php echo $ta["id"]; ?>"><?php echo $ta["actividad"]; ?></option>
+                        <?php
+                      }
+                    ?>
+                </select>
                 </div>
               </div>
 
@@ -738,6 +918,20 @@
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Dirección </label>
                 <input placeholder="Dirección" type="text" name="direccion"  id="direccion" class="form-control form-control-sm" autocomplete="off" />
+                </div>
+              </div>
+
+              <div class="col-lg-3">  
+                <div class="form-group">
+                <label for="">Imágenes secundarias (5 max)</label>
+                <input type="file" id="archivos_secundarios" name="archivos_secundarios[]" multiple class="form-control-file"/>
+                </div>
+              </div>
+
+
+              <div class="col-lg-3">  
+                <div class="form-group">
+                   <div class="form-row contenedor_galeria"> </div>
                 </div>
               </div>
 
@@ -799,6 +993,7 @@
                             <select  name="estado[]" id="estado_<?php echo $key["id"] ?>"  class="estado input-xs">
                               <option selected value="0">Si</option>
                               <option value="1">No</option>
+                              <option value="2">No aplica</option>
                             </td>
                           <td>
                             <p class="table_text">

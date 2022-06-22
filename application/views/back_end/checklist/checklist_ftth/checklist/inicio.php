@@ -3,6 +3,11 @@
     background-color: #DC3545;
     color: #fff;
   }
+
+  .grey{
+    background-color: grey;
+    color: #fff;
+  }
  
   @media(min-width: 768px){
     .borrar_ftth{
@@ -17,6 +22,13 @@
       text-align: center!important;
       margin:0 auto!important;
       font-size: 15px!important;
+    }
+    .pdf_chk{
+      cursor: pointer;
+      display: inline;
+      font-size: 15px!important;
+      margin-left: 15px;
+      color: #000;
     }
     .modal_ftth{
       width: 94%!important;
@@ -38,12 +50,38 @@
       text-align: center!important;
       font-size: 18px!important;
     }
+    .pdf_chk{
+      cursor: pointer;
+      display: inline;
+      font-size: 15px!important;
+      margin-left: 15px;
+      color: #000;
+    }
     .modal_ftth{
       width: 94%!important;
     }
     .table_head{
       font-size: 11px!important;
     }
+  }
+
+  .img_galeria{
+    margin-left: 10px;
+    width: 100%;
+    height: 40px;
+  }
+  
+  .contenedor_fotos_galeria{
+    margin-bottom: 10px;
+  }
+
+  .elimina_galeria{
+   /* display: none;*/
+    color: #CC0000;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
   }
 </style>
 
@@ -68,10 +106,9 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
-       columnDefs: [
-          { orderable: false, targets: 0 }
+       "columnDefs" : [
+          { orderable: false , targets: 0 }
        ],
-
        "ajax": {
           "url":"<?php echo base_url();?>listaChecklistFTTH",
           "dataSrc": function (json) {
@@ -91,8 +128,9 @@
            "class":"centered center margen-td","data": function(row,type,val,meta){
               btn='<center><a data-toggle="modal" href="#modal_ftth" data-hash="'+row.hash+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar_ftth"></a>';
               if(id_perfil==1 || id_perfil==2){
-                btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_ftth" data-hash="'+row.hash+'"></a></center>';
+                btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_ftth" data-hash="'+row.hash+'"></a>';
               }
+              btn+='<a href="#!" data-hash="'+row.hash+'" title="PDF" class="fa fa-file-pdf pdf_chk"></a></center>';
               return btn;
             }
           },
@@ -150,12 +188,24 @@
         $("#hash_ftth").val("");
         $("#formChecklistFTTH input,#formChecklistFTTH select,#formChecklistFTTH button,#formChecklistFTTH").prop("disabled", false);
         $(".estado").removeClass("red");
+        $(".estado").removeClass("grey");
+        $(".contenedor_galeria").html("").hide();
     });     
 
     $(document).off('submit', '#formChecklistFTTH').on('submit', '#formChecklistFTTH',function(event) {
       var url="<?php echo base_url()?>";
       var formElement = document.querySelector("#formChecklistFTTH");
       var formData = new FormData(formElement);
+
+      var $archivos = $("#archivos_secundarios");
+      if (parseInt($archivos.get(0).files.length) > 5){
+         alert("El máximo permitido son 5 imágenes.");
+         return false;
+      }
+      
+      document.getElementById('archivos_secundarios').value= null;
+  
+
         $.ajax({
             url: $('#formChecklistFTTH').attr('action')+"?"+$.now(),  
             type: 'POST',
@@ -195,7 +245,7 @@
                   });
 
                   $("#hash_ftth").val(data.hash);
-                  // $('#modal_ftth').modal("toggle");
+                  getDataChecklist(data.hash)
                   listaChecklistFTTH.ajax.reload();
             }
 
@@ -230,17 +280,22 @@
                 });
                 $('#modal_ftth').modal("toggle");
             }
-          },timeout:25000
+          },timeout:105000
         });
       return false; 
     });
 
-   $(document).off('click', '.btn_modificar_ftth').on('click', '.btn_modificar_ftth',function(event) {
+    $(document).off('click', '.btn_modificar_ftth').on('click', '.btn_modificar_ftth',function(event) {
       $("#hash_ftth").val("");
       hash = $(this).attr("data-hash");
       $("#hash_ftth").val(hash);
       $(".estado").removeClass("red");
-        
+       getDataChecklist(hash)    
+    });
+
+
+    function getDataChecklist(hash){
+      $(".contenedor_galeria").html("");  
       $.ajax({
         url: "getDataChecklistFTTH"+"?"+$.now(),  
         type: 'POST',
@@ -273,18 +328,31 @@
               $("#estado_"+data.datos[dato].id_check+" option[value='"+data.datos[dato].estado+"'").prop("selected", true);
 
               $("#n_ot").val(data.datos[dato].n_ot);
-              $("#tipo_actividad").val(data.datos[dato].tipo_actividad);
+              $("#tipo_actividad  option[value='"+data.datos[dato].tipo_actividad+"'").prop("selected", true);
               $("#direccion").val(data.datos[dato].direccion);
 
               if($("#estado_"+data.datos[dato].id_check).val()=="1"){
                 $("#estado_"+data.datos[dato].id_check).addClass("red");
               }
 
+              if($("#estado_"+data.datos[dato].id_check).val()=="2"){
+                $("#estado_"+data.datos[dato].id_check).addClass("grey");
+              }
+
               $("#observacion_"+data.datos[dato].id_check).val(data.datos[dato].observacion);
             } 
 
-            listaChecklistFTTH.ajax.reload();
           }
+
+          for(dato in data.galeria){
+             html="<div class='col-2 contenedor_fotos_galeria'>"+
+             "<span class='elimina_galeria fa fa-trash' data-id='"+data.galeria[dato].id_galeria+"'></span>"+
+             "<a target='_blank' href='"+base+"archivos/checklist_ftth/"+data.galeria[dato].imagen+"'><img class='img_galeria img-thumbnail rounded ' src='"+base+"archivos/checklist_ftth/"+data.galeria[dato].imagen+"' width='100px'></a>"+
+             "</div>";
+             $(".contenedor_galeria").append(html).show();
+             html="";
+          }
+
         },
         error : function(xhr, textStatus, errorThrown ) {
           if (textStatus == 'timeout') {
@@ -315,7 +383,84 @@
           }
         },timeout:25000
       }); 
+    }
+
+    function getDataFotos(hash){
+      $(".contenedor_galeria").html("");  
+      $.ajax({
+        url: "getDataChecklistFTTH"+"?"+$.now(),  
+        type: 'POST',
+        cache: false,
+        tryCount : 0,
+        retryLimit : 3,
+        data:{hash : hash},
+        dataType:"json",
+        success: function (data) {
+          if(data.res=="ok"){
+            for(dato in data.galeria){
+               html="<div class='col-2 contenedor_fotos_galeria'>"+
+               "<span class='elimina_galeria fa fa-trash' data-id='"+data.galeria[dato].id_galeria+"'></span>"+
+               "<a target='_blank' href='"+base+"archivos/checklist_ftth/"+data.galeria[dato].imagen+"'><img class='img_galeria img-thumbnail rounded ' src='"+base+"archivos/checklist_ftth/"+data.galeria[dato].imagen+"' width='100px'></a>"+
+               "</div>";
+               $(".contenedor_galeria").append(html).show();
+               html="";
+            }
+          }
+        },
+        error : function(xhr, textStatus, errorThrown ) {
+          if (textStatus == 'timeout') {
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                  $.notify("Reintentando...", {
+                    className:'info',
+                    globalPosition: 'top right'
+                  });
+                  $.ajax(this);
+                  return;
+              } else{
+                 $.notify("Problemas en el servidor, intente nuevamente.", {
+                    className:'warn',
+                    globalPosition: 'top right'
+                  });     
+              }    
+              return;
+          }
+
+          if (xhr.status == 500) {
+              $.notify("Problemas en el servidor, intente más tarde.", {
+                className:'warn',
+                globalPosition: 'top right'
+              });
+          }
+        },timeout:25000
+      }); 
+    }
+
+
+
+    $(document).off('click', '.elimina_galeria').on('click', '.elimina_galeria',function(event) {
+       id=$(this).attr("data-id");
+       if(confirm("¿Esta seguro que desea eliminar esta imágen?")){
+          $.post('eliminaImagenChecklistFTTH'+"?"+$.now(),{"id": id}, function(data) {
+            if(data.res=="ok"){
+             
+              $.notify(data.msg, {
+                className:'success',
+                globalPosition: 'top right'
+              });
+
+              getDataFotos($("#hash_ftth").val())
+              
+            }else{
+              $.notify(data.msg, {
+                className:'danger',
+                globalPosition: 'top right'
+              });
+            }
+          },"json");
+        }
     });
+
 
     $(document).off('click', '.borrar_ftth').on('click', '.borrar_ftth',function(event) {
         var hash=$(this).attr("data-hash");
@@ -363,7 +508,24 @@
         
     });  
 
+    $(document).off('click', '.pdf_chk').on('click', '.pdf_chk',function(event) {
+        const hash = $(this).data("hash")
 
+        $.post('generaPdfChecklistFTTHURL'+"?"+$.now(),{"hash": hash}, function(data) {
+          if(data.res=="ok"){
+
+            window.open(base + data.url, '_blank');
+                    
+          }else{
+            $.notify(data.msg, {
+              className:'danger',
+              globalPosition: 'top right'
+            });
+          }
+        },"json");
+
+      });  
+    
 
   /********OTROS**********/
     
@@ -601,7 +763,7 @@
             <th class="centered">Técnico</th>   
             <th class="centered">Técnico zona</th>   
             <th class="centered">Técnico código</th>   
-            <th class="centered">Técnico comuna</th>   
+            <th class="centered">Técnico proyecto</th>   
             <th class="centered">N° OT</th>   
             <th class="centered">Tipo actividad</th>   
             <th class="centered">Dirección </th>   
@@ -624,14 +786,24 @@
        <div class="modal-header">
         <div class="col-xs-12 col-sm-12 col-lg-4 offset-lg-4 mt-0">
           <div class="form-row">
-            <div class="col-9 col-lg-6">
+
+            <div class="col-4 col-lg-4">
+              <div class="form-group">  
+                <div class="form-check mt-1">
+                  <input type="checkbox"  name="checkcorreo" class="form-check-input mt-2" id="checkcorreo">
+                  <label class="form-check-label" style="font-size: 14px;" for="checkcorreo">¿Enviar correo?</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-9 col-lg-4">
                 <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_ftth">
                  <i class="fa fa-save"></i> Guardar
                 </button>
             </div>
-            <div class="col-3 col-lg-6">
+            <div class="col-3 col-lg-4">
               <button class="btn-block btn btn-sm btn-danger cierra_modal_ftth" data-dismiss="modal" aria-hidden="true">
-             <!--   <i class="fa fa-window-close"></i>  -->Cerrar
+               <i class="fa fa-window-close"></i> Cerrar
               </button>
             </div>
           </div>
@@ -713,7 +885,7 @@
 
               <div class="col-lg-2">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Téc. Comuna</label>
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Téc. Proyecto</label>
                 <input placeholder="Técnico comuna" readonly type="text" name="tecnico_comuna"  id="tecnico_comuna" class="form-control form-control-sm" autocomplete="off" />
                 </div>
               </div>
@@ -728,7 +900,16 @@
               <div class="col-lg-2">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo Actividad </label>
-                <input placeholder="Tipo Actividad" type="text" name="tipo_actividad"  id="tipo_actividad" class="form-control form-control-sm" autocomplete="off" />
+                <select id="tipo_actividad" name="tipo_actividad" class="custom-select custom-select-sm">
+                  <option value="" selected>Seleccione...</option>
+                      <?php 
+                      foreach($tipos_actividad as $ta){
+                        ?>
+                          <option value="<?php echo $ta["id"]; ?>"><?php echo $ta["actividad"]; ?></option>
+                        <?php
+                      }
+                    ?>
+                </select>
                 </div>
               </div>
 
@@ -736,6 +917,20 @@
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Dirección </label>
                 <input placeholder="Dirección" type="text" name="direccion"  id="direccion" class="form-control form-control-sm" autocomplete="off" />
+                </div>
+              </div>
+
+              <div class="col-lg-3">  
+                <div class="form-group">
+                <label for="">Imágenes secundarias (5 max)</label>
+                <input type="file" id="archivos_secundarios" name="archivos_secundarios[]" multiple class="form-control-file"/>
+                </div>
+              </div>
+
+
+              <div class="col-lg-3">  
+                <div class="form-group">
+                   <div class="form-row contenedor_galeria"> </div>
                 </div>
               </div>
 
@@ -754,7 +949,6 @@
                 </select>
                 </div>
               </div> -->
-
 
             </div>
           </fieldset> 
@@ -795,6 +989,7 @@
                             <select  name="estado[]" id="estado_<?php echo $key["id"] ?>"  class="estado input-xs">
                               <option selected value="0">Si</option>
                               <option value="1">No</option>
+                              <option value="2">No aplica</option>
                             </td>
                           <td>
                             <p class="table_text">

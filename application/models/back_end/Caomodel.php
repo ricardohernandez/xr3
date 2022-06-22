@@ -82,7 +82,7 @@ class Caomodel extends CI_Model {
 							
 							if($tipo==0 and $this->session->userdata('id_perfil')<=3){
 								//$html = "<button class='btn btn-xs btn-primary btn_xr3 btn-edit-turnos' data-hash_turnos='".$dia["hash_turnos"]."'>".$dia["codigo"]."</button>";
-								$html = "<a class='btn-edit-turnos' data-hash_turnos='".$dia["hash_turnos"]."'>".$dia["codigo"]."</a>";
+								$html = "<a class='btn-edit-turnos' title='".$dia["rango_horario"]."' data-hash_turnos='".$dia["hash_turnos"]."'>".$dia["codigo"]."</a>";
 							}else{
 								$html = $dia["codigo"];
 							}
@@ -129,6 +129,8 @@ class Caomodel extends CI_Model {
 		public function listaTurnosTipos(){
 			$this->db->order_by('codigo', 'asc');
 			$this->db->where('estado', "activo");
+			$this->db->where('id<>1');
+			$this->db->where('id<>2');
 			$res=$this->db->get('cao_turnos_ausencias');
 			if($res->num_rows()>0){
 				return $res->result_array();

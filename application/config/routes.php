@@ -52,8 +52,8 @@
 	$route['checklist_herramientas'] = "back_end/checklist/checklist/index";
 	$route['vistaChecklist'] = "back_end/checklist/checklist/vistaChecklist";
 	$route['listaOTS'] = "back_end/checklist/checklist/listaOTS";
-	$route['getDataOTS'] = "back_end/checklist/checklist/getDataOTS";
-	$route['formOTS'] = "back_end/checklist/formOTS";
+	$route['getDataChecklistHerramientas'] = "back_end/checklist/checklist/getDataChecklistHerramientas";
+	$route['formOTS'] = "back_end/checklist/checklist/formOTS";
 	$route['eliminaOTS'] = "back_end/checklist/checklist/eliminaOTS";
 	$route['datosAuditor'] = "back_end/checklist/checklist/datosAuditor";
 	$route['datosTecnico'] = "back_end/checklist/checklist/datosTecnico";
@@ -62,6 +62,16 @@
 	$route['vistaGraficos'] = "back_end/checklist/checklist/vistaGraficos";
 	$route['dataEstadosChecklist'] = "back_end/checklist/checklist/dataEstadosChecklist";
 	$route['dataTecnicos'] = "back_end/checklist/checklist/dataTecnicos";
+	$route['eliminaImagenChecklist'] = "back_end/checklist/checklist/eliminaImagenChecklist";
+	$route['vistaGraficosH'] = "back_end/checklist/checklist/vistaGraficosH";
+	$route['graficoFallosH'] = "back_end/checklist/checklist/graficoFallosH";
+	$route['listaTrabajadoresCH'] = "back_end/checklist/checklist/listaTrabajadoresCH";
+	$route['generaPdfChecklistHerramientasURL'] = "back_end/checklist/checklist/generaPdfChecklistHerramientasURL";
+
+	$route['vistaFH'] = "back_end/checklist/checklist/vistaFH";
+	$route['listaFH'] = "back_end/checklist/checklist/listaFH";
+	$route['getDataFH'] = "back_end/checklist/checklist/getDataFH";
+	$route['formFH'] = "back_end/checklist/checklist/formFH";
 
 /*******CHECKLIST HFC*******/
 
@@ -78,7 +88,16 @@
 	$route['vistaGraficosChecklistHFC'] = "back_end/checklist/ChecklistHFC/vistaGraficosChecklistHFC";
 	$route['dataEstadosChecklistHFC'] = "back_end/checklist/ChecklistHFC/dataEstadosChecklistHFC";
 	$route['dataTecnicosChecklistHFC'] = "back_end/checklist/ChecklistHFC/dataTecnicosChecklistHFC";
+	$route['eliminaImagenChecklistHFC'] = "back_end/checklist/ChecklistHFC/eliminaImagenChecklistHFC";
+	$route['vistaGraficosFallosHFC'] = "back_end/checklist/ChecklistHFC/vistaGraficosFallosHFC";
+	$route['graficoFallosHFC'] = "back_end/checklist/ChecklistHFC/graficoFallosHFC";
+	$route['listaTrabajadoresHFC'] = "back_end/checklist/ChecklistHFC/listaTrabajadoresHFC";
+	$route['generaPdfChecklistHFCURL'] = "back_end/checklist/ChecklistHFC/generaPdfChecklistHFCURL";
 
+	$route['vistaFHFC'] = "back_end/checklist/ChecklistHFC/vistaFHFC";
+	$route['listaFHFC'] = "back_end/checklist/ChecklistHFC/listaFHFC";
+	$route['getDataFHFC'] = "back_end/checklist/ChecklistHFC/getDataFHFC";
+	$route['formFHFC'] = "back_end/checklist/ChecklistHFC/formFHFC";
 
 /*******CHECKLIST FTTH*******/
 
@@ -95,6 +114,17 @@
 	$route['vistaGraficosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/vistaGraficosChecklistFTTH";
 	$route['dataEstadosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataEstadosChecklistFTTH";
 	$route['dataTecnicosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataTecnicosChecklistFTTH";
+	$route['eliminaImagenChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/eliminaImagenChecklistFTTH";
+	$route['vistaGraficosFallosFTTH'] = "back_end/checklist/ChecklistFTTH/vistaGraficosFallosFTTH";
+	$route['graficoFallosFTTH'] = "back_end/checklist/ChecklistFTTH/graficoFallosFTTH";
+	$route['listaTrabajadoresFTTH'] = "back_end/checklist/ChecklistFTTH/listaTrabajadoresFTTH";
+	$route['generaPdfChecklistFTTHURL'] = "back_end/checklist/ChecklistFTTH/generaPdfChecklistFTTHURL";
+
+	$route['vistaFFTTH'] = "back_end/checklist/ChecklistFTTH/vistaFFTTH";
+	$route['listaFFTTH'] = "back_end/checklist/ChecklistFTTH/listaFFTTH";
+	$route['getDataFFTTH'] = "back_end/checklist/ChecklistFTTH/getDataFFTTH";
+	$route['formFFTTH'] = "back_end/checklist/ChecklistFTTH/formFFTTH";
+
 
 /*******USUARIOS*******/
 	$route['mantenedor_usuarios'] = "back_end/usuarios/index";

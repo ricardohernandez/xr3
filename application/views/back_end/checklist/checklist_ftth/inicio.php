@@ -92,11 +92,9 @@
         
 
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');
         $("#menu_checklist_ftth").addClass('menuActivo');  
-        $("#menu_graficos").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');  
-        $("#menu_usuarios").removeClass('menuActivo');   
-
+     
         $.get("vistaChecklistFTTH", function( data ) {
           $(".contenedor_app").html(data);    
           $("#menu_checklist_ftth").removeClass('disabled_sub');
@@ -107,11 +105,9 @@
         event.preventDefault();
         $("#menu_checklist_ftth").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');
         $("#menu_checklist_ftth").addClass('menuActivo');  
-        $("#menu_graficos").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');  
-        $("#menu_usuarios").removeClass('menuActivo');   
-
+       
         $.get("vistaChecklistFTTH", function( data ) {
           $(".contenedor_app").html(data);    
           $("#menu_checklist_ftth").removeClass('disabled_sub');
@@ -122,10 +118,8 @@
         event.preventDefault();
         $("#menu_graficos").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');
         $("#menu_graficos").addClass('menuActivo');  
-        $("#menu_checklist_ftth").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');  
-        $("#menu_usuarios").removeClass('menuActivo');   
 
         $.get("vistaGraficosChecklistFTTH", function( data ) {
           $(".contenedor_app").html(data);    
@@ -133,7 +127,31 @@
         });
       });
 
+      $(document).off('click', '#menu_fallos').on('click', '#menu_fallos',function(event) {
+        event.preventDefault();
+        $("#menu_fallos").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');
+        $("#menu_fallos").addClass('menuActivo');  
 
+        $.get("vistaFFTTH", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_fallos").removeClass('disabled_sub');
+        });
+      });
+
+      $(document).off('click', '#menu_graficos_fallos_ftth').on('click', '#menu_graficos_fallos_ftth',function(event) {
+        event.preventDefault();
+        $("#menu_graficos_fallos_ftth").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo'); 
+        $("#menu_graficos_fallos_ftth").addClass('menuActivo');  
+             
+        $.get("vistaGraficosFallosFTTH", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_graficos_fallos_ftth").removeClass('disabled_sub');
+        });
+      });
 
 
 
@@ -149,9 +167,11 @@
 
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-       <ul class="nav nav-tabs navbar-left nav-tabs-int">
+       <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_checklist_ftth" class="active"><a> <i class="fa fa-th-list"></i> Checklist FTTH</a></li>   
-        <li id="menu_graficos" class="active"><a> <i class="fa fa-th-list"></i> Graficos </a></li>   
+        <li id="menu_graficos" class="active"><a> <i class="fa fa-fa-chart-line"></i> Graficos </a></li>   
+        <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
+        <li id="menu_graficos_fallos_ftth" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
       </ul>  
     </div> 
   </div>

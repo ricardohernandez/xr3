@@ -28,7 +28,7 @@
       font-size: 16px;
     }
     .log_tit2{
-       font-size: 17px;
+       font-size: 13px;
        color: #000!important;
     }
 

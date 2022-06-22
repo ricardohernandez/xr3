@@ -1,4 +1,3 @@
-
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Ticketmodel extends CI_Model {

@@ -19,6 +19,7 @@ class Productividadmodel extends CI_Model {
 
 			$this->db->select("sha1(p.id) as hash,
 				p.*,
+				TRIM(puntaje)+0 as puntaje,
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 		        if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%Y-%m-%d'),'') as 'fecha'
 			");
@@ -100,6 +101,14 @@ class Productividadmodel extends CI_Model {
 			return FALSE;
 		}
 
+		public function eliminarPeriodoActual($desde,$hasta){
+			$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");
+		    if($this ->db->delete('productividad')){
+		    	return TRUE;
+		    }
+		    return FALSE;
+		}
+
 	/********GRAFICOS*************/
 
 		public function rankingTecnicos($desde,$hasta,$trabajador,$jefe){
@@ -150,12 +159,12 @@ class Productividadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				$temp=array();
 				$temp[] = (string)$key["tecnico"];
-	 		    $temp[] = (int) $v = ($key['cantidad_ok']==0) ? null: $key['cantidad_ok'];
-	 		    $temp[] = (string) $v = ($key['cantidad_ok']==0) ? null: $key['cantidad_ok'];
-	 		    $temp[] = (int) $v = ($key['cantidad_gsa']==0) ? null: $key['cantidad_gsa'];
-	 		    $temp[] = (string) $v = ($key['cantidad_gsa']==0) ? null: $key['cantidad_gsa'];
-	 		    $temp[] = (int) $v = ($key['cantidad_redes']==0) ? null: $key['cantidad_redes'];
-	 		    $temp[] = (string) $v = ($key['cantidad_redes']==0) ? null: $key['cantidad_redes'];
+	 		    $temp[] = (float) $v = ($key['cantidad_ok']==0) ? null: round($key['cantidad_ok'],2);
+	 		    $temp[] = (string) $v = ($key['cantidad_ok']==0) ? null: round($key['cantidad_ok'],2);
+	 		    $temp[] = (float) $v = ($key['cantidad_gsa']==0) ? null: round($key['cantidad_gsa'],2);
+	 		    $temp[] = (string) $v = ($key['cantidad_gsa']==0) ? null: round($key['cantidad_gsa'],2);
+	 		    $temp[] = (float) $v = ($key['cantidad_redes']==0) ? null: round($key['cantidad_redes'],2);
+	 		    $temp[] = (string) $v = ($key['cantidad_redes']==0) ? null: round($key['cantidad_redes'],2);
 				$array[]=$temp;
 			}
 			return $array;
@@ -198,8 +207,8 @@ class Productividadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				$temp = array();
 			    $temp[] = (string)$key["fecha"]; 
-			    $temp[] = (int) $key['puntos'];
-		 	    $temp[] = (string) $v = ($key['puntos']==0) ? null: $key['puntos'];
+			    $temp[] = (float) $key['puntos'];
+		 	    $temp[] = (string) $v = ($key['puntos']==0) ? null: round($key['puntos'],2);
 		 	    $temp[] = strtotime($key["fecha"]);
 
 			    $array[] = $temp;
@@ -399,14 +408,14 @@ class Productividadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				$temp = array();
 			    $temp[] = (string)$key["tipo_actividad"]; 
-			    $temp[] = (int) $key['puntos'];
+			    $temp[] = (float) round($key['puntos'],2);
 			    $array[] = $temp;
 			}
 			return $array;
 		}
 
 		public function totalPuntosPorFecha($desde,$hasta,$trabajador,$jefe){
-			$this->db->select("format(SUM(puntaje),0,'de_DE') as puntos", FALSE);
+			$this->db->select("ROUND(SUM(puntaje), 2) as puntos", FALSE);
 			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 			if($desde!="" and $hasta!=""){
 				$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");	
@@ -538,15 +547,18 @@ class Productividadmodel extends CI_Model {
 				p.id as id,
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 				a.area as area,
-				if(sum(puntaje)!=0,sum(puntaje),'')  as total,
+				if(sum(puntaje)!=0, sum(puntaje) ,'') as total,
 				p.rut_tecnico as rut_tecnico,
 				if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%d-%m-%Y'),'') as 'fecha'");
+
 			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');
 
 			if($desde!="" and $hasta!=""){$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	}
 			if($trabajador!=""){$this->db->where('p.rut_tecnico', $trabajador);}
 			if($jefe!=""){	$this->db->where('u.id_jefe', $jefe);}
+
+			$this->db->where("(u.id_cargo ='15' or u.id_cargo ='16' or u.id_cargo ='17' or u.id_cargo ='18' or u.id_cargo ='32')");
 
 			$this->db->order_by('u.nombres', 'asc');
 			$this->db->group_by('u.id');
@@ -562,39 +574,45 @@ class Productividadmodel extends CI_Model {
 				$temp["Trabajador"] = $key["trabajador"];
 				$dias = 0;
 				$puntajes = array();
+
 				foreach($array_fechas as $fecha){
-						$this->db->select("if(sum(puntaje)!=0,sum(puntaje),0)  as puntaje");
-						$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.$key["rut_tecnico"].'"');
-						$res2=$this->db->get('productividad');
+
+					$this->db->select("if(sum(puntaje)!=0,sum(puntaje),0)  as puntaje");
+					$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.$key["rut_tecnico"].'"');
+					$res2=$this->db->get('productividad');
+					
+					if($res2->num_rows()>0){
+						$puntaje=0;
+						foreach($res2->result_array() as $key2){
+							$puntaje = $puntaje+$key2["puntaje"];
+						}
 						
-						if($res2->num_rows()>0){
-							$puntaje=0;
-							foreach($res2->result_array() as $key2){
-								$puntaje = $puntaje+$key2["puntaje"];
-							}
-							if($puntaje!=0){
-								$dias++;
-								$puntajes[] = $puntaje;
-							}
-
-							$temp[$this->fecha_to_str($fecha)] = $puntaje;
-						}else{
-							$temp[$this->fecha_to_str($fecha)] = "";
+						if($puntaje!=0){
+							$dias++;
+							$puntajes[] = $puntaje;
 						}
 
-						$temp["Días"] = $dias;
+						$temp[$this->fecha_to_str($fecha)] = round($puntaje,2);
+					}else{
+						$temp[$this->fecha_to_str($fecha)] = "";
+					}
 
-						$a = array_filter($puntajes);
-						if(count($a)) {
-						   $temp["Promedio"] = round(array_sum($a)/count($a),2);
-						}
+					$temp["Días"] = $dias;
+
+					$a = array_filter($puntajes);
+					if(count($a)) {
+					    $temp["Promedio"] = round(array_sum($a)/count($a),2);
+					}else{
+						$temp["Promedio"] = 0;
+					}
 						
 				}
 
-				$temp["Total"] = $key["total"];
+				$temp["Total"] = round($key["total"],2);
 				$array[]=$temp;
 
 			}
+
 			return $array;
 		}
 

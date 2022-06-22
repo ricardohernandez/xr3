@@ -580,7 +580,7 @@
             <tr>
               <th class="centered">Acciones</th> 
               <th class="centered">Código</th>    
-              <th class="centered">Rango horario</th>    
+              <th class="centered">Descripción</th>    
               <th class="centered">Estado</th>    
               <th class="centered">Suma</th>    
             </tr>
@@ -610,8 +610,8 @@
                   
                 <div class="col-lg-12">
                     <div class="form-group"> 
-                    <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Rango horario </label>
-                       <input  type="text" placeholder="Ingrese Rango horario"  name="rango_horario" id="rango_horario" size="50" maxlength="50" class="form-control form-control-sm" autocomplete="off"/>
+                    <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Descripción</label>
+                       <input  type="text" placeholder="Ingrese Descripción"  name="rango_horario" id="rango_horario" size="50" maxlength="50" class="form-control form-control-sm" autocomplete="off"/>
                     </div>
                 </div>
 

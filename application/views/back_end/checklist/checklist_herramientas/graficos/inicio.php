@@ -46,7 +46,7 @@
 		        bold:true
 		      },
 
-	          colors: ['green', 'red'],
+	          colors: ['green', 'red' , 'grey'],
 	          chartArea:{
 	             left:150,
 	             right:150,
@@ -75,7 +75,7 @@
         	 var options = {
         	 	fontName: 'Nunito',
         	 	fontColor:'#32477C',
-		        colors: ['green', 'red'],
+	            colors: ['green', 'red' , 'grey'],
 		        chartArea:{
 		             left:210,
 		             right:110,

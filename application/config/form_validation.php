@@ -17,6 +17,23 @@ $config = array(
                     )
             ),
 
+           'formFH' => array(
+               array(
+                     'field'   => 'solucion_fecha',
+                     'label'   => 'Fecha solución',
+                     'rules'   => 'trim|required'
+               )
+            ),
+
+            'formFHFC' => array(
+               array(
+                     'field'   => 'solucion_fecha',
+                     'label'   => 'Fecha solución',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+           
+
             'formChecklistFTTH' => array(
                array(
                      'field'   => 'tecnico',
@@ -25,7 +42,14 @@ $config = array(
                     )
             ),
            
-
+            'formFFTTH' => array(
+               array(
+                     'field'   => 'solucion_fecha',
+                     'label'   => 'Fecha solución',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+            
           	'formHerramientas' => array(
                array(
                      'field'   => 'tipo',

@@ -11,7 +11,7 @@
 <!-- Css -->
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/bootstrap.min.css" />
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/font-icons.css" />
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/style2222.css" />
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/stylez.css" />
 <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
 <link rel="shortcut icon" href="<?php echo base_url();?>assets3/front_end/img/favicon2.jpg">
 <link rel="apple-touch-icon" href="<?php echo base_url();?>assets3/front_end/img/apple-touch-icon.png">
@@ -166,6 +166,20 @@
 	</main> <!-- end main-wrapper -->
 
 
+<style type="text/css">
+	@media (max-width: 768px){
+    .logo_pto {
+    	 margin-top: 5px;
+       width: 60px;
+       margin-right:4px;
+       margin-left:6px;
+    }
+    .logo_empresa{
+    	 margin-top: 14px;
+    	 width: 90px;
+    }
+  }
+</style>
 <!-- jQuery Scripts -->
 <link href="<?php echo base_url();?>assets3/front_end/css/featherlight.min.css" rel="stylesheet">
 <link href="<?php echo base_url();?>assets3/front_end/css/featherlight.gallery.min.css" rel="stylesheet">

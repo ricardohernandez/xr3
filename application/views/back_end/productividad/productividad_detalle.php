@@ -108,6 +108,9 @@
           { "data": "puntaje" ,"class":"margen-td centered"},
           { "data": "ot" ,"class":"margen-td centered"},
           { "data": "estado_ot" ,"class":"margen-td centered"},
+          { "data": "categoria" ,"class":"margen-td centered"},
+          { "data": "equivalente" ,"class":"margen-td centered"},
+          { "data": "tecnologia" ,"class":"margen-td centered"},
         ]
       }); 
   
@@ -640,9 +643,11 @@
             <th class="centered">Puntaje</th> 
             <th class="centered">Orden de Trabajo</th> 
             <th class="centered">Digitalizacion OT</th>   
+            <th class="centered">Categoría</th> 
+            <th class="centered">Equivalente</th> 
+            <th class="centered">Técnologia</th> 
           </tr>
         </thead>
-
 
       </table>
     </div>

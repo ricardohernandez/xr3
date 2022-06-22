@@ -16,7 +16,7 @@
   .finde_resumen{
     /*background-color: #EAEDED;*/
     color:#FF0000!important;
-    z-index: 1!important;
+   /* z-index: 1!important;*/
   }
 
   table thead th, table tfoot , table tbody {
@@ -160,7 +160,7 @@
                     var desde_anterior="<?php echo $desde_anterior; ?>"
                     var hasta_anterior="<?php echo $hasta_anterior; ?>"
                     var periodo =$("#periodo_resumen").val()
-                    var jefe =$("#jefe_det").val()
+                    var jefe =$("#jefe_res").val()
                   
                     if(periodo=="actual"){
                       $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
@@ -199,7 +199,7 @@
     procesaDatatable(false)
 
 
-    $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_det").val() } , function(data) {
+    $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_res").val() } , function(data) {
       response = data;
     }).done(function() {
         $("#trabajadores_resumen").select2({
@@ -264,7 +264,7 @@
       }); 
     }
 
-    $(document).off('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_det').on('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_det', function(event) {
+    $(document).off('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_res').on('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_res', function(event) {
       procesaDatatable(true)
     }); 
 
@@ -315,7 +315,7 @@
 
         <div class="col-lg-2">
           <div class="form-group">
-            <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+            <select id="jefe_res" name="jefe_det" class="custom-select custom-select-sm">
               <option value="" selected>Seleccione Jefe | Todos</option>
               <?php  
                 foreach($jefes as $j){
@@ -333,7 +333,7 @@
           ?>
           <div class="col-lg-2">
             <div class="form-group">
-              <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+              <select id="jefe_res" name="jefe_det" class="custom-select custom-select-sm">
                 <?php  
                   foreach($jefes as $j){
                     ?>

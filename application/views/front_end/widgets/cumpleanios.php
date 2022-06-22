@@ -9,6 +9,30 @@
     width: 20px;
     float: right;
   }
+
+  .item_activo_cumple{
+    background: #F48634;
+    border-radius: 15px;
+    color: #fff!important;
+  }
+
+  .enlace_activo_cumple{
+    display:block;
+    color:#fff!important;
+  }
+
+  .enlace_activo_cumple:hover{
+    color:#fff!important;
+  }
+
+  .txt_activo_cumple{
+    display: inline;
+    margin: -18px 20px;
+    float: right;
+    font-size: 14px;
+    color: #fff;
+  }
+
 </style>
 <script type="text/javascript">
   $(function(){
@@ -55,50 +79,50 @@
 </script>
 	<?php  
 	  foreach($cumpleanios as $c){
-		      $dia_actual=date("m-d");
-		      if($c["dia_actual"]==$dia_actual){
-		        ?>
-		        <article class="post-list-small__entry clearfix info_cumple item_activo_cumple" data-hash="<?php echo $c["hash"] ?>">
-		        <?php
-		      }else{
-		        ?>
-		        <article class="post-list-small__entry clearfix info_cumple" data-hash="<?php echo $c["hash"] ?>">
-		        <?php
-		      }
+      $dia_actual=date("m-d");
+
+      if($c["dia_actual"] == $dia_actual){
+        ?>
+        <article class="post-list-small__entry clearfix info_cumple item_activo_cumple" data-hash="<?php echo $c["hash"] ?>">
+        <?php
+      }else{
+        ?>
+        <article class="post-list-small__entry clearfix info_cumple" data-hash="<?php echo $c["hash"] ?>">
+        <?php
+      }
 		?>
 
 	    <div class="post-list-small__img-holder">
-	        <?php
-	        	if($c["foto"]!=""){
-	        ?>
-		        <div class="thumb-container thumb-100">
-		          <a href="#!">
-		            <img data-src="<?php echo base_url() ?>fotos_usuarios/<?php echo $c["foto"]?>" src="<?php echo base_url() ?>fotos_usuarios/<?php echo $c["foto"]?>" alt=""  class="img_cumple lazyload">
-		          </a>
-		        </div>
-	        <?php
-	          }
-	        ?>
-	      
+        <?php
+        	if($c["foto"]!=""){
+        ?>
+	        <div class="thumb-container thumb-100">
+	          <a href="#!">
+	            <img data-src="<?php echo base_url() ?>fotos_usuarios/<?php echo $c["foto"]?>" src="<?php echo base_url() ?>fotos_usuarios/<?php echo $c["foto"]?>" alt=""  class="img_cumple lazyload">
+	          </a>
+	        </div>
+        <?php
+          }
+        ?>
 	    </div>
 
 	    <div class="post-list-small__body"> 
-	        <h5 class="post-list-extrasmall__entry-title">
-	        <?php 
-		          $dia_actual=date("m-d");
-		          if($c["dia_actual"]==$dia_actual){
-		            ?>
-		              <a href="#!" class="enlace_activo_cumple"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...'); ?></a>
-		              <span class="txt_activo_cumple"> Hoy</span><!-- <img data-src="http://intranet.km-t.cl/assets/imagenes/torta.png" src="http://intranet.km-t.cl/assets/imagenes/torta.png" alt=""  class="img_torta lazyload"> -->
-		            <?php
-		          }else{
-		            ?>
-		              <a href="#!"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...'); ?></a>
-		              <span class="fecha_cumple"><?php echo date_to_str_full($c["fecha_nacimiento"])?></span>
-		            <?php
-		          }
-		        ?>
-	        </h5>
+        <h5 class="post-list-extrasmall__entry-title">
+        <?php 
+	          $dia_actual=date("m-d");
+	          if($c["dia_actual"] == $dia_actual){
+	            ?>
+	              <a href="#!" class="enlace_activo_cumple"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...'); ?></a>
+	              <span class="txt_activo_cumple"> Hoy</span><!-- <img data-src="http://intranet.km-t.cl/assets/imagenes/torta.png" src="http://intranet.km-t.cl/assets/imagenes/torta.png" alt=""  class="img_torta lazyload"> -->
+	            <?php
+	          }else{
+	            ?>
+	              <a href="#!"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...'); ?></a>
+	              <span class="fecha_cumple"><?php echo date_to_str_full($c["fecha_nacimiento"])?></span>
+	            <?php
+	          }
+	        ?>
+        </h5>
 	    </div>   
 
 	  </article>

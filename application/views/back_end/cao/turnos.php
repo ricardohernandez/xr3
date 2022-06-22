@@ -25,7 +25,7 @@
   .finde_resumen{
     /*background-color: #EAEDED;*/
     color:#FF0000!important;
-    z-index: 1!important;
+  /*  z-index: 1!important;*/
   }
 
   .table thead th , .table tfoot th  {
@@ -57,20 +57,20 @@
   }
 
   @media (max-width: 768px){
-    #tabla_turnos tbody td {
+   /* #tabla_turnos tbody td {
       font-size: 11px!important;
-    }
+    }*/
     .modal_turnos{
       width: 95%!important;
     }
   }
 
   @media (min-width: 768px){
-    #tabla_turnos tbody td {
+    /*#tabla_turnos tbody td {
       font-size: 11px!important;
-    }
+    }*/
     .modal_turnos{
-      width: 65%!important;
+      width: 75%!important;
     }
   }
 
@@ -169,7 +169,7 @@
                 destroy: true,
                 processing: true,  
                 iDisplayLength:-1, 
-                aaSorting : [[1,"asc"]],
+                aaSorting : [[0,"asc"]],
                 scrollY: "65vh",
                 scrollX: true,
                 select:true,
@@ -179,10 +179,10 @@
                 oLanguage: { 
                   sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
-                /*fixedColumns:   {
-                   leftColumns: 2,
+                fixedColumns:   {
+                   leftColumns: 4,
                    heightMatch: 'none'
-                },*/
+                },
                 columnDefs: [
                       { width: "5%", targets: 0 },
                       { width: "5%", targets: 1 },
@@ -607,7 +607,7 @@
     <div class="col-lg-2">
       <div class="form-group">
         <select id="nivel_tecnico" name="nivel_tecnico" class="custom-select custom-select-sm">
-          <option value="" selected>Seleccione Nivel técnico | Todos</option>
+          <option value="" selected>Seleccione Segmento técnico | Todos</option>
           <?php  
             foreach($nivelesTecnico as $n){
               ?>
@@ -692,11 +692,11 @@
                 <div class="col-lg-3">               
                   <div class="form-group">
                     <select id="turno" name="turno" class="custom-select custom-select-sm">
-                    <option value="" selected>Seleccione </option>
+                    <option value="" selected>Tipo turno</option>
                         <?php 
                         foreach($turnos as $t){
                           ?>
-                            <option value="<?php echo $t["id"]; ?>"><?php echo $t["codigo"]; ?></option>
+                            <option value="<?php echo $t["id"]; ?>"><?php echo $t["codigo"]." - ".$t["rango_horario"]; ?></option>
                           <?php
                         }
                       ?>

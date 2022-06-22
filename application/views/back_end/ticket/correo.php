@@ -5,9 +5,16 @@
 <title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
+
 <?php
 foreach($data as $dato){
+  if($dato["estado"]=="finalizado"){
+    $color = "#107C41";
+  }else{
+    $color = "#32477C";
+  }
 ?>
+
 <body style="margin:0;padding:0;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;" >
 <div style="background-color:#fff;width:90%;border:1px solid #ccc;padding:10px 20px;margin:0 auto;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
   <br>
@@ -15,7 +22,7 @@ foreach($data as $dato){
         <tbody>
 
             <tr>
-	            <td width="100%" colspan="2" style="text-align:center;background-color:#32477C;color: #fff; padding:1px;margin:1px;font-size:15px;font-weight:bold;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
+	            <td width="100%" colspan="2" style="text-align:center;background-color:<?php echo $color?>;color: #fff; padding:1px;margin:1px;font-size:15px;font-weight:bold;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
 	               <span><?php echo $titulo; ?></span>
 	            </td>
             </tr>
@@ -36,6 +43,15 @@ foreach($data as $dato){
 	            <td width="80%" style="padding-left:20px;border-color:#ccc;border-collapse: collapse;padding:2px;margin:1px;font-size:13px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
 	            <?php echo $dato["tipo"];?>
 	            </td>
+            </tr>
+
+            <tr>
+              <td width="20%" style="padding-left:20px;border-color:#ccc;border-collapse: collapse;padding:2px;margin:1px;font-size:13px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
+                 Estado
+              </td>
+              <td width="80%" style="padding-left:20px;border-color:#ccc;border-collapse: collapse;padding:2px;margin:1px;font-size:13px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
+              <?php echo $dato["estado"];?>
+              </td>
             </tr>
 
             <tr>

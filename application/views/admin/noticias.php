@@ -443,7 +443,7 @@
 
               for(dato in data.galeria){
                html="<div class='col-1 contenedor_fotos_galeria'>"+
-               "<span class='elimina_galeria fa fa-trash' data-id='"+data.galeria[dato].id_galeria+"'></span>"+
+          
                "<a target='_blank' href='./noticias/imagenes/"+data.galeria[dato].imagen+"'><img class='img-thumbnail img_galeria' src='./noticias/imagenes/"+data.galeria[dato].imagen+"' width='100px'></a>"+
                "</div>";
                $(".contenedor_galeria").append(html).show();

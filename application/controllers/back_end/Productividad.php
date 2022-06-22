@@ -48,7 +48,6 @@ class Productividad extends CI_Controller {
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
-			
 		}
 
 		public function vistaDetalle(){
@@ -106,12 +105,23 @@ class Productividad extends CI_Controller {
 	            $filename = $_FILES['userfile']['tmp_name'];
 	            $handle = fopen($filename, "r");
 	            $i=0;$z=0;$y=0;     
-	         
+	         	
+
+	         	if(date("d")>"24"){
+					$desde = date('Y-m-d', strtotime('-0 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}else{
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-0 month', strtotime(date('Y-m-24'))));
+				}
+
+	         	$this->Productividadmodel->eliminarPeriodoActual($desde,$hasta);
+
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 
-	            	if(count($data)!=10){
-	            		echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido, 10 columnas esperadas,".count($data)." obtenidas."));exit;
+	            	if(count($data)!=13){
+	            		echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido, 13 columnas esperadas,".count($data)." obtenidas."));exit;
 	            	}
 
 	                // if(!empty($data[0])){
@@ -151,6 +161,9 @@ class Productividad extends CI_Controller {
 							"puntaje"=>$data[7],
 							"ot"=>$data[8],
 							"estado_ot"=>$data[9],
+							"categoria"=>$data[10],
+							"equivalente"=>$data[11],
+							"tecnologia"=>$data[12],
 							"ultima_actualizacion"=>$ultima_actualizacion
 						);	
 
@@ -337,7 +350,7 @@ class Productividad extends CI_Controller {
 				<h3>Reporte detalle productividad <?php echo date("d-m-Y",strtotime($desde)); ?> - <?php echo date("d-m-Y",strtotime($hasta)); ?></h3>
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
-			                <th class="head">Técnico</th> 
+			                <th class="head">T&eacute;cnico</th> 
 				            <th class="head">Fecha</th> 
 				            <th class="head">Dirección</th> 
 				            <th class="head">Tipo actividad</th> 
@@ -346,7 +359,10 @@ class Productividad extends CI_Controller {
 				            <th class="head">Derivado</th> 
 				            <th class="head">Puntaje</th> 
 				            <th class="head">Orden de Trabajo</th> 
-				            <th class="head">Digitalizacion OT</th>   
+				            <th class="head">Digitalizaci&oacute;n OT</th>  
+				            <th class="head">Categor&iacute;a</th>   
+				            <th class="head">Equivalente</th>   
+				            <th class="head">Tecnolog&iacute;a</th>   
 				        </tr>
 				        </thead>	
 						<tbody>
@@ -365,7 +381,9 @@ class Productividad extends CI_Controller {
 									 <td><?php echo utf8_decode($d["puntaje"]); ?></td>
 									 <td><?php echo utf8_decode($d["ot"]); ?></td>
 									 <td><?php echo utf8_decode($d["estado_ot"]); ?></td>
-
+									 <td><?php echo utf8_decode($d["categoria"]); ?></td>
+									 <td><?php echo utf8_decode($d["equivalente"]); ?></td>
+									 <td><?php echo utf8_decode($d["tecnologia"]); ?></td>
 								 </tr>
 				      			<?php
 				      			}

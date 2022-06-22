@@ -90,27 +90,36 @@
           // },
         });
         
-
+        $("#menu_checklist").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');  
         $("#menu_checklist").addClass('menuActivo');  
-        $("#menu_graficos").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');  
-        $("#menu_usuarios").removeClass('menuActivo');   
+        
 
         $.get("vistaChecklist", function( data ) {
           $(".contenedor_app").html(data);    
           $("#menu_checklist").removeClass('disabled_sub');
         });
         
+
+        /*$("#menu_fallos").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');       
+        $("#menu_fallos").addClass('menuActivo');  
+
+        $.get("vistaFH", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_fallos").removeClass('disabled_sub');
+        });*/
+        
       
       $(document).off('click', '#menu_checklist').on('click', '#menu_checklist',function(event) {
         event.preventDefault();
         $("#menu_checklist").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');  
         $("#menu_checklist").addClass('menuActivo');  
-        $("#menu_graficos").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');  
-        $("#menu_usuarios").removeClass('menuActivo');   
+        
 
         $.get("vistaChecklist", function( data ) {
           $(".contenedor_app").html(data);    
@@ -118,14 +127,15 @@
         });
       });
 
+     
+
       $(document).off('click', '#menu_graficos').on('click', '#menu_graficos',function(event) {
         event.preventDefault();
         $("#menu_graficos").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');    
         $("#menu_graficos").addClass('menuActivo');  
-        $("#menu_checklist").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');  
-        $("#menu_usuarios").removeClass('menuActivo');   
+        
 
         $.get("vistaGraficos", function( data ) {
           $(".contenedor_app").html(data);    
@@ -138,15 +148,41 @@
         event.preventDefault();
         $("#menu_usuarios").addClass('disabled_sub');
         $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');
         $("#menu_usuarios").addClass('menuActivo');  
-        $("#menu_checklist").removeClass('menuActivo');   
-        $("#menu_graficos").removeClass('menuActivo');   
-        $("#menu_herramientas").removeClass('menuActivo');   
-
+           
         $.get("vistaUsuarios", function( data ) {
           $(".contenedor_app").html(data);    
           $("#menu_usuarios").removeClass('disabled_sub');
         });
+      });
+
+      $(document).off('click', '#menu_fallos').on('click', '#menu_fallos',function(event) {
+        event.preventDefault();
+        $("#menu_fallos").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo'); 
+        $("#menu_fallos").addClass('menuActivo');  
+             
+
+        $.get("vistaFH", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_fallos").removeClass('disabled_sub');
+        });
+      });
+
+      $(document).off('click', '#menu_graficos_fallos').on('click', '#menu_graficos_fallos',function(event) {
+        event.preventDefault();
+        $("#menu_graficos_fallos").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo'); 
+        $("#menu_graficos_fallos").addClass('menuActivo');  
+             
+        $.get("vistaGraficosH", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_graficos_fallos").removeClass('disabled_sub');
+        });
+        
       });
 
 
@@ -163,15 +199,17 @@
 
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-       <ul class="nav nav-tabs navbar-left nav-tabs-int">
+       <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_checklist" class="active"><a> <i class="fa fa-th-list"></i> Checklist Herramientas</a></li>   
-        <li id="menu_graficos" class="active"><a> <i class="fa fa-th-list"></i> Graficos </a></li>   
+        <li id="menu_graficos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Herramientas </a></li>   
+        <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
+        <li id="menu_graficos_fallos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
       </ul>  
     </div> 
   </div>
 
   <div class="row">
-   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="contenedor_principal">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
