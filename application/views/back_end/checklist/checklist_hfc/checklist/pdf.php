@@ -125,11 +125,17 @@
       <table  class="table table-sm" border="0" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-              <td width="40%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Auditor : <?php echo $d["auditor"]; ?></b></td>
-              <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Fecha : <?php echo $d["fecha"]; ?></b></td>
-              <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Téc. Zona : <?php echo $d["area"]; ?></b></td>
-              <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Téc. Proyecto : <?php echo $d["comuna"] ?></b></td>
+              <td width="33%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Auditor : <?php echo $d["auditor"]; ?></b></td>
+              <td width="33%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Fecha : <?php echo $d["fecha"]; ?></b></td>
+              <td width="33%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Zona : <?php echo $d["area"]; ?></b></td>
             </tr>
+
+            <tr>
+              <td width="50%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Direcci&oacute;n : <?php echo $d["direccion"] ?></b></td>
+              <td width="25%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Proyecto : <?php echo $d["comuna"] ?></b></td>
+              <td width="25%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>OT : <?php echo $d["n_ot"] ?></b></td>
+            </tr>
+            
         </thead>
       </table>
 

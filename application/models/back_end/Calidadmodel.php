@@ -45,6 +45,8 @@ class Calidadmodel extends CI_Model {
 			$this->db->where('u.id_jefe', $jefe);
 		}
 
+		
+		$this->db->where('diferencia_dias<=', 30);
 		/*if($jefe!=""){
 
 			if($cargo_jefe=="18"){//TECNICO LIDER MUESTRA SU GENTE MAS EL MISMO
@@ -256,8 +258,6 @@ class Calidadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				if($key["trabajador"]!=""){
 					return $res->result_array();
-				}else{
-					return false;
 				}
 			}
 		}

@@ -9,7 +9,22 @@ $config = array(
                     )
             ),
 
-           'formChecklistHFC' => array(
+            'formAst' => array(
+               array(
+                     'field'   => 'tecnico',
+                     'label'   => 'Técnico',
+                     'rules'   => 'trim|required'
+                    ),
+               
+            ),
+            'formMantActividades' => array(
+               array(
+                     'field'   => 'aplica',
+                     'label'   => 'Aplica',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+            'formChecklistHFC' => array(
                array(
                      'field'   => 'tecnico',
                      'label'   => 'Técnico',
@@ -249,6 +264,39 @@ $config = array(
                     )
             ),
 
+            'formIngresoReportes' => array(
+               array(
+                     'field'   => 'nombre_archivo',
+                     'label'   => 'Nombre de archivo',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
+
+            'formResponsablesFallosHerramientas' => array(
+               array(
+                     'field'   => 'item_fallos',
+                     'label'   => 'Item descripción',
+                     'rules'   => 'trim|required'
+                    ),
+
+               array(
+                     'field'   => 'proyecto_fallos',
+                     'label'   => 'Proyecto',
+                     'rules'   => 'trim|required'
+                    ),
+
+               array(
+                     'field'   => 'responsable_fallos',
+                     'label'   => 'Responsable',
+                     'rules'   => 'trim|required'
+                    ),
+               array(
+                     'field'   => 'plazo_fallos',
+                     'label'   => 'Plazo',
+                     'rules'   => 'trim|required'
+                    ),
+            )
             
                
  );

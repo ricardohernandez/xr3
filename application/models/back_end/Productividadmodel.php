@@ -74,17 +74,17 @@ class Productividadmodel extends CI_Model {
 		public function listaTrabajadores($jefe){
 			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				empresa,id,rut,
-			    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
-			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
+			    CONCAT(nombres,' ', apellidos) as 'nombre_completo',
+			    CONCAT(nombres,' ', apellidos) as 'nombre_corto',
 			");
 			
 			if($this->session->userdata('id_perfil')==4){
 				$this->db->where('rut', $this->session->userdata('rut'));
 			}
 
-			if($jefe!=""){
+			/*if($jefe!=""){
 				$this->db->where('id_jefe', $jefe);
-			}
+			}*/
 
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");

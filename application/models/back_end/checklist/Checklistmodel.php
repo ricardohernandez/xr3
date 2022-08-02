@@ -27,6 +27,7 @@ class Checklistmodel extends CI_Model {
 				o.ultima_actualizacion as ultima_actualizacion,
 				uc.cargo as cargo,
 				ua.area as area,
+				upr.proyecto as proyecto,
 		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha'
 				");
 
@@ -34,6 +35,7 @@ class Checklistmodel extends CI_Model {
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
@@ -93,6 +95,7 @@ class Checklistmodel extends CI_Model {
 			    CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
 			    u.comuna as comuna,
 			    u.codigo as codigo,
+			    upr.proyecto as proyecto,
 				u.ultima_actualizacion as ultima_actualizacion,
 				uc.cargo as auditor_cargo,
 				ua.area as area,
@@ -114,6 +117,7 @@ class Checklistmodel extends CI_Model {
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			$this->db->join('checklist_herramientas_detalle cd', 'cd.id_ots = o.id', 'left');
 			$this->db->join('checklist_herramientas_listado cl', 'cl.id = cd.id_check', 'left');
 			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = cl.tipo', 'left');
@@ -297,7 +301,8 @@ class Checklistmodel extends CI_Model {
 				c.*,
 				ct.tipo as tipo');
 			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = c.tipo', 'left');
-			$this->db->order_by('c.id', 'asc');
+			$this->db->order_by('ct.tipo', 'asc');
+		/*	$this->db->order_by('c.descripcion', 'asc');*/
 			$res=$this->db->get('checklist_herramientas_listado c');
 			return $res->result_array();
 		}
@@ -409,6 +414,88 @@ class Checklistmodel extends CI_Model {
 			return $row["imagen"];
 		}
 
+		public function getProyectoChecklist($hash){
+			$this->db->select('u.id_proyecto as id_proyecto');		
+			$this->db->where('sha1(c.id)', $hash);
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$res = $this->db->get('checklist_herramientas c');			
+			$row = $res->row_array();
+			return $row["id_proyecto"];
+		}
+
+		public function getDataItemChecklist($id_checklist,$item,$proyecto){
+			$this->db->select("sha1(cd.id) as hash,
+				o.*,			
+				u.rut as rut,
+				u.comuna as comuna,
+				ua.area as area,
+				u.codigo as codigo,
+				u.zona as zona,
+				upr.proyecto as proyecto,
+				upr.id as id_proyecto,
+
+				uc.cargo as auditor_cargo,
+				CONCAT(u.nombres, ' ', u.apellidos) as 'tecnico',
+			    CONCAT(SUBSTRING_INDEX(us.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(us.apellidos, ' ', '-2'), ' ', '1')) as 'auditor',
+
+				if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
+				cl.id as id_item,
+				cl.descripcion as descripcion,
+				ct.tipo as tipo,
+
+				CASE 
+		          WHEN cd.estado=0 THEN 'ok'
+		          WHEN cd.estado=1 THEN 'nook'
+		          WHEN cd.estado=2 THEN 'No aplica'
+		        END AS estado,
+				cd.observacion as observacion,
+
+		        CASE 
+		          WHEN cd.solucion_estado=0 THEN 'Pendiente'
+		          WHEN cd.solucion_estado=1 THEN 'Finalizado'
+		        END AS solucion_estado,
+		        
+				if(cd.solucion_fecha!='0000-00-00', DATE_FORMAT(cd.solucion_fecha,'%d-%m-%Y'),'') as 'solucion_fecha',
+				cd.solucion_observacion as solucion_observacion,
+				cd.ultima_actualizacion as ultima_actualizacion,
+
+				(
+					SELECT CONCAT(u.nombres,' ',u.apellidos)
+					FROM checklist_herramientas_responsables chr
+					LEFT JOIN usuarios u ON u.id = chr.id_responsable
+					WHERE chr.id_item=cd.id_check and chr.id_proyecto=".$proyecto."
+
+				) as responsable,
+
+				(
+					SELECT u.correo_empresa as correo_empresa
+					FROM checklist_herramientas_responsables chr
+					LEFT JOIN usuarios u ON u.id = chr.id_responsable
+					WHERE chr.id_item=cd.id_check and chr.id_proyecto=".$proyecto."
+
+				) as correo_responsable,
+
+				(
+					SELECT plazo
+					FROM checklist_herramientas_responsables chr
+					WHERE chr.id_item=cd.id_check and chr.id_proyecto=".$proyecto."
+
+				) as plazo
+
+				");
+			$this->db->join('checklist_herramientas o', 'o.id=cd.id_ots', 'left');
+			$this->db->join('usuarios as u', 'u.id = o.tecnico_id', 'left');
+			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
+			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
+			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
+			$this->db->join('checklist_herramientas_listado cl', 'cl.id = cd.id_check', 'left');
+			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = cl.tipo', 'left');
+			$this->db->where('cd.id_check' , $item);
+			$this->db->where('sha1(cd.id_ots)' , $id_checklist);
+			$res=$this->db->get('checklist_herramientas_detalle cd');
+			return $res->result_array();
+		}
 
 	/*************REPORTE HERRAMIENTAS*********/
 
@@ -497,10 +584,16 @@ class Checklistmodel extends CI_Model {
 				u.comuna as comuna,
 				ua.area as area,
 				u.codigo as codigo,
+				u.zona as zona,
+				upr.proyecto as proyecto,
+				upr.id as id_proyecto,
+
 				uc.cargo as auditor_cargo,
-				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
-				CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
+				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ', u.apellidos) as 'tecnico',
+			    CONCAT(SUBSTRING_INDEX(us.nombres, ' ', '1'),'  ', us.apellidos) as 'auditor',
+
 				if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
+				cl.id as id_item,
 				cl.descripcion as descripcion,
 				ct.tipo as tipo,
 
@@ -517,19 +610,27 @@ class Checklistmodel extends CI_Model {
 		        END AS solucion_estado,
 		        
 				if(cd.solucion_fecha!='0000-00-00', DATE_FORMAT(cd.solucion_fecha,'%d-%m-%Y'),'') as 'solucion_fecha',
-				cd.solucion_observacion as solucion_observacion
-
+				cd.solucion_observacion as solucion_observacion,
+				cd.ultima_actualizacion as ultima_actualizacion
+				
 				");
-
+			$this->db->join('checklist_herramientas o', 'o.id=cd.id_ots', 'left');
 			$this->db->join('usuarios as u', 'u.id = o.tecnico_id', 'left');
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_herramientas_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			$this->db->join('checklist_herramientas_listado cl', 'cl.id = cd.id_check', 'left');
 			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = cl.tipo', 'left');
 			$this->db->where('cd.estado=1');
 			
+			/*(
+				SELECT u.id_proyecto
+				FROM usuarios u
+				LEFT JOIN checklist_herramientas o2 ON o2.id=cd.id_ots
+				WHERE o2.tecnico_id=u.id_proyecto and cd.id_check=chr.id_item
+			)*/
+
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 			}
@@ -538,9 +639,45 @@ class Checklistmodel extends CI_Model {
 				$this->db->where('solucion_estado', $solucion_estado);
 			}
 
-			$res=$this->db->get('checklist_herramientas o');
+			$res=$this->db->get('checklist_herramientas_detalle cd');
 			if($res->num_rows()>0){
-				return $res->result_array();
+
+				$array = array();
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp["hash"] = $key["hash"];
+					$temp["auditor"] = $key["auditor"];
+					$temp["tecnico"] = $key["tecnico"];
+					$temp["zona"] = $key["zona"];
+					$temp["proyecto"] = $key["proyecto"];
+					$temp["descripcion"] = $key["descripcion"];
+					$temp["tipo"] = $key["tipo"];
+					$temp["fecha"] = $key["fecha"];
+					$temp["observacion"] = $key["observacion"];
+					$temp["estado"] = $key["estado"];
+
+					$this->db->select("
+						CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as 'responsable',
+						plazo");
+					$this->db->join('usuarios u', 'u.id = chr.id_responsable', 'left');
+					$this->db->where('chr.id_item', $key["id_item"]);
+					$this->db->where('chr.id_proyecto', $key["id_proyecto"]);
+
+					$res2=$this->db->get('checklist_herramientas_responsables chr');
+					foreach($res2->result_array() as $key_detalle){
+						$temp["responsable"] = $key_detalle["responsable"];
+						$temp["plazo"] = $key_detalle["plazo"];
+					}
+
+					$temp["solucion_estado"] = $key["solucion_estado"];
+					$temp["solucion_fecha"] = $key["solucion_fecha"];
+					$temp["solucion_observacion"] = $key["solucion_observacion"];
+					$temp["ultima_actualizacion"] = $key["ultima_actualizacion"];
+					
+					$array[] = $temp;
+				}
+
+				return $array;
 			}
 			return FALSE;
 		}
@@ -761,5 +898,7 @@ class Checklistmodel extends CI_Model {
 			return FALSE;
 		}
 
-	
+
+
+
 }

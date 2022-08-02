@@ -141,9 +141,9 @@ class Documentacion extends CI_Controller {
 				$ext = pathinfo($path, PATHINFO_EXTENSION);
 				$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
 				$config['upload_path'] = './archivos_documentacion/capacitacion';
-				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC';
+				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC|mp4|MP4';
 			    $config['file_name'] = $archivo;
-				$config['max_size']	= '5300';
+				$config['max_size']	= '80300';
 				$config['overwrite']	= FALSE;
 				$this->load->library('upload', $config);
 				$_FILES['userfile']['name'] = $archivo;
@@ -184,6 +184,163 @@ class Documentacion extends CI_Controller {
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
 				$data=$this->Documentacionmodel->getDataRegistroCapacitacion($hash);
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}else{
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}	
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+	/***********REPORTES*****************/
+
+		public function indexReportes(){
+	    	$this->acceso();
+		    $datos = array(
+		        'titulo' => "Documentación XR3",
+		        'contenido' => "documentacion/inicio",
+		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
+			);  
+			$this->load->view('plantillas/plantilla_back_end',$datos);
+			
+		}
+		
+		public function vistaReportes(){
+			$this->visitas("reportes");
+			if($this->input->is_ajax_request()){
+				$datos=array();
+				$this->load->view('back_end/documentacion/reportes',$datos);
+			}
+		}
+
+		public function getReportesList(){
+			echo json_encode($this->Documentacionmodel->getReportesList());
+		}
+		
+		public function formIngresoReportes(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
+				$nombre=$this->security->xss_clean(strip_tags($this->input->post("nombre_archivo")));
+				$fecha = date("Y-m-d");
+				$digitador=$this->session->userdata("id");
+				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
+		   		$adjunto=@$_FILES["userfile"]["name"];
+
+	   			if ($this->form_validation->run("formIngresoReportes") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
+				}else{	
+
+					
+			    	if($hash==FALSE){
+
+			    		$data = array(
+		    		 	'nombre' => $nombre,
+		    		 	'id_digitador' => $digitador,
+		    		 	'fecha' => $fecha,
+		    		 	'ultima_actualizacion' => $ultima_actualizacion);
+
+
+			    		if($adjunto!=""){
+							$nombre=$this->procesaArchivoReportes($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
+							$data["archivo"]=$nombre;
+						}else{
+							$data["archivo"]="";
+						}
+
+						$insert_id=$this->Documentacionmodel->formIngresoReportes($data);
+						if($insert_id!=FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+
+					}else{
+						
+						$data = array(
+		    		 	'nombre' => $nombre,
+		    		 	'ultima_actualizacion' => $ultima_actualizacion);
+
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivoReportes($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
+							$data["archivo"]=$nombre;
+
+							$archivo_bd=$this->Documentacionmodel->getDataRegistroReportes($hash);
+
+							foreach($archivo_bd as $a){
+								if($a["archivo"]!=""){
+									if (file_exists("./archivos_documentacion/reportes/".$a["archivo"])){
+										unlink("./archivos_documentacion/reportes/".$a["archivo"]);
+									}	
+								}
+							}
+
+						}
+
+						if($this->Documentacionmodel->formActualizarReportes($hash,$data)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
+						}
+					}
+				}
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function procesaArchivoReportes($file,$titulo){
+			/*	var_dump($_FILES);*/
+			$path = $file['name'];
+			$ext = pathinfo($path, PATHINFO_EXTENSION);
+			$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
+			$config['upload_path'] = './archivos_documentacion/reportes';
+			$config['allowed_types'] = 'xlsx|csv|xls|pdf|PDF|XLS|XLSX|jpg|jpeg|bmp|png|doc|docx|ppt|pptx|html|htm|DOC|mp4|MP4';
+		    $config['file_name'] = $archivo;
+			$config['max_size']	= '15300';
+			$config['overwrite']	= FALSE;
+			$this->load->library('upload', $config);
+			$_FILES['userfile']['name'] = $archivo;
+		    $_FILES['userfile']['type'] = $file['type'];
+		    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
+		    $_FILES['userfile']['error'] = $file['error'];
+			$_FILES['userfile']['size'] = $file['size'];
+			$this->upload->initialize($config);
+
+			if (!$this->upload->do_upload()){ 
+			    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
+		    }else{
+		    	unset($config);
+		    	return $archivo;
+		    }
+	    }
+
+		public function eliminaReportes(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			$data=$this->Documentacionmodel->getDataRegistroReportes($hash);
+			foreach($data as $key){
+				if($key["archivo"]!=""){
+					if (file_exists("./archivos_documentacion/reportes/".$key["archivo"])){
+						unlink("./archivos_documentacion/reportes/".$key["archivo"]);
+					}	
+				}
+			}
+
+			if($this->Documentacionmodel->eliminaReportes($hash)){
+				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{	
+				echo json_encode(array("res" => "error" , "msg" => "Error eliminando el registro, intente nuevamente."));
+			}
+		}
+
+		public function getDataRegistroReportes(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
+				$data=$this->Documentacionmodel->getDataRegistroReportes($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{

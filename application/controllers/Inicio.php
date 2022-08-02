@@ -216,20 +216,21 @@ class Inicio extends CI_Controller {
 					
 					$this->load->library('email');
 
-					$config = array (
+					  $config = array (
 			       	  'mailtype' => 'html',
 			          'charset'  => 'utf-8',
 			          'priority' => '1',
 			          'wordwrap' => TRUE,
-			          'protocol' => "mail",
+			          'protocol' => "smtp",
 			          'smtp_port' => 587,
 			          'smtp_host' => 'mail.xr3t.cl',
-				      'smtp_user' => 'soporteplataforma@xr3t.cl',
-				      'smtp_pass' => '9mWj.RUhL&3)');
+				      'smtp_user' => 'reporte@xr3t.cl',
+				      'smtp_pass' => '5aK*2uGJNBd3'
+			        );
 
 					$this->email->initialize($config);
 					$asunto ="Recuperación de contraseña XR3-PTO : " . $nombre;
-					$this->email->from("soporteplataforma@xr3t.cl","Soporte plataforma XR3");
+					$this->email->from("reporte@xr3t.cl","Soporte plataforma XR3");
 
 					$para=array();
 					if (filter_var($c["correo_personal"], FILTER_VALIDATE_EMAIL)) {
@@ -242,9 +243,9 @@ class Inicio extends CI_Controller {
 					$this->email->to($para);
 
 					if($prueba){
-						$this->email->bcc(array("ricardo.hernandez@km-t.cl","ricardo.hernandez.esp@gmail.com"));
+						$this->email->bcc(array("ricardo.hernandez@splice.cl","ricardo.hernandez@km-t.cl","soporteplataforma@xr3t.cl"));
 					}else{
-						$this->email->bcc("ricardo.hernandez@km-t.cl");
+						$this->email->bcc(array("ricardo.hernandez@splice.cl","ricardo.hernandez@km-t.cl","soporteplataforma@xr3t.cl"));
 					}
 
 					$pass=rand(100000,999999);

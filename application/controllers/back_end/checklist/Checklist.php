@@ -112,12 +112,11 @@ class Checklist extends CI_Controller {
 
 						$id=$this->Checklistmodel->formOTS($data_insert);
 
-						
 						if($id!=FALSE){
 
 							if(!$this->Checklistmodel->existeDetalleOTS($id)){
-								// echo "string";
 								$checklist=$this->Checklistmodel->listaChecklist();
+
 								foreach($checklist as $c){
 									$data_detalle = array("id_ots" => $id,
 									 "id_check" => $c["id"], 
@@ -126,43 +125,46 @@ class Checklist extends CI_Controller {
 									 "solucion_fecha" => "0000-00-00",
 									 "solucion_observacion" => "",
 									 "solucion_digitador" => 0,	
+									 "ultima_actualizacion"=>$ultima_actualizacion,
 									 "observacion" =>"");
 									$this->Checklistmodel->insertaDetalleOTS($data_detalle);
 									$data_detalle=array();
 								}
 
-								$index=0;
-								foreach($estado as $e=>$value){
-									$data_actualizar= array("estado" => $value ,
-									 	"observacion" => $observacion[$index],
-										 "solucion_estado" => "0",
-										 "solucion_fecha" => "0000-00-00",
-										 "solucion_observacion" => "",
-										 "solucion_digitador" => 0,
-									);
+								$herramientas = $this->input->post("herramientas");
 
-									$id_detalle=$this->Checklistmodel->getIddetalle($id,$e+1);
+								foreach($herramientas as $h){
+									$herramienta = $h;
+									$estado = $this->input->post("estado_".$herramienta)[0];
+									$observacion = $this->input->post("observacion_".$herramienta)[0];
+									$data_actualizar = array("estado" =>  $estado, "observacion" =>  $observacion, "ultima_actualizacion"=>$ultima_actualizacion);
 
+									if($estado==1){
+										$this->enviaCorreoFallo(sha1($id),$herramienta);
+									}
+
+									$id_detalle = $this->Checklistmodel->getIddetalle($id,$herramienta);
 									$this->Checklistmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
-									$index++;	
 								}
+
 
 							}else{
 
-								$index=0;
-								foreach($estado as $e=>$value){
-									$data_actualizar= array("estado" => $value ,
-									 "solucion_estado" => "0",
-									 "solucion_fecha" => "0000-00-00",
-									 "solucion_observacion" => "",
-									 "solucion_digitador" => 0,
-									 "observacion" => $observacion[$index]);
+								$herramientas = $this->input->post("herramientas");
 
-									$id_detalle=$this->Checklistmodel->getIddetalle($id,$e+1);
+								foreach($herramientas as $h){
+									$herramienta = $h;
+									$estado = $this->input->post("estado_".$herramienta)[0];
+									$observacion = $this->input->post("observacion_".$herramienta)[0];
+									$data_actualizar = array("estado" =>  $estado , "observacion" =>  $observacion , "ultima_actualizacion"=>$ultima_actualizacion);
+
+									if($estado==1){
+										$this->enviaCorreoFallo(sha1($id),$herramienta);
+									}
+
+									$id_detalle = $this->Checklistmodel->getIddetalle($id,$herramienta);
 									$this->Checklistmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
-									$index++;	
 								}
-	
 							}
 
 							$imagenes_secundarias=$_FILES['archivos_secundarios']['name'];
@@ -223,7 +225,6 @@ class Checklist extends CI_Controller {
 								echo json_encode(array('res'=>"error", 'hash' =>$hash, 'msg' => "Problemas creando el archivo pdf, intente nuevamente."));exit;
 							}
 
-
 							if($checkcorreo=="on"){
 					    		
 				     			if($this->enviaCorreoIngreso($data_correo)){
@@ -251,15 +252,21 @@ class Checklist extends CI_Controller {
 
 						$this->Checklistmodel->actualizarOTS($hash,$data_mod);
 
-						$index=0;
-						foreach($estado as $e=>$value){
-							$data_actualizar= array("estado" => $value,
-							 "observacion" => $observacion[$index]);
+						$herramientas = $this->input->post("herramientas");
 
-							$id_detalle=$this->Checklistmodel->getIddetalle($id,$e+1);
+						foreach($herramientas as $h){
+							$herramienta = $h;
+							$estado = $this->input->post("estado_".$herramienta)[0];
+							$observacion = $this->input->post("observacion_".$herramienta)[0];
+							$data_actualizar = array("estado" =>  $estado,"observacion" =>  $observacion, "ultima_actualizacion"=>$ultima_actualizacion);
+							$id_detalle = $this->Checklistmodel->getIddetalle($id,$herramienta);
 							$this->Checklistmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
-							$index++;	
+
+							if($estado==1){
+								$this->enviaCorreoFallo($hash,$herramienta);
+							}
 						}
+
 
 						$imagenes_secundarias=$_FILES['archivos_secundarios']['name'];
 
@@ -335,6 +342,23 @@ class Checklist extends CI_Controller {
 			}
 		}	
 
+		public function getDataChecklistHerramientas(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+				$data=$this->Checklistmodel->getDataChecklistHerramientas($hash);
+				$galeria=$this->Checklistmodel->getChecklistGaleria($hash);
+
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data ,  'galeria' => $galeria));exit;
+				}else{
+					echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+				}	
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
 		public function generaPdfChecklistHerramientas($data){
 			foreach($data as $key){
 				$detalle = $this->Checklistmodel->getDataChecklistHerramientas($key["hash"]);
@@ -378,7 +402,6 @@ class Checklist extends CI_Controller {
 	 	   }
 		}
 
-
 		public function enviaCorreoIngreso($data){
 			$prueba = FALSE;
 			foreach($data as $key){
@@ -405,7 +428,7 @@ class Checklist extends CI_Controller {
 
 				if($prueba){
 
-					$para = array("ricardo.hernandez@km-telecomunicaciones.cl");
+					$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
 					$copias = array("ricardo.hernandez@km-t.cl");
 					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
 
@@ -435,27 +458,94 @@ class Checklist extends CI_Controller {
 					return FALSE;
 				}
 			}
+		}
+
+
+		public function enviaCorreoFallo($hash,$herramienta){
+			return TRUE;
+			$proyecto = $this->Checklistmodel->getProyectoChecklist($hash);
+			$data = $this->Checklistmodel->getDataItemChecklist($hash,$herramienta,$proyecto);
+			/*echo "<pre>";
+			print_r($data);exit;*/
+
+			$prueba = FALSE;
+
+			foreach($data as $key){
+
+				if($key["correo_responsable"]!=""){
+
+					$titulo = "Fallo registrado en su zona de responsabilidad : Tecnico ".$key["tecnico"]." , Descripción ".$key["descripcion"];
+					$this->load->library('email');
+
+				    $config = array (
+			       	  'mailtype' => 'html',
+			          'charset'  => 'utf-8',
+			          'priority' => '1',
+			          'wordwrap' => TRUE,
+			          'protocol' => "smtp",
+			          'smtp_port' => 587,
+			          'smtp_host' => 'mail.xr3t.cl',
+				      'smtp_user' => 'reporte@xr3t.cl',
+				      'smtp_pass' => '5aK*2uGJNBd3'
+			        );
+
+				   /* $config = array (
+			       	  'mailtype' => 'html',
+			          'charset'  => 'utf-8',
+			          'priority' => '1',
+			          'wordwrap' => TRUE,
+			          'protocol' => "smtp",
+			          'smtp_port' => 587,
+			          'smtp_host' => 'mail.xr3t.cl',
+				      'smtp_user' => 'soporteplataforma@xr3t.cl',
+				      'smtp_pass' => '9mWj.RUhL&3)'
+			        );*/
+
+				    $this->email->initialize($config);
+				
+					$datos = array("data" => $data, "titulo" => $titulo);
+					$html = $this->load->view('back_end/checklist/checklist_herramientas/checklist/correo_fallos',$datos,TRUE);
+					/*echo $html;exit;*/
+
+					if($prueba){
+
+						$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
+						$copias = array("ricardo.hernandez@km-t.cl","ricardo.hernandez@splice.cl");
+						$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+
+					}else{
+
+						$para = array();
+						$para[] = $key["correo_responsable"];
+						$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
+						$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+
+					}
+
+					$this->email->to($para);
+					$this->email->cc($copias);
+					$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));
+					$this->email->subject($titulo);
+					$this->email->message($html); 
+
+			     	/*	$nombre = url_title(convert_accented_characters($key["id"]."-".$key["rut_tecnico"])).".pdf";
+					$this->email->attach(base_url()."archivos/checklist_herramientas/pdf/".$nombre);*/
+					$resp=$this->email->send();
+
+					if ($resp) {
+						return TRUE;
+					}else{
+						print_r($this->email->print_debugger());
+						return FALSE;
+					}
+				}else{
+					return FALSE;
+				}
+			}
 		
 		}
 
-
-		public function getDataChecklistHerramientas(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-				$data=$this->Checklistmodel->getDataChecklistHerramientas($hash);
-				$galeria=$this->Checklistmodel->getChecklistGaleria($hash);
-
-				if($data){
-					echo json_encode(array('res'=>"ok", 'datos' => $data ,  'galeria' => $galeria));exit;
-				}else{
-					echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-				}	
-			}else{
-				exit('No direct script access allowed');
-			}
-		}
-
+		
 		public function eliminaImagenChecklist(){
 			$id=$this->security->xss_clean(strip_tags($this->input->post("id")));
 			$imagen=$this->Checklistmodel->getImagenGaleria($id);
@@ -805,4 +895,8 @@ class Checklist extends CI_Controller {
 		public function dataTecnicos(){
 			echo json_encode($this->Checklistmodel->dataTecnicos());
 		}*/
+
+
+
+	
 }

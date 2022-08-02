@@ -116,14 +116,16 @@
 	          <a href="#" class="sidenav__menu-url">Documentación</a>
 	            <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	            <ul class="sidenav__menu-dropdown">
-	                <?php  
+          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
+	          		
+	          		 	<?php  
 		          			if($this->session->userdata('id_perfil')<=3){
 		         	    ?>
-          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
+	          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
 	          		 	<?php
 					          }
 					        ?>
-               
+
 	            </ul>
 	        </li>
 
@@ -132,22 +134,28 @@
 	            <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	            <ul class="sidenav__menu-dropdown">
                
-               <?php  
-	          			if($this->session->userdata('id_perfil')<=3){
-	         	    ?>
+               
           		  <li class="">
 	                <a class="sidenav__menu-url" href="#!">CKL - Checklist operativos</a>
 	                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	                <ul class="sidenav__menu-dropdown">
-	                  <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
-		                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistHFC"> CLC - Checklist coaxial HFC</a></li>
-		                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistFTTH"> CLF - Checklist fibra FTTH</a></li>
+
+	                	<?php  
+			          			if($this->session->userdata('id_perfil')<=3){
+			         	    ?>
+	                  	<li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
+			                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistHFC"> CLC - Checklist coaxial HFC</a></li>
+			                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistFTTH"> CLF - Checklist fibra FTTH</a></li>
+	                  <?php
+						          }
+						        ?>
+
+						        <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
+	                  
 	                </ul>
                 </li>
 
-          		 	<?php
-				          }
-				        ?>
+          		 
 
                 <?php  
 	          			if($this->session->userdata('id_perfil')<=3){
@@ -185,7 +193,10 @@
 	                <a href="#" class="sidenav__menu-url">Mantenedores</a>
 	                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	                <ul class="sidenav__menu-dropdown">
-	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_usuarios"> Mantenedor usuarios</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Herramientas</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
+                    </ul>
 	                </ul>
 	              </li>
 	            <?php
@@ -230,12 +241,22 @@
                   <a href="#">Documentación</a>
                   <ul class="nav__dropdown-menu"> 
 	          		    <li><a  class="menu_list" href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
+
+	          		    <?php  
+			          			if($this->session->userdata('id_perfil')<=3){
+			         	    ?>
+		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
+		          		 	<?php
+						          }
+						        ?>
+
                     <!-- <li class="nav__dropdown">
                       <a class="menu_list" href="#!">sub</a>
                       <ul class="nav__dropdown-menu">
                         <li><a  class="menu_list" href="">app</a></li>
                       </ul>
                     </li> -->
+
                   </ul>
                 </li>
 
@@ -244,20 +265,23 @@
                 <a href="#">Aplicaciones</a>
                   <ul class="nav__dropdown-menu"> 
                   	
-                  	<?php  
-			          			if($this->session->userdata('id_perfil')<=3){
-			         	    ?>
 		          		   <li class="nav__dropdown">
                       <a class="menu_list" href="#!">CKL - Checklist operativos</a>
                       <ul class="nav__dropdown-menu">
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>checklistHFC">CLC - Checklist coaxial HFC</a></li>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>checklistFTTH">CLF - Checklist fibra FTTH</a></li>
+
+                      	<?php  
+					          			if($this->session->userdata('id_perfil')<=3){
+					         	    ?>
+						         	    <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
+	                        <li><a  class="menu_list" href="<?php echo base_url() ?>checklistHFC">CLC - Checklist coaxial HFC</a></li>
+	                        <li><a  class="menu_list" href="<?php echo base_url() ?>checklistFTTH">CLF - Checklist fibra FTTH</a></li>
+                      	<?php
+								          }
+								        ?>
+                      		<li><a  class="menu_list" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
                       </ul>
                     </li>
-		          		 	<?php
-						          }
-						        ?>
+		          		 
                     <?php  
 		          				if($this->session->userdata('id_perfil')<=3){
 			         	    ?>
@@ -293,12 +317,14 @@
 				        <?php  
 				          if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
 				            ?>
-		                        <li class="nav__dropdown ">
-		                        <a href="#">Mantenedores</a>
-		                            <ul class="nav__dropdown-menu"> 
-						            	<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Mantenedor usuarios</a></li>
-		                            </ul>
-		                        </li>
+		                  <li class="nav__dropdown ">
+                        <a href="#">Mantenedores</a>
+                          <ul class="nav__dropdown-menu"> 
+			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
+			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas"> Herramientas</a></li>
+			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
+                          </ul>
+                      </li>
 				            <?php
 				          }
 				        ?>

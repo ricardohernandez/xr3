@@ -650,7 +650,16 @@
        "iDisplayLength":-1, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
+       
        "aaSorting" : [],
+
+       "columnDefs" : [
+          { orderable: false , targets: 0 },
+          { orderable: false , targets: 1 },
+          { orderable: false , targets: 2 },
+          { orderable: false , targets: 3 },
+       ],
+       
        // "scrollY": "60vh",
        // "scrollX": true,
        "sAjaxDataProp": "result",        

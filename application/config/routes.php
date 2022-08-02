@@ -47,6 +47,34 @@
 	$route['formIngresoCapacitacion'] = "back_end/documentacion/formIngresoCapacitacion";
 	$route['eliminaCapacitacion'] = "back_end/documentacion/eliminaCapacitacion";
 
+	$route['documentacion/reportes'] = "back_end/documentacion/indexReportes";
+	$route['vistaReportes'] = "back_end/documentacion/vistaReportes";
+	$route['getReportesList'] = "back_end/documentacion/getReportesList";
+	$route['getDataRegistroReportes'] = "back_end/documentacion/getDataRegistroReportes";
+	$route['formIngresoReportes'] = "back_end/documentacion/formIngresoReportes";
+	$route['eliminaReportes'] = "back_end/documentacion/eliminaReportes";
+
+/*******AST*******/
+
+	$route['ast'] = "back_end/ast/index";
+	$route['vistaAst'] = "back_end/ast/vistaAst";
+	$route['listaAst'] = "back_end/ast/listaAst";
+	$route['getDataAst'] = "back_end/ast/getDataAst";
+	$route['formAst'] = "back_end/ast/formAst";
+	$route['eliminaAst'] = "back_end/ast/eliminaAst";
+	$route['excel_ast/(:any)/(:any)'] = "back_end/ast/excel_ast/$1/$2";
+	$route['generaPdfAstURL'] = "back_end/ast/generaPdfAstURL";
+	$route['formCargaMasivaAst'] = "back_end/ast/formCargaMasivaAst";
+
+	$route['vistaMantActividades'] = "back_end/ast/vistaMantActividades";
+	$route['listaMantActividades'] = "back_end/ast/listaMantActividades";
+	$route['getDataMantActividades'] = "back_end/ast/getDataMantActividades";
+	$route['formMantActividades'] = "back_end/ast/formMantActividades";
+	$route['eliminaMantActividades'] = "back_end/ast/eliminaMantActividades";
+	$route['getChecklistView'] = "back_end/ast/getChecklistView";
+	$route['getUserChecklistView'] = "back_end/ast/getUserChecklistView";
+	$route['llenarMant'] = "back_end/ast/llenarMant";
+
 /*******CHECKLIST*******/
 
 	$route['checklist_herramientas'] = "back_end/checklist/checklist/index";
@@ -68,10 +96,13 @@
 	$route['listaTrabajadoresCH'] = "back_end/checklist/checklist/listaTrabajadoresCH";
 	$route['generaPdfChecklistHerramientasURL'] = "back_end/checklist/checklist/generaPdfChecklistHerramientasURL";
 
-	$route['vistaFH'] = "back_end/checklist/checklist/vistaFH";
-	$route['listaFH'] = "back_end/checklist/checklist/listaFH";
-	$route['getDataFH'] = "back_end/checklist/checklist/getDataFH";
-	$route['formFH'] = "back_end/checklist/checklist/formFH";
+	/*******FALLOS*******/
+	
+		$route['vistaFH'] = "back_end/checklist/checklist/vistaFH";
+		$route['listaFH'] = "back_end/checklist/checklist/listaFH";
+		$route['getDataFH'] = "back_end/checklist/checklist/getDataFH";
+		$route['formFH'] = "back_end/checklist/checklist/formFH";
+
 
 /*******CHECKLIST HFC*******/
 
@@ -125,54 +156,6 @@
 	$route['getDataFFTTH'] = "back_end/checklist/ChecklistFTTH/getDataFFTTH";
 	$route['formFFTTH'] = "back_end/checklist/ChecklistFTTH/formFFTTH";
 
-
-/*******USUARIOS*******/
-	$route['mantenedor_usuarios'] = "back_end/usuarios/index";
-	$route['vistaUsuarios'] = "back_end/usuarios/vistaUsuarios";
-	$route['listaUsuarios'] = "back_end/usuarios/listaUsuarios";
-	$route['getDataUsuarios'] = "back_end/usuarios/getDataUsuarios";
-	$route['formUsuario'] = "back_end/usuarios/formUsuario";
-	$route['formCargaMasiva'] = "back_end/usuarios/formCargaMasiva";
-	$route['excelUsuarios/(:any)'] = "back_end/usuarios/excelUsuarios/$1";
-
-	$route['vistaCargos'] = "back_end/usuarios/vistaCargos";
-	$route['listaCargos'] = "back_end/usuarios/listaCargos";
-	$route['getDataCargos'] = "back_end/usuarios/getDataCargos";
-	$route['formCargos'] = "back_end/usuarios/formCargos";
-	$route['eliminaCargo'] = "back_end/usuarios/eliminaCargo";
-
-	$route['vistaProyectos'] = "back_end/usuarios/vistaProyectos";
-	$route['listaProyectos'] = "back_end/usuarios/listaProyectos";
-	$route['getDataProyectos'] = "back_end/usuarios/getDataProyectos";
-	$route['formProyectos'] = "back_end/usuarios/formProyectos";
-	$route['eliminaProyectos'] = "back_end/usuarios/eliminaProyectos";
-	
-	$route['vistaAreas'] = "back_end/usuarios/vistaAreas";
-	$route['listaAreas'] = "back_end/usuarios/listaAreas";
-	$route['getDataAreas'] = "back_end/usuarios/getDataAreas";
-	$route['formAreas'] = "back_end/usuarios/formAreas";
-	$route['eliminaAreas'] = "back_end/usuarios/eliminaAreas";
-
-
-	$route['vistaJefes'] = "back_end/usuarios/vistaJefes";
-	$route['listaJefes'] = "back_end/usuarios/listaJefes";
-	$route['getDataJefes'] = "back_end/usuarios/getDataJefes";
-	$route['formJefes'] = "back_end/usuarios/formJefes";
-	$route['eliminaJefes'] = "back_end/usuarios/eliminaJefes";
-	
-	$route['vistaPerfiles'] = "back_end/usuarios/vistaPerfiles";
-	$route['listaPerfiles'] = "back_end/usuarios/listaPerfiles";
-	$route['getDataPerfiles'] = "back_end/usuarios/getDataPerfiles";
-	$route['formPerfiles'] = "back_end/usuarios/formPerfiles";
-	$route['eliminaPerfiles'] = "back_end/usuarios/eliminaPerfiles";
-
-	
-/*******HERRAMIENTAS*******/
-
-	$route['vistaHerramientas'] = "back_end/usuarios/vistaHerramientas";
-	$route['listaHerramientas'] = "back_end/usuarios/listaHerramientas";
-	$route['getDataHerramientas'] = "back_end/usuarios/getDataHerramientas";
-	$route['formHerramientas'] = "back_end/usuarios/formHerramientas";
 		
 /*******PRODUCTIVIDAD*******/
 	$route['productividad'] = "back_end/productividad/index";
@@ -185,7 +168,7 @@
 	$route['vistaGraficosProd'] = "back_end/productividad/vistaGraficosProd";
 	$route['dataGraficos'] = "back_end/productividad/dataGraficos";
 	$route['listaTrabajadores'] = "back_end/productividad/listaTrabajadores";
-
+	
 	$route['vistaResumen'] = "back_end/productividad/vistaResumen";
 	$route['getCabeceras'] = "back_end/productividad/getCabeceras";
 	$route['listaResumen'] = "back_end/productividad/listaResumen";
@@ -249,6 +232,62 @@
 	$route['getDataMantenedorTurnos'] = "back_end/cao/getDataMantenedorTurnos";
 
 
+/*******MANTENEDORES*******/
+	$route['mantenedor_usuarios'] = "back_end/mantenedores/usuarios/index";
+	$route['vistaUsuarios'] = "back_end/mantenedores/usuarios/vistaUsuarios";
+	$route['listaUsuarios'] = "back_end/mantenedores/usuarios/listaUsuarios";
+	$route['getDataUsuarios'] = "back_end/mantenedores/usuarios/getDataUsuarios";
+	$route['formUsuario'] = "back_end/mantenedores/usuarios/formUsuario";
+	$route['formCargaMasiva'] = "back_end/mantenedores/usuarios/formCargaMasiva";
+	$route['excelUsuarios/(:any)'] = "back_end/mantenedores/usuarios/excelUsuarios/$1";
+
+	$route['vistaCargos'] = "back_end/mantenedores/usuarios/vistaCargos";
+	$route['listaCargos'] = "back_end/mantenedores/usuarios/listaCargos";
+	$route['getDataCargos'] = "back_end/mantenedores/usuarios/getDataCargos";
+	$route['formCargos'] = "back_end/mantenedores/usuarios/formCargos";
+	$route['eliminaCargo'] = "back_end/mantenedores/usuarios/eliminaCargo";
+
+	$route['vistaProyectos'] = "back_end/mantenedores/usuarios/vistaProyectos";
+	$route['listaProyectos'] = "back_end/mantenedores/usuarios/listaProyectos";
+	$route['getDataProyectos'] = "back_end/mantenedores/usuarios/getDataProyectos";
+	$route['formProyectos'] = "back_end/mantenedores/usuarios/formProyectos";
+	$route['eliminaProyectos'] = "back_end/mantenedores/usuarios/eliminaProyectos";
+
+	$route['vistaAreas'] = "back_end/mantenedores/usuarios/vistaAreas";
+	$route['listaAreas'] = "back_end/mantenedores/usuarios/listaAreas";
+	$route['getDataAreas'] = "back_end/mantenedores/usuarios/getDataAreas";
+	$route['formAreas'] = "back_end/mantenedores/usuarios/formAreas";
+	$route['eliminaAreas'] = "back_end/mantenedores/usuarios/eliminaAreas";
+
+
+	$route['vistaJefes'] = "back_end/mantenedores/usuarios/vistaJefes";
+	$route['listaJefes'] = "back_end/mantenedores/usuarios/listaJefes";
+	$route['getDataJefes'] = "back_end/mantenedores/usuarios/getDataJefes";
+	$route['formJefes'] = "back_end/mantenedores/usuarios/formJefes";
+	$route['eliminaJefes'] = "back_end/mantenedores/usuarios/eliminaJefes";
+
+	$route['vistaPerfiles'] = "back_end/mantenedores/usuarios/vistaPerfiles";
+	$route['listaPerfiles'] = "back_end/mantenedores/usuarios/listaPerfiles";
+	$route['getDataPerfiles'] = "back_end/mantenedores/usuarios/getDataPerfiles";
+	$route['formPerfiles'] = "back_end/mantenedores/usuarios/formPerfiles";
+	$route['eliminaPerfiles'] = "back_end/mantenedores/usuarios/eliminaPerfiles";
+
+/*HERRAMIENTAS*/
+
+	$route['mantenedor_herramientas'] = "back_end/mantenedores/herramientas/index";
+	$route['vistaHerramientas'] = "back_end/mantenedores/herramientas/vistaHerramientas";
+	$route['listaHerramientas'] = "back_end/mantenedores/herramientas/listaHerramientas";
+	$route['getDataHerramientas'] = "back_end/mantenedores/herramientas/getDataHerramientas";
+	$route['formHerramientas'] = "back_end/mantenedores/herramientas/formHerramientas";
+	$route['excelHerramientas/(:any)'] = "back_end/mantenedores/herramientas/excelHerramientas/$1";
+	
+	$route['mantenedor_responsables_fallos'] = "back_end/mantenedores/responsable_fallos/index";
+	$route['vistaResponsablesFallosHerramientas'] = "back_end/mantenedores/responsable_fallos/vistaResponsablesFallosHerramientas";
+	$route['listaResponsablesFallosHerramientas'] = "back_end/mantenedores/responsable_fallos/listaResponsablesFallosHerramientas";
+	$route['formResponsablesFallosHerramientas'] = "back_end/mantenedores/responsable_fallos/formResponsablesFallosHerramientas";
+	$route['getDataResponsableFallosHerramientas'] = "back_end/mantenedores/responsable_fallos/getDataResponsableFallosHerramientas";
+	$route['eliminaResponsableFallosHerramientas'] = "back_end/mantenedores/responsable_fallos/eliminaResponsableFallosHerramientas";
+	
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

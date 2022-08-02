@@ -38,7 +38,7 @@
          "iDisplayLength":-1, 
          "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
          "bPaginate": false,
-         "aaSorting" : [[2,"desc"]],
+         "aaSorting" : [[5,"desc"]],
          "scrollY": "60vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        
@@ -148,6 +148,7 @@
                 $(".btn_ingreso_capacitacion").attr("disabled", true);
                 $(".cierra_modal_capacitacion").attr("disabled", true);
                 $("#formIngresoCapacitacion input,#formIngresoCapacitacion select,#formIngresoCapacitacion button,#formIngresoCapacitacion").prop("disabled", true);
+                $(".btn_ingreso_capacitacion").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
               },
               success: function (data) {
                 if(data.res == "sess"){
@@ -158,8 +159,9 @@
                   $("#formIngresoCapacitacion input,#formIngresoCapacitacion select,#formIngresoCapacitacion button,#formIngresoCapacitacion").prop("disabled", false);
                   $(".btn_ingreso_capacitacion").attr("disabled", false);
                   $(".cierra_modal_capacitacion").attr("disabled", false);
+                  $(".btn_ingreso_capacitacion").html(' <i class="fa fa-save"></i> Guardar').prop("disabled",true);
 
-                  $.notify(data.msg, {
+                  $.notify(data.msg, {  
                     className:'success',
                     globalPosition: 'top right',
                     autoHideDelay:5000,
@@ -168,7 +170,7 @@
                   $('#formIngresoCapacitacion')[0].reset();
                   tb_capacitacion.ajax.reload();
                 }else if(data.res=="error"){
-
+                  $(".btn_ingreso_capacitacion").html(' <i class="fa fa-save"></i> Guardar').prop("disabled",true);
                   $(".btn_ingreso_capacitacion").attr("disabled", false);
                   $(".cierra_modal_capacitacion").attr("disabled", false);
                   $.notify(data.msg, {
@@ -208,7 +210,7 @@
                     $('#modal_ingreso_capacitacion').modal("toggle");
                 }
 
-            },timeout:135000
+            },timeout:235000
           }); 
         return false; 
     });
@@ -322,7 +324,7 @@
     <div class="col-6 col-lg-2"> 
       <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-outline-primary btn_nuevo_capacitacion btn_xr3">
-         <i class="fa fa-plus-circle"></i>  Nuevo Archivo 
+         <i class="fa fa-plus-circle"></i>  Nuevo archivo capacitación
          </button>
       </div>
     </div>

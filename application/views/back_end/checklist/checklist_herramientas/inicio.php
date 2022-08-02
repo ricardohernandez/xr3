@@ -59,9 +59,8 @@
           sAjaxDataProp: "result",        
           bDeferRender: true,
 
-
          "oLanguage": { 
-          "sProcessing":     "Procesando...",
+          "sProcessing":     "<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
           "sLengthMenu":     "Mostrar: _MENU_ ",
           "sZeroRecords":    "No se encontraron resultados",
           "sEmptyTable":     "Ningún dato disponible en esta tabla",
@@ -102,14 +101,15 @@
         });
         
 
-        /*$("#menu_fallos").addClass('disabled_sub');
-        $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
-        $(".menu_lista li").removeClass('menuActivo');       
-        $("#menu_fallos").addClass('menuActivo');  
+        /*$("#menu_responsables_fallos").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');    
+        $("#menu_responsables_fallos").addClass('menuActivo');  
+       
 
-        $.get("vistaFH", function( data ) {
+        $.get("vistaResponsablesFallosHerramientas", function( data ) {
           $(".contenedor_app").html(data);    
-          $("#menu_fallos").removeClass('disabled_sub');
+          $("#menu_responsables_fallos").removeClass('disabled_sub');
         });*/
         
       
@@ -186,6 +186,35 @@
       });
 
 
+      $(document).off('click', '#menu_responsables_fallos').on('click', '#menu_responsables_fallos',function(event) {
+        event.preventDefault();
+        $("#menu_responsables_fallos").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+        $(".menu_lista li").removeClass('menuActivo');    
+        $("#menu_responsables_fallos").addClass('menuActivo');  
+       
+
+        $.get("vistaResponsablesFallosHerramientas", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_responsables_fallos").removeClass('disabled_sub');
+        });
+      });
+
+      $(document).off('click', '#menu_herramientas').on('click', '#menu_herramientas',function(event) {
+        event.preventDefault();
+        $("#menu_herramientas").addClass('disabled_sub');
+        $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+         $(".menu_lista li").removeClass('menuActivo');    
+        $("#menu_herramientas").addClass('menuActivo');  
+       
+
+        $.get("vistaHerramientas", function( data ) {
+          $(".contenedor_app").html(data);    
+          $("#menu_herramientas").removeClass('disabled_sub');
+        });
+      });
+
+
 
   })
 </script>
@@ -204,6 +233,8 @@
         <li id="menu_graficos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Herramientas </a></li>   
         <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
         <li id="menu_graficos_fallos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
+       <!--  <li id="menu_responsables_fallos" class="active"><a> <i class="fa fa-th-list"></i> Mant.  Responsables fallos</a></li>  
+        <li id="menu_herramientas" class="active"><a> <i class="fa fa-th-list"></i> Mant. Herramientas</a></li>    -->
       </ul>  
     </div> 
   </div>

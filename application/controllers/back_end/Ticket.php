@@ -147,7 +147,7 @@ class Ticket extends CI_Controller {
 	}
 
 
-	public function enviaCorreo($hash){
+	public function enviaCorreo($hash,$tipo){
 		$this->load->library('email');
 		$data=$this->Ticketmodel->getDataTicket($hash);
 		$prueba=FALSE;
@@ -158,7 +158,7 @@ class Ticket extends CI_Controller {
 	          'charset'  => 'utf-8',
 	          'priority' => '1',
 	          'wordwrap' => TRUE,
-	          'protocol' => "mail",
+	          'protocol' => "smtp",
 	          'smtp_port' => 587,
 	          'smtp_host' => 'mail.xr3t.cl',
 		      'smtp_user' => 'soporteplataforma@xr3t.cl',
@@ -169,10 +169,9 @@ class Ticket extends CI_Controller {
 			$asunto ="Ticket plataforma XR3 (".$key["estado"].") : ".$key["titulo"]." | ".date('d-m-Y', strtotime($key["fecha_ingreso"]));
 			$datos=array("data"=>$data,"titulo"=>$asunto);
 			$html=$this->load->view('back_end/ticket/correo',$datos,TRUE);
-			/*echo $html;exit;*/
 
 			if($prueba){
-				$para=array("ricardo.hernandez@km-telecomunicaciones.cl");
+				$para=array("ricardo.hernandez@splice.cl");
 				$copias=array("ricardo.hernandez@km-t.cl");
 				$this->email->from("soporteplataforma@xr3t.cl","Soporte plataforma XR3");
 			}else{
@@ -183,7 +182,7 @@ class Ticket extends CI_Controller {
 
 			$this->email->to($para);
 			$this->email->cc($copias);
-			$this->email->bcc("soporteplataforma@xr3t.cl","ricardo.hernandez.esp@gmail.com");
+	    	$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));
 			$this->email->subject($asunto);
 			$this->email->message($html); 
 			/*if($key["adjunto"]!="") {$this->email->attach(base_url()."lic/".$key["adjunto"]);}*/

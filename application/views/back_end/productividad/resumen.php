@@ -319,8 +319,17 @@
               <option value="" selected>Seleccione Jefe | Todos</option>
               <?php  
                 foreach($jefes as $j){
+                  if($j["id_jefe"]==22){
+                    ?>
+                     <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                    <?php
+                  }else{
+                     ?>
+                      <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                    <?php
+                  }
                   ?>
-                    <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                   
                   <?php
                 }
               ?>

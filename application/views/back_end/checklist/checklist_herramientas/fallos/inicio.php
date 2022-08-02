@@ -66,11 +66,11 @@
 
   /*****DATATABLE*****/   
     var listaFH = $('#listaFH').DataTable({
-       "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
+       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
        "iDisplayLength":-1, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
-       "aaSorting" : [[9,"desc"]],
+       "aaSorting" : [[15,"desc"]],
        "scrollY": "60vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -105,14 +105,23 @@
             }
           },
           { "data": "auditor" ,"class":"margen-td centered"},
+          { "data": "tecnico" ,"class":"margen-td centered"},
+          { "data": "zona" ,"class":"margen-td centered"},
+          { "data": "proyecto" ,"class":"margen-td centered"},
           { "data": "tipo" ,"class":"margen-td centered"},
           { "data": "descripcion" ,"class":"margen-td centered"},
           { "data": "fecha" ,"class":"margen-td centered"},
           { "data": "estado" ,"class":"margen-td centered"},
+          { "data": "observacion" ,"class":"margen-td centered"},
+          { "data": "responsable" ,"class":"margen-td centered"},
+          { "data": "plazo" ,"class":"margen-td centered"},
           { "data": "solucion_estado" ,"class":"margen-td centered"},
           { "data": "solucion_fecha" ,"class":"margen-td centered"},
           { "data": "solucion_observacion" ,"class":"margen-td centered"},
           { "data": "ultima_actualizacion" ,"class":"margen-td centered"}
+
+
+
         ]
       }); 
 
@@ -375,6 +384,7 @@
 
 <!-- LISTADO -->
 
+
   <div class="row">
     <div class="col-lg-12">
       <table id="listaFH" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
@@ -382,14 +392,20 @@
           <tr>    
             <th class="centered" style="width: 50px;"></th>    
             <th class="centered">Auditor</th> 
+            <th class="centered">Técnico</th> 
+            <th class="centered">Zona</th> 
+            <th class="centered">Proyecto</th> 
             <th class="centered">Tipo </th>   
             <th class="centered">Descripción</th>   
             <th class="centered">Fecha</th>   
-            <th class="centered">Resultado </th>   
+            <th class="centered">Resultado fallo</th>   
+            <th class="centered">Observación fallo </th>   
+            <th class="centered">Responsable </th>   
+            <th class="centered">Plazo</th>   
             <th class="centered">Estado Solución</th>   
             <th class="centered">Fecha Solución</th>   
             <th class="centered">Observación Solución</th>   
-            <th class="centered">Última actualización Solución</th>   
+            <th class="centered">Última actualización</th>   
           </tr>
         </thead>
       </table>

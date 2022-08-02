@@ -65,6 +65,19 @@
       });
     });
 
+    $(document).off('click', '#menu_reportes').on('click', '#menu_reportes',function(event) {
+      event.preventDefault();
+      $("#menu_reportes").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_reportes").addClass('menuActivo');  
+
+      $.get(base_url+"vistaReportes", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_reportes").removeClass('disabled_sub');
+      });
+    });
+
 
   })
 </script>
@@ -80,6 +93,13 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_capacitacion" class="active"><a> <i class="fa fa-list-alt"></i> Capacitación </a></li>   
+        <?php  
+          if($this->session->userdata('id_perfil')<=3){
+            ?>
+            <li id="menu_reportes" class="active"><a> <i class="fa fa-list-alt"></i> Reportes </a></li>   
+            <?php
+          }
+        ?>
       </ul>  
     </div> 
   </div>
