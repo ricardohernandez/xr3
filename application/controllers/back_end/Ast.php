@@ -656,6 +656,7 @@ class Ast extends CI_Controller {
 			echo json_encode($this->Astmodel->listaMantActividades($actividad));
 		}
 					
+					
 		public function formMantActividades(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();
