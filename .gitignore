@@ -17,4 +17,3 @@ application/logs/*
 !application/logs/.htaccess
 /vendor/
 application/database.php
-!application/database.php
