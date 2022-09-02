@@ -50,7 +50,7 @@
 
  </script>
 
- <div class="col-12 col-lg-4 offset-lg-4">  
+   <div class="col-12 col-lg-4 offset-lg-4">  
    <div class="form-group">
     <input type="text" placeholder="Busqueda" id="buscador_user_checklist" class="buscador_user_checklist form-control form-control-sm">
    </div>

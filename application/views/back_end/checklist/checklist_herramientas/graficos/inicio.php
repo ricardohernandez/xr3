@@ -83,7 +83,7 @@
 		             top:30,
 		        },
 
-		        height:580,
+		        height:780,
 		        hAxis: {
 		          title: '',
 		          minValue: 0

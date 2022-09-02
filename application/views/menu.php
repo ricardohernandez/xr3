@@ -117,12 +117,20 @@
 	            <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	            <ul class="sidenav__menu-dropdown">
           		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
-	          		
+	          		 	
 	          		 	<?php  
 		          			if($this->session->userdata('id_perfil')<=3){
 		         	    ?>
-	          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
-	          		 	<?php
+		          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n de riesgos </a></li>
+		          		<?php
+					          }
+					        ?>
+
+					        <?php  
+			          			if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
+		         	    ?>
+		          			<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
+		          		<?php
 					          }
 					        ?>
 
@@ -194,9 +202,10 @@
 	                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
 	                <ul class="sidenav__menu-dropdown">
 	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
-	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Herramientas</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Checklist Herramientas</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_hfc"> Checklist HFC</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_ftth"> Checklist HFC</a></li>
 	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
-                    </ul>
 	                </ul>
 	              </li>
 	            <?php
@@ -244,6 +253,14 @@
 
 	          		    <?php  
 			          			if($this->session->userdata('id_perfil')<=3){
+			         	    ?>
+		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n riesgos </a></li>
+		          		 	<?php
+						          }
+						        ?>
+
+						        <?php  
+			          			if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
 			         	    ?>
 		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
 		          		 	<?php
@@ -321,7 +338,9 @@
                         <a href="#">Mantenedores</a>
                           <ul class="nav__dropdown-menu"> 
 			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
-			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas"> Herramientas</a></li>
+ 			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas">Checklist Herramientas</a></li>
+			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_hfc">Checklist HFC</a></li>
+			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_ftth">Checklist FTTH</a></li>
 			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
                           </ul>
                       </li>

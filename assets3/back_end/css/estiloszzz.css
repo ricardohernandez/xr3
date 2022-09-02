@@ -35,10 +35,10 @@
     padding: 0px 5px!important;
     font-size: 12px;
   }
-  hr{
+/*  hr{
     margin-top: 9px!important;
     margin-bottom: 3px!important;;
-  }
+  }*/
   .loader{
     margin-top:150px;
     height:100px;
@@ -186,7 +186,7 @@
       font-size: 11px!important;
     }
     .custom-select-sm {
-     height: calc(2.6rem + 2px)!important; 
+     height: calc(2.1rem + 2px)!important; 
     }
     table.dataTable tbody th, table.dataTable tbody td {
       padding: 1px 3px!important;

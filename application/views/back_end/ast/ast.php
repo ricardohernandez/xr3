@@ -189,10 +189,20 @@
     });     
 
     $(document).off('submit', '#formAst').on('submit', '#formAst',function(event) {
-      var url="<?php echo base_url()?>";
-      var formElement = document.querySelector("#formAst");
-      var formData = new FormData(formElement);
-   
+      if(hash_ast!=""){
+        setTimeout(function(){ 
+          $(".buscador_user_checklist").val("");
+          $('#tabla_user_checklist').DataTable().search("").draw();
+          $(".buscador_checklist_ast").val("");
+          $('#tabla_checklist_ast').DataTable().search("").draw();
+          hash = $("#hash_ast").val()
+        }, 1);
+      }
+
+      setTimeout(function(){ 
+        var url="<?php echo base_url()?>";
+        var formElement = document.querySelector("#formAst");
+        var formData = new FormData(formElement);
         $.ajax({
             url: $('#formAst').attr('action')+"?"+$.now(),  
             type: 'POST',
@@ -277,6 +287,9 @@
             },timeout:105000
 
         });
+
+      },500);
+
       return false; 
     });
 
@@ -325,6 +338,11 @@
               $("#id").val(data.datos[dato].id_astt).prop("disabled",true);
               $("#riesgos_no_controlados").val(data.datos[dato].riesgos_o_controles_norealizados).prop("disabled",true);
               $(".cont_mod").show();
+
+              if(data.datos[dato].id_estado!="3"){
+                $("#auditor").prop("disabled",true)
+              }
+
             } 
 
             $("#actividad").prop("disabled",true);                          
@@ -701,7 +719,7 @@
                         <?php 
                         foreach($comunas as $c){
                           ?>
-                            <option value="<?php echo $c["id"]; ?>"><?php echo $c["titulo"]; ?></option>
+                            <option value="<?php echo $c["id"]; ?>"><?php echo $c["proyecto"]; ?></option>
                           <?php
                         }
                       ?>

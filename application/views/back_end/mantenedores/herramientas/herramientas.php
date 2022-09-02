@@ -286,7 +286,7 @@
           {
            "class":"centered center margen-td","data": function(row,type,val,meta){
               btn='<center><a data-toggle="modal" href="#modal_herr" data-hash_herramienta="'+row.hash_herramienta+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar_herr"></a>';
-              // btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_herramienta" data-hash_herramienta="'+row.hash_herramienta+'"></a></center>';
+              btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_herramienta" data-hash_herramienta="'+row.hash_herramienta+'"></a></center>';
               return btn;
             }
           },
@@ -296,7 +296,7 @@
             "class":"centered","data": function(row,type,val,meta){
               var base="<?php echo base_url()?>";
               if(row.imagen!=""){
-                html='<center><a target="_blank" href="./fotos_herramientas/'+row.imagen+'" class="foto_icon" title="Imagen"><i class="fa fa-camera"></i></a>';
+                html='<center><a target="_blank" href="./archivos/fotos_checklist/herramientas/'+row.imagen+'" class="foto_icon" title="Imagen"><i class="fa fa-camera"></i></a>';
               }else{
                 html="";
               }
@@ -372,9 +372,9 @@
             dataType: "json",
             contentType : false,
             beforeSend:function(){
-              // $(".btn_guardar_herr").attr("disabled", true);
-              // $(".cierra_modal_herr").attr("disabled", true);
-              // $("#formHerramientas input,#formHerramientas select,#formHerramientas button,#formHerramientas").prop("disabled", true);
+              $(".btn_guardar_herr").attr("disabled", true);
+              $(".cierra_modal_herr").attr("disabled", true);
+              $("#formHerramientas input,#formHerramientas select,#formHerramientas button,#formHerramientas").prop("disabled", true);
             },
             success: function (data) {
              if(data.res == "error"){

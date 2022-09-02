@@ -653,7 +653,7 @@
        "iDisplayLength":-1, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
-       "aaSorting" : [[0,"asc"]],
+       "aaSorting" : [],
        "select" : true,
        "columnDefs" : [
           { orderable: false , targets: 2 },
@@ -929,12 +929,12 @@
           <fieldset class="form-ing-cont">
           <legend class="form-ing-border">Checklist herramientas</legend>
 
-
+                <!-- 
                 <div class="col-12 col-lg-4 offset-lg-4">  
                  <div class="form-group">
                   <input type="text" placeholder="Busqueda" id="buscador_detalle" class="buscador_detalle form-control form-control-sm">
                  </div>
-                </div>
+                </div> -->
                 <table id="tabla_detalle" width="100%" class="dataTable datatable_h table table-hover table-bordered table-condensed">
                 <thead>
                   <tr style="background-color:#F9F9F9">

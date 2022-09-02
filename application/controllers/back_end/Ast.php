@@ -297,7 +297,6 @@ class Ast extends CI_Controller {
 						
 						$data_mod=array(
 							"tecnico_id"=>$tecnico,
-							"auditor_id"=>$auditor,
 							"id_comuna"=>$comuna,
 							"direccion"=>$direccion,
 							"riesgos_o_controles_norealizados"=>"",
@@ -307,6 +306,7 @@ class Ast extends CI_Controller {
 
 						if($estado_ast=="3"){
 							$data_mod["id_estado"] = $estado_ast;
+							$data_mod["auditor_id"] = $auditor;
 						}
 
 						$this->Astmodel->actualizarAst($hash,$data_mod);
@@ -436,6 +436,7 @@ class Ast extends CI_Controller {
 		}
 
 		public function enviaCorreoIngreso($data){
+			return TRUE;
 			$prueba = TRUE;
 			foreach($data as $key){
 				$titulo = "Registro de ast en para técnico : ".$key["tecnico"]." - ".$key["fecha"];

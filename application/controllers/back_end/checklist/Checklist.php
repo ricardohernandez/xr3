@@ -219,7 +219,8 @@ class Checklist extends CI_Controller {
 						    	}
 						    }
 
-						    $data_correo = $this->Checklistmodel->getDataChecklistHerramientasCabecera(sha1($id));
+						    $hash = sha1($id);
+						    $data_correo = $this->Checklistmodel->getDataChecklistHerramientasCabecera($hash);
 
 							if(!$this->generaPdfChecklistHerramientas($data_correo)){
 								echo json_encode(array('res'=>"error", 'hash' =>$hash, 'msg' => "Problemas creando el archivo pdf, intente nuevamente."));exit;
@@ -228,13 +229,13 @@ class Checklist extends CI_Controller {
 							if($checkcorreo=="on"){
 					    		
 				     			if($this->enviaCorreoIngreso($data_correo)){
-									echo json_encode(array('res'=>"ok", 'hash' =>sha1($id), 'msg' => MOD_MSG));exit;
+									echo json_encode(array('res'=>"ok", 'hash' =>$hash, 'msg' => MOD_MSG));exit;
 								}else{
 									echo json_encode(array('res'=>"error", 'hash' =>$hash, 'msg' => "Problemas enviado el correo, intente nuevamente."));exit;
 								}
 
 							}else{
-								 echo json_encode(array('res'=>"ok", 'hash' =>sha1($id), 'msg' => MOD_MSG));exit;
+								 echo json_encode(array('res'=>"ok", 'hash' =>$hash, 'msg' => MOD_MSG));exit;
 							}
 
 						}else{
@@ -319,6 +320,7 @@ class Checklist extends CI_Controller {
 						        }
 					    	}
 					    }
+
 
 					    $data_correo=$this->Checklistmodel->getDataChecklistHerramientasCabecera($hash);
 
@@ -435,8 +437,14 @@ class Checklist extends CI_Controller {
 				}else{
 
 					$para = array();
-					$para[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
-					$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
+					$para[] = $key["correo_jefe_empresa"]!="" ? $key["correo_jefe_empresa"] : $key["correo_jefe_personal"];
+
+					$copias = array();
+					$copias[]="roberto.segovia@xr3.cl";
+					$copias[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
+					/*print_r($para);
+					print_r($copias);exit;*/
+					
 					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
 
 				}

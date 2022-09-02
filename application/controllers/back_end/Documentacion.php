@@ -36,19 +36,19 @@ class Documentacion extends CI_Controller {
 	      	redirect("./login");
 	      }
 	}
-	
-	public function index(){
-    	$this->acceso();
-	    $datos = array(
-	        'titulo' => "Documentación XR3",
-	        'contenido' => "documentacion/inicio",
-	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
-		);  
-		$this->load->view('plantillas/plantilla_back_end',$datos);
-		
-	}
 
 	/***********CAPACITACION*****************/
+
+		public function indexCapacitacion(){
+	    	$this->acceso();
+		    $datos = array(
+		        'titulo' => "Documentación XR3",
+		        'contenido' => "documentacion/inicio",
+		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
+			);  
+			$this->load->view('plantillas/plantilla_back_end',$datos);
+			
+		}
 
 		public function vistaCapacitacion(){
 			$this->visitas("c");
@@ -341,6 +341,160 @@ class Documentacion extends CI_Controller {
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
 				$data=$this->Documentacionmodel->getDataRegistroReportes($hash);
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}else{
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}	
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+	/***********PREVENCION*****************/
+
+		public function indexPrevencion(){
+	    	$this->acceso();
+		    $datos = array(
+		        'titulo' => "Documentación XR3",
+		        'contenido' => "documentacion/inicio",
+		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
+			);  
+			$this->load->view('plantillas/plantilla_back_end',$datos);
+		}
+
+		public function vistaPrevencion(){
+			$this->visitas("Prevencion");
+			if($this->input->is_ajax_request()){
+				$datos=array();
+				$this->load->view('back_end/documentacion/prevencion_riesgos',$datos);
+			}
+		}
+
+		public function getPrevencionList(){
+			echo json_encode($this->Documentacionmodel->getPrevencionList());
+		}
+		
+		public function formIngresoPrevencion(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
+				$nombre=$this->security->xss_clean(strip_tags($this->input->post("nombre_archivo")));
+				$fecha = date("Y-m-d");
+				$digitador=$this->session->userdata("id");
+				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
+		   		$adjunto=@$_FILES["userfile"]["name"];
+
+	   			if ($this->form_validation->run("formIngresoPrevencion") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
+				}else{	
+					
+			    	if($hash==FALSE){
+
+			    		$data = array(
+		    		 	'nombre' => $nombre,
+		    		 	'id_digitador' => $digitador,
+		    		 	'fecha' => $fecha,
+		    		 	'ultima_actualizacion' => $ultima_actualizacion);
+
+
+			    		if($adjunto!=""){
+							$nombre=$this->procesaArchivoPrevencion($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
+							$data["archivo"]=$nombre;
+						}else{
+							$data["archivo"]="";
+						}
+
+						$insert_id=$this->Documentacionmodel->formIngresoPrevencion($data);
+						if($insert_id!=FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+
+					}else{
+						
+						$data = array(
+		    		 	'nombre' => $nombre,
+		    		 	'ultima_actualizacion' => $ultima_actualizacion);
+
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivoPrevencion($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
+							$data["archivo"]=$nombre;
+
+							$archivo_bd=$this->Documentacionmodel->getDataRegistroPrevencion($hash);
+
+							foreach($archivo_bd as $a){
+								if($a["archivo"]!=""){
+									if (file_exists("./archivos_documentacion/prevencion/".$a["archivo"])){
+										unlink("./archivos_documentacion/prevencion/".$a["archivo"]);
+									}	
+								}
+							}
+
+						}
+
+						if($this->Documentacionmodel->formActualizarPrevencion($hash,$data)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
+						}
+					}
+				}
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function procesaArchivoPrevencion($file,$titulo){
+				$path = $file['name'];
+				$ext = pathinfo($path, PATHINFO_EXTENSION);
+				$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
+				$config['upload_path'] = './archivos_documentacion/prevencion';
+				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC|mp4|MP4';
+			    $config['file_name'] = $archivo;
+				$config['max_size']	= '10300';
+				$config['overwrite']	= FALSE;
+				$this->load->library('upload', $config);
+				$_FILES['userfile']['name'] = $archivo;
+			    $_FILES['userfile']['type'] = $file['type'];
+			    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
+			    $_FILES['userfile']['error'] = $file['error'];
+				$_FILES['userfile']['size'] = $file['size'];
+				$this->upload->initialize($config);
+
+				if (!$this->upload->do_upload()){ 
+				    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
+			    }else{
+			    	unset($config);
+			    	return $archivo;
+			    }
+	    }
+
+		public function eliminaPrevencion(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			$data=$this->Documentacionmodel->getDataRegistroPrevencion($hash);
+			foreach($data as $key){
+				if($key["archivo"]!=""){
+					if (file_exists("./archivos_documentacion/prevencion/".$key["archivo"])){
+						unlink("./archivos_documentacion/prevencion/".$key["archivo"]);
+					}	
+				}
+			}
+
+			if($this->Documentacionmodel->eliminaPrevencion($hash)){
+				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{	
+				echo json_encode(array("res" => "error" , "msg" => "Error eliminando el registro, intente nuevamente."));
+			}
+		}
+
+		public function getDataRegistroPrevencion(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
+				$data=$this->Documentacionmodel->getDataRegistroPrevencion($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{

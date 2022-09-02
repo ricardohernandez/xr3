@@ -373,6 +373,61 @@ class Inicio extends CI_Controller {
 	    }
 
 		
+		public function saludoCumpleanios(){
+			$fecha=substr(date("Y-m-d"), 5,10);
+			/*$fecha = substr("2022-08-16", 5,10);*/
+			$data = $this->Iniciomodel->correoCumpleanios($fecha);
+			$this->load->library('email');	
+			$prueba=FALSE;
+
+			if($data!=FALSE){
+			   	foreach($data as $key){
+		   			$config = array (
+			       	  'mailtype' => 'html',
+			          'charset'  => 'utf-8',
+			          'priority' => '1',
+			          'wordwrap' => TRUE,
+			          'protocol' => "smtp",
+			          'smtp_port' => 587,
+			          'smtp_host' => 'mail.xr3t.cl',
+				      'smtp_user' => 'reporte@xr3t.cl',
+				      'smtp_pass' => '5aK*2uGJNBd3'
+			        );
+
+					$this->email->initialize($config);
+					$datos=array("data"=>$data);
+				    $html=$this->load->view('back_end/cron/cumpleanios',$datos,TRUE);
+				    /*echo $html;exit;*/
+
+					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+
+					if($prueba){
+						$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
+						$copias = array("ricardo.hernandez@splice.cl");
+
+					}else{
+						$para = array();
+						$para[] = $key["correo_empresa"]!="" ? $key["correo_empresa"] : $key["correo_personal"];
+						$para[] = $key["correo_jefe_empresa"]!="" ? $key["correo_jefe_empresa"] : $key["correo_jefe_personal"];
+						$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
+					}
+
+					$this->email->to($para);
+					$this->email->cc($copias);
+		    		$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl");
+					$this->email->subject($key["nombre_corto"].", saludos en tu cumpleaños.");
+					$this->email->message($html); 
+					$resp=$this->email->send();
+
+					if ($resp) {
+						return TRUE;
+					}else{
+						print_r($this->email->print_debugger());
+						return FALSE;
+					}
+				}	
+			}		
+		}
 
 
 }

@@ -102,5 +102,49 @@ class Documentacionmodel extends CI_Model {
 			return FALSE;
 		}
 
+	
+	/**********PREVENCION************/
 		
+		public function getPrevencionList(){
+			$this->db->select("sha1(c.id) as hash_id,
+					c.*,
+					CONCAT(u.nombres,' ',u.apellidos)  'digitador'");
+			$this->db->join('usuarios u', 'u.id = c.id_digitador', 'left');
+			$res=$this->db->get('documentacion_prevencion as c');
+			return $res->result_array();
+		}
+
+		
+		public function getDataRegistroPrevencion($hash){
+			$this->db->select("sha1(c.id) as hash_id,
+					c.*");
+			$this->db->where('sha1(c.id)', $hash);
+			$res=$this->db->get('documentacion_prevencion as c');
+			return $res->result_array();
+		}
+
+
+		public function formActualizarPrevencion($id,$data){
+			$this->db->where('sha1(id)', $id);
+		    if($this->db->update('documentacion_prevencion', $data)){
+		    	return TRUE;
+		    }
+		    return FALSE;
+		}
+
+		public function formIngresoPrevencion($data){
+			if($this->db->insert('documentacion_prevencion', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
+		
+		public function eliminaPrevencion($hash){
+			$this->db->where('sha1(id)', $hash);
+			if($this ->db->delete('documentacion_prevencion')){
+			  	return TRUE;
+			}
+			return FALSE;
+		}		
+
 }

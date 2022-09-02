@@ -117,7 +117,7 @@ class Checklisthfcmodel extends CI_Model {
 			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
 			$this->db->join('checklist_hfc_listado cl', 'cl.id = cd.id_check', 'left');
 			$this->db->join('checklist_hfc_tipos ct', 'ct.id = cl.tipo', 'left');
-
+			$this->db->where('ct.id is not null');
 			$this->db->where('sha1(o.id)', $hash);
 			$res=$this->db->get('checklist_hfc o');
 			if($res->num_rows()>0){

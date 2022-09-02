@@ -121,8 +121,8 @@ class Checklistmodel extends CI_Model {
 			$this->db->join('checklist_herramientas_detalle cd', 'cd.id_ots = o.id', 'left');
 			$this->db->join('checklist_herramientas_listado cl', 'cl.id = cd.id_check', 'left');
 			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = cl.tipo', 'left');
-
 			$this->db->where('sha1(o.id)', $hash);
+			$this->db->where('ct.id is not null');
 			$res=$this->db->get('checklist_herramientas o');
 			if($res->num_rows()>0){
 				return $res->result_array();
@@ -240,7 +240,7 @@ class Checklistmodel extends CI_Model {
 
 		public function listaTecnicos(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
-			/*$this->db->where('id_perfil', 4);*/
+			$this->db->where('id_perfil', 4);
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
 			return $res->result_array();
@@ -302,7 +302,7 @@ class Checklistmodel extends CI_Model {
 				ct.tipo as tipo');
 			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = c.tipo', 'left');
 			$this->db->order_by('ct.tipo', 'asc');
-		/*	$this->db->order_by('c.descripcion', 'asc');*/
+			$this->db->order_by('c.descripcion', 'asc');
 			$res=$this->db->get('checklist_herramientas_listado c');
 			return $res->result_array();
 		}
@@ -674,7 +674,10 @@ class Checklistmodel extends CI_Model {
 					$temp["solucion_observacion"] = $key["solucion_observacion"];
 					$temp["ultima_actualizacion"] = $key["ultima_actualizacion"];
 					
-					$array[] = $temp;
+					if(@$temp["responsable"]!=""){
+						$array[] = $temp;
+					}
+					
 				}
 
 				return $array;

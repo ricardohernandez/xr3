@@ -120,7 +120,7 @@ class Checklistftthmodel extends CI_Model {
 			$this->db->join('checklist_ftth_detalle cd', 'cd.id_ots = o.id', 'left');
 			$this->db->join('checklist_ftth_listado cl', 'cl.id = cd.id_check', 'left');
 			$this->db->join('checklist_ftth_tipos ct', 'ct.id = cl.tipo', 'left');
-
+			$this->db->where('ct.id is not null');
 			$this->db->where('sha1(o.id)', $hash);
 			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
@@ -262,7 +262,7 @@ class Checklistftthmodel extends CI_Model {
 
 		public function listaTecnicos(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
-			$this->db->where('id_perfil', 4);
+			/*$this->db->where('id_perfil', 4);*/
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
 			return $res->result_array();

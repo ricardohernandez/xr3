@@ -789,7 +789,7 @@
             <div class="col-4 col-lg-4">
               <div class="form-group">  
                 <div class="form-check mt-1">
-                  <input type="checkbox" name="checkcorreo" checked class="form-check-input mt-2" id="checkcorreo">
+                  <input type="checkbox" checked name="checkcorreo"  class="form-check-input mt-2" id="checkcorreo">
                   <label class="form-check-label" style="font-size: 14px;" for="checkcorreo">¿Enviar correo?</label>
                 </div>
               </div>
@@ -962,11 +962,11 @@
 
               <div class="tabla_detalle">
 
-                <div class="col-12 col-lg-4 offset-lg-4">  
+                <!-- <div class="col-12 col-lg-4 offset-lg-4">  
                  <div class="form-group">
                   <input type="text" placeholder="Busqueda" id="buscador_detalle" class="buscador_detalle form-control form-control-sm">
                  </div>
-                </div>
+                </div> -->
 
                 <table id="tabla_detalle" width="100%" class="dataTable  display responsive datatable_h datatable_h table table-hover table-bordered table-condensed">
                 <thead>
@@ -987,17 +987,18 @@
                         ?>
                           <tr>
                           <td><p class="table_text"  style="margin-left:20px!important;text-align: left!important"><?php echo $key["tipo"]; ?></p></td>
-                          <input type="hidden" name="check_<?php echo $key["id"] ?>" id="check_<?php echo $key["id"] ?>" >
+                          <input type="hidden" name="herramientas[]" value="<?php echo $key["id"] ?>" id="herramientas_<?php echo $key["id"] ?>" >
+                         <!--  <input type="hidden" name="check_<?php echo $key["id"] ?>" id="check_<?php echo $key["id"] ?>" > -->
                           <td><p class="table_text"><?php echo $key["descripcion"] ?></p></td>
                           <td><p class="table_text">
-                            <select  name="estado[]" id="estado_<?php echo $key["id"] ?>"  class="estado input-xs">
+                            <select  name="estado_<?php echo $key["id"] ?>[]" id="estado_<?php echo $key["id"] ?>"  class="estado input-xs">
                               <option selected value="0">Si</option>
                               <option value="1">No</option>
                               <option value="2">No aplica</option>
                             </td>
                           <td>
                             <p class="table_text">
-                              <input type="text" name="observacion[]" id="observacion_<?php echo $key["id"] ?>" placeholder="" size="50" maxlength="50" class="observacion form-control input-xs full-w" autocomplete="off">
+                              <input type="text" name="observacion_<?php echo $key["id"] ?>[]" id="observacion_<?php echo $key["id"] ?>" placeholder="" size="50" maxlength="50" class="observacion form-control input-xs full-w" autocomplete="off">
                             </p>
                           </td>
                          </tr>

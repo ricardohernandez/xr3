@@ -278,7 +278,36 @@ class InicioModel extends CI_Model {
 	      $res=$this->db->get('usuarios_perfiles');
 	      return $res->result_array();
 	    }
-	    
+	   
+
+	/***************CRON***************************/
+
+		public function correoCumpleanios($fecha){
+			$this->db->select("
+				u.nombres as nombres,
+				u.apellidos as apellidos,
+				u.correo_empresa as correo_empresa,
+				u.correo_personal as correo_personal,
+			    CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),' ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos,' ','-2'), ' ', '1')) as 'nombre_corto',
+				u.fecha_nacimiento as fecha_nacimiento,
+				CONCAT(u2.nombres,' ',u2.apellidos)  'jefe',
+				u2.correo_empresa as correo_jefe_empresa,
+				u2.correo_personal as correo_jefe_personal");
+
+			$this->db->from('usuarios as u');
+			$this->db->join('usuarios_jefes uj', 'uj.id = u.id_jefe', 'left');
+			$this->db->join('usuarios u2', 'u2.id = uj.id_jefe', 'left');
+			$this->db->where('SUBSTRING(u.fecha_nacimiento,6,10)', $fecha);
+			/*$this->db->where("LOCATE('@',u.correo_empresa)>0");*/
+			$res=$this->db->get();
+			/*echo $this->db->last_query();*/
+
+			if ($res->num_rows()>0) {
+				return $res->result_array();
+			}
+			return FALSE;
+			
+		}
 
 }
 

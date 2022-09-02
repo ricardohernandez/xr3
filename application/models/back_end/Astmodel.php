@@ -22,7 +22,7 @@ class Astmodel extends CI_Model {
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 			    CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
 			    aca.actividad as actividad,
-			    c.titulo as localidad,
+			    c.proyecto as localidad,
 			    e.estado as estado_ast,
 		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
    				o.ultima_actualizacion as ultima_actualizacion
@@ -31,7 +31,7 @@ class Astmodel extends CI_Model {
 			$this->db->join('usuarios u', 'u.id = o.tecnico_id', 'left');
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('ast_actividades aca', 'aca.id = o.id_actividad', 'left');
-			$this->db->join('comunas c', 'c.id = o.id_comuna', 'left');
+			$this->db->join('usuarios_proyectos c', 'c.id = o.id_comuna', 'left');
 			$this->db->join('ast_estados e', 'e.id = o.id_estado', 'left');
 
 			if($desde!="" and $hasta!=""){
@@ -54,7 +54,7 @@ class Astmodel extends CI_Model {
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 			    CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
 			    aca.actividad as actividad,
-			    c.titulo as localidad,
+			    c.proyecto as localidad,
 			    e.estado as estado_ast,
 		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%Y-%m-%d'),'') as 'fecha',
 		        if(o.hora!='0000:00:00', left(o.hora,5),'') as 'hora',
@@ -76,7 +76,7 @@ class Astmodel extends CI_Model {
 			$this->db->join('usuarios u', 'u.id = o.tecnico_id', 'left');
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('ast_actividades aca', 'aca.id = o.id_actividad', 'left');
-			$this->db->join('comunas c', 'c.id = o.id_comuna', 'left');
+			$this->db->join('usuarios_proyectos c', 'c.id = o.id_comuna', 'left');
 			$this->db->join('ast_estados e', 'e.id = o.id_estado', 'left');
 			$this->db->join('ast_checklist_detalle cd', 'cd.id_ast = o.id', 'left');
 			$this->db->join('ast_checklist_listado cl', 'cl.id = cd.id_check', 'left');
@@ -242,8 +242,8 @@ class Astmodel extends CI_Model {
 		}
 
 		public function listaComunas(){
-			$this->db->order_by('titulo', 'asc');
-			$res = $this->db->get('comunas');
+			$this->db->order_by('proyecto', 'asc');
+			$res = $this->db->get('usuarios_proyectos');
 			return $res->result_array();
 		}
 
@@ -291,6 +291,7 @@ class Astmodel extends CI_Model {
 		}
 
 		public function getFallosChecklist($hash){
+			$this->db->where('sha1(acd.id_ast)', $hash);
 			$this->db->where('acd.estado', "no");
 			$this->db->where('(acl.tipo=2 or acl.tipo=3)');
 			$this->db->join('ast_checklist_listado acl', 'acl.id = acd.id_check', 'left');

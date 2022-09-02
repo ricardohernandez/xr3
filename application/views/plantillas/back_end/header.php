@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos_menu22.css" />
 <!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/loader.css" > -->
 <script type="text/javascript">
-    google.charts.load('current', {'packages':['corechart','table']});
+    google.charts.load('current', {'packages':['corechart','table','gauge']});
 </script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

@@ -187,8 +187,7 @@ class checklistHFC extends CI_Controller {
 						if($id!=FALSE){
 
 							if(!$this->Checklisthfcmodel->existeDetalleOTS($id)){
-								// echo "string";
-								$checklist=$this->Checklisthfcmodel->listaChecklist();
+								/*$checklist=$this->Checklisthfcmodel->listaChecklist();
 								foreach($checklist as $c){
 									$data_detalle = array("id_ots" => $id,
 								   "id_check" => $c["id"], 
@@ -217,11 +216,51 @@ class checklistHFC extends CI_Controller {
 
 									$this->Checklisthfcmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
 									$index++;	
+								}*/
+
+								$checklist=$this->Checklisthfcmodel->listaChecklist();
+
+								foreach($checklist as $c){
+									$data_detalle = array("id_ots" => $id,
+									 "id_check" => $c["id"], 
+									 "estado" => "0" , 
+									 "solucion_estado" => "0",
+									 "solucion_fecha" => "0000-00-00",
+									 "solucion_observacion" => "",
+									 "solucion_digitador" => 0,	
+									 "ultima_actualizacion"=>$ultima_actualizacion,
+									 "observacion" =>"");
+									$this->Checklisthfcmodel->insertaDetalleOTS($data_detalle);
+									$data_detalle=array();
 								}
+
+								$herramientas = $this->input->post("herramientas");
+
+								foreach($herramientas as $h){
+									$herramienta = $h;
+									$estado = $this->input->post("estado_".$herramienta)[0];
+									$observacion = $this->input->post("observacion_".$herramienta)[0];
+									$data_actualizar = array("estado" =>  $estado, "observacion" =>  $observacion, "ultima_actualizacion"=>$ultima_actualizacion);
+									$id_detalle = $this->Checklisthfcmodel->getIddetalle($id,$herramienta);
+									$this->Checklisthfcmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
+								}
+
 
 							}else{
 
-								$index=0;
+								$herramientas = $this->input->post("herramientas");
+
+								foreach($herramientas as $h){
+									$herramienta = $h;
+									$estado = $this->input->post("estado_".$herramienta)[0];
+									$observacion = $this->input->post("observacion_".$herramienta)[0];
+									$data_actualizar = array("estado" =>  $estado , "observacion" =>  $observacion , "ultima_actualizacion"=>$ultima_actualizacion);
+
+									$id_detalle = $this->Checklisthfcmodel->getIddetalle($id,$herramienta);
+									$this->Checklisthfcmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
+								}
+
+								/*$index=0;
 								foreach($estado as $e=>$value){
 									$data_actualizar= array("estado" => $value,
 									 "observacion" => $observacion[$index],
@@ -234,7 +273,7 @@ class checklistHFC extends CI_Controller {
 									$id_detalle=$this->Checklisthfcmodel->getIddetalle($id,$e+1);
 									$this->Checklisthfcmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
 									$index++;	
-								}
+								}*/
 							}
 
 							$imagenes_secundarias=$_FILES['archivos_secundarios']['name'];
@@ -291,6 +330,8 @@ class checklistHFC extends CI_Controller {
 
 						    $data_correo = $this->Checklisthfcmodel->getDataChecklistHFCCabecera(sha1($id));
 
+						    $hash = sha1($id);
+						    
 							if(!$this->generaPdfChecklistHFC($data_correo)){
 								echo json_encode(array('res'=>"error", 'hash' =>$hash, 'msg' => "Problemas creando el archivo pdf, intente nuevamente."));exit;
 							}
@@ -298,13 +339,13 @@ class checklistHFC extends CI_Controller {
 							if($checkcorreo=="on"){
 					    		
 								if($this->enviaCorreoIngreso($data_correo)){
-									echo json_encode(array('res'=>"ok", 'hash' =>sha1($id), 'msg' => MOD_MSG));exit;
+									echo json_encode(array('res'=>"ok", 'hash' =>$hash, 'msg' => MOD_MSG));exit;
 								}else{
 									echo json_encode(array('res'=>"error", 'hash' =>$hash, 'msg' => "Problemas enviado el correo, intente nuevamente."));exit;
 								}
 
 							}else{
-								 echo json_encode(array('res'=>"ok", 'hash' =>sha1($id), 'msg' => MOD_MSG));exit;
+								 echo json_encode(array('res'=>"ok", 'hash' =>$hash, 'msg' => MOD_MSG));exit;
 							}
 
 						}else{
@@ -331,8 +372,18 @@ class checklistHFC extends CI_Controller {
 							"tecnico_id"=>$tecnico);	
 
 						$this->Checklisthfcmodel->actualizarOTS($hash,$data_mod);
+						$herramientas = $this->input->post("herramientas");
 
-						$index=0;
+						foreach($herramientas as $h){
+							$herramienta = $h;
+							$estado = $this->input->post("estado_".$herramienta)[0];
+							$observacion = $this->input->post("observacion_".$herramienta)[0];
+							$data_actualizar = array("estado" =>  $estado,"observacion" =>  $observacion, "ultima_actualizacion"=>$ultima_actualizacion);
+							$id_detalle = $this->Checklisthfcmodel->getIddetalle($id,$herramienta);
+							$this->Checklisthfcmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
+						}
+						
+						/*$index=0;
 						foreach($estado as $e=>$value){
 							$data_actualizar= array("estado" => $value, 
 								 "observacion" => $observacion[$index]
@@ -341,7 +392,7 @@ class checklistHFC extends CI_Controller {
 							$id_detalle=$this->Checklisthfcmodel->getIddetalle($id,$e+1);
 							$this->Checklisthfcmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
 							$index++;	
-						}
+						}*/
 
 						$imagenes_secundarias=$_FILES['archivos_secundarios']['name'];
 
@@ -495,8 +546,11 @@ class checklistHFC extends CI_Controller {
 				}else{
 
 					$para = array();
-					$para[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
-					$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
+					$para[] = $key["correo_jefe_empresa"]!="" ? $key["correo_jefe_empresa"] : $key["correo_jefe_personal"];
+
+					$copias = array();
+					$copias[]="roberto.segovia@xr3.cl";
+					$copias[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
 					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
 
 				}

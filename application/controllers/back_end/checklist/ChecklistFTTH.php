@@ -184,12 +184,40 @@ class checklistFTTH extends CI_Controller {
 						}
 
 						$id=$this->Checklistftthmodel->formChecklistFTTH($data_insert);
-						if($id!=FALSE){
 
+						if($id!=FALSE){
+							$hash = sha1($id);
+							
 							if(!$this->Checklistftthmodel->existeDetalleOTS($id)){
-								// echo "string";
+								
 								$checklist=$this->Checklistftthmodel->listaChecklist();
+
 								foreach($checklist as $c){
+									$data_detalle = array("id_ots" => $id,
+									 "id_check" => $c["id"], 
+									 "estado" => "0" , 
+									 "solucion_estado" => "0",
+									 "solucion_fecha" => "0000-00-00",
+									 "solucion_observacion" => "",
+									 "solucion_digitador" => 0,	
+									 "ultima_actualizacion"=>$ultima_actualizacion,
+									 "observacion" =>"");
+									$this->Checklistftthmodel->insertaDetalleOTS($data_detalle);
+									$data_detalle=array();
+								}
+
+								$herramientas = $this->input->post("herramientas");
+
+								foreach($herramientas as $h){
+									$herramienta = $h;
+									$estado = $this->input->post("estado_".$herramienta)[0];
+									$observacion = $this->input->post("observacion_".$herramienta)[0];
+									$data_actualizar = array("estado" =>  $estado, "observacion" =>  $observacion, "ultima_actualizacion"=>$ultima_actualizacion);
+									$id_detalle = $this->Checklistftthmodel->getIddetalle($id,$herramienta);
+									$this->Checklistftthmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
+								}
+
+								/*foreach($checklist as $c){
 									$data_detalle = array("id_ots" => $id,
 									 "id_check" => $c["id"], 
 									 "estado" => "0", 
@@ -218,11 +246,22 @@ class checklistFTTH extends CI_Controller {
 
 									$this->Checklistftthmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
 									$index++;	
-								}
+								}*/
 
 							}else{
 
-								$index=0;
+								$herramientas = $this->input->post("herramientas");
+
+								foreach($herramientas as $h){
+									$herramienta = $h;
+									$estado = $this->input->post("estado_".$herramienta)[0];
+									$observacion = $this->input->post("observacion_".$herramienta)[0];
+									$data_actualizar = array("estado" =>  $estado , "observacion" =>  $observacion , "ultima_actualizacion"=>$ultima_actualizacion);
+									$id_detalle = $this->Checklistftthmodel->getIddetalle($id,$herramienta);
+									$this->Checklistftthmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
+								}
+
+								/*$index=0;
 								foreach($estado as $e=>$value){
 									$data_actualizar= array("estado" => $value,
 
@@ -236,7 +275,7 @@ class checklistFTTH extends CI_Controller {
 									$id_detalle=$this->Checklistftthmodel->getIddetalle($id,$e+1);
 									$this->Checklistftthmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
 									$index++;	
-								}
+								}*/
 							}
 
 							$imagenes_secundarias=$_FILES['archivos_secundarios']['name'];
@@ -333,7 +372,18 @@ class checklistFTTH extends CI_Controller {
 
 						$this->Checklistftthmodel->actualizarOTS($hash,$data_mod);
 
-						$index=0;
+						$herramientas = $this->input->post("herramientas");
+
+						foreach($herramientas as $h){
+							$herramienta = $h;
+							$estado = $this->input->post("estado_".$herramienta)[0];
+							$observacion = $this->input->post("observacion_".$herramienta)[0];
+							$data_actualizar = array("estado" =>  $estado,"observacion" =>  $observacion, "ultima_actualizacion"=>$ultima_actualizacion);
+							$id_detalle = $this->Checklistftthmodel->getIddetalle($id,$herramienta);
+							$this->Checklistftthmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
+						}
+						
+						/*$index=0;
 						foreach($estado as $e=>$value){
 							$data_actualizar= array("estado" => $value,
 							 "observacion" => $observacion[$index]);
@@ -341,7 +391,7 @@ class checklistFTTH extends CI_Controller {
 							$id_detalle=$this->Checklistftthmodel->getIddetalle($id,$e+1);
 							$this->Checklistftthmodel->actualizaDetalleOTS($id_detalle,$data_actualizar);
 							$index++;	
-						}
+						}*/
 
 						$imagenes_secundarias=$_FILES['archivos_secundarios']['name'];
 
@@ -401,7 +451,7 @@ class checklistFTTH extends CI_Controller {
 							echo json_encode(array('res'=>"error", 'hash' =>$hash, 'msg' => "Problemas creando el archivo pdf, intente nuevamente."));exit;
 						}
 
-						if($checkcorreo == "on"){
+						if($checkcorreo=="on"){
 				    		
 							if($this->enviaCorreoIngreso($data_correo)){
 								echo json_encode(array('res'=>"ok", 'hash' =>$hash, 'msg' => MOD_MSG));exit;
@@ -461,7 +511,7 @@ class checklistFTTH extends CI_Controller {
 		}
 
 		public function enviaCorreoIngreso($data){
-			$prueba = TRUE;
+			$prueba = FALSE;
 			foreach($data as $key){
 
 				$titulo = "Registro de auditoria en terreno para técnico : ".$key["tecnico"]." - ".$key["fecha"];
@@ -493,9 +543,14 @@ class checklistFTTH extends CI_Controller {
 				}else{
 
 					$para = array();
-					$para[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
-					$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
+					$para[] = $key["correo_jefe_empresa"]!="" ? $key["correo_jefe_empresa"] : $key["correo_jefe_personal"];
+
+					$copias = array();
+					$copias[]="roberto.segovia@xr3.cl";
+					$copias[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
 					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					/*print_r($para);
+					print_r($copias);exit;*/
 
 				}
 

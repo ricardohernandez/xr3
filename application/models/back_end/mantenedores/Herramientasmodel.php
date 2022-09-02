@@ -71,6 +71,15 @@ class Herramientasmodel extends CI_Model {
 		return $res->result_array();
 	}
 
+	public function eliminaHerramienta($hash){
+		$this->db->where('sha1(id)', $hash);
+	    if($this ->db->delete('checklist_herramientas_listado')){
+	    	return TRUE;
+	    }
+	    return FALSE;
+	}
+
+
 
 		
 

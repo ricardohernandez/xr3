@@ -132,8 +132,7 @@ class Herramientas extends CI_Controller {
 		$path = $file['name'];
 		$ext = pathinfo($path, PATHINFO_EXTENSION);
 		$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-		$config['upload_path'] = './fotos_herramientas';
-	
+		$config['upload_path'] = './archivos/fotos_checklist/herramientas';
 		$config['allowed_types'] = 'jpg|jpeg|bmp|png|PNG|JPG|JPEG|BMP|PNG';
 	    $config['file_name'] = $archivo;
 		$config['max_size']	= '5300';
@@ -169,6 +168,15 @@ class Herramientas extends CI_Controller {
 		}else{
 			exit('No direct script access allowed');
 		}
+	}
+
+	public function eliminaHerramienta(){
+		$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_herramienta")));
+	    if($this->Herramientasmodel->eliminaHerramienta($hash)){
+	      echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+	    }else{
+	      echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+	    }
 	}
 
 	public function excelHerramientas(){

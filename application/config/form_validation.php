@@ -32,6 +32,32 @@ $config = array(
                     )
             ),
 
+            'formMantChecklistHFC' => array(
+               array(
+                     'field'   => 'tipo',
+                     'label'   => 'Tipo',
+                     'rules'   => 'trim|required'
+                    ),
+                array(
+                     'field'   => 'descripcion',
+                     'label'   => 'Descripción',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
+            'formMantChecklistFTTH' => array(
+               array(
+                     'field'   => 'tipo',
+                     'label'   => 'Tipo',
+                     'rules'   => 'trim|required'
+                    ),
+                array(
+                     'field'   => 'descripcion',
+                     'label'   => 'Descripción',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
            'formFH' => array(
                array(
                      'field'   => 'solucion_fecha',
@@ -265,6 +291,14 @@ $config = array(
             ),
 
             'formIngresoReportes' => array(
+               array(
+                     'field'   => 'nombre_archivo',
+                     'label'   => 'Nombre de archivo',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
+            'formIngresoPrevencion' => array(
                array(
                      'field'   => 'nombre_archivo',
                      'label'   => 'Nombre de archivo',
