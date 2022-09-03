@@ -199,7 +199,24 @@ function getFechasPeriodo($periodo){
 			$hasta_calidad = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 			$desde_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 			$desde_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-
+		}
+		elseif($periodo=="anterior_3"){
+			$desde_calidad = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+			$hasta_calidad = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+			$desde_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+			$desde_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+		}
+		elseif($periodo=="anterior_4"){
+			$desde_calidad = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-25'))));
+			$hasta_calidad = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-24'))));
+			$desde_prod = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+			$desde_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+		}
+		elseif($periodo=="anterior_5"){
+			$desde_calidad = date('Y-m-d', strtotime('-6 month', strtotime(date('Y-m-25'))));
+			$hasta_calidad = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-24'))));
+			$desde_prod = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+			$desde_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 		}
 
 	}else{
@@ -221,7 +238,26 @@ function getFechasPeriodo($periodo){
 			$hasta_calidad = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 			$desde_prod= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 			$hasta_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+
+		}elseif($periodo=="anterior_3"){
+			$desde_calidad = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-25'))));
+			$hasta_calidad = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-24'))));
+			$desde_prod= date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+			$hasta_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+
+	    }elseif($periodo=="anterior_4"){
+			$desde_calidad = date('Y-m-d', strtotime('-6 month', strtotime(date('Y-m-25'))));
+			$hasta_calidad = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-24'))));
+			$desde_prod= date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-25'))));
+			$hasta_prod = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-24'))));
+
+		}elseif($periodo=="anterior_5"){
+			$desde_calidad = date('Y-m-d', strtotime('-7 month', strtotime(date('Y-m-25'))));
+			$hasta_calidad = date('Y-m-d', strtotime('-6 month', strtotime(date('Y-m-24'))));
+			$desde_prod= date('Y-m-d', strtotime('-6 month', strtotime(date('Y-m-25'))));
+			$hasta_prod = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-24'))));
 		}
+
 	}
 
 	$data = array(

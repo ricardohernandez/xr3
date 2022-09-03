@@ -111,13 +111,11 @@ class Igt extends CI_Controller {
 
 			$meta_prom_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,1,$periodo);
 
-			if($meta_prom_ftth!="noaplica"){
+			if($meta_prom_ftth!="0"){
 				$data_prom_ftth = $this->Igtmodel->dataPromFTTH(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,$perfil_tecnico);
 				
 				if($data_prom_ftth!=FALSE){
 					$array_data["data_prom_ftth"] = array("data" => $data_prom_ftth , "meta" => $meta_prom_ftth);
-				}else{
-					$array_data["data_prom_ftth"] = FALSE;
 				}
 			}
 
@@ -125,18 +123,22 @@ class Igt extends CI_Controller {
 
 			$meta_prod_hfc_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,2,$periodo);
 
-			if($meta_prod_hfc_ftth!="noaplica"){
+			if($meta_prod_hfc_ftth!="0"){
 				$data_prod_hfc_ftth = $this->Igtmodel->dataProdHFCFTTH(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,$perfil_tecnico);
-				$array_data["data_prod_hfc_ftth"] = array("data" => $data_prod_hfc_ftth , "meta" => $meta_prod_hfc_ftth);
+				if($data_prod_hfc_ftth!=FALSE){
+					$array_data["data_prod_hfc_ftth"] = array("data" => $data_prod_hfc_ftth , "meta" => $meta_prod_hfc_ftth);
+				}
 			}
 
 		/***********PRODUCTIVIDAD PROMEDIO HFC *********************/
 
 			$meta_prom_hfc = $this->Igtmodel->getMetaIndicador($perfil_tecnico,3,$periodo);
 
-			if($meta_prom_hfc!="noaplica"){
+			if($meta_prom_hfc!="0"){
 				$data_prom_hfc = $this->Igtmodel->dataPromHFC(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,"prom");
-				$array_data["data_prom_hfc"] = array("data" => $data_prom_hfc , "meta" => $meta_prom_hfc);
+				if($data_prom_hfc!=FALSE){
+					$array_data["data_prom_hfc"] = array("data" => $data_prom_hfc , "meta" => $meta_prom_hfc);
+				}
 			}
 
 
@@ -144,9 +146,11 @@ class Igt extends CI_Controller {
 
 			$meta_dias = $this->Igtmodel->getMetaIndicador($perfil_tecnico,4,$periodo);
 
-			if($meta_dias!="noaplica"){
+			if($meta_dias!="0"){
 				$data_dias = $this->Igtmodel->dataPromHFC(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,"dias");
-				$array_data["data_dias"] = array("data" => $data_dias , "meta" => $meta_dias);
+				if($data_dias!=FALSE){
+					$array_data["data_dias"] = array("data" => $data_dias , "meta" => $meta_dias);
+				}
 			}
 
 
@@ -154,9 +158,11 @@ class Igt extends CI_Controller {
 
 			$meta_calidad_hfc = $this->Igtmodel->getMetaIndicador($perfil_tecnico,5,$periodo);
 
-			if($meta_calidad_hfc!="noaplica"){
+			if($meta_calidad_hfc!="0"){
 				$data_calidad_hfc = $this->Igtmodel->dataCalidadHFC(getFechasPeriodo($periodo)["desde_calidad"],getFechasPeriodo($periodo)["hasta_calidad"],$trabajador);
-				$array_data["data_calidad_hfc"] = array("data" => $data_calidad_hfc , "meta" => $meta_calidad_hfc);
+				if($data_calidad_hfc!=FALSE){
+					$array_data["data_calidad_hfc"] = array("data" => $data_calidad_hfc , "meta" => $meta_calidad_hfc);
+				}
 			}
 
 
@@ -164,9 +170,11 @@ class Igt extends CI_Controller {
 
 			$meta_calidad_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,6,$periodo);
 
-			if($meta_calidad_ftth!="noaplica"){
+			if($meta_calidad_ftth!="0"){
 				$data_calidad_ftth = $this->Igtmodel->dataCalidadFTTH(getFechasPeriodo($periodo)["desde_calidad"],getFechasPeriodo($periodo)["hasta_calidad"],$trabajador);
-				$array_data["data_calidad_ftth"] = array("data" => $data_calidad_ftth , "meta" => $meta_calidad_ftth);
+				if($data_calidad_ftth!=FALSE){
+					$array_data["data_calidad_ftth"] = array("data" => $data_calidad_ftth , "meta" => $meta_calidad_ftth);
+				}
 			}
 
 
@@ -174,9 +182,11 @@ class Igt extends CI_Controller {
 
 			$meta_declaracion_ot = $this->Igtmodel->getMetaIndicador($perfil_tecnico,7,$periodo);
 
-			if($meta_declaracion_ot!="noaplica"){
+			if($meta_declaracion_ot!="0"){
 				$data_declaracion_ot = $this->Igtmodel->dataDeclaracionOT(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador);
-				$array_data["data_declaracion_ot"] = array("data" => $data_declaracion_ot , "meta" => $meta_declaracion_ot);
+				if($data_declaracion_ot!=FALSE){
+					$array_data["data_declaracion_ot"] = array("data" => $data_declaracion_ot , "meta" => $meta_declaracion_ot);
+				}
 			}
 
 		/*******FOTO- ACTUALIZACIONES********/
@@ -192,9 +202,32 @@ class Igt extends CI_Controller {
 
 		/*******GRAFICO CALIDAD HFC PERIODOS************/
 
-			$data_calidad_hfc = $this->Igtmodel->graficoHFC(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador);
-			$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior")["desde_calidad"],getFechasPeriodo("anterior")["hasta_calidad"],$trabajador);
-			$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador);
+			$data_calidad_hfc = array();
+			
+			if($this->Igtmodel->graficoHFC(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior")["desde_calidad"],getFechasPeriodo("anterior")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior")["desde_calidad"],getFechasPeriodo("anterior")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_4")["desde_calidad"],getFechasPeriodo("anterior_4")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_4")["desde_calidad"],getFechasPeriodo("anterior_4")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador);
+			}
+
 
 			$cabeceras_calidad = array(
 				"Periodo",
@@ -213,19 +246,45 @@ class Igt extends CI_Controller {
 			    }
 			}
 
+
 			$meta_calidad_hfc = $this->Igtmodel->getMetaIndicador($perfil_tecnico,5,$periodo);
 
-			if($meta_calidad_hfc!="noaplica"){
-				$array_data["data_calidad_hfc_periodos"] = array("data" => $list , "meta" => $meta_calidad_hfc);
+			if($meta_calidad_hfc!="0"){
+				if($data_calidad_hfc!=[]){
+					$array_data["data_calidad_hfc_periodos"] = array("data" => $list , "meta" => $meta_calidad_hfc);
+				} 
 			}
 
 
 		/*******GRAFICO CALIDAD FTTH PERIODOS************/
 
-			$data_calidad_ftth = $this->Igtmodel->graficoFTTH(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador);
-			$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior")["desde_calidad"],getFechasPeriodo("anterior")["hasta_calidad"],$trabajador);
-			$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador);
+			$data_calidad_ftth = array();
 			
+			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador);
+			}
+
+
+			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior")["desde_calidad"],getFechasPeriodo("anterior")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior")["desde_calidad"],getFechasPeriodo("anterior")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_4")["desde_calidad"],getFechasPeriodo("anterior_4")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_4")["desde_calidad"],getFechasPeriodo("anterior_4")["hasta_calidad"],$trabajador);
+			}
+
+			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador)!=FALSE){
+				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador);
+			}
+
 			$cabeceras_calidad = array(
 				"Periodo",
 				"Calidad",
@@ -245,8 +304,10 @@ class Igt extends CI_Controller {
 
 			$meta_calidad_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,6,$periodo);
 
-			if($meta_calidad_ftth!="noaplica"){
-				$array_data["data_calidad_ftth_periodos"] = array("data" => $list2 , "meta" => $meta_calidad_ftth);
+			if($meta_calidad_ftth!="0"){
+				if($data_calidad_ftth!=[]){
+					$array_data["data_calidad_ftth_periodos"] = array("data" => $list2 , "meta" => $meta_calidad_ftth);
+				}
 			}
 
 
@@ -254,9 +315,12 @@ class Igt extends CI_Controller {
 
 			$meta_productividad_puntos = $this->Igtmodel->getMetaIndicador($perfil_tecnico,2,$periodo);
 
-			if($meta_productividad_puntos!="noaplica"){
+			if($meta_productividad_puntos!="0"){
 				$data_puntos_prod_diario = $this->Igtmodel->puntosPorFechas(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,"");
-				$array_data["data_puntos_prod_diario"] = array("data" => $data_puntos_prod_diario , "meta" => $meta_productividad_puntos);
+				if($data_puntos_prod_diario!=FALSE){
+					$array_data["data_puntos_prod_diario"] = array("data" => $data_puntos_prod_diario , "meta" => $meta_productividad_puntos);
+				}
+
 			}
 
 				echo json_encode($array_data);

@@ -11,12 +11,27 @@
   .alert-primary{
 
   }
+
   .card{
     border: none!important;
-    -webkit-box-shadow: 0 0 10px 0 rgb(183 192 206 / 20%);
+    -webkit-box-shadow: 0 0 10px 0 rgb(183 192 206 / 30%);
   }
+
+  .s2{
+    font-size:1rem!important;
+  }
+    /* for gauge indicators text */
+  .gauge svg g text {
+    font-size: 12px;
+  }
+  /* for middle text */
+  .gauge svg g g text {
+    font-size: 20px;
+  }
+
   .card-header{
-     background-color: #fff!important;
+    color:#32477C!important;
+    /* background-color: #fff!important;*/
   }
   .card_dash{
     /* background-color: #32477C!important;*/
@@ -26,13 +41,15 @@
      border: none!important;
      border-top: none!important;
      border-bottom: none!important
-     background-color: #fff!important;
+   /*  background-color: #fff!important;*/
      color:#32477C!important;
      padding: 0.25rem 0.75rem!important;
      font-size: 16px;
+     font-weight: bold;
   }
   .card-body{
-    padding: 0.65rem!important;
+    background-color: #F7F7F7!important;
+    padding: 0.15rem!important;
   }
   hr {
     margin-top: 1rem!important;
@@ -45,7 +62,7 @@
     font-size: 16px; 
     font-weight:bold;
     text-align: left;
-    padding:4px 2px;
+    padding:0px 2px;
   }
   .desc_seccion{
     color: #32477C;
@@ -69,11 +86,20 @@
       border: 1px solid #ced4da!important;
   }
 
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+      font-size:1rem!important;
+  }
+
+  .body{
+    display: none;
+  }
+
 </style>
 
 <script type="text/javascript">
   $(function(){
     const perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
+    const r="<?php echo $this->session->userdata('rut'); ?>";
     const base = "<?php echo base_url() ?>";
     const base_url = "<?php echo base_url() ?>";
 
@@ -87,13 +113,21 @@
          width: 'resolve',
       });
 
-      $("#trabajadores").select2().val("173397666").trigger("change");
+      if(perfil==4){
+        $("#trabajadores").select2().val(r).trigger("change");
+      }else{
+        $("#trabajadores").select2().val("173397666").trigger("change");
+      }
 
-      setTimeout( function () {
+      /*setTimeout( function () {
           google.charts.setOnLoadCallback(dataGraficosIgt);
-      }, 500 ); 
+      }, 500 ); */
     });
 
+
+    if(perfil==4){
+      dataGraficosIgt()
+    }
    
     function dataGraficosIgt(){
       var periodo = $("#periodo_detalle").val();
@@ -115,7 +149,7 @@
 
           // GRAFICO PROMEDIO FTTH
 
-            if(json.hasOwnProperty("data_prom_ftth") && json["data_prom_ftth"]!=false){
+            if(json.hasOwnProperty("data_prom_ftth")){
 
               $("#prom_ftth").text(json.data_prom_ftth.data.puntos).show()
               $(".prom_ftth").show()
@@ -124,13 +158,13 @@
               var options = {
                 height: 160,
                 min: 0,
-                max: 5,
+                max: json.data_prom_ftth.meta,
                 redFrom:1,
                 redTo:2,
                 yellowFrom:2,
                 yellowTo: json.data_prom_ftth.meta,
                 greenFrom: json.data_prom_ftth.meta,
-                greenTo:6,
+                greenTo:json.data_prom_ftth.meta+1,
               };
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_prom_ftth'));
@@ -151,13 +185,13 @@
               var options = {
                 height: 160,
                 min: 0,
-                max: 12000,
+                max: json.data_prod_hfc_ftth.meta,
                 redFrom:2000,
                 redTo:5000,
                 yellowFrom:5000,
                 yellowTo: json.data_prod_hfc_ftth.meta,
                 greenFrom: json.data_prod_hfc_ftth.meta,
-                greenTo:12000,
+                greenTo:json.data_prod_hfc_ftth.meta+1000,
                /* minorTicks: 5,*/
                /* majorTicks: ['2000', '4000', '6000', '8000', '10000'],*/
               };
@@ -186,13 +220,13 @@
               var options = {
                 height: 160,
                 min: 0,
-                max: 350,
+                max: json.data_prom_hfc.meta,
                 redFrom:100,
                 redTo:150,
                 yellowFrom:150,
                 yellowTo: json.data_prom_hfc.meta,
                 greenFrom: json.data_prom_hfc.meta,
-                greenTo:350,
+                greenTo:json.data_prom_hfc.meta+50,
                 minorTicks: 5,
               };
 
@@ -215,13 +249,13 @@
               var options = {
                 height: 160,
                 min: 0,
-                max: 28,
+                max: json.data_dias.meta,
                 redFrom:15,
                 redTo:18,
                 yellowFrom:18,
                 yellowTo: json.data_dias.meta,
                 greenFrom: json.data_dias.meta,
-                greenTo:28,
+                greenTo:json.data_dias.meta+1,
                 minorTicks: 5,
               };
 
@@ -244,13 +278,13 @@
               var options = {
                 height: 160,
                 min: 0,
-                max: 12,
-                redFrom:0,
+                max: json.data_calidad_hfc.meta,
+                redFrom:4,
                 redTo:6,
                 yellowFrom:6,
                 yellowTo: json.data_calidad_hfc.meta,
                 greenFrom: json.data_calidad_hfc.meta,
-                greenTo:12,
+                greenTo:json.data_calidad_hfc.meta+1,
                 minorTicks: 5,
               };
 
@@ -273,13 +307,13 @@
               var options = {
                 height: 160,
                 min: 0,
-                max: 12,
+                max: json.data_calidad_ftth.meta,
                 redFrom:0,
                 redTo:6,
                 yellowFrom:6,
                 yellowTo: json.data_calidad_ftth.meta,
                 greenFrom: json.data_calidad_ftth.meta,
-                greenTo:12,
+                greenTo:json.data_calidad_ftth.meta+1,
                 minorTicks: 5,
               };
 
@@ -295,7 +329,7 @@
 
             if(json.hasOwnProperty("data_declaracion_ot")){
 
-              $("#declaracion_ot").text(json.data_calidad_ftth.data.declaracion).show()
+              $("#declaracion_ot").text(json.data_declaracion_ot.data.declaracion).show()
               $(".declaracion_ot").show()
 
               var declaracion_ot = google.visualization.arrayToDataTable(json.data_declaracion_ot.data);
@@ -332,7 +366,6 @@
 
             $(".actualizacion_calidad").html("<b>Última actualización planilla : "+json.actualizacion_calidad+"</b>");
             $(".actualizacion_productividad").html("<b>Última actualización planilla : "+json.actualizacion_productividad+"</b>");
-
 
           // CALIDAD HFC
 
@@ -373,7 +406,7 @@
                  height:"100%",
                 },
 
-                backgroundColor: '#fff',
+                backgroundColor: 'transparent',
                 titleTextStyle: {
                  color: '#32477C',
                  fontSize: 13, 
@@ -414,19 +447,13 @@
                     textStyle:{color: '#32477C',bold:false,fontSize: 11},
                       gridlines: {color:'#ccc', count:5},
                       viewWindowMode:'explicit',
-                      /*viewWindow: {
-                        min: 0,
-                        max: 30000
-                      },*/
+                  
                     },
                     1: 
                     {
                       textStyle:{color: '#32477C',bold:false,fontSize: 11},
                         gridlines: {color:'transparent', count:0},
-                        /*viewWindow: {
-                            min: 0,
-                            max: 100
-                        },*/
+                     
                       }
                 },
 
@@ -493,9 +520,8 @@
 
             }else{
                 $(".graficoHFC").hide()
-                $("#graficoHFC").text("").hide()
+                $("#graficoHFC").hide()
             }
-
 
           // CALIDAD FTTH
 
@@ -536,7 +562,7 @@
                  height:"100%",
                 },
 
-                backgroundColor: '#fff',
+                backgroundColor: 'transparent',
                 titleTextStyle: {
                  color: '#32477C',
                  fontSize: 13, 
@@ -577,19 +603,13 @@
                     textStyle:{color: '#32477C',bold:false,fontSize: 11},
                       gridlines: {color:'#ccc', count:5},
                       viewWindowMode:'explicit',
-                      /*viewWindow: {
-                        min: 0,
-                        max: 30000
-                      },*/
+               
                     },
                     1: 
                     {
                       textStyle:{color: '#32477C',bold:false,fontSize: 11},
                         gridlines: {color:'transparent', count:0},
-                        /*viewWindow: {
-                            min: 0,
-                            max: 100
-                        },*/
+                      
                       }
                 },
 
@@ -656,7 +676,7 @@
 
             }else{
                 $(".graficoFTTH").hide()
-                $("#graficoFTTH").text("").hide()
+                $("#graficoFTTH").hide()
             }
 
           // PRODUCTIVIDAD DIARIO
@@ -680,7 +700,6 @@
                 annotations: {
                   textStyle: {
                     fontSize: 11,
-                    /*bold:true,*/
                     color: '#32477C',
                     auraColor: 'transparent'
                   },
@@ -700,7 +719,7 @@
                  height:"100%",
                 },
 
-                backgroundColor: '#fff',
+                backgroundColor: 'transparent',
 
                 titleTextStyle: {
                  color: '#32477C',
@@ -764,7 +783,6 @@
         lista_detalle_ots_drive.ajax.reload()
         dataGraficosIgt()
       }
-      
     }); 
 
     $(document).off('change', '#trabajadores').on('change', '#trabajadores', function(event) {
@@ -899,7 +917,7 @@
        "bPaginate": true,
        "info":false,
        "aaSorting" : [[1,"desc"]],
-       "scrollY": "190px",
+       "scrollY": "160px",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -1020,7 +1038,7 @@
        "bPaginate": true,
        "info":false,
        "aaSorting" : [[1,"desc"]],
-       "scrollY": "190px",
+       "scrollY": "160px",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -1134,10 +1152,10 @@
 
 <div class="form-row">
 
-  <div class="col-12 col-lg-3">
+  <div class="col-12 col-lg-4">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb" style="padding: 0.15rem 1rem!important;">
-        <li class="breadcrumb-item active" aria-current="page" style="padding: 0.1rem 1rem!important;"><a href="" style="color:#32477C;">IGT - Indicadores de gestión del técnico</a></li>
+        <li class="breadcrumb-item active" aria-current="page" style="padding: 0.15rem 1rem!important;"><a href="" style="color:#32477C;font-size: 1rem;font-weight: bold;">IGT - Indicadores de gestión del técnico</a></li>
       </ol>
     </nav>
   </div>
@@ -1146,20 +1164,20 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo </span> </span> 
+          <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
         </div>
-          <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm">
-            <option value="actual" >Actual </option>
-            <option value="anterior" selected>Anterior</option>
-         </select>
+        <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+          <option value="actual" >Actual </option>
+          <option value="anterior" selected>Anterior</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <div class="col-6 col-lg-1">
+  <div class="col-6 col-lg-2">
     <div class="form-group">
       <div class="input-group">
-          <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
+          <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f"  style="font-size: 1rem!important;height: calc(1.4em + 0.5rem + 2px)!important;">
       </div>
     </div>
   </div>
@@ -1206,9 +1224,9 @@
   <?php  
    if($this->session->userdata('id_perfil')<=3){
       ?>
-      <div class="col-6 col-lg-2">  
-        <div class="form-group">
-          <select id="trabajadores" name="trabajadores" style="width:100%!important;">
+      <div class="col-12 col-lg-3">  
+        <div class="form-group fooSelect">
+          <select id="trabajadores" name="trabajadores"  style="width:100%!important;">
               <option value="">Seleccione Trabajador | Todos</option>
           </select>
         </div>
@@ -1216,9 +1234,9 @@
       <?php
    }else{
     ?>
-     <div class="col-6 col-lg-2">  
+     <div class="col-12 col-lg-3">  
         <div class="form-group">
-          <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
+          <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
               <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
           </select>
         </div>
@@ -1228,307 +1246,302 @@
   ?>
 </div>       
 
-<center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:300px;color:#32477C;'></i></center>
-<div class="form-row">
-  <div class="col body" style="display: none;min-height: 500px;">
+<center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
+  <div class="form-row">
+    <div class="col"> <!-- body style="display: none;" -->
 
-    <div class="col-12">
-      <div class="form-row">
-        
-        <div class="col-lg-6">
-          <div class="form-row">
-            <div class="col-6 col-lg-3 prom_ftth" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                  Productividad FTTH (Actividad Promedio)  <span id="prom_ftth"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_prom_ftth"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
+      <div class="col-12 body">
+        <div class="form-row">
+          
+          <div class="col-6 col-lg prom_ftth" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+                Productividad FTTH (Actividad Promedio)  <span id="prom_ftth"></span>
               </div>
-            </div>
-
-            <div class="col-6 col-lg-3 prod_hfc_ftth" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                  Productividad FTTH+HFC (Puntos  acumulados)  <span id="prod_hfc_ftth"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_prod_hfc_ftth"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
+              <div class="card-body">
+                <center><div id="grafico_prom_ftth" class="gauge"></div></center>
               </div>
-            </div>
-
-            <div class="col-6 col-lg-3 prom_hfc" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                  Productividad HFC (Puntos Promedio) <span id="prom_hfc"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_prom_hfc"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
-              </div>
-            </div>
-
-            <div class="col-6 col-lg-3 dias_trabajados" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                  Días hábiles trabajados <span id="dias_trabajados"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_dias_trabajados"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
+              <div class="card-footer card_dash">
               </div>
             </div>
           </div>
+
+          <div class="col-6 col-lg prod_hfc_ftth" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+                Productividad FTTH+HFC  <span id="prod_hfc_ftth"></span>
+              </div>
+              <div class="card-body">
+                <center><div id="grafico_prod_hfc_ftth" class="gauge"></div></center>
+              </div>
+              <div class="card-footer card_dash">
+                 <!-- (Puntos  acumulados) -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg prom_hfc" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+                Productividad HFC <span id="prom_hfc"></span>
+              </div>
+              <div class="card-body">
+                <center><div id="grafico_prom_hfc" class="gauge"></div></center>
+              </div>
+              <div class="card-footer card_dash">
+                 <!-- (Puntos Promedio) -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg dias_trabajados" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+                Días hábiles trabajados <span id="dias_trabajados"></span>
+              </div>
+              <div class="card-body">
+                <center><div id="grafico_dias_trabajados" class="gauge"></div></center>
+              </div>
+              <div class="card-footer card_dash">
+              </div>
+            </div>
+          </div>
+     
+         
+          <div class="col-6 col-lg calidad_hfc" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+               Calidad HFC  <span id="calidad_hfc"></span>
+              </div>
+              <div class="card-body">
+                <center><div id="grafico_calidad_hfc" class="gauge"></div></center>
+              </div>
+              <div class="card-footer card_dash">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg calidad_ftth" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+                Calidad FTTH <span id="calidad_ftth"></span>
+              </div>
+              <div class="card-body">
+                <center><div id="grafico_calidad_ftth" class="gauge"></div></center>
+              </div>
+              <div class="card-footer card_dash">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg declaracion_ot" style="display:none;">
+            <div class="card text-center">
+              <div class="card-header card_dash">
+               Declaración OT  <span id="declaracion_ot"></span>
+              </div>
+              <div class="card-body">
+                <center><div id="grafico_declaracion_ot" class="gauge"></div></center>
+              </div>
+              <div class="card-footer card_dash">
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-6 col-lg foto_tecnico" style="display:none;">
+            <div class="card text-center">
+              <div class="card-body">
+                <center>              
+                  <img src="./assets3/imagenes/logo.png" id="foto_tecnico" class="img-thumbnail" height="40px" width="90px">
+                </center>
+              </div>
+            </div>
+          </div> -->
+
         </div>
+      </div>
 
-        <div class="col-lg-6">
-          <div class="form-row">
-            <div class="col-6 col-lg-3 calidad_hfc" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                 Calidad HFC  <span id="calidad_hfc"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_calidad_hfc"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
-              </div>
+      <hr/>
+
+      <div class="row body">
+        <div class="col-12 col-lg-6 mt-2">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+               <p class="titulo_seccion">Detalle calidad</p>
             </div>
 
-            <div class="col-6 col-lg-3 calidad_ftth" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                  Calidad FTTH <span id="calidad_ftth"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_calidad_ftth"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
-              </div>
+            <div class="col-8 col-lg-6">  
+              <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
             </div>
 
-            <div class="col-6 col-lg-3 declaracion_ot" style="display:none;">
-              <div class="card text-center">
-                <div class="card-header card_dash">
-                 Declaración OT  <span id="declaracion_ot"></span>
-                </div>
-                <div class="card-body">
-                  <center><div id="grafico_declaracion_ot"></div></center>
-                </div>
-                <div class="card-footer card_dash">
-                </div>
-              </div>
+            <div class="col-4 col-lg-2">  
+               <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
+               <i class="fa fa-save"></i> Excel
+               </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 text-center">
+               <span class="titulo_fecha_actualizacion_dias">
+                <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+              </span>
             </div>
 
-            <div class="col-6 col-lg-3 foto_tecnico" style="display:none;">
-              <div class="card text-center">
-                <div class="card-body">
-                  <center>              
-                    <img src="./assets3/imagenes/logo.png" id="foto_tecnico" class="img-thumbnail" height="40px" width="90px">
-                  </center>
-                </div>
-              </div>
+            <div class="col-lg-12">
+              <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                <thead>
+                  <tr>    
+                    <th class="centered">Técnico</th> 
+                    <th class="centered">RUT</th> 
+                    <th class="centered">Comuna</th> 
+                    <th class="centered">Orden</th> 
+                    <th class="centered">Fecha</th> 
+                    <th class="centered">Descripción</th> 
+                    <th class="centered">Cierre</th> 
+                    <th class="centered">Orden 2da vis.</th> 
+                    <th class="centered">Fecha 2da vis.</th> 
+                    <th class="centered">Descripción 2da vis.</th> 
+                    <th class="centered">Cierre 2da vis.</th> 
+                    <th class="centered">Diferencia Días</th> 
+                    <th class="centered">Tipo red</th> 
+                    <th class="centered">Falla</th> 
+                    <th class="centered">Última actualización</th>   
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>   
+
+        <div class="col-12 col-lg-6 mt-2">
+          <div class="row">
+            <div class="col-lg graficoHFC">
+                <p class="titulo_seccion">Calidad HFC Últimos 6 periodos</p>
+                <div id="graficoHFC"></div>
+            </div>
+            <div class="col-lg graficoFTTH">
+                <p class="titulo_seccion">Calidad FTTH Últimos 6 periodos</p>
+                <div id="graficoFTTH"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <div class="row ">
+        <div class="col-12 col-lg-6 mt-2">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+               <p class="titulo_seccion">Detalle productividad</p>
+            </div>
+
+            <div class="col-8 col-lg-6">  
+              <input type="text" placeholder="Busqueda" id="buscador_productividad" class="buscador_productividad form-control form-control-sm">
+            </div>
+
+            <div class="col-4 col-lg-2">  
+               <button type="button"  class="btn-block btn btn-sm btn-primary excel_productividad btn_xr3">
+               <i class="fa fa-save"></i> Excel
+               </button>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-12 text-center">
+               <span class="titulo_fecha_actualizacion_dias">
+                <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+              </span>
+            </div>
+
+            <div class="col-lg-12">
+              <table id="lista_detalle_productividad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                <thead>
+                  <tr>    
+                    <th class="centered">Técnico</th> 
+                    <th class="centered">Fecha</th> 
+                    <th class="centered">Dirección</th> 
+                    <th class="centered">Tipo actividad</th> 
+                    <th class="centered">Comuna</th> 
+                    <th class="centered">Estado</th> 
+                    <th class="centered">Derivado</th> 
+                    <th class="centered">Puntaje</th> 
+                    <th class="centered">Orden de Trabajo</th> 
+                    <th class="centered">Digitalizacion OT</th>   
+                    <th class="centered">Categoría</th> 
+                    <th class="centered">Equivalente</th> 
+                    <th class="centered">Técnologia</th> 
+                  </tr>
+                </thead>
+              </table>
+            </div>
+
+
+          </div>
+        </div>   
+
+        <div class="col-12 col-lg-6 mt-2">
+          <div class="row">
+            <div class="col-12">
+               <p class="titulo_seccion">Productividad diario</p>
+              <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
             </div>
           </div>
         </div>
 
       </div>
-    </div>
 
-    <hr/>
+      <hr/>
 
-    <div class="row">
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="row">
-          <div class="col-12 col-lg-4">
-             <h6 class="titulo_seccion">Detalle calidad</h6>
+      <div class="row ">
+        <div class="col-12 mt-1">
+          <div class="row">
+            <div class="col-12 col-lg-4">
+               <p class="titulo_seccion">Detalle OTS no detectadas en drive</p>
+            </div>
+
+            <div class="col-8 col-lg-6">  
+              <input type="text" placeholder="Busqueda" id="buscador_ots_drive" class="buscador_ots_drive form-control form-control-sm">
+            </div>
+
+            <div class="col-4 col-lg-2">  
+               <button type="button"  class="btn-block btn btn-sm btn-primary excel_drive btn_xr3">
+               <i class="fa fa-save"></i> Excel
+               </button>
+            </div>
           </div>
 
-          <div class="col-8 col-lg-6">  
-            <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
+          <div class="row">
+
+            <div class="col-12 text-center">
+               <span class="titulo_fecha_actualizacion_dias">
+                <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+              </span>
+            </div>
+
+            <div class="col-lg-12">
+              <table id="lista_detalle_ots_drive" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                <thead>
+                  <tr>    
+                    <th class="centered">Técnico</th> 
+                    <th class="centered">Fecha</th> 
+                    <th class="centered">Dirección</th> 
+                    <th class="centered">Tipo actividad</th> 
+                    <th class="centered">Comuna</th> 
+                    <th class="centered">Estado</th> 
+                    <th class="centered">Derivado</th> 
+                    <th class="centered">Puntaje</th> 
+                    <th class="centered">Orden de Trabajo</th> 
+                    <th class="centered">Digitalizacion OT</th>   
+                  </tr>
+                </thead>
+              </table>
+            </div>
+
           </div>
-
-          <div class="col-4 col-lg-2">  
-             <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
-             <i class="fa fa-save"></i> Excel
-             </button>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-12 text-center mt-2">
-             <span class="titulo_fecha_actualizacion_dias">
-              <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-            </span>
-          </div>
-
-          <div class="col-lg-12">
-            <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-              <thead>
-                <tr>    
-                  <th class="centered">Técnico</th> 
-                  <th class="centered">RUT</th> 
-                  <th class="centered">Comuna</th> 
-                  <th class="centered">Orden</th> 
-                  <th class="centered">Fecha</th> 
-                  <th class="centered">Descripción</th> 
-                  <th class="centered">Cierre</th> 
-                  <th class="centered">Orden 2da vis.</th> 
-                  <th class="centered">Fecha 2da vis.</th> 
-                  <th class="centered">Descripción 2da vis.</th> 
-                  <th class="centered">Cierre 2da vis.</th> 
-                  <th class="centered">Diferencia Días</th> 
-                  <th class="centered">Tipo red</th> 
-                  <th class="centered">Falla</th> 
-                  <th class="centered">Última actualización</th>   
-                </tr>
-              </thead>
-            </table>
-          </div>
-        </div>
-      </div>   
-
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="row">
-          <div class="col-12 col-lg-6 graficoHFC">
-              <h6 class="titulo_seccion">Calidad HFC Últimos 3 periodos</h6>
-              <div id="graficoHFC"></div>
-          </div>
-          <div class="col-12 col-lg-6 graficoFTTH">
-              <h6 class="titulo_seccion">Calidad FTTH Últimos 3 periodos</h6>
-              <div id="graficoFTTH"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="row">
-          <div class="col-12 col-lg-4">
-             <h6 class="titulo_seccion">Detalle productividad</h6>
-          </div>
-
-          <div class="col-8 col-lg-6">  
-            <input type="text" placeholder="Busqueda" id="buscador_productividad" class="buscador_productividad form-control form-control-sm">
-          </div>
-
-          <div class="col-4 col-lg-2">  
-             <button type="button"  class="btn-block btn btn-sm btn-primary excel_productividad btn_xr3">
-             <i class="fa fa-save"></i> Excel
-             </button>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <div class="col-12 text-center mt-2">
-             <span class="titulo_fecha_actualizacion_dias">
-              <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-            </span>
-          </div>
-
-          <div class="col-lg-12">
-            <table id="lista_detalle_productividad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-              <thead>
-                <tr>    
-                  <th class="centered">Técnico</th> 
-                  <th class="centered">Fecha</th> 
-                  <th class="centered">Dirección</th> 
-                  <th class="centered">Tipo actividad</th> 
-                  <th class="centered">Comuna</th> 
-                  <th class="centered">Estado</th> 
-                  <th class="centered">Derivado</th> 
-                  <th class="centered">Puntaje</th> 
-                  <th class="centered">Orden de Trabajo</th> 
-                  <th class="centered">Digitalizacion OT</th>   
-                  <th class="centered">Categoría</th> 
-                  <th class="centered">Equivalente</th> 
-                  <th class="centered">Técnologia</th> 
-                </tr>
-              </thead>
-            </table>
-          </div>
-
-
-        </div>
-      </div>   
-
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="row">
-          <div class="col-12">
-             <h6 class="titulo_seccion">Productividad diario</h6>
-            <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
-          </div>
-        </div>
+        </div>   
       </div>
 
-    </div>
-
-    <hr/>
-
-    <div class="row">
-      <div class="col-12 mt-1">
-        <div class="row">
-          <div class="col-12 col-lg-4">
-             <h6 class="titulo_seccion">Detalle OTS no detectadas en drive</h6>
-          </div>
-
-          <div class="col-8 col-lg-6">  
-            <input type="text" placeholder="Busqueda" id="buscador_ots_drive" class="buscador_ots_drive form-control form-control-sm">
-          </div>
-
-          <div class="col-4 col-lg-2">  
-             <button type="button"  class="btn-block btn btn-sm btn-primary excel_drive btn_xr3">
-             <i class="fa fa-save"></i> Excel
-             </button>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <div class="col-12 text-center mt-2">
-             <span class="titulo_fecha_actualizacion_dias">
-              <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-            </span>
-          </div>
-
-          <div class="col-lg-12">
-            <table id="lista_detalle_ots_drive" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-              <thead>
-                <tr>    
-                  <th class="centered">Técnico</th> 
-                  <th class="centered">Fecha</th> 
-                  <th class="centered">Dirección</th> 
-                  <th class="centered">Tipo actividad</th> 
-                  <th class="centered">Comuna</th> 
-                  <th class="centered">Estado</th> 
-                  <th class="centered">Derivado</th> 
-                  <th class="centered">Puntaje</th> 
-                  <th class="centered">Orden de Trabajo</th> 
-                  <th class="centered">Digitalizacion OT</th>   
-                </tr>
-              </thead>
-            </table>
-          </div>
-
-        </div>
-      </div>   
-    </div>
-
-  </div>   
+    </div>   
 </div>   

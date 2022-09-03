@@ -65,11 +65,10 @@ class Igtmodel extends CI_Model {
 	}
 
 	/**************PRODUCTIVIDAD PROM FTTH *********************/
-
 		public function dataPromFTTH($desde,$hasta,$trabajador){
 			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
 			$array = array();
-			$temp=array();
+			$temp = array();
 			$cantidad = array();
 
 			foreach($array_fechas as $fecha){
@@ -102,12 +101,19 @@ class Igtmodel extends CI_Model {
 				return FALSE;
 			}
 
-			$temp2=array();
-			$temp2[] = array("Label","Value"); 
-			$temp2[] = array("",(float)$array[0]["Promedio"]); 
-		    $filas = $temp2;
-		    return $filas;
-
+			/*print_r($temp);*/
+				
+			if($temp!=[]){
+			
+				$temp2 = array();
+				$temp2[] = array("Label","Value"); 
+				$temp2[] = array("",(float)$temp["Promedio"]); 
+		    	$filas = $temp2;
+		    	return $filas;
+			}else{						
+		    	return array();
+			}
+			
 		}
 
 
@@ -124,15 +130,20 @@ class Igtmodel extends CI_Model {
 
 			$this->db->where('p.rut_tecnico', $trabajador);		
 			$res=$this->db->get('productividad p');
-			$temp=array();
-			$temp[] = array("Label","Value"); 
-			
-			foreach($res->result_array() as $key){
-				$temp[] = array("",(int)$key["total"]); 
+			if($res->num_rows()>0){
+				$temp=array();
+				$temp[] = array("Label","Value"); 
+				
+				foreach($res->result_array() as $key){
+					$temp[] = array("",(int)$key["total"]); 
+				}
+
+			    $filas = $temp;
+			    return $filas;
 			}
 
-		    $filas = $temp;
-		    return $filas;
+			return FALSE;
+			
 		}
 		
 		
@@ -212,8 +223,19 @@ class Igtmodel extends CI_Model {
 				$temp2[] = array("Label","Value"); 
 			
 				if($tipo=="prom"){
+
+					if($temp["Promedio"]==0){
+						return FALSE;
+					}
+
 					$temp2[] = array("",(float)$array[0]["Promedio"]); 
+
 				}else{
+
+					if($temp["dias"]==0){
+						return FALSE;
+					}
+
 					$temp2[] = array("",(float)$array[0]["dias"]); 
 				}
 				
@@ -276,15 +298,21 @@ class Igtmodel extends CI_Model {
 			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 			$res=$this->db->get("productividad_calidad p");
 
-
 			if($res->num_rows()>0){
 				$row = $res->row_array();
-				$temp=array();
-				$temp[] = array("Label","Value"); 
-				$temp[] = array("",(float)$row["calidad"]); 
-			    $filas = $temp;
-			    return $filas;
+
+				if($row["calidad"]!=0){
+					$temp=array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$row["calidad"]); 
+				    $filas = $temp;
+				    return $filas;
+				}
+
+				return FALSE;
+			
 			}
+
 			return FALSE;
 
 		}
@@ -341,11 +369,17 @@ class Igtmodel extends CI_Model {
 
 			if($res->num_rows()>0){
 				$row = $res->row_array();
-				$temp=array();
-				$temp[] = array("Label","Value"); 
-				$temp[] = array("",(float)$row["calidad"]); 
-			    $filas = $temp;
-			    return $filas;
+
+				if($row["calidad"]!=0){
+					$temp=array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$row["calidad"]); 
+				    $filas = $temp;
+				    return $filas;
+				}
+
+				return FALSE;
+				
 			}
 			return FALSE;
 
@@ -388,10 +422,16 @@ class Igtmodel extends CI_Model {
 			if($res->num_rows()>0){
 				$row = $res->row_array();
 				$temp=array();
-				$temp[] = array("Label","Value"); 
-				$temp[] = array("",(float)$row["porcentaje"]); 
-			    $filas = $temp;
-			    return $filas;
+
+				if($row["porcentaje"]!=0){
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$row["porcentaje"]); 
+				    $filas = $temp;
+				    return $filas;
+				}
+
+				return FALSE;
+			
 			}
 			return FALSE;
 		
@@ -447,27 +487,26 @@ class Igtmodel extends CI_Model {
 
 			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
-
-
 			$res=$this->db->get("productividad_calidad p");
 			$array = array();
-			
 			if($res->num_rows()>0){
 				foreach($res->result_array() as $key){
-					if($key["trabajador"]!=""){
-						$temp = array();
-					    $temp[] = (string)$key["periodo"]; 
-					    $temp[] = (float)$key["calidad"]; 
-					    $temp[] = (int) $key['ordenes'];
-					    $temp[] = (int) $key['fallos'];
-				 	    $temp[] = strtotime($desde);
-					    $array[] = $temp;
 
-					}else{
-						return false;
+					if($key["calidad"]==null){
+						return FALSE;
 					}
+
+					$temp = array();
+				    $temp[] = (string)$key["periodo"]; 
+				    $temp[] = (float)$key["calidad"]; 
+				    $temp[] = (int) $key['ordenes'];
+				    $temp[] = (int) $key['fallos'];
+			 	    $temp[] = strtotime($desde);
+				    $array[] = $temp;
 				}
 				return $array;
+			}else{
+				return FALSE;
 			}
 		}
 
@@ -523,20 +562,22 @@ class Igtmodel extends CI_Model {
 			
 			if($res->num_rows()>0){
 				foreach($res->result_array() as $key){
-					if($key["trabajador"]!=""){
-						$temp = array();
-					    $temp[] = (string)$key["periodo"]; 
-					    $temp[] = (float)$key["calidad"]; 
-					    $temp[] = (int) $key['ordenes'];
-					    $temp[] = (int) $key['fallos'];
-				 	    $temp[] = strtotime($desde);
-					    $array[] = $temp;
-
-					}else{
-						return false;
+					
+					if($key["calidad"]==null){
+						return FALSE;
 					}
+
+					$temp = array();
+				    $temp[] = (string)$key["periodo"]; 
+				    $temp[] = (float)$key["calidad"]; 
+				    $temp[] = (int) $key['ordenes'];
+				    $temp[] = (int) $key['fallos'];
+			 	    $temp[] = strtotime($desde);
+				    $array[] = $temp;
 				}
 				return $array;
+			}else{
+				return FALSE;
 			}
 		}
 
@@ -727,25 +768,34 @@ class Igtmodel extends CI_Model {
 		$this->db->group_by('(fecha)');
 		$this->db->order_by('fecha', 'asc');
 		$res=$this->db->get("productividad p");
-		$array = array();
 		
-		$array[]= array(
-			"Fecha",
-			"Puntos",
-			array('role'=> 'annotation'),
-			array('role'=> 'annotationText'),
-		);
 
-		foreach($res->result_array() as $key){
-			$temp = array();
-		    $temp[] = (string)$key["fecha_str"]; 
-		    $temp[] = (float) $key['puntos'];
-	 	    $temp[] = (string) $v = ($key['puntos']==0) ? null: round($key['puntos'],2);
-	 	    $temp[] = strtotime($key["fecha"]);
+		if($res->num_rows()>0){
 
-		    $array[] = $temp;
+			$array = array();
+		
+			$array[]= array(
+				"Fecha",
+				"Puntos",
+				array('role'=> 'annotation'),
+				array('role'=> 'annotationText'),
+			);
+
+			foreach($res->result_array() as $key){
+				$temp = array();
+			    $temp[] = (string)$key["fecha_str"]; 
+			    $temp[] = (float) $key['puntos'];
+		 	    $temp[] = (string) $v = ($key['puntos']==0) ? null: round($key['puntos'],2);
+		 	    $temp[] = strtotime($key["fecha"]);
+
+			    $array[] = $temp;
+			}
+			return $array;
+
+		}else{
+			return FALSE;
 		}
-		return $array;
+		
 	}
 
 

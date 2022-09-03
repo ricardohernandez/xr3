@@ -507,7 +507,7 @@
       font-size: 13px; 
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-      font-size: 13px!important;
+      font-size: 13px;
     }
     .select2-selection__clear{
       font-size: 16px!important;
@@ -539,7 +539,7 @@
       font-size: 12px; 
     }
     .select2-container--default .select2-selection--single .select2-selection__rendered {
-      font-size: 13px!important;
+      font-size: 13px;
     }
    
    } 
@@ -939,7 +939,7 @@
 
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    font-size: 12px!important;
+    font-size: 12px;
 }
 
 .nav a{
