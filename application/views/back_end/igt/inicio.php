@@ -44,20 +44,20 @@
      },
     });
 
-    $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+    $(".contenedor_app2").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
 
     $.get(base_url+"getIgtInicio", function( data ) {
-        $(".contenedor_app").html(data);    
+        $(".contenedor_app2").html(data);    
     });
  
 
     $(document).off('click', '#menu_ticket').on('click', '#menu_ticket',function(event) {
       event.preventDefault();
-      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".contenedor_app2").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
 
       $.get(base_url+"getIgtInicio", function( data ) {
-        $(".contenedor_app").html(data);    
+        $(".contenedor_app2").html(data);    
       });
     });
 
@@ -69,24 +69,8 @@
 
 <!-- MENU -->
 
-<div class="contenido">
-<div class="container-fluid">
-<section>
-<article class="content">
-
-  <div class="row">
-   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="contenedor_principal">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="contenedor_app"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="contenedor_app2"></div>
   </div>
-
-</article>  
-</section>
-</div>
 </div>

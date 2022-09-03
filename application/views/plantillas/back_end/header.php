@@ -34,7 +34,7 @@
 <![endif]-->
 </head>
 
-<body class="bg-light style-default style-rounded">
+<body style="background-color: #F9FAFB;"><!-- class="bg-light style-default style-rounded" -->
 
   <div class="loader-mask">
       <div class="loader">

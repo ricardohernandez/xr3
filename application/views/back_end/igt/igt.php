@@ -4,6 +4,15 @@
       font-size: 13px;
   }
 
+  .nav__holder {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.0)!important; 
+  }
+
+  footer{
+    box-shadow: 0 0 2px 3px rgb(0 0 0 / 0%)!important; 
+  }
+       
   .titulo{
       display: inline-block;
       font-size: 13px;
@@ -14,7 +23,9 @@
 
   .card{
     border: none!important;
-    -webkit-box-shadow: 0 0 10px 0 rgb(183 192 206 / 30%);
+    padding: 10px;
+    -webkit-box-shadow: 0 0 10px 0 rgb(183 192 206 / 20%);
+    border-radius: 5px;
   }
 
   .s2{
@@ -48,7 +59,7 @@
      font-weight: bold;
   }
   .card-body{
-    background-color: #F7F7F7!important;
+   /* background-color: #F7F7F7!important;*/
     padding: 0.15rem!important;
   }
   hr {
@@ -802,7 +813,7 @@
          "bPaginate": true,
          "info":false,
          "aaSorting" : [[4,"desc"]],
-         "scrollY": "150",
+         "scrollY": "168",
          "scrollX": true,
          "sAjaxDataProp": "result",        
          "bDeferRender": true,
@@ -917,7 +928,7 @@
        "bPaginate": true,
        "info":false,
        "aaSorting" : [[1,"desc"]],
-       "scrollY": "160px",
+       "scrollY": "198px",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -1038,7 +1049,7 @@
        "bPaginate": true,
        "info":false,
        "aaSorting" : [[1,"desc"]],
-       "scrollY": "160px",
+       "scrollY": "168px",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -1150,6 +1161,7 @@
   })  
 </script>
 
+<div class="content mt-2" style="padding: 2px 10px; background-color: #F9FAFB;">
 <div class="form-row">
 
   <div class="col-12 col-lg-4">
@@ -1227,7 +1239,7 @@
       <div class="col-12 col-lg-3">  
         <div class="form-group fooSelect">
           <select id="trabajadores" name="trabajadores"  style="width:100%!important;">
-              <option value="">Seleccione Trabajador | Todos</option>
+            <!--   <option value="">Seleccione Trabajador | Todos</option> -->
           </select>
         </div>
       </div>
@@ -1247,124 +1259,121 @@
 </div>       
 
 <center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
-  <div class="form-row">
-    <div class="col"> <!-- body style="display: none;" -->
-
-      <div class="col-12 body">
-        <div class="form-row">
-          
-          <div class="col-6 col-lg prom_ftth" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-                Productividad FTTH (Actividad Promedio)  <span id="prom_ftth"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_prom_ftth" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-              </div>
-            </div>
+  <!-- body style="display: none;" -->
+  <div class="body">
+    <div class="form-row">
+      
+      <div class="col-6 col-lg prom_ftth" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Productividad FTTH (Actividad Promedio)  <span id="prom_ftth"></span>
           </div>
-
-          <div class="col-6 col-lg prod_hfc_ftth" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-                Productividad FTTH+HFC  <span id="prod_hfc_ftth"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_prod_hfc_ftth" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-                 <!-- (Puntos  acumulados) -->
-              </div>
-            </div>
+          <div class="card-body">
+            <center><div id="grafico_prom_ftth" class="gauge"></div></center>
           </div>
-
-          <div class="col-6 col-lg prom_hfc" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-                Productividad HFC <span id="prom_hfc"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_prom_hfc" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-                 <!-- (Puntos Promedio) -->
-              </div>
-            </div>
+          <div class="card-footer card_dash">
+            
           </div>
-
-          <div class="col-6 col-lg dias_trabajados" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-                Días hábiles trabajados <span id="dias_trabajados"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_dias_trabajados" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-              </div>
-            </div>
-          </div>
-     
-         
-          <div class="col-6 col-lg calidad_hfc" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-               Calidad HFC  <span id="calidad_hfc"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_calidad_hfc" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 col-lg calidad_ftth" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-                Calidad FTTH <span id="calidad_ftth"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_calidad_ftth" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-              </div>
-            </div>
-          </div>
-
-          <div class="col-6 col-lg declaracion_ot" style="display:none;">
-            <div class="card text-center">
-              <div class="card-header card_dash">
-               Declaración OT  <span id="declaracion_ot"></span>
-              </div>
-              <div class="card-body">
-                <center><div id="grafico_declaracion_ot" class="gauge"></div></center>
-              </div>
-              <div class="card-footer card_dash">
-              </div>
-            </div>
-          </div>
-
-          <!-- <div class="col-6 col-lg foto_tecnico" style="display:none;">
-            <div class="card text-center">
-              <div class="card-body">
-                <center>              
-                  <img src="./assets3/imagenes/logo.png" id="foto_tecnico" class="img-thumbnail" height="40px" width="90px">
-                </center>
-              </div>
-            </div>
-          </div> -->
-
         </div>
       </div>
 
-      <hr/>
+      <div class="col-6 col-lg prod_hfc_ftth" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Productividad FTTH+HFC  <span id="prod_hfc_ftth"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_prod_hfc_ftth" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+             <!-- (Puntos  acumulados) -->
+          </div>
+        </div>
+      </div>
 
-      <div class="row body">
-        <div class="col-12 col-lg-6 mt-2">
-          <div class="row">
+      <div class="col-6 col-lg prom_hfc" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Productividad HFC <span id="prom_hfc"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_prom_hfc" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+             <!-- (Puntos Promedio) -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg dias_trabajados" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Días hábiles trabajados <span id="dias_trabajados"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_dias_trabajados" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+          </div>
+        </div>
+      </div>
+     
+      <div class="col-6 col-lg calidad_hfc" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           Calidad HFC  <span id="calidad_hfc"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_calidad_hfc" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg calidad_ftth" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Calidad FTTH <span id="calidad_ftth"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_calidad_ftth" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg declaracion_ot" style="display:none;">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           Declaración OT  <span id="declaracion_ot"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_declaracion_ot" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-6 col-lg foto_tecnico" style="display:none;">
+        <div class="card text-center">
+          <div class="card-body">
+            <center>              
+              <img src="./assets3/imagenes/logo.png" id="foto_tecnico" class="img-thumbnail" height="40px" width="90px">
+            </center>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="mt-2">
+    <div class="form-row body no-gutters">
+      <div class="col-12 col-lg-6">
+        <div class="card">
+          <div class="form-row">
             <div class="col-12 col-lg-4">
                <p class="titulo_seccion">Detalle calidad</p>
             </div>
@@ -1380,7 +1389,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="form-row">
             <div class="col-12 text-center">
                <span class="titulo_fecha_actualizacion_dias">
                 <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
@@ -1411,10 +1420,12 @@
               </table>
             </div>
           </div>
-        </div>   
+        </div>
+      </div>   
 
-        <div class="col-12 col-lg-6 mt-2">
-          <div class="row">
+      <div class="col-12 col-lg-6 pl-lg-2">
+        <div class="card">
+          <div class="form-row">
             <div class="col-lg graficoHFC">
                 <p class="titulo_seccion">Calidad HFC Últimos 6 periodos</p>
                 <div id="graficoHFC"></div>
@@ -1426,12 +1437,14 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <hr/>
-
-      <div class="row ">
-        <div class="col-12 col-lg-6 mt-2">
-          <div class="row">
+  <div class="mt-2">
+    <div class="form-row body no-gutters">
+      <div class="col-12 col-lg-6">
+        <div class="card mt-2">
+          <div class="form-row">
             <div class="col-12 col-lg-4">
                <p class="titulo_seccion">Detalle productividad</p>
             </div>
@@ -1446,9 +1459,7 @@
                </button>
             </div>
           </div>
-
-          <div class="row">
-
+          <div class="form-row">
             <div class="col-12 text-center">
                <span class="titulo_fecha_actualizacion_dias">
                 <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
@@ -1476,27 +1487,27 @@
                 </thead>
               </table>
             </div>
-
-
           </div>
-        </div>   
-
-        <div class="col-12 col-lg-6 mt-2">
-          <div class="row">
+        </div>
+      </div>   
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="form-row">
             <div class="col-12">
                <p class="titulo_seccion">Productividad diario</p>
               <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
             </div>
           </div>
         </div>
-
       </div>
+    </div>
+  </div>
 
-      <hr/>
-
-      <div class="row ">
-        <div class="col-12 mt-1">
-          <div class="row">
+  <div class="my-2">
+    <div class="form-row body no-gutters">
+      <div class="col-12 mt-1">
+        <div class="card">
+          <div class="form-row">
             <div class="col-12 col-lg-4">
                <p class="titulo_seccion">Detalle OTS no detectadas en drive</p>
             </div>
@@ -1512,7 +1523,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="form-row">
 
             <div class="col-12 text-center">
                <span class="titulo_fecha_actualizacion_dias">
@@ -1538,10 +1549,9 @@
                 </thead>
               </table>
             </div>
-
           </div>
-        </div>   
-      </div>
-
-    </div>   
-</div>   
+        </div>
+      </div>   
+    </div>
+  </div>
+</div>
