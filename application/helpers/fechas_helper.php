@@ -99,7 +99,7 @@ function fecha_to_str($fecha){
 	$dia=$fecha1[2];  
 	$dia_semana=date('w', strtotime($fecha));
 	// return $this->dia($dia_semana)."".$this->meses($mes)." ".$dia;
-	return $this->dia($dia_semana)."".$dia."-".$mes;
+	return dia($dia_semana)."".$dia."-".$mes;
 
 	/*$fecha=explode(' ',$fecha);
 	$fecha2=$fecha[0];  
