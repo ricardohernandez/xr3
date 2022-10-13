@@ -144,7 +144,7 @@
       <td colspan="3">
         <div class="row ml-1 mr-2">
           <div class="col-1">
-            <center><input type="checkbox" name="firmado" id="firmado" <?php echo ($key["firmado"]=="si") ? "checked" : ""; ?> class="mt-3"></center>
+            <center><input type="checkbox" checked name="firmado" id="firmado" <?php echo ($key["firmado"]=="si") ? "checked" : ""; ?> class="mt-3"></center>
           </div>
           <div class="col-11">
              <p style="font-size: 13px;font-weight: bold;margin-top: 5px;">NOTA : En caso de no poder controlar los riesgos  que podrian originar un accidente debe llamar inmediatamente al Supervisor

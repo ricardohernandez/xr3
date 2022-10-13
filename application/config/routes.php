@@ -193,6 +193,7 @@
 	$route['vistaResumen'] = "back_end/productividad/vistaResumen";
 	$route['getCabeceras'] = "back_end/productividad/getCabeceras";
 	$route['listaResumen'] = "back_end/productividad/listaResumen";
+	$route['listaResumen2'] = "back_end/productividad/listaResumen2";
 
 /******************CALIDAD*************************/
 

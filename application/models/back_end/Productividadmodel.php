@@ -526,7 +526,7 @@ class Productividadmodel extends CI_Model {
 			return $this->dia($dia_semana)."".$dia."-".$mes;
 		}
 
-		public function cabecerasResumen($desde,$hasta,$trabajador){
+		public function cabecerasResumen($desde,$hasta){
 			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
 			$cabeceras = array();
 			$cabeceras[] = "Zona";
@@ -542,6 +542,102 @@ class Productividadmodel extends CI_Model {
 			return $cabeceras;
 		}
 		
+
+		public function dataResumenProductividad($desde,$hasta,$trabajador,$jefe){
+
+			if($trabajador!=""){
+
+				$this->db->select('
+					ROUND(SUM(p.puntaje),2) as total,
+					p.rut_tecnico as rut_tecnico,
+					CONCAT(u.nombres," ",u.apellidos) as trabajador,
+					a.area as area,
+
+					(SELECT  (count(DISTINCT p2.fecha))
+					   FROM  productividad p2
+					   WHERE  (p2.rut_tecnico = p.rut_tecnico) 
+					   and rut_tecnico="'.$trabajador.'"
+					   and (p2.fecha between "'.$desde.'" and "'.$hasta.'")
+					) as dias,
+
+					(SELECT   ROUND(AVG(puntaje),2)
+					   FROM  productividad p
+					   WHERE  (p.rut_tecnico = u.rut) 
+					   and (DATE(fecha) between date("'.$desde.'") and date("'.$hasta.'") and rut_tecnico="'.$trabajador.'")
+					) as promedio
+				');
+
+			}else{
+
+			
+				$this->db->select('
+					(SELECT  (count(DISTINCT p2.fecha))
+					   FROM  productividad p2
+					   WHERE  (p2.rut_tecnico = p.rut_tecnico) and (p2.fecha between "'.$desde.'" and "'.$hasta.'")
+					) as dias,
+				
+					ROUND(SUM(puntaje),2) as total,
+					ROUND(avg(puntaje),2) as promedio,
+					p.rut_tecnico as rut_tecnico,
+					CONCAT(u.nombres," ",u.apellidos) as trabajador,
+					a.area as area
+					
+				');
+			}
+
+			$this->db->from('productividad p');
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
+			$this->db->join('usuarios_areas a', 'a.id = u.id_area', 'left');
+			$this->db->where('(u.id_nivel_tecnico<>"" and u.id_nivel_tecnico<>"5")');
+			$this->db->group_by('u.id');
+			$this->db->order_by('u.nombres', 'asc');
+
+			if($desde!="" and $hasta!=""){$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	}
+			if($trabajador!=""){$this->db->where('p.rut_tecnico', $trabajador);}
+			if($jefe!=""){	$this->db->where('u.id_jefe', $jefe);}
+
+			$res = $this->db->get();
+			return $res->result_array();
+
+			/*$res = $this->db->query('SELECT * FROM productividad_periodo_anterior');
+			return $res->result_array();*/
+		}
+
+		public function detalleDiarioProductividad($desde,$hasta,$trabajador,$jefe){
+
+			$this->db->select('
+				ROUND(IFNULL(pr.total,0),2) AS puntos,
+				pc.fecha AS fecha
+			');
+
+			$this->db->from('productividad_calendario pc');
+
+			$this->db->join('(SELECT
+				SUM(p.puntaje) as total,
+				DATE(p.fecha) as fecha,
+				p.rut_tecnico as rut_tecnico,
+				CONCAT(u.nombres," ",u.apellidos) as trabajador,
+				a.area as area
+				FROM productividad p
+				LEFT JOIN usuarios as u ON u.rut=p.rut_tecnico
+				LEFT JOIN usuarios_areas as a ON u.id_area=a.id
+				LEFT JOIN usuarios_jefes as uj ON uj.id_jefe=u.id_jefe
+				WHERE DATE(p.fecha) between DATE("'.$desde.'") and DATE("'.$hasta.'") and p.rut_tecnico="'.$trabajador.'" 
+				GROUP BY CAST(p.fecha AS date)) as pr', 'ON pc.fecha=pr.fecha', 'left');
+
+			$this->db->where("pc.fecha BETWEEN '".$desde."' AND '".$hasta."'");
+			$this->db->join('usuarios u', 'u.rut = pr.rut_tecnico', 'left');
+			
+			/*and u.id_jefe="'.$jefe.'"*/
+			/*if($trabajador!=""){$this->db->where('pr.rut_tecnico', $trabajador);}*/
+		
+			$this->db->group_by('pc.fecha');
+			$this->db->order_by('pc.fecha', 'asc');
+			$res = $this->db->get();
+			$this->db->last_query();
+			return $res->result_array();
+		}
+
 		public function listaResumen($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(p.id) as hash,
 				p.id as id,

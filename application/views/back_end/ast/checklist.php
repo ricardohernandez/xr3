@@ -93,6 +93,30 @@
                    $opcionok = "Si";  
                    $opcionnook = "No";  
                 }
+
+
+                /* if($key["id_tipo"]=="2"){
+                   $opcionok = "Controlado";  
+                   $opcionnook = "No controlado";  
+                   $clase2 = "riesgo";
+          
+                }elseif($key["id_tipo"]=="1"){
+                   $opcionok = "Si";  
+                   $opcionnook = "No";  
+                   $clase2 = "subactividades";
+
+                }elseif($key["id_tipo"]=="3"){
+                   $opcionok = "Si";  
+                   $opcionnook = "No";  
+                   $clase2 = "controles";
+
+                }elseif($key["id_tipo"]=="4"){
+                   $opcionok = "Si";  
+                   $opcionnook = "No";  
+                   $clase2 = "escalamientos";  
+                }*/
+
+
               ?>
               <select  name="estado_<?php echo $key["id"] ?>[]" id="estado_<?php echo $key["id"] ?>"  class="estado input-xs <?php echo $clase?>">
                 <?php  
@@ -133,7 +157,7 @@
       <td colspan="3">
         <div class="row ml-1 mr-2">
           <div class="col-1">
-            <center><input type="checkbox" name="firmado" id="firmado"  class="mt-3"></center>
+            <center><input type="checkbox" checked name="firmado" id="firmado"  class="mt-3"></center>
           </div>
           <div class="col-11">
              <p style="font-size: 13px;font-weight: bold;margin-top: 5px;">NOTA : En caso de no poder controlar los riesgos  que podrian originar un accidente debe llamar inmediatamente al Supervisor

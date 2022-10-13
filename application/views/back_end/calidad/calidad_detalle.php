@@ -438,6 +438,12 @@
       }); 
     }
 
+
+    $(document).off('change', '#jefe_det').on('change', '#jefe_det', function(event) {
+      lista_detalle_calidad.ajax.reload()
+    }); 
+
+
    
       
   })
@@ -469,8 +475,8 @@
               <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
             </div>
               <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm">
-                <option value="actual" selected>Actual </option>
-                <option value="anterior">Anterior</option>
+                <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
+                <option value="anterior">Anterior - <?php echo $mes_anterior ?> </option>
              </select>
           </div>
         </div>

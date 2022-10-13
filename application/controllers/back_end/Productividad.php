@@ -71,6 +71,11 @@ class Productividad extends CI_Controller {
 			        'desde_anterior' => $desde_anterior,
 			        'hasta_anterior' => $hasta_anterior,
        		        'jefes' => $this->Productividadmodel->listaJefes(),
+
+       		        'mes_actual' => mesesPeriodo("actual"),
+		       	    'mes_anterior' =>mesesPeriodo("anterior"),
+		       	    'mes_anterior2' =>mesesPeriodo("anterior2"),
+
 			    );
 				$this->load->view('back_end/productividad/productividad_detalle',$datos);
 			}
@@ -252,6 +257,10 @@ class Productividad extends CI_Controller {
 			        'desde_anterior' => $desde_anterior,
 			        'hasta_anterior' => $hasta_anterior,
      		        'jefes' => $this->Productividadmodel->listaJefes(),
+     		        
+     		        'mes_actual' => mesesPeriodo("actual"),
+		       	    'mes_anterior' =>mesesPeriodo("anterior"),
+		       	    'mes_anterior2' =>mesesPeriodo("anterior2"),
 			    );
 				$this->load->view('back_end/productividad/graficos',$datos);
 			}
@@ -402,25 +411,11 @@ class Productividad extends CI_Controller {
 		public function vistaResumen(){
 			$this->visitas("Productividad resumen");
 			if($this->input->is_ajax_request()){
-
-				if(date("d")>"24"){
-					$desde_actual = date('d-m-Y', strtotime(date('Y-m-25')));
-					$hasta_actual = date('d-m-Y', strtotime('+1 month', strtotime(date('Y-m-24'))));
-					$desde_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta_anterior = date('d-m-Y', strtotime(date('Y-m-24')));
-				}else{
-					$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta_actual = date('d-m-Y',  strtotime(date('Y-m-24')));
-					$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
-					$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				}
-				
 				$datos=array(	
-					'desde_actual' => $desde_actual,
-			        'hasta_actual' => $hasta_actual,
-			        'desde_anterior' => $desde_anterior,
-			        'hasta_anterior' => $hasta_anterior,
 			        'jefes' => $this->Productividadmodel->listaJefes(),
+			        'mes_actual' => mesesPeriodo("actual"),
+		       	    'mes_anterior' =>mesesPeriodo("anterior"),
+		       	    'mes_anterior2' =>mesesPeriodo("anterior2"),
 			    );
 				$this->load->view('back_end/productividad/resumen',$datos);
 			}
@@ -429,31 +424,7 @@ class Productividad extends CI_Controller {
 		public function getCabeceras(){
 			$data=json_decode(file_get_contents('php://input'),1);
 			$periodo=$data["periodo"];
-			$trabajador=$data["trabajador"];
-
-			if(date("d")>"24"){
-
-				if($periodo=="actual"){
-					$desde = date('Y-m-d', strtotime(date('Y-m-25')));
-					$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
-				}elseif($periodo=="anterior"){
-					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
-				}
-
-			}else{
-				if($periodo=="actual"){
-					$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d');
-				}elseif($periodo=="anterior"){
-					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				}
-			}
-
-		 	echo json_encode(array(
-	  	    	"data" =>$this->Productividadmodel->cabecerasResumen($desde,$hasta,$trabajador)
-	  	    ));
+		 	echo json_encode(array("data" =>$this->Productividadmodel->cabecerasResumen(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"])));
 		}
 
 		public function listaResumen(){
@@ -461,33 +432,33 @@ class Productividad extends CI_Controller {
 			$trabajador=$this->input->get_post("trabajador");
 			$jefe=$this->input->get_post("jefe");
 
-			if(date("d")>"24"){
+			$data = $this->Productividadmodel->dataResumenProductividad(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,$jefe);
+			$array = array();
 
-				if($periodo=="actual"){
-					$desde = date('Y-m-d', strtotime(date('Y-m-25')));
-					$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
-				}elseif($periodo=="anterior"){
-					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+			/*echo "<pre>";
+			print_r($data);exit;*/
+
+			foreach($data as $dato){
+				$temp = array();
+				$temp["Zona"] = $dato["area"];
+				$temp["Trabajador"] = $dato["trabajador"];
+				$temp["Promedio"] = $dato["promedio"];
+				$temp["Total"] = $dato["total"];
+				$temp["Días"] = $dato["dias"];
+				$dias = $this->Productividadmodel->detalleDiarioProductividad(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$dato["rut_tecnico"],$jefe);
+
+				foreach($dias as $dia){
+					$temp[fecha_to_str($dia["fecha"])] = $dia["puntos"];
 				}
 
-			}else{
-				if($periodo=="actual"){
-					$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d');
-				}elseif($periodo=="anterior"){
-					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				}
+				$array[] = $temp;
 			}
 
 			echo json_encode(array(
-	  	    	"data" =>$this->Productividadmodel->listaResumen($desde,$hasta,$trabajador,$jefe)
-	  	    ));exit;
+				"data" =>($array),
+				"periodo" =>periodoFechas(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"]),
+				"actualizacion" => $this->Productividadmodel->actualizacionProductividad()
+			));exit;
 		}
-
-		
-
-
 
 	}

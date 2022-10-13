@@ -610,9 +610,9 @@
             <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
           </div>
             <select id="periodo" name="periodo" class="custom-select custom-select-sm">
-              <option selected value="actual">Actual </option>
-              <option value="anterior">Anterior</option>
-              <option value="sub_anterior">Sub anterior</option>
+              <option selected value="actual">Actual - <?php echo $mes_actual ?></option>
+              <option value="anterior">Anterior - <?php echo $mes_anterior?></option>
+              <option value="sub_anterior">Sub anterior - <?php echo $mes_anterior2 ?></option>
            </select>
         </div>
       </div>

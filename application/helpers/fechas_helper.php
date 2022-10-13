@@ -99,7 +99,7 @@ function fecha_to_str($fecha){
 	$dia=$fecha1[2];  
 	$dia_semana=date('w', strtotime($fecha));
 	// return $this->dia($dia_semana)."".$this->meses($mes)." ".$dia;
-	return dia($dia_semana)."".$dia."-".$mes;
+	return diaCorto($dia_semana)."".$dia."-".$mes;
 
 	/*$fecha=explode(' ',$fecha);
 	$fecha2=$fecha[0];  
@@ -179,6 +179,75 @@ function dia($dia){
 	return $this->dia($dia_semana)."".$dia."-".$mes;
 }*/
 
+function periodoFechas($desde,$hasta){
+	$mes1 = substr($desde,5,2);
+	$dia1 = substr($desde,8,9);
+
+	$mes2 = substr($hasta,5,2);
+	$dia2 = substr($hasta,8,9);
+
+	return $dia1."-".$mes1." ".$dia2."-".$mes2;
+}
+
+
+function mesesPeriodo($periodo){
+
+	
+	if(date("d")>"24"){
+		$mes_actual = date('m', strtotime(date('Y-m-d'). ' -1 months'));
+		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -2 months'));
+		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -3 months'));
+	}else{
+		$mes_actual = date('m');
+		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -1 months'));
+		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -2 months'));
+	}
+
+
+	if($periodo=="actual"){
+		return meses($mes_actual);
+	}
+
+	if($periodo=="anterior"){
+		return meses($mes_anterior);
+	}
+
+	if($periodo=="anterior2"){
+		return meses($mes_anterior2);
+	}
+
+}
+
+
+function mesesPeriodoCalidad($periodo){
+	
+	if(date("d")>"24"){
+		$mes_actual = date('m', strtotime(date('Y-m-d'). ' -2 months'));
+		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -3 months'));
+		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -4 months'));
+	}else{
+		$mes_actual = date('m', strtotime(date('Y-m-d'). ' -1 months'));
+		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -2 months'));
+		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -3 months'));
+	}
+
+
+	if($periodo=="actual"){
+		return meses($mes_actual);
+	}
+
+	if($periodo=="anterior"){
+		return meses($mes_anterior);
+	}
+
+	if($periodo=="anterior2"){
+		return meses($mes_anterior2);
+	}
+
+}
+
+
+
 function getFechasPeriodo($periodo){
 	if(date("d")>"24"){
 
@@ -198,25 +267,25 @@ function getFechasPeriodo($periodo){
 			$desde_calidad = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 			$hasta_calidad = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 			$desde_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-			$desde_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			$hasta_prod = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 		}
 		elseif($periodo=="anterior_3"){
 			$desde_calidad = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
 			$hasta_calidad = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 			$desde_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
-			$desde_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+			$hasta_prod = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 		}
 		elseif($periodo=="anterior_4"){
 			$desde_calidad = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-25'))));
 			$hasta_calidad = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-24'))));
 			$desde_prod = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
-			$desde_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+			$hasta_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 		}
 		elseif($periodo=="anterior_5"){
 			$desde_calidad = date('Y-m-d', strtotime('-6 month', strtotime(date('Y-m-25'))));
 			$hasta_calidad = date('Y-m-d', strtotime('-5 month', strtotime(date('Y-m-24'))));
 			$desde_prod = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
-			$desde_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
+			$hasta_prod = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 		}
 
 	}else{

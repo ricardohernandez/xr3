@@ -411,16 +411,16 @@ class Checklist extends CI_Controller {
 				$titulo = "Registro de auditoria en terreno para técnico : ".$key["tecnico"]." - ".$key["fecha"];
 				$this->load->library('email');
 
-			    $config = array (
+			     $config = array (
 		       	  'mailtype' => 'html',
 		          'charset'  => 'utf-8',
 		          'priority' => '1',
 		          'wordwrap' => TRUE,
-		          'protocol' => "smtp",
-		          'smtp_port' => 587,
+		          'protocol' => "sendmail",//sendmail
+		          'smtp_port' => 587,//587
 		          'smtp_host' => 'mail.xr3t.cl',
-			      'smtp_user' => 'reporte@xr3t.cl',
-			      'smtp_pass' => '5aK*2uGJNBd3'
+			      'smtp_user' => 'reportes@xr3t.cl',
+			      'smtp_pass' => 'ec+-kDo9bBO1'
 		        );
 
 			    $this->email->initialize($config);
@@ -432,7 +432,7 @@ class Checklist extends CI_Controller {
 
 					$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
 					$copias = array("ricardo.hernandez@km-t.cl");
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 				}else{
 
@@ -445,7 +445,7 @@ class Checklist extends CI_Controller {
 					/*print_r($para);
 					print_r($copias);exit;*/
 					
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 				}
 
@@ -490,11 +490,11 @@ class Checklist extends CI_Controller {
 			          'charset'  => 'utf-8',
 			          'priority' => '1',
 			          'wordwrap' => TRUE,
-			          'protocol' => "smtp",
-			          'smtp_port' => 587,
+			          'protocol' => "sendmail",//sendmail
+			          'smtp_port' => 587,//587
 			          'smtp_host' => 'mail.xr3t.cl',
-				      'smtp_user' => 'reporte@xr3t.cl',
-				      'smtp_pass' => '5aK*2uGJNBd3'
+				      'smtp_user' => 'reportes@xr3t.cl',
+				      'smtp_pass' => 'ec+-kDo9bBO1'
 			        );
 
 				   /* $config = array (
@@ -502,7 +502,7 @@ class Checklist extends CI_Controller {
 			          'charset'  => 'utf-8',
 			          'priority' => '1',
 			          'wordwrap' => TRUE,
-			          'protocol' => "smtp",
+			          'protocol' => "sendmail",
 			          'smtp_port' => 587,
 			          'smtp_host' => 'mail.xr3t.cl',
 				      'smtp_user' => 'soporteplataforma@xr3t.cl',
@@ -519,14 +519,14 @@ class Checklist extends CI_Controller {
 
 						$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
 						$copias = array("ricardo.hernandez@km-t.cl","ricardo.hernandez@splice.cl");
-						$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+						$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 					}else{
 
 						$para = array();
 						$para[] = $key["correo_responsable"];
 						$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
-						$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+						$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 					}
 

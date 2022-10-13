@@ -447,12 +447,25 @@ class Ast extends CI_Controller {
 		          'charset'  => 'utf-8',
 		          'priority' => '1',
 		          'wordwrap' => TRUE,
-		          'protocol' => "smtp",
-		          'smtp_port' => 587,
+		          'protocol' => "sendmail",//sendmail
+		          'smtp_port' => 587,//587
 		          'smtp_host' => 'mail.xr3t.cl',
-			      'smtp_user' => 'reporte@xr3t.cl',
-			      'smtp_pass' => '5aK*2uGJNBd3'
+			      'smtp_user' => 'reportes@xr3t.cl',
+			      'smtp_pass' => 'ec+-kDo9bBO1'
 		        );
+
+
+			    /* $config = array (
+		       	  'mailtype' => 'html',
+		          'charset'  => 'utf-8',
+		          'priority' => '1',
+		          'wordwrap' => TRUE,
+		          'protocol' => "smtp",//sendmail
+		          'smtp_port' => 465,//587
+		          'smtp_host' => 'sh-pro10.hostgator.cl',
+			      'smtp_user' => 'reportes@xr3t.cl',
+			      'smtp_pass' => 'ec+-kDo9bBO1'
+		        );*/
 
 			    $this->email->initialize($config);
 			
@@ -462,19 +475,19 @@ class Ast extends CI_Controller {
 				if($prueba){
 					$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
 					$copias = array("ricardo.hernandez@km-t.cl");
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 				}else{
 					$para = array();
 					$para[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
 					$para[] = $key["correo_jefe_empresa"]!="" ? $key["correo_jefe_empresa"] : $key["correo_jefe_personal"];
 					$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 				}
 
 				$this->email->to($para);
 				$this->email->cc($copias);
-				/*$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl");*/
+				$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl");
 				$this->email->subject($titulo);
 				$this->email->message($html); 
 				$nombre = url_title(convert_accented_characters($key["id"]."-".$key["rut_tecnico"])).".pdf";
@@ -494,7 +507,7 @@ class Ast extends CI_Controller {
 			$data = $this->Astmodel->getDataItemChecklist($hash,$item);
 			$prueba = FALSE;
 			foreach($data as $key){
-				$titulo = "titulo : Tecnico ".$key["tecnico"]." , Descripción ".$key["descripcion"];
+				$titulo = "Fallo AST : Tecnico ".$key["tecnico"]." , Descripción ".$key["descripcion"];
 				$this->load->library('email');
 
 			    $config = array (
@@ -502,11 +515,11 @@ class Ast extends CI_Controller {
 		          'charset'  => 'utf-8',
 		          'priority' => '1',
 		          'wordwrap' => TRUE,
-		          'protocol' => "smtp",
-		          'smtp_port' => 587,
+		          'protocol' => "sendmail",//sendmail
+		          'smtp_port' => 587,//587
 		          'smtp_host' => 'mail.xr3t.cl',
-			      'smtp_user' => 'reporte@xr3t.cl',
-			      'smtp_pass' => '5aK*2uGJNBd3'
+			      'smtp_user' => 'reportes@xr3t.cl',
+			      'smtp_pass' => 'ec+-kDo9bBO1'
 		        );
 			  
 			    $this->email->initialize($config);
@@ -517,14 +530,14 @@ class Ast extends CI_Controller {
 				if($prueba){
 					$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
 					$copias = array("ricardo.hernandez@km-t.cl","ricardo.hernandez@splice.cl");
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 				}else{
 					$para = array();
 					$para[] = $key["correo_auditor_empresa"]!="" ? $key["correo_auditor_empresa"] : $key["correo_auditor_personal"];
 					$para[] = $key["correo_jefe_empresa"]!="" ? $key["correo_jefe_empresa"] : $key["correo_jefe_personal"];
 					$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 				}
 
 				$this->email->to($para);

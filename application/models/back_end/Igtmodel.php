@@ -584,29 +584,30 @@ class Igtmodel extends CI_Model {
 
 	public function listaTrabajadoresIGT($jefe){
 		$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
-			empresa,id,rut,
+			empresa,u.id as id,rut,
 		    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
+		    utn.nivel as nivel,
 		    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
 		");
-		
+
+		$this->db->join('usuarios_tecnicos_niveles utn', 'utn.id = u.id_nivel_tecnico', 'left');
+
 		if($this->session->userdata('id_perfil')==4){
 			$this->db->where('rut', $this->session->userdata('rut'));
 		}else{
 			 $this->db->where('(id_perfil=4 or id_perfil=3)');
 		}
 
-		if($jefe!=""){
-			$this->db->where('id_jefe', $jefe);
-		}
+		$this->db->where('(u.id_nivel_tecnico<>"" and u.id_nivel_tecnico<>"5")');
 
-		$this->db->order_by('nombres', 'asc');
-		$res=$this->db->get("usuarios");
+		$this->db->order_by('u.nombres', 'asc');
+		$res=$this->db->get("usuarios u");
 		if($res->num_rows()>0){
 			$array=array();
 			foreach($res->result_array() as $key){
 				$temp=array();
 				$temp["id"]=$key["rut"];
-				$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_corto"];
+				$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_corto"]."  |  ".$key["nivel"];
 				$array[]=$temp;
 			}
 			return json_encode($array);

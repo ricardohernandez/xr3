@@ -298,6 +298,7 @@ class InicioModel extends CI_Model {
 			$this->db->join('usuarios_jefes uj', 'uj.id = u.id_jefe', 'left');
 			$this->db->join('usuarios u2', 'u2.id = uj.id_jefe', 'left');
 			$this->db->where('SUBSTRING(u.fecha_nacimiento,6,10)', $fecha);
+			$this->db->where('u.estado', '1');
 			/*$this->db->where("LOCATE('@',u.correo_empresa)>0");*/
 			$res=$this->db->get();
 			/*echo $this->db->last_query();*/

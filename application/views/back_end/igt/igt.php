@@ -138,14 +138,19 @@
       }else{
         $("#trabajadores").select2().val("173397666").trigger("change");
       }
+
       /*setTimeout( function () {
           google.charts.setOnLoadCallback(dataGraficosIgt);
       }, 500 ); */
     });
 
-
     if(perfil==4){
       dataGraficosIgt()
+     
+      setTimeout( function () {
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+      }, 500 );
+
     }
    
     function dataGraficosIgt(){
@@ -165,6 +170,11 @@
           success: function (json) {
             $("#load").hide()
             $(".body").fadeIn(500)
+
+            setTimeout( function () {
+              $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            }, 500 );
+
 
           // GRAFICO PROMEDIO FTTH
 
@@ -202,13 +212,18 @@
                 $(".meta_prom_ftth_green").html("").hide()
               }
 
+              $(".prom_ftth").show()
             }else{
+
               $(".prom_ftth").hide()
-              $("#prom_ftth").text("").hide()
+           
+              /* $("#grafico_prom_ftth").html("<span class='titulo_seccion'><span class='titulo_seccion'>No aplica</span></span>")
+              $(".meta_prom_ftth_red").html("")
+              $(".meta_prom_ftth_green ").html("")*/
             }
 
           // GRAFICO PROD HFC FTTH
-            if(json.hasOwnProperty("data_prod_hfc_ftth")){
+            /*if(json.hasOwnProperty("data_prod_hfc_ftth")){
 
               $("#prod_hfc_ftth").text(json.data_prod_hfc_ftth.data.puntos).show()
               $(".prod_hfc_ftth").show()
@@ -224,16 +239,11 @@
                 yellowTo: json.data_prod_hfc_ftth.meta,
                 greenFrom: json.data_prod_hfc_ftth.meta,
                 greenTo:json.data_prod_hfc_ftth.meta+1000,
-               /* minorTicks: 5,*/
-               /* majorTicks: ['2000', '4000', '6000', '8000', '10000'],*/
+              
               };
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_prod_hfc_ftth'));
-              /* var formatnumbers = new google.visualization.NumberFormat({
-                    suffix: '%',
-                 fractionDigits: 2
-              });
-              formatnumbers.format(data_prod_periodo, 1);*/
+            
               chart.draw(data_prod_periodo, options);
               
               const value = json.data_prod_hfc_ftth.data[1][1]
@@ -249,10 +259,12 @@
                 $(".meta_prod_hfc_ftth_green").html("").hide()
               }
 
+              $(".prod_hfc_ftth").show()
             }else{
+
               $(".prod_hfc_ftth").hide()
-              $("#prod_hfc_ftth").text("").hide()
-            }
+              
+            }*/
          
           // GRAFICO PROMEDIO PUNTOS HFC
 
@@ -290,10 +302,13 @@
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_prom_hfc'));
               chart.draw(data_prom_periodo, options);
-
+              $(".prom_hfc").show()
             }else{
               $(".prom_hfc").hide()
-              $("#prom_hfc").text("").hide()
+              
+             /* $("#grafico_prom_hfc").html("<span class='titulo_seccion'><span class='titulo_seccion'>No aplica</span></span>")
+              $(".meta_prom_hfc_red").html("")
+              $(".meta_prom_hfc_green ").html("")*/
             }
 
           // GRAFICO DIAS TRABAJADOS
@@ -333,9 +348,13 @@
               var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados'));
               chart.draw(data_dias, options);
 
+              $(".dias_trabajados").show()
+              
             }else{
               $(".dias_trabajados").hide()
-              $("#dias_trabajados").text("").hide()
+              /*$("#grafico_dias_trabajados").html("<span class='titulo_seccion'>No aplica</span>")
+              $(".meta_dias_trabajados_red").html("")
+              $(".meta_dias_trabajados_green ").html("")*/
             }
 
           // GRAFICO CALIDAD HFC 
@@ -349,13 +368,11 @@
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_calidad_hfc.meta,
-                redFrom:4,
-                redTo:6,
-                yellowFrom:6,
-                yellowTo: json.data_calidad_hfc.meta,
-                greenFrom: json.data_calidad_hfc.meta,
-                greenTo:json.data_calidad_hfc.meta+1,
+                max: parseFloat(json.data_calidad_hfc.meta)+parseFloat(5),
+                redFrom:parseFloat(json.data_calidad_hfc.meta),
+                redTo:parseFloat(json.data_calidad_hfc.meta)+parseFloat(5),
+                greenFrom: 0,
+                greenTo:parseFloat(json.data_calidad_hfc.meta),
                 minorTicks: 5,
               };
 
@@ -365,7 +382,7 @@
 
               $(".meta_calidad_hfc").html(` Meta : ${json.data_calidad_hfc.meta}%`)
             
-              if(value>=meta){
+              if(value<=meta){
                 
                 $(".meta_calidad_hfc_green").html(`${diff.toFixed(1)} % <i class="fa-solid fa-up-long"></i>`).show()
                 $(".meta_calidad_hfc_red").html("").hide()
@@ -377,9 +394,13 @@
               var chart = new google.visualization.Gauge(document.getElementById('grafico_calidad_hfc'));
               chart.draw(calidad_hfc, options);
 
+              $(".calidad_hfc").show()
+              
             }else{
               $(".calidad_hfc").hide()
-              $("#calidad_hfc").text("").hide()
+              /*$("#grafico_calidad_hfc").html("<span class='titulo_seccion'>No aplica</span>")
+              $(".meta_calidad_hfc_green").html("")
+              $(".meta_calidad_hfc_red ").html("")*/
             }
 
           // GRAFICO CALIDAD FTTH 
@@ -391,15 +412,14 @@
 
               var calidad_ftth = google.visualization.arrayToDataTable(json.data_calidad_ftth.data);
               var options = {
+
                 height: 130,
                 min: 0,
-                max: json.data_calidad_ftth.meta,
-                redFrom:0,
-                redTo:6,
-                yellowFrom:6,
-                yellowTo: json.data_calidad_ftth.meta,
-                greenFrom: json.data_calidad_ftth.meta,
-                greenTo:json.data_calidad_ftth.meta+1,
+                max: parseFloat(json.data_calidad_ftth.meta)+parseFloat(5),
+                redFrom:parseFloat(json.data_calidad_ftth.meta),
+                redTo:parseFloat(json.data_calidad_ftth.meta)+parseFloat(5),
+                greenFrom: 0,
+                greenTo:parseFloat(json.data_calidad_ftth.meta),
                 minorTicks: 5,
               };
 
@@ -408,7 +428,8 @@
               const diff = Math.abs(meta-value)
 
               $(".meta_calidad_ftth").html(` Meta : ${json.data_calidad_ftth.meta}%`)
-              if(value>=meta){
+
+              if(value<=meta){
                 $(".meta_calidad_ftth_green").html(`+${diff.toFixed(1)} % <i class="fa-solid fa-up-long"></i>`).show()
                 $(".meta_calidad_ftth_red").html("").hide()
               }else{
@@ -419,9 +440,14 @@
               var chart = new google.visualization.Gauge(document.getElementById('grafico_calidad_ftth'));
               chart.draw(calidad_ftth, options);
 
+              $(".calidad_ftth").show()
+      
             }else{
               $(".calidad_ftth").hide()
-              $("#calidad_ftth").text("").hide()
+
+              /*$("#grafico_calidad_ftth").html("<span class='titulo_seccion'>No aplica</span>")
+              $(".meta_calidad_ftth_green").html("")
+              $(".meta_calidad_ftth_red ").html("")*/
             }
 
           // GRAFICO  DECLARACION OT 
@@ -461,9 +487,13 @@
               var chart = new google.visualization.Gauge(document.getElementById('grafico_declaracion_ot'));
               chart.draw(declaracion_ot, options);
 
+              $(".declaracion_ot").show()
+              
             }else{
               $(".declaracion_ot").hide()
-              $("#declaracion_ot").text("").hide()
+              /*$("#grafico_declaracion_ot").html("<span class='titulo_seccion'>No aplica</span>")
+              $(".meta_declaracion_ot_red").html("")
+              $(".meta_declaracion_ot_green ").html("")*/
             }
 
           // FOTO
@@ -630,9 +660,10 @@
               var chart = new google.visualization.ComboChart(document.getElementById('graficoHFC'));
               chart.draw(graficoHFC, options);
 
+
             }else{
-                $(".graficoHFC").hide()
-                $("#graficoHFC").hide()
+              $(".graficoHFC").show()
+              $("#graficoHFC").html("<span class='titulo_seccion'>No aplica</span>").show()
             }
 
           // CALIDAD FTTH
@@ -786,9 +817,10 @@
               var chart = new google.visualization.ComboChart(document.getElementById('graficoFTTH'));
               chart.draw(graficoFTTH, options);
 
+
             }else{
-                $(".graficoFTTH").hide()
-                $("#graficoFTTH").hide()
+              $(".graficoFTTH").show()
+              $("#graficoFTTH").html("<span class='titulo_seccion'>No aplica</span>").show()
             }
 
           // PRODUCTIVIDAD DIARIO
@@ -933,7 +965,7 @@
               var periodo =$("#periodo_detalle").val()
 
               if(periodo=="actual"){
-                $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+                $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}` );
               }else if(periodo=="anterior"){
                 $("#fecha_f").val(`${desde_anterior.substring(0,5)} - ${hasta_anterior.substring(0,5)}`);
               }
@@ -999,7 +1031,6 @@
         $(document).on('keyup paste', '#buscador_calidad', function() {
           lista_detalle_calidad.search($(this).val().trim()).draw();
         });
-
 
         $(document).off('click', '.excel_calidad').on('click', '.excel_calidad',function(event) {
           event.preventDefault();
@@ -1280,8 +1311,8 @@
           <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
         </div>
         <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
-          <option value="actual" >Actual </option>
-          <option value="anterior" selected>Anterior</option>
+          <option value="actual" selected><?php echo $mes_actual ?></option>
+          <option value="anterior"><?php echo $mes_anterior ?></option>
         </select>
       </div>
     </div>
@@ -1364,10 +1395,10 @@
   <div class="body">
     <div class="form-row">
       
-      <div class="col-6 col-lg prom_ftth" style="display:none;">
+      <div class="col-6 col-lg prom_ftth">
         <div class="card text-center">
           <div class="card-header card_dash">
-            Productividad FTTH <span class="meta_prom_ftth"></span>
+            Prod. FTTH <span class="meta_prom_ftth"></span>
           </div>
           <div class="card-body">
             <center><div id="grafico_prom_ftth" class="gauge"></div></center>
@@ -1379,67 +1410,7 @@
         </div>
       </div>
 
-      <div class="col-6 col-lg prod_hfc_ftth" style="display:none;">
-        <div class="card text-center">
-          <div class="card-header card_dash">
-            Productividad FTTH+HFC  <span class="meta_prod_hfc_ftth"></span>
-          </div>
-          <div class="card-body">
-            <center><div id="grafico_prod_hfc_ftth" class="gauge"></div></center>
-          </div>
-          <div class="card-footer card_dash">
-           <span class="meta_prod_hfc_ftth_green green" style="display: none;"></span> 
-           <span class="meta_prod_hfc_ftth_red red2" style="display: none;"> </span> 
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6 col-lg prom_hfc" style="display:none;">
-        <div class="card text-center">
-          <div class="card-header card_dash">
-            Productividad HFC <span class="meta_prom_hfc"></span>
-          </div>
-          <div class="card-body">
-            <center><div id="grafico_prom_hfc" class="gauge"></div></center>
-          </div>
-          <div class="card-footer card_dash">
-            <span class="meta_prom_hfc_green green" style="display: none;"></span> 
-            <span class="meta_prom_hfc_red red2" style="display: none;"> </span> 
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6 col-lg dias_trabajados" style="display:none;">
-        <div class="card text-center">
-          <div class="card-header card_dash">
-            Días hábiles trabajados <span class="meta_dias_trabajados"></span>
-          </div>
-          <div class="card-body">
-            <center><div id="grafico_dias_trabajados" class="gauge"></div></center>
-          </div>
-          <div class="card-footer card_dash">
-            <span class="meta_dias_trabajados_green green" style="display: none;"></span> 
-            <span class="meta_dias_trabajados_red red2" style="display: none;"> </span> 
-          </div>
-        </div>
-      </div>
-     
-      <div class="col-6 col-lg calidad_hfc" style="display:none;">
-        <div class="card text-center">
-          <div class="card-header card_dash">
-           Calidad HFC  <span class="meta_calidad_hfc"></span>
-          </div>
-          <div class="card-body">
-            <center><div id="grafico_calidad_hfc" class="gauge"></div></center>
-          </div>
-          <div class="card-footer card_dash">
-            <span class="meta_calidad_hfc_green green" style="display: none;"></span> 
-            <span class="meta_calidad_hfc_red red2" style="display: none;"> </span> 
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6 col-lg calidad_ftth" style="display:none;">
+      <div class="col-6 col-lg calidad_ftth">
         <div class="card text-center">
           <div class="card-header card_dash">
             Calidad FTTH <span class="meta_calidad_ftth"></span>
@@ -1454,7 +1425,67 @@
         </div>
       </div>
 
-      <div class="col-6 col-lg declaracion_ot" style="display:none;">
+      <!-- <div class="col-6 col-lg prod_hfc_ftth">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Prod. FTTH+HFC  <span class="meta_prod_hfc_ftth"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_prod_hfc_ftth" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+           <span class="meta_prod_hfc_ftth_green green" style="display: none;"></span> 
+           <span class="meta_prod_hfc_ftth_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div> -->
+
+      <div class="col-6 col-lg prom_hfc">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Prod. HFC <span class="meta_prom_hfc"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_prom_hfc" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_prom_hfc_green green" style="display: none;"></span> 
+            <span class="meta_prom_hfc_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg calidad_hfc">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           Calidad HFC  <span class="meta_calidad_hfc"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_calidad_hfc" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_calidad_hfc_green green" style="display: none;"></span> 
+            <span class="meta_calidad_hfc_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg dias_trabajados">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Días háb. trabajados <span class="meta_dias_trabajados"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_dias_trabajados" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_dias_trabajados_green green" style="display: none;"></span> 
+            <span class="meta_dias_trabajados_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg declaracion_ot">
         <div class="card text-center">
           <div class="card-header card_dash">
            Declaración OT  <span class="meta_declaracion_ot"></span>
@@ -1540,18 +1571,21 @@
       <div class="col-12 col-lg-6 pl-lg-2">
         <div class="card">
           <div class="form-row">
-            <div class="col-lg graficoHFC">
+            
+            <div class="col-lg-6 graficoHFC">
               <div class="card-header card_dash">
                 <span class="titulo_seccion">Calidad HFC Últimos 6 periodos</span>
               </div>
-                <div id="graficoHFC"></div>
+              <div id="graficoHFC"></div>
             </div>
-            <div class="col-lg graficoFTTH">
+
+            <div class="col-lg-6 graficoFTTH">
               <div class="card-header card_dash">
                 <span class="titulo_seccion">Calidad FTTH Últimos 6 periodos</span>
-                <div id="graficoFTTH"></div>
               </div>
+              <div id="graficoFTTH"></div>
             </div>
+
           </div>
         </div>
       </div>
@@ -1583,7 +1617,7 @@
           <div class="form-row">
             <div class="col-12 text-center">
                <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>
             </div>
 

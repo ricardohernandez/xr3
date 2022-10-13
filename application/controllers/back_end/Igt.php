@@ -20,8 +20,8 @@ class Igt extends CI_Controller {
 	}
 	
 	public function acceso(){
-		if($this->session->userdata('id')){
-	      	if($this->session->userdata('perfil')!=""){
+		if($this->session->userdata('id')!=""){
+			if($this->session->userdata('id_perfil')>3){
 	      		redirect("./login");
 	      	}
 	      }else{
@@ -42,8 +42,8 @@ class Igt extends CI_Controller {
 	}
 
 	public function index(){
+		$this->acceso();
 		$this->visitas("IGT");
-    	$this->acceso();
 	    $datos = array(
 	        'titulo' => "IGT - Indicadores de gestión del técnico",
 	        'contenido' => "igt/inicio",
@@ -91,6 +91,8 @@ class Igt extends CI_Controller {
 		        'desde_anterior_prod' => $desde_anterior_prod,
 		        'hasta_anterior_prod' => $hasta_anterior_prod,
 
+		        'mes_actual' => mesesPeriodo("actual"),
+		        'mes_anterior' =>mesesPeriodo("anterior"),
 		        'jefes' => $this->Calidadmodel->listaJefes(),
 		    );
 

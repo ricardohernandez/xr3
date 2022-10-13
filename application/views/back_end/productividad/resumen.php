@@ -84,8 +84,6 @@
             body: JSON.stringify(data)
           });
 
-
-         
           return response.json(); 
       }
 
@@ -152,22 +150,18 @@
               
                 "ajax": {
                   "url":"<?php echo base_url();?>listaResumen",
-                  "dataSrc": "data",
-                   data: function(param){
 
-                    var desde_actual="<?php echo $desde_actual; ?>"
-                    var hasta_actual="<?php echo $hasta_actual; ?>"
-                    var desde_anterior="<?php echo $desde_anterior; ?>"
-                    var hasta_anterior="<?php echo $hasta_anterior; ?>"
+                  "dataSrc": function (json) {
+                    $("#fecha_f").val(json.periodo);
+                    $(".actualizacion_productividad").html("<b>Última actualización planilla : "+json.actualizacion+"</b>");
+                    return json.data;
+                  },   
+
+                  data: function(param){
+
                     var periodo =$("#periodo_resumen").val()
                     var jefe =$("#jefe_res").val()
                   
-                    if(periodo=="actual"){
-                      $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-                    }else if(periodo=="anterior"){
-                      $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-                    }
-
                     param.periodo = periodo;
                     param.jefe = jefe;
 
@@ -217,52 +211,6 @@
        procesaDatatable(true)
     });
 
-    
-    actualizacionProductividad()
-
-    function actualizacionProductividad(){
-      $.ajax({
-          url: "actualizacionProductividad"+"?"+$.now(),  
-          type: 'POST',
-          cache: false,
-          tryCount : 0,
-          retryLimit : 3,
-          dataType:"json",
-          beforeSend:function(){
-          },
-          success: function (data) {
-            if(data.res=="ok"){
-              $(".actualizacion_productividad").html("<b>Última actualización planilla : "+data.datos+"</b>");
-            }
-          },
-          error : function(xhr, textStatus, errorThrown ) {
-            if (textStatus == 'timeout') {
-                this.tryCount++;
-                if (this.tryCount <= this.retryLimit) {
-                    $.notify("Reintentando...", {
-                      className:'info',
-                      globalPosition: 'top right'
-                    });
-                    $.ajax(this);
-                    return;
-                } else{
-                   $.notify("Problemas en el servidor, intente nuevamente.", {
-                      className:'warn',
-                      globalPosition: 'top right'
-                    });     
-                }    
-                return;
-            }
-
-            if (xhr.status == 500) {
-                $.notify("Problemas en el servidor, intente más tarde.", {
-                  className:'warn',
-                  globalPosition: 'top right'
-                });
-            }
-          },timeout:5000
-      }); 
-    }
 
     $(document).off('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_res').on('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_res', function(event) {
       procesaDatatable(true)
@@ -294,8 +242,9 @@
               <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
             </div>
               <select id="periodo_resumen" name="periodo_resumen" class="custom-select custom-select-sm">
-                <option value="actual" selected>Actual </option>
-                <option value="anterior" >Anterior</option>
+                <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
+                <option value="anterior">Anterior - <?php echo $mes_anterior ?> </option>
+                <option value="anterior_2">Anterior 2 - <?php echo $mes_anterior2 ?> </option>
              </select>
           </div>
         </div>
@@ -321,7 +270,7 @@
                 foreach($jefes as $j){
                   if($j["id_jefe"]==22){
                     ?>
-                     <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                     <option  value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
                     <?php
                   }else{
                      ?>

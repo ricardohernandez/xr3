@@ -169,6 +169,7 @@
 	          			if($this->session->userdata('id_perfil')<=3){
 	         	    ?>
           		 	<li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
+                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
           		 	<?php
 				          }
 				        ?>
@@ -303,6 +304,7 @@
 		          				if($this->session->userdata('id_perfil')<=3){
 			         	    ?>
 	          		    <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
+ 						        <li><a  class="menu_list" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
 	          		    <?php
 						          }
 						        ?>

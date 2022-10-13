@@ -216,21 +216,21 @@ class Inicio extends CI_Controller {
 					
 					$this->load->library('email');
 
-					  $config = array (
+					 $config = array (
 			       	  'mailtype' => 'html',
 			          'charset'  => 'utf-8',
 			          'priority' => '1',
 			          'wordwrap' => TRUE,
-			          'protocol' => "smtp",
-			          'smtp_port' => 587,
+			          'protocol' => "smtp",//sendmail
+			          'smtp_port' => 587,//587
 			          'smtp_host' => 'mail.xr3t.cl',
-				      'smtp_user' => 'reporte@xr3t.cl',
-				      'smtp_pass' => '5aK*2uGJNBd3'
+				      'smtp_user' => 'reportes@xr3t.cl',
+				      'smtp_pass' => 'ec+-kDo9bBO1'
 			        );
 
 					$this->email->initialize($config);
 					$asunto ="Recuperación de contraseña XR3-PTO : " . $nombre;
-					$this->email->from("reporte@xr3t.cl","Soporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Soporte plataforma XR3");
 
 					$para=array();
 					if (filter_var($c["correo_personal"], FILTER_VALIDATE_EMAIL)) {
@@ -382,24 +382,24 @@ class Inicio extends CI_Controller {
 
 			if($data!=FALSE){
 			   	foreach($data as $key){
-		   			$config = array (
+		   			 $config = array (
 			       	  'mailtype' => 'html',
 			          'charset'  => 'utf-8',
 			          'priority' => '1',
 			          'wordwrap' => TRUE,
-			          'protocol' => "smtp",
-			          'smtp_port' => 587,
+			          'protocol' => "smtp",//sendmail
+			          'smtp_port' => 587,//587
 			          'smtp_host' => 'mail.xr3t.cl',
-				      'smtp_user' => 'reporte@xr3t.cl',
-				      'smtp_pass' => '5aK*2uGJNBd3'
+				      'smtp_user' => 'reportes@xr3t.cl',
+				      'smtp_pass' => 'ec+-kDo9bBO1'
 			        );
 
 					$this->email->initialize($config);
 					$datos=array("data"=>$data);
-				    $html=$this->load->view('back_end/cron/cumpleanios',$datos,TRUE);
-				    /*echo $html;exit;*/
+				     $html=$this->load->view('back_end/cron/cumpleanios',$datos,TRUE);
+				  /*  echo $html;exit;*/
 
-					$this->email->from("reporte@xr3t.cl","Reporte plataforma XR3");
+					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 					if($prueba){
 						$para = array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl");
@@ -412,9 +412,14 @@ class Inicio extends CI_Controller {
 						$copias = array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
 					}
 
+					/*print_r($para);
+					print_r($copias);
+					exit;*/
+
+
 					$this->email->to($para);
 					$this->email->cc($copias);
-		    		$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl");
+		    		$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","ricardo.hernandez@splice.cl"));
 					$this->email->subject($key["nombre_corto"].", saludos en tu cumpleaños.");
 					$this->email->message($html); 
 					$resp=$this->email->send();
@@ -423,7 +428,6 @@ class Inicio extends CI_Controller {
 						return TRUE;
 					}else{
 						print_r($this->email->print_debugger());
-						return FALSE;
 					}
 				}	
 			}		

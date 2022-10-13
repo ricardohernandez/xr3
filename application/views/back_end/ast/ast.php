@@ -181,7 +181,7 @@
       $("#actividad").prop("disabled",false);
       $(".cont_mod").hide();
       $(".contenedor_checklist").html("")
-
+      $("#checkcorreo").prop( "checked", true );
       $("#id").prop("disabled",true)
       $("#riesgos_no_controlados").prop("disabled",true)
       $("#auditor").prop("disabled",true)
@@ -300,6 +300,7 @@
       $(".estado").removeClass("red");
       $(".estado").removeClass("grey");
       $(".btn_guardar_ast").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
+      $("#checkcorreo").prop( "checked", true );
       getDataAst(hash)        
     });
 
@@ -643,7 +644,7 @@
             <div class="col-4 col-lg-4">
               <div class="form-group">  
                 <div class="form-check mt-1">
-                  <input type="checkbox"  name="checkcorreo" class="form-check-input mt-2" id="checkcorreo">
+                  <input type="checkbox"  ckecked name="checkcorreo" class="form-check-input mt-2" id="checkcorreo">
                   <label class="form-check-label" style="font-size: 14px;" for="checkcorreo">¿Enviar correo?</label>
                 </div>
               </div>

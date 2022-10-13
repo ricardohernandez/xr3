@@ -73,6 +73,10 @@ class Calidad extends CI_Controller {
 			        'desde_anterior' => $desde_anterior,
 			        'hasta_anterior' => $hasta_anterior,
 			        'jefes' => $this->Calidadmodel->listaJefes(),
+
+			        'mes_actual' => mesesPeriodoCalidad("actual"),
+		       	    'mes_anterior' =>mesesPeriodoCalidad("anterior"),
+
 			    );
 				$this->load->view('back_end/calidad/calidad_detalle',$datos);
 			}
@@ -418,6 +422,11 @@ class Calidad extends CI_Controller {
 			        'hasta_anterior2' => $hasta_anterior2,
 			        'jefes' => $this->Calidadmodel->listaJefes(),
 			        'proyectos' => $this->Calidadmodel->listaProyectos(),
+
+			        'mes_actual' => mesesPeriodoCalidad("actual"),
+		       	    'mes_anterior' =>mesesPeriodoCalidad("anterior"),
+		       	    'mes_anterior2' =>mesesPeriodoCalidad("anterior2"),
+
 			    );
 
 				$this->load->view('back_end/calidad/calidad_graficos',$datos);
