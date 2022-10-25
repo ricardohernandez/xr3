@@ -19,7 +19,7 @@ class checklistFTTH extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>7,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -115,7 +115,7 @@ class checklistFTTH extends CI_Controller {
 		}
 		
 		public function vistaChecklistFTTH(){
-			$this->visitas("Checklist FTTH");
+			$this->visitas("Listado");
 			$fecha_anio_atras=date('d-m-Y', strtotime('-360 day', strtotime(date("d-m-Y"))));
 	    	$fecha_hoy=date('d-m-Y');
 			$tecnicos=$this->Checklistftthmodel->listaTecnicos();
@@ -755,6 +755,9 @@ class checklistFTTH extends CI_Controller {
 
 
 			public function vistaGraficosChecklistFTTH(){
+
+				$this->visitas("Graficos");
+
 				if($this->input->is_ajax_request()){
 					$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 			    	$fecha_hoy=date('d-m-Y');
@@ -781,7 +784,7 @@ class checklistFTTH extends CI_Controller {
 	/**********FALLOS HERRAMIENTAS************/
 		
 		public function vistaFFTTH(){
-			$this->visitas("Checklist FTTH");
+			$this->visitas("Fallos");
 			$fecha_anio_atras=date('d-m-Y', strtotime('-360 day', strtotime(date("d-m-Y"))));
 	    	$fecha_hoy=date('d-m-Y');
 			$tecnicos=$this->Checklistftthmodel->listaTecnicosFFTTH();
@@ -889,6 +892,7 @@ class checklistFTTH extends CI_Controller {
 	/**********FALLOS GRAFICOS**************/
 
 		public function vistaGraficosFallosFTTH(){
+			$this->visitas("Graficos Fallos");
 			if($this->input->is_ajax_request()){
 				$desde=date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
 		    	$hasta=date('Y-m-d');

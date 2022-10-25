@@ -19,7 +19,7 @@ class Ast extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>8,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -113,7 +113,7 @@ class Ast extends CI_Controller {
 		}
 		
 		public function vistaAst(){
-			$this->visitas("Checklist");
+			$this->visitas("Listado");
 			$desde=date('d-m-Y', strtotime('-360 day', strtotime(date("d-m-Y"))));
 	    	$hasta=date('d-m-Y');
 			$tecnicos=$this->Astmodel->listaTecnicos();
@@ -650,7 +650,7 @@ class Ast extends CI_Controller {
 
 	/**********MANTENEDOR ACTIVIDADES ************/
 		public function vistaMantActividades(){
-			$this->visitas("AST");
+			$this->visitas("Mantenedor actividades");
 			$desde=date('d-m-Y', strtotime('-360 day', strtotime(date("d-m-Y"))));
 	    	$hasta=date('d-m-Y');
 			$actividades=$this->Astmodel->listaActividades();

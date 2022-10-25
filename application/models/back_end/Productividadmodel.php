@@ -713,6 +713,83 @@ class Productividadmodel extends CI_Model {
 		}
 
 
+		public function listaResumen2($desde,$hasta,$jefe,$trabajador){
+			$this->db->select("sha1(p.id) as hash,
+				p.id as id,
+				u.foto as foto,
+				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
+				a.area as area,
+				if(sum(puntaje)!=0, sum(puntaje) ,'') as total,
+				p.rut_tecnico as rut_tecnico,
+				if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%d-%m-%Y'),'') as 'fecha'");
+
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
+			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');
+
+			if($desde!="" and $hasta!=""){$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	}
+			$this->db->where('p.rut_tecnico', $trabajador);
+	     	/*	if($jefe!=""){	$this->db->where('u.id_jefe', $jefe);}*/
+
+			$this->db->order_by('u.nombres', 'asc');
+			$this->db->group_by('u.id');
+			$res=$this->db->get('productividad p');
+
+			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
+			$array = array();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp=array();
+
+					$temp["Zona"] = $key["area"];
+					$temp["foto"] = $key["foto"];
+					$temp["Trabajador"] = $key["trabajador"];
+					$dias = 0;
+					$puntajes = array();
+
+					foreach($array_fechas as $fecha){
+
+						$this->db->select("if(sum(puntaje)!=0,sum(puntaje),0)  as puntaje");
+						$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.$key["rut_tecnico"].'"');
+						$res2=$this->db->get('productividad');
+						
+						if($res2->num_rows()>0){
+							$puntaje=0;
+							foreach($res2->result_array() as $key2){
+								$puntaje = $puntaje+$key2["puntaje"];
+							}
+							
+							if($puntaje!=0){
+								$dias++;
+								$puntajes[] = $puntaje;
+							}
+
+							$temp[$this->fecha_to_str($fecha)] = round($puntaje,2);
+						}else{
+							$temp[$this->fecha_to_str($fecha)] = "";
+						}
+
+						$temp["Días"] = $dias;
+
+						$a = array_filter($puntajes);
+						if(count($a)) {
+						    $temp["Promedio"] = round(array_sum($a)/count($a),2);
+						}else{
+							$temp["Promedio"] = 0;
+						}
+							
+					}
+
+					$temp["Total"] = round($key["total"],2);
+					$array[]=$temp;
+				}
+
+				return $array;
+			}else{
+				return FALSE;
+			}
+
+		}
+
 
 		public function detalleResumen(){
 

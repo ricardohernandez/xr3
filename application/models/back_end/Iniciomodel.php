@@ -280,6 +280,56 @@ class InicioModel extends CI_Model {
 	    }
 	   
 
+	    public function dataVisitasHoy(){
+			$fecha_actual= date("Y-m-d");
+			$this->db->select('count(DISTINCT av.id_usuario) as usuarios,
+								count(av.id) as cantidad,
+							   a.nombre as aplicacion,
+							   a.descripcion as descripcion
+							   ');
+			$this->db->join('aplicaciones as a', 'a.id = av.id_aplicacion', 'left');
+			$this->db->order_by('cantidad', 'desc');
+			$this->db->group_by('av.id_aplicacion');
+			$this->db->where('av.fecha', date('Y-m-d', strtotime($fecha_actual. ' - 0 day')));
+			$res=$this->db->get('aplicaciones_visitas as av');
+			return $res->result_array();
+		}
+
+		public function dataVisitasAyer(){
+			$fecha_actual= date("Y-m-d");
+			$this->db->select('count(DISTINCT av.id_usuario) as usuarios,
+								count(av.id) as cantidad,
+							   a.nombre as aplicacion,
+							   a.descripcion as descripcion
+							   ');
+			$this->db->join('aplicaciones as a', 'a.id = av.id_aplicacion', 'left');
+			$this->db->order_by('cantidad', 'desc');
+			$this->db->group_by('av.id_aplicacion');
+			$this->db->where('av.fecha', date('Y-m-d', strtotime($fecha_actual. ' - 1 day')));
+			$res=$this->db->get('aplicaciones_visitas as av');
+			return $res->result_array();
+		}
+
+		public function totalVisitasHoy(){
+			$fecha_actual= date("Y-m-d");
+			$this->db->select('count(*) as visitas');
+			$this->db->where('fecha', date('Y-m-d', strtotime($fecha_actual. ' - 0 day')));
+			$res=$this->db->get('aplicaciones_visitas');
+			$row=$res->row_array();
+			return $row["visitas"];
+		}
+
+		public function totalVisitasAyer(){
+			$fecha_actual= date("Y-m-d");
+			$this->db->select('count(*) as visitas');
+			$this->db->where('fecha', date('Y-m-d', strtotime($fecha_actual. ' - 1 day')));
+			$res=$this->db->get('aplicaciones_visitas');
+			$row=$res->row_array();
+			return $row["visitas"];
+
+		}
+
+
 	/***************CRON***************************/
 
 		public function correoCumpleanios($fecha){

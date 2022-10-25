@@ -40,6 +40,7 @@
         $(".carga_categorias").html(data.categorias).fadeIn('500');    
         $(".cont_ingresos").html(data.ingresos).fadeIn('500');    
         $(".cont_cumpleanios").html(data.cumpleanios).fadeIn('500');    
+        $(".cont_visitas").html(data.visitas).fadeIn('500');    
         $(".cont_informaciones").html(data.informaciones).fadeIn('500');    
       },"json");
     }
@@ -115,27 +116,43 @@
 	              </div> 
 	            </div>
 
-            <!-- WIDGETS DERECHA -->
 
 	            <aside class="col-lg-4 sidebar sidebar--right">
 
-	         		<aside class="widget widget-popular-posts"> 
-		                <h4 class="widget-title">Cumpleaños</h4>
-		                <hr class="separador_titulo">
-		                <ul class="post-list-small post-list-small--1">
-		                  <li class="post-list-small__item cont_cumpleanios">
-		                  </li>
-		                </ul>
-	                </aside> 
+	         			<aside class="widget widget-popular-posts"> 
+	                <h4 class="widget-title">Cumpleaños</h4>
+	                <hr class="separador_titulo">
+	                <ul class="post-list-small post-list-small--1">
+	                  <li class="post-list-small__item cont_cumpleanios">
+	                  </li>
+	                </ul>
+                </aside> 
 
-	                <aside class="widget widget-popular-posts"> 
-		                <h4 class="widget-title">&Uacute;ltimos ingresos</h4>
-		                <hr class="separador_titulo">
-		                <ul class="post-list-small post-list-small--1">
-		                  <li class="post-list-small__item cont_ingresos">
-		                  </li>
-		                </ul>
-	                </aside> 
+		            <?php 
+		            if($this->session->userdata('perfil')<=3){
+		                ?>
+
+		                <aside class="widget widget-popular-posts">
+		                  <h4 class="widget-title">Visitas</h4>
+		                  <hr class="separador_titulo">
+		                  <ul class="post-list-small post-list-small--1">
+		                    <li class="post-list-small__item cont_visitas">
+		                    </li>
+		                  </ul>
+		                </aside> 
+		                <?php 
+		            }
+		            ?>
+		          
+
+                <aside class="widget widget-popular-posts"> 
+	                <h4 class="widget-title">&Uacute;ltimos ingresos</h4>
+	                <hr class="separador_titulo">
+	                <ul class="post-list-small post-list-small--1">
+	                  <li class="post-list-small__item cont_ingresos">
+	                  </li>
+	                </ul>
+                </aside> 
                
 	            </aside>
 		    </div>

@@ -40,7 +40,7 @@ class Ticket extends CI_Controller {
 	}
 
 	public function index(){
-		$this->visitas("Ticket");
+		/*$this->visitas("Ticket");*/
     	$this->acceso();
 	    $datos = array(
 	        'titulo' => "Ticket",

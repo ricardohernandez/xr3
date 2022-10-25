@@ -16,7 +16,7 @@ class Productividad extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>12,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -51,7 +51,7 @@ class Productividad extends CI_Controller {
 		}
 
 		public function vistaDetalle(){
-			$this->visitas("Productividad detalle");
+			$this->visitas("detalle");
 			if($this->input->is_ajax_request()){
 				if(date("d")>"24"){
 					$desde_actual = date('d-m-Y', strtotime(date('Y-m-25')));
@@ -236,7 +236,7 @@ class Productividad extends CI_Controller {
 		}	
 
 		public function vistaGraficosProd(){
-			$this->visitas("Productividad graficos");
+			$this->visitas("Graficos");
 			if($this->input->is_ajax_request()){
 
 				if(date("d")>"24"){
@@ -409,7 +409,7 @@ class Productividad extends CI_Controller {
 
 
 		public function vistaResumen(){
-			$this->visitas("Productividad resumen");
+			$this->visitas("resumen");
 			if($this->input->is_ajax_request()){
 				$datos=array(	
 			        'jefes' => $this->Productividadmodel->listaJefes(),
@@ -438,20 +438,37 @@ class Productividad extends CI_Controller {
 			/*echo "<pre>";
 			print_r($data);exit;*/
 
+			$puntajes = array();
 			foreach($data as $dato){
 				$temp = array();
 				$temp["Zona"] = $dato["area"];
 				$temp["Trabajador"] = $dato["trabajador"];
-				$temp["Promedio"] = $dato["promedio"];
+				/*$temp["Promedio"] = $dato["promedio"];*/
 				$temp["Total"] = $dato["total"];
 				$temp["Días"] = $dato["dias"];
 				$dias = $this->Productividadmodel->detalleDiarioProductividad(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$dato["rut_tecnico"],$jefe);
 
+				/*$promedio =*/
 				foreach($dias as $dia){
 					$temp[fecha_to_str($dia["fecha"])] = $dia["puntos"];
+					
+					if($dia["puntos"]!=0){
+						$puntajes[] = $dia["puntos"];
+					}
+
+					/*$puntaje = $puntaje+$dia["puntos"];*/
+				}
+
+				$a = array_filter($puntajes);
+				if(count($a)) {
+				    $temp["Promedio"] = round(array_sum($a)/count($a),2);
+				}else{
+					$temp["Promedio"] = 0;
 				}
 
 				$array[] = $temp;
+
+				$puntajes = [];
 			}
 
 			echo json_encode(array(

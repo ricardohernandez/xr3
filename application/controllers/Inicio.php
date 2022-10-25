@@ -299,6 +299,8 @@ class Inicio extends CI_Controller {
 			$ingresos = $this->Iniciomodel->cargaIngresos();
 			$informaciones = $this->Iniciomodel->cargaInformaciones();
 			$cumpleanios = $this->Iniciomodel->cargaCumpleanios();
+			$visitas_hoy = $this->Iniciomodel->dataVisitasHoy();
+			$visitas_ayer = $this->Iniciomodel->dataVisitasAyer();
 
 		    echo json_encode(array(
 		    	"noticias" => $this->load->view('front_end/widgets/noticias',array("noticias"=>$noticias),TRUE),
@@ -306,7 +308,13 @@ class Inicio extends CI_Controller {
 		    	"categorias" => $this->load->view('front_end/widgets/menu_categorias',array("categorias"=>$categorias),TRUE),
 		    	"ingresos" => $this->load->view('front_end/widgets/ultimos_ingresos',array("ingresos"=>$ingresos),TRUE),
 		    	"informaciones" => $this->load->view('front_end/widgets/informaciones',array("informaciones"=>$informaciones),TRUE),
-
+		    	"visitas" => $this->load->view('front_end/widgets/visitas',
+		    		array(
+		    			"visitas_hoy"=>$visitas_hoy,
+		    			"visitas_ayer"=>$visitas_ayer,
+		    			"totalVisitasHoy"=>$this->Iniciomodel->totalVisitasHoy(),
+		    			"totalVisitasAyer"=>$this->Iniciomodel->totalVisitasAyer()
+		    			),TRUE),
 		    ));exit;
 
 		}

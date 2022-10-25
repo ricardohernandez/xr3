@@ -129,7 +129,7 @@
 					        <?php  
 			          			if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
 		         	    ?>
-		          			<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
+		          			<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a></li>
 		          		<?php
 					          }
 					        ?>
@@ -263,7 +263,7 @@
 						        <?php  
 			          			if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
 			         	    ?>
-		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes </a></li>
+		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a></li>
 		          		 	<?php
 						          }
 						        ?>

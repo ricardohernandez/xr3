@@ -16,7 +16,7 @@ class Calidad extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>11,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -52,7 +52,7 @@ class Calidad extends CI_Controller {
 
 		public function vistaCalidad(){
 
-			$this->visitas("Calidad");
+			$this->visitas("Listado");
 			if($this->input->is_ajax_request()){
 
 				if(date("d")>"24"){

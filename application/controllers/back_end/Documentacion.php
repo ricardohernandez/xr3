@@ -13,10 +13,10 @@ class Documentacion extends CI_Controller {
 		$this->load->library('user_agent');
 	}
 
-	public function visitas($modulo){
+	public function visitas($modulo,$id_aplicacion){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>$id_aplicacion,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -24,6 +24,8 @@ class Documentacion extends CI_Controller {
     	);
     	$this->Documentacionmodel->insertarVisita($data);
 	}
+
+
 
 	public function checkLogin(){
 		// if($this->session->userdata('rutUsuario')==""){
@@ -51,7 +53,7 @@ class Documentacion extends CI_Controller {
 		}
 
 		public function vistaCapacitacion(){
-			$this->visitas("c");
+			$this->visitas("Inicio",2);
 			if($this->input->is_ajax_request()){
 				$datos=array(	
 			    );
@@ -208,7 +210,7 @@ class Documentacion extends CI_Controller {
 		}
 		
 		public function vistaReportes(){
-			$this->visitas("reportes");
+			$this->visitas("Inicio",4);
 			if($this->input->is_ajax_request()){
 				$datos=array();
 				$this->load->view('back_end/documentacion/reportes',$datos);
@@ -364,7 +366,7 @@ class Documentacion extends CI_Controller {
 		}
 
 		public function vistaPrevencion(){
-			$this->visitas("Prevencion");
+			$this->visitas("Inicio",3);
 			if($this->input->is_ajax_request()){
 				$datos=array();
 				$this->load->view('back_end/documentacion/prevencion_riesgos',$datos);

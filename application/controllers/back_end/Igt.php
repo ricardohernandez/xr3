@@ -32,7 +32,7 @@ class Igt extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>10,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -43,7 +43,6 @@ class Igt extends CI_Controller {
 
 	public function index(){
 		$this->acceso();
-		$this->visitas("IGT");
 	    $datos = array(
 	        'titulo' => "IGT - Indicadores de gestión del técnico",
 	        'contenido' => "igt/inicio",
@@ -53,7 +52,7 @@ class Igt extends CI_Controller {
 	}
 
     public function getIgtInicio(){
-		$this->visitas("IGT");
+		$this->visitas("Inicio");
 		if($this->input->is_ajax_request()){
 
 			if(date("d")>"24"){

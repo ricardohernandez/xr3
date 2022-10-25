@@ -15,7 +15,7 @@ class Cao extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>9,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -38,7 +38,7 @@ class Cao extends CI_Controller {
 	}
 
 	public function index(){
-		$this->visitas("CAO");
+		
     	$this->acceso();
 	    $datos = array(
 	        'titulo' => "CAO (Control de asistencia operacional)",
@@ -51,6 +51,7 @@ class Cao extends CI_Controller {
 
     public function vistaTurnos(){
 		if($this->input->is_ajax_request()){
+			$this->visitas("Listado");
 			$desde=date('Y-m-d', strtotime('-10 day', strtotime(date("d-m-Y"))));
 			$hasta=date('Y-m-d', strtotime('+30 day', strtotime(date("d-m-Y"))));
 	    	/*$hasta=date('Y-m-d');*/
@@ -291,6 +292,8 @@ class Cao extends CI_Controller {
 	/*****LICENCIAS*******/
 
 		public function vistaLicencias(){
+			$this->visitas("Licencias");
+
 			if($this->input->is_ajax_request()){
 				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 		    	$fecha_hoy=date('d-m-Y');
@@ -507,6 +510,7 @@ class Cao extends CI_Controller {
 	/******VACACIONES*********/
 
 		public function vistaVacaciones(){
+			$this->visitas("Vacaciones");
 			if($this->input->is_ajax_request()){
 				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 		    	$fecha_hoy=date('d-m-Y');
@@ -723,6 +727,7 @@ class Cao extends CI_Controller {
 	/******MANTENEDOR TURNOS*********/
 
 		public function vistaMantenedorTurnos(){
+			$this->visitas("Turnos");
 			if($this->input->is_ajax_request()){
 				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 		    	$fecha_hoy=date('d-m-Y');
