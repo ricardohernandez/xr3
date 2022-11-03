@@ -687,8 +687,28 @@
                     <option value="" selected>Seleccione...</option>
                         <?php 
                         foreach($tecnicos as $t){
+
+                          if($this->session->userdata('id_perfil')>3){
+
+                            if($this->session->userdata('id') == $t["id"]){
+                              ?>  
+                                 <option selected value="<?php echo $t["id"]; ?>"><?php echo $t["nombre_completo"]; ?></option>
+                              <?php
+                            }else{
+                              ?>
+                                 <option  value="<?php echo $t["id"]; ?>"><?php echo $t["nombre_completo"]; ?></option>
+                              <?php
+                            }
+                            ?>
+                            <?php
+
+                          }else{
+                            ?>
+                             <option value="<?php echo $t["id"]; ?>"><?php echo $t["nombre_completo"]; ?></option>
+                            <?php
+                          }
                           ?>
-                            <option value="<?php echo $t["id"]; ?>"><?php echo $t["nombre_completo"]; ?></option>
+                           
                           <?php
                         }
                       ?>
