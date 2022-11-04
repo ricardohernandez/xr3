@@ -326,6 +326,13 @@
 	$route['eliminaMantChecklistFTTH'] = "back_end/mantenedores/checklistFTTH/eliminaMantChecklistFTTH";
 	$route['excelMantChecklistFTTH/(:any)'] = "back_end/mantenedores/checklistFTTH/excelMantChecklistFTTH/$1";
 	
+	$route['mantenedor_metas_igt'] = "back_end/mantenedores/metasIgt/index";
+	$route['vistaMetasIgt'] = "back_end/mantenedores/metasIgt/vistaMetasIgt";
+	$route['listaMetasIgt'] = "back_end/mantenedores/metasIgt/listaMetasIgt";
+	$route['getDataMetasIgt'] = "back_end/mantenedores/metasIgt/getDataMetasIgt";
+	$route['formMetasIgt'] = "back_end/mantenedores/metasIgt/formMetasIgt";
+	$route['eliminaMetasIgt'] = "back_end/mantenedores/metasIgt/eliminaMetasIgt";
+	$route['actualizarMetaActual'] = "back_end/mantenedores/metasIgt/actualizarMetaActual";
 
 
 /* End of file routes.php */

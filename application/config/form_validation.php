@@ -164,6 +164,31 @@ $config = array(
             ),
 
 
+            'formMetasIgt' => array(
+               array(
+                     'field'   => 'nivel',
+                     'label'   => 'Nivel',
+                     'rules'   => 'trim|required'
+                    ),
+
+               array(
+                     'field'   => 'indicador',
+                     'label'   => 'Indicador',
+                     'rules'   => 'trim|required'
+                    ),
+               array(
+                     'field'   => 'meta_actual',
+                     'label'   => 'Met actual',
+                     'rules'   => 'trim|required'
+                    ),
+               array(
+                     'field'   => 'meta_anterior',
+                     'label'   => 'Meta anterior',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+            
+
             'nuevaNoticiaAdmin' => array(
                array(
                      'field'   => 'hash',

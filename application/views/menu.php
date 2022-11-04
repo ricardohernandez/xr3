@@ -206,6 +206,7 @@
 	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Checklist Herramientas</a></li>
 	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_hfc"> Checklist HFC</a></li>
 	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_ftth"> Checklist HFC</a></li>
+	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_metas_igt"> Metas IGT</a></li>
 	                    <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
 	                </ul>
 	              </li>
@@ -343,6 +344,7 @@
  			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas">Checklist Herramientas</a></li>
 			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_hfc">Checklist HFC</a></li>
 			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_ftth">Checklist FTTH</a></li>
+			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_metas_igt">Metas IGT</a></li>
 			              				<li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
                           </ul>
                       </li>
