@@ -54,6 +54,8 @@
        vistaCapacitacion()
     }else if(part[cont]=="reportes"){ 
        vistaReportes()
+    }else if(part[cont]=="datas_mandante"){ 
+       vistaDatas()
     }
 
     
@@ -70,6 +72,11 @@
     $(document).off('click', '#menu_prevencion').on('click', '#menu_prevencion',function(event) {
       event.preventDefault();
       vistaPrevencion()
+    });
+
+    $(document).off('click', '#menu_datas').on('click', '#menu_datas',function(event) {
+      event.preventDefault();
+      vistaDatas()
     });
 
 
@@ -115,6 +122,21 @@
       window.history.replaceState('statedata', 'title', 'prevencion_riesgos');
     }
 
+
+    function vistaDatas(){
+      $("#menu_datas").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_datas").addClass('menuActivo');  
+
+      $.get(base_url+"vistaDatas", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_datas").removeClass('disabled_sub');
+      });
+
+      window.history.replaceState('statedata', 'title', 'datas_mandante');
+    }
+
   
 
 
@@ -132,14 +154,19 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_capacitacion" class="active"><a> <i class="fa fa-list-alt"></i> Capacitación </a></li>   
-         
+          
           <?php  
+             if($this->session->userdata('id_perfil')<=3){
+            ?>
+              <li id="menu_datas" class="active"><a> <i class="fa fa-list-alt"></i> Datas mandante </a></li>   
+            <?php
+          }
+
           if($this->session->userdata('id_perfil')<=3){
             ?>
               <li id="menu_prevencion" class="active"><a> <i class="fa fa-list-alt"></i> Prevención riesgos </a></li>   
             <?php
           }
-
 
           if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
             ?>

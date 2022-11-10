@@ -332,6 +332,15 @@ $config = array(
             ),
 
 
+            'formIngresoDatas' => array(
+               array(
+                     'field'   => 'nombre_archivo',
+                     'label'   => 'Nombre de archivo',
+                     'rules'   => 'trim|required'
+                    )
+            ),
+
+
             'formResponsablesFallosHerramientas' => array(
                array(
                      'field'   => 'item_fallos',

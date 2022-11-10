@@ -52,6 +52,7 @@
 	$route['listaTrabajadoresIGT'] = "back_end/igt/listaTrabajadoresIGT";
 	$route['dataGraficosIgt'] = "back_end/igt/dataGraficosIgt";
 
+/*******DOCUMENTACION*******/
 
 	$route['documentacion/capacitacion'] = "back_end/documentacion/indexCapacitacion";
 	$route['vistaCapacitacion'] = "back_end/documentacion/vistaCapacitacion";
@@ -73,6 +74,14 @@
 	$route['getDataRegistroPrevencion'] = "back_end/documentacion/getDataRegistroPrevencion";
 	$route['formIngresoPrevencion'] = "back_end/documentacion/formIngresoPrevencion";
 	$route['eliminaPrevencion'] = "back_end/documentacion/eliminaPrevencion";
+
+	$route['documentacion/datas_mandante'] = "back_end/documentacion/indexDatas";
+	$route['vistaDatas'] = "back_end/documentacion/vistaDatas";
+	$route['getDatasList'] = "back_end/documentacion/getDatasList";
+	$route['getDataRegistroDatas'] = "back_end/documentacion/getDataRegistroDatas";
+	$route['formIngresoDatas'] = "back_end/documentacion/formIngresoDatas";
+	$route['eliminaDatas'] = "back_end/documentacion/eliminaDatas";
+
 
 /*******AST*******/
 

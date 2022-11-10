@@ -735,9 +735,9 @@
             <th class="centered">Celular personal</th> 
             <th class="centered">Correo empresa</th> 
             <th class="centered">Correo personal</th> 
-            <th class="centered">Fecha_nacimiento</th> 
-            <th class="centered">Fecha_ingreso</th> 
-            <th class="centered">Fecha_salida</th> 
+            <th class="centered">Fecha nacimiento</th> 
+            <th class="centered">Fecha ingreso</th> 
+            <th class="centered">Fecha salida</th> 
             <th class="centered">Perfil</th> 
             <th class="centered">Talla zapato</th> 
             <th class="centered">Talla pantalon</th> 

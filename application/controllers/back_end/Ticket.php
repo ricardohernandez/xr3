@@ -175,7 +175,7 @@ class Ticket extends CI_Controller {
 				$copias=array("ricardo.hernandez@km-t.cl");
 				$this->email->from("soporteplataforma@xr3t.cl","Soporte plataforma XR3");
 			}else{
-				$para=array("german.cortes@km-telecomunicaciones.cl","ricardo.hernandez@km-telecomunicaciones.cl");
+				$para=array("german.cortes@km-telecomunicaciones.cl","ricardo.hernandez@km-telecomunicaciones.cl","sebastian.celis@splice.cl");
 				$copias=array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
 				$this->email->from("soporteplataforma@xr3t.cl","Soporte plataforma XR3");
 			}

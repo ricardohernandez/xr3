@@ -121,6 +121,7 @@
 	          		 	<?php  
 		          			if($this->session->userdata('id_perfil')<=3){
 		         	    ?>
+		          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante </a></li>
 		          		 	<li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n de riesgos </a></li>
 		          		<?php
 					          }
@@ -256,6 +257,7 @@
 	          		    <?php  
 			          			if($this->session->userdata('id_perfil')<=3){
 			         	    ?>
+		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante</a></li>
 		          		 		<li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n riesgos </a></li>
 		          		 	<?php
 						          }

@@ -24,17 +24,20 @@ class Usuariosmodel extends CI_Model {
 				CONCAT(u2.nombres,' ',u2.apellidos)  'jefe',
 				uc.cargo as cargo,
 				ua.area as area,
-			    if(u.fecha_nacimiento!='1970-01-01' and u.fecha_nacimiento!='0000-00-00',DATE_FORMAT(u.fecha_nacimiento,'%d-%m-%Y'),'') as 'fecha_nacimiento',
-				if(u.fecha_ingreso!='1970-01-01' and u.fecha_ingreso!='0000-00-00',DATE_FORMAT(u.fecha_ingreso,'%d-%m-%Y'),'') as 'fecha_ingreso',
-				if(u.fecha_salida!='1970-01-01' and u.fecha_salida!='0000-00-00',DATE_FORMAT(u.fecha_salida,'%d-%m-%Y'),'') as 'fecha_salida',
+			    if(u.fecha_nacimiento!='1970-01-01' and u.fecha_nacimiento!='0000-00-00',DATE_FORMAT(u.fecha_nacimiento,'%Y-%m-%d'),'') as 'fecha_nacimiento',
+				if(u.fecha_ingreso!='1970-01-01' and u.fecha_ingreso!='0000-00-00',DATE_FORMAT(u.fecha_ingreso,'%Y-%m-%d'),'') as 'fecha_ingreso',
+				if(u.fecha_salida!='1970-01-01' and u.fecha_salida!='0000-00-00',DATE_FORMAT(u.fecha_salida,'%Y-%m-%d'),'') as 'fecha_salida',
 				CASE 
 		          WHEN u.estado=1 THEN 'Activo'
 		          WHEN u.estado=0 THEN 'Baja'
 		          ELSE ''
 		        END AS estado_str,			
 		        utn.nivel as nivel_tecnico
-				");
-			
+			");
+
+				
+
+
 			$this->db->join('usuarios_perfiles as up', 'up.id = u.id_perfil', 'left');
 			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			
