@@ -56,6 +56,7 @@ class Igtmodel extends CI_Model {
 	public function getIdTecnico($rut){
 		$this->db->select('id');
 		$this->db->where('rut', $rut);
+		$this->db->where('estado', 1);
 		$res = $this->db->get('usuarios');
 	
 		if($res->num_rows()>0){
@@ -130,6 +131,19 @@ class Igtmodel extends CI_Model {
 		    	return FALSE;
 			}
 		}
+
+		public function porcentajeProduccionFTTH($mes,$trabajador){
+			$this->db->select('porcentaje_produccion_ftth');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);	
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				$row = $res->row_array();
+				return $row["porcentaje_produccion_ftth"];
+			}
+			return FALSE;
+		}
+
 
 		/*public function dataPromFTTH($desde,$hasta,$trabajador){
 			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
@@ -239,6 +253,43 @@ class Igtmodel extends CI_Model {
 			}
 		}
 
+		public function porcentajeProduccionHFC($mes,$trabajador){
+			$this->db->select('porcentaje_produccion_hfc');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);	
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				$row = $res->row_array();
+				return $row["porcentaje_produccion_hfc"];
+			}
+			return FALSE;
+		}
+
+		public function porcentajeCalidadHFC($mes,$trabajador){
+			$this->db->select('porcentaje_calidad_hfc');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);	
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				$row = $res->row_array();
+				return $row["porcentaje_calidad_hfc"];
+			}
+			return FALSE;
+		}
+
+		public function porcentajeCalidadFTTH($mes,$trabajador){
+			$this->db->select('porcentaje_calidad_ftth');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);	
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				$row = $res->row_array();
+				return $row["porcentaje_calidad_ftth"];
+			}
+			return FALSE;
+		}
+
+
 		/*public function dataPromHFC($desde,$hasta,$trabajador,$tipo){
 			$this->db->select("sha1(p.id) as hash,
 				p.id as id,
@@ -340,7 +391,33 @@ class Igtmodel extends CI_Model {
 
 	/**************DIAS TRABAJADOS*********************/
 
-		public function dataDiasTrabajados($mes,$trabajador){
+		public function dataDiasTrabajadosHFC($mes,$trabajador){
+			$this->db->select('dias_produccion_hfc');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["dias_produccion_hfc"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["dias_produccion_hfc"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
+			}
+		}
+
+		public function dataAsistencia($mes,$trabajador){
 			$this->db->select('indice_asistencia');
 			$this->db->where('id_tecnico', $trabajador);
 			$this->db->where('mes', $mes);
@@ -366,6 +443,33 @@ class Igtmodel extends CI_Model {
 			}
 		}
 		
+
+		public function dataDiasTrabajadosFTTH($mes,$trabajador){
+			$this->db->select('dias_produccion_ftth');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["dias_produccion_ftth"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["dias_produccion_ftth"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
+			}
+		}
+		
 		
 
 
@@ -380,9 +484,9 @@ class Igtmodel extends CI_Model {
 				
 				foreach($res->result_array() as $key){
 					
-					if($key["calidad_hfc"]==0){
+					/*if($key["calidad_hfc"]==0){
 						return FALSE;
-					}
+					}*/
 
 					$temp = array();
 					$temp[] = array("Label","Value"); 
@@ -404,14 +508,15 @@ class Igtmodel extends CI_Model {
 			$this->db->select('calidad_ftth');
 			$this->db->where('id_tecnico', $trabajador);
 			$this->db->where('mes', $mes);
-			$res = $this->db->get('tecnicos_indicadores');
+			$res = $this->db->get('tecnicos_indicadores',1);
+			/*echo $this->db->last_query();*/
 			if($res->num_rows()>0){
 				
 				foreach($res->result_array() as $key){
 					
-					if($key["calidad_ftth"]==0){
+					/*if($key["calidad_ftth"]==0){
 						return FALSE;
-					}
+					}*/
 
 					$temp = array();
 					$temp[] = array("Label","Value"); 

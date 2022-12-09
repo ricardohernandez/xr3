@@ -202,7 +202,14 @@
 
               const value = json.data_prom_ftth.data[1][1]
               const meta = json.data_prom_ftth.meta
-              const diff = Math.abs(meta-value)
+
+              const cumplimiento = json.data_prom_ftth.cumplimiento
+
+              $(".meta_calidad_hfc").html(` Meta : ${json.data_prom_ftth.meta}`)  
+              $(".meta_prom_ftth_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+
+             /* const diff = Math.abs(meta-value)
 
               $(".meta_prom_ftth").html(`Meta : ${json.data_prom_ftth.meta}`)
               if(value>=meta){
@@ -211,7 +218,7 @@
               }else{
                 $(".meta_prom_ftth_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
                 $(".meta_prom_ftth_green").html("").hide()
-              }
+              }*/
 
               $(".prom_ftth").show()
             }else{
@@ -290,7 +297,12 @@
 
               const value = json.data_prom_hfc.data[1][1]
               const meta = json.data_prom_hfc.meta
-              const diff = Math.abs(meta-value)
+              const cumplimiento = json.data_prom_hfc.cumplimiento
+
+              $(".meta_prom_hfc").html(` Meta : ${json.data_prom_hfc.meta}`)  
+              $(".meta_prom_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+             /* const diff = Math.abs(meta-value)
 
               $(".meta_prom_hfc").html(` Meta : ${json.data_prom_hfc.meta}`)
               if(value>=meta){
@@ -299,7 +311,7 @@
               }else{
                 $(".meta_prom_hfc_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
                 $(".meta_prom_hfc_green").html("").hide()
-              }
+              }*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_prom_hfc'));
               chart.draw(data_prom_periodo, options);
@@ -314,49 +326,112 @@
 
           // GRAFICO DIAS TRABAJADOS
 
-            if(json.hasOwnProperty("data_dias")){
 
-              $("#dias_trabajados").text(json.data_dias.data.dias).show()
-              $(".dias_trabajados").show()
+            if(json.hasOwnProperty("data_dias_hfc")  && json.data_dias_hfc.data!=false){
 
-              var data_dias = google.visualization.arrayToDataTable(json.data_dias.data);
+              $("#dias_trabajados_hfc").text(json.data_dias_hfc.data).show()
+              $(".dias_trabajados_hfc").show()
+
+              var data_dias = google.visualization.arrayToDataTable(json.data_dias_hfc.data);
+           
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_dias.meta,
+                max: json.data_dias_hfc.meta,
                 redFrom:15,
                 redTo:18,
                 yellowFrom:18,
-                yellowTo: json.data_dias.meta,
-                greenFrom: json.data_dias.meta,
-                greenTo:json.data_dias.meta+1,
+                yellowTo: json.data_dias_hfc.meta,
+                greenFrom: json.data_dias_hfc.meta,
+                greenTo:json.data_dias_hfc.meta+1,
                 minorTicks: 5,
               };
 
-              const value = json.data_dias.data[1][1]
-              const meta = json.data_dias.meta
-              const diff = Math.abs(meta-value)
+              const value = json.data_dias_hfc.data[1][1]
+              const meta = json.data_dias_hfc.meta
+              
+              $(".meta_dias_trabajados_hfc").html(` Meta : ${json.data_dias_hfc.meta}`)  
+              $(".meta_dias_trabajados_hfc_green").html(`${value} <i class="fa-solid "></i>%`).show()
 
-              $(".meta_dias_trabajados").html(` Meta : ${json.data_dias.meta}`)
-              if(value>=meta){
-                $(".meta_dias_trabajados_green").html(`+${diff} <i class="fa-solid fa-up-long"></i>`).show()
-                $(".meta_dias_trabajados_red").html("").hide()
-              }else{
-                $(".meta_dias_trabajados_red").html(`-${diff} <i class="fa-solid fa-down-long"></i>`).show()
-                $(".meta_dias_trabajados_green").html("").hide()
-              }
-
-              var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados'));
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados_hfc'));
               chart.draw(data_dias, options);
 
-              $(".dias_trabajados").show()
+              $(".dias_trabajados_hfc").show()
               
             }else{
-              $(".dias_trabajados").hide()
-              /*$("#grafico_dias_trabajados").html("<span class='titulo_seccion'>No aplica</span>")
-              $(".meta_dias_trabajados_red").html("")
-              $(".meta_dias_trabajados_green ").html("")*/
+              $(".dias_trabajados_hfc").hide()
             }
+
+
+            if(json.hasOwnProperty("data_dias_ftth") && json.data_dias_ftth.data!=false){
+
+              $("#dias_trabajados_ftth").text(json.data_dias_ftth.data.dias).show()
+              $(".dias_trabajados_ftth").show()
+
+              var data_dias = google.visualization.arrayToDataTable(json.data_dias_ftth.data);
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_dias_ftth.meta,
+                redFrom:15,
+                redTo:18,
+                yellowFrom:18,
+                yellowTo: json.data_dias_ftth.meta,
+                greenFrom: json.data_dias_ftth.meta,
+                greenTo:json.data_dias_ftth.meta+1,
+                minorTicks: 5,
+              };
+
+              const value = json.data_dias_ftth.data[1][1]
+              const meta = json.data_dias_ftth.meta
+              $(".meta_dias_trabajados_ftth_green").html(`${value} <i class="fa-solid "></i>%`).show()
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados_ftth'));
+              chart.draw(data_dias, options);
+
+              $(".dias_trabajados_ftth").show()
+              
+            }else{
+              $(".dias_trabajados_ftth").hide()
+            }
+
+
+            if(json.hasOwnProperty("data_asistencia")){
+
+              $("#asistencia").text(json.data_dias_hfc.data).show()
+              $(".asistencia").show()
+
+              var data_dias = google.visualization.arrayToDataTable(json.data_asistencia.data);
+           
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_asistencia.meta,
+                redFrom:15,
+                redTo:18,
+                yellowFrom:18,
+                yellowTo: json.data_asistencia.meta,
+                greenFrom: json.data_asistencia.meta,
+                greenTo:json.data_asistencia.meta+1,
+                minorTicks: 5,
+              };
+
+              const value = json.data_asistencia.data[1][1]
+              const meta = json.data_asistencia.meta
+              
+              $(".meta_asistencia").html(` Meta : ${json.data_asistencia.meta}`)  
+              $(".meta_asistencia_green").html(`${value} <i class="fa-solid "></i>%`).show()
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_asistencia'));
+              chart.draw(data_dias, options);
+
+              $(".asistencia").show()
+              
+            }else{
+              $(".asistencia").hide()
+            }
+
+
 
           // GRAFICO CALIDAD HFC 
 
@@ -379,7 +454,13 @@
 
               const value = json.data_calidad_hfc.data[1][1]
               const meta = json.data_calidad_hfc.meta
-              const diff = Math.abs(meta-value)
+              const cumplimiento = json.data_calidad_hfc.cumplimiento
+
+
+              $(".meta_calidad_hfc").html(` Meta : ${json.data_prom_hfc.meta}`)  
+              $(".meta_calidad_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+              /*const diff = Math.abs(meta-value)
 
               $(".meta_calidad_hfc").html(` Meta : ${json.data_calidad_hfc.meta}%`)
             
@@ -390,7 +471,7 @@
               }else{
                 $(".meta_calidad_hfc_red").html(`${diff.toFixed(1)} % <i class="fa-solid fa-down-long"></i>`).show()
                 $(".meta_calidad_hfc_green").html("").hide()
-              }
+              }*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_calidad_hfc'));
               chart.draw(calidad_hfc, options);
@@ -426,7 +507,14 @@
 
               const value = json.data_calidad_ftth.data[1][1]
               const meta = json.data_calidad_ftth.meta
-              const diff = Math.abs(meta-value)
+
+              const cumplimiento = json.data_calidad_ftth.cumplimiento
+
+              $(".meta_calidad_ftth").html(` Meta : ${json.data_calidad_ftth.meta}`)  
+              $(".meta_calidad_ftth_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+
+              /*const diff = Math.abs(meta-value)
 
               $(".meta_calidad_ftth").html(` Meta : ${json.data_calidad_ftth.meta}%`)
 
@@ -436,7 +524,7 @@
               }else{
                 $(".meta_calidad_ftth_red").html(`-${diff.toFixed(1)} % <i class="fa-solid fa-down-long"></i>`).show()
                 $(".meta_calidad_ftth_green").html("").hide()
-              }
+              }*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_calidad_ftth'));
               chart.draw(calidad_ftth, options);
@@ -474,16 +562,20 @@
 
               const value = json.data_declaracion_ot.data[1][1]
               const meta = json.data_declaracion_ot.meta
-              const diff = Math.abs(meta-value).toFixed(1)
+
+              $(".meta_declaracion_ot_green").html(`${value}% <i class="fa-solid "></i>`).show()
+
+             /* const diff = Math.abs(meta-value).toFixed(1)
 
               $(".meta_declaracion_ot").html(` Meta : ${json.data_declaracion_ot.meta}%`)
+             
               if(value>=meta){
-                $(".meta_declaracion_ot_green").html(`+${diff} <i class="fa-solid fa-up-long"></i>`).show()
+                $(".meta_declaracion_ot_green").html(`${diff} <i class="fa-solid "></i>`).show()
                 $(".meta_declaracion_ot_red").html("").hide()
               }else{
-                $(".meta_declaracion_ot_red").html(`-${diff} <i class="fa-solid fa-down-long"></i>`).show()
+                $(".meta_declaracion_ot_red").html(`-${diff} <i class="fa-solid "></i>`).show()
                 $(".meta_declaracion_ot_green").html("").hide()
-              }
+              }*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_declaracion_ot'));
               chart.draw(declaracion_ot, options);
@@ -1598,8 +1690,8 @@
             <center><div id="grafico_prom_hfc" class="gauge"></div></center>
           </div>
           <div class="card-footer card_dash">
-            <span class="meta_prom_hfc_green green" style="display: none;"></span> 
-            <span class="meta_prom_hfc_red red2" style="display: none;"> </span> 
+            <span class="meta_prom_hfc_green " style="display: none;"></span> <!-- green -->
+            <span class="meta_prom_hfc_red " style="display: none;"> </span><!--  red2 -->
           </div>
         </div>
       </div>
@@ -1613,26 +1705,58 @@
             <center><div id="grafico_calidad_hfc" class="gauge"></div></center>
           </div>
           <div class="card-footer card_dash">
-            <span class="meta_calidad_hfc_green green" style="display: none;"></span> 
+            <span class="meta_calidad_hfc_green " style="display: none;"></span> 
             <span class="meta_calidad_hfc_red red2" style="display: none;"> </span> 
           </div>
         </div>
       </div>
 
-      <div class="col-6 col-lg dias_trabajados mb-2">
+      <div class="col-6 col-lg dias_trabajados_ftth mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
-            Días háb. trabajados <span class="meta_dias_trabajados"></span>
+            Días háb. trabajados FTTH <span class="meta_dias_trabajados_ftth"></span>
           </div>
           <div class="card-body">
-            <center><div id="grafico_dias_trabajados" class="gauge"></div></center>
+            <center><div id="grafico_dias_trabajados_ftth" class="gauge"></div></center>
           </div>
           <div class="card-footer card_dash">
-            <span class="meta_dias_trabajados_green green" style="display: none;"></span> 
+            <span class="meta_dias_trabajados_ftth_green " style="display: none;"></span> 
             <span class="meta_dias_trabajados_red red2" style="display: none;"> </span> 
           </div>
         </div>
       </div>
+
+
+       <div class="col-6 col-lg dias_trabajados mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            Días háb. trabajados HFC<span class="meta_dias_trabajados_hfc"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_dias_trabajados_hfc" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_dias_trabajados_hfc_green" style="display: none;"></span> 
+            <span class="meta_dias_trabajados_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg asistencia mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+            % Asistencia <span class="meta_asistencia"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_asistencia" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_asistencia_green " style="display: none;"></span> 
+            <span class="meta_asistencia_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
 
       <div class="col-6 col-lg declaracion_ot mb-2">
         <div class="card text-center">
@@ -1643,7 +1767,7 @@
             <center><div id="grafico_declaracion_ot" class="gauge"></div></center>
           </div>
           <div class="card-footer card_dash">
-            <span class="meta_declaracion_ot_green green" style="display: none;"></span> 
+            <span class="meta_declaracion_ot_green " style="display: none;"></span> 
             <span class="meta_declaracion_ot_red red2" style="display: none;"> </span> 
           </div>
         </div>
