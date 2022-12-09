@@ -16,6 +16,7 @@ class Igtmodel extends CI_Model {
 	public function getPerfilTecnico($rut){
 		$this->db->select('id_nivel_tecnico');
 		$this->db->where('rut', $rut);
+		$this->db->where('estado', 1);
 		$res = $this->db->get('usuarios');
 		if($res->num_rows()>0){
 			$row = $res->row_array();
@@ -31,6 +32,43 @@ class Igtmodel extends CI_Model {
 		if($res->num_rows()>0){
 			$row = $res->row_array();
 			return $row["foto"];
+		}
+		return FALSE;
+	}
+
+	public function existeMes($mes){
+		$this->db->where('mes', $mes);
+		$res = $this->db->get('tecnicos_indicadores');
+
+		if($res->num_rows()>0){
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	public function borrarMesActual($mes){
+		$this->db->where('mes', $mes);
+		$res = $this->db->delete('tecnicos_indicadores');
+		return TRUE;
+	}
+
+	public function getIdTecnico($rut){
+		$this->db->select('id');
+		$this->db->where('rut', $rut);
+		$res = $this->db->get('usuarios');
+	
+		if($res->num_rows()>0){
+
+			$row = $res->row_array();
+			return $row["id"];
+		}
+		return FALSE;
+	}
+
+	public function insertarIgt($data){
+		if($this->db->insert('tecnicos_indicadores', $data)){
+			return TRUE;
 		}
 		return FALSE;
 	}
@@ -57,6 +95,7 @@ class Igtmodel extends CI_Model {
 		$this->db->where('id_nivel', $perfil_tecnico);
 		$this->db->where('id_indicador', $indicador);
 		$res = $this->db->get('usuarios_tecnicos_niveles_metas utn');
+
 		if($res->num_rows()>0){
 			$row = $res->row_array();
 			return $row["meta"];
@@ -65,7 +104,34 @@ class Igtmodel extends CI_Model {
 	}
 
 	/**************PRODUCTIVIDAD PROM FTTH *********************/
-		public function dataPromFTTH($desde,$hasta,$trabajador){
+
+		public function dataPromFTTH($mes,$trabajador){
+			$this->db->select('prom_ot_ftth');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["prom_ot_ftth"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["prom_ot_ftth"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
+			}
+		}
+
+		/*public function dataPromFTTH($desde,$hasta,$trabajador){
 			$array_fechas = $this->date_range($desde,$hasta,"+1 day", "Y-m-d");
 			$array = array();
 			$temp = array();
@@ -101,8 +167,6 @@ class Igtmodel extends CI_Model {
 				return FALSE;
 			}
 
-			/*print_r($temp);*/
-				
 			if($temp!=[]){
 			
 				$temp2 = array();
@@ -113,8 +177,7 @@ class Igtmodel extends CI_Model {
 			}else{						
 		    	return array();
 			}
-			
-		}
+		}*/
 
 
 	/**************PRODUCTIVIDAD FTTH+HFC *********************/
@@ -150,7 +213,33 @@ class Igtmodel extends CI_Model {
 
 	/**************PRODUCTIVIDAD PROMEDIO HFC *********************/
 
-		public function dataPromHFC($desde,$hasta,$trabajador,$tipo){
+		public function dataPromHFC($mes,$trabajador){
+			$this->db->select('promedio_puntos_hfc');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["promedio_puntos_hfc"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["promedio_puntos_hfc"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
+			}
+		}
+
+		/*public function dataPromHFC($desde,$hasta,$trabajador,$tipo){
 			$this->db->select("sha1(p.id) as hash,
 				p.id as id,
 				u.foto as foto,
@@ -247,193 +336,123 @@ class Igtmodel extends CI_Model {
 			}
 
 		}
+		*/
+
+	/**************DIAS TRABAJADOS*********************/
+
+		public function dataDiasTrabajados($mes,$trabajador){
+			$this->db->select('indice_asistencia');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["indice_asistencia"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["indice_asistencia"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
 		
+			}else{						
+		    	return FALSE;
+			}
+		}
+		
+		
+
 
 	/******************CALIDAD HFC*********************/
 
-		public function dataCalidadHFC($desde,$hasta,$trabajador){
-			$this->db->select("
-				CONCAT('".$desde."',' ','".$hasta."') as 'periodo',
-
-				SUM(CASE 
-	        		WHEN p.falla ='si' 
-	        		and p.tipo_red='HFC' 
-	        		THEN 1
-	            ELSE 0
-	            END) as fallos,
-
-	            SUM(CASE 
-	                WHEN p.tipo_red ='HFC'
-	                THEN 1
-	                ELSE 0
-	            END) as ordenes,
-
-		        CONCAT(ROUND((
-		           
-		            SUM(CASE 
-		        		WHEN p.falla ='si' 
-		        		and p.tipo_red='HFC' 
-		        		THEN 1
-		            ELSE 0
-		            END)
-
-		            /
-
-		            SUM(CASE 
-		                WHEN p.tipo_red ='HFC'
-		                THEN 1
-		                ELSE 0
-		            END)
-
-		        * 100 ),2),'%') AS 'calidad'
-
-		    ",FALSE);
-
-			$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
-
-			if($trabajador!=""){
-				$this->db->where('rut_tecnico', $trabajador);
-			}
-
-			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
-			$res=$this->db->get("productividad_calidad p");
-
+		public function dataCalidadHFC($mes,$trabajador){
+			$this->db->select('calidad_hfc');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
 			if($res->num_rows()>0){
-				$row = $res->row_array();
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["calidad_hfc"]==0){
+						return FALSE;
+					}
 
-				if($row["calidad"]!=0){
-					$temp=array();
+					$temp = array();
 					$temp[] = array("Label","Value"); 
-					$temp[] = array("",(float)$row["calidad"]); 
-				    $filas = $temp;
-				    return $filas;
-				}
+					$temp[] = array("",(float)$key["calidad_hfc"]); 
+			    	$filas = $temp;
+		    	}
 
-				return FALSE;
-			
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
 			}
-
-			return FALSE;
 
 		}
 
 	/******************CALIDAD FTTH*********************/
 
-		public function dataCalidadFTTH($desde,$hasta,$trabajador){
-			$this->db->select("
-				CONCAT('".$desde."',' ','".$hasta."') as 'periodo',
-
-				SUM(CASE 
-	        		WHEN p.falla ='si' 
-	        		and p.tipo_red='FTTH' 
-	        		THEN 1
-	            ELSE 0
-	            END) as fallos,
-
-	            SUM(CASE 
-	                WHEN p.tipo_red ='FTTH'
-	                THEN 1
-	                ELSE 0
-	            END) as ordenes,
-
-		        CONCAT(ROUND((
-		           
-		            SUM(CASE 
-		        		WHEN p.falla ='si' 
-		        		and p.tipo_red='FTTH' 
-		        		THEN 1
-		            ELSE 0
-		            END)
-
-		            /
-
-		            SUM(CASE 
-		                WHEN p.tipo_red ='FTTH'
-		                THEN 1
-		                ELSE 0
-		            END)
-
-		        * 100 ),2),'%') AS 'calidad'
-
-		    ",FALSE);
-
-			$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
-
-			if($trabajador!=""){
-				$this->db->where('rut_tecnico', $trabajador);
-			}
-
-			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
-			$res=$this->db->get("productividad_calidad p");
-
-
+		public function dataCalidadFTTH($mes,$trabajador){
+			$this->db->select('calidad_ftth');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
 			if($res->num_rows()>0){
-				$row = $res->row_array();
-
-				if($row["calidad"]!=0){
-					$temp=array();
-					$temp[] = array("Label","Value"); 
-					$temp[] = array("",(float)$row["calidad"]); 
-				    $filas = $temp;
-				    return $filas;
-				}
-
-				return FALSE;
 				
+				foreach($res->result_array() as $key){
+					
+					if($key["calidad_ftth"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["calidad_ftth"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
 			}
-			return FALSE;
 
 		}
 
 	/******************DECLARACION OT *********************/
 
-		public function dataDeclaracionOT($desde,$hasta,$trabajador){
-			$this->db->select("
-			    SUM(if(p.estado_ot = 'DRIVE NO DETECTA REGISTRO', 1, 0)) AS sin_registro,
-				count(p.id) as  total,
-
-           		count(p.id)-
-	            SUM(CASE 
-	        		WHEN p.estado_ot ='DRIVE NO DETECTA REGISTRO' 
-	        		THEN 1
-	            ELSE 0
-	            END) AS 'con_registro',
-
-	            ROUND((count(p.id)-
-	            SUM(CASE 
-	        		WHEN p.estado_ot ='DRIVE NO DETECTA REGISTRO' 
-	        		THEN 1
-	            ELSE 0
-	            END))*100/count(p.id),2) as porcentaje
-
-	        ");
-
-			if($desde!="" and $hasta!=""){
-				$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
-			}
-
-			if($trabajador!=""){
-				$this->db->where('p.rut_tecnico', $trabajador);
-			}
-
-			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
-			$this->db->order_by('p.fecha', 'desc');
-			$res=$this->db->get('productividad p');
+		public function dataDeclaracionOT($mes,$trabajador){
+			$this->db->select('cumplimiento_ot');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
 			if($res->num_rows()>0){
-				$row = $res->row_array();
-				$temp=array();
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["cumplimiento_ot"]==0){
+						return FALSE;
+					}
 
-				if($row["porcentaje"]!=0){
+					$temp = array();
 					$temp[] = array("Label","Value"); 
-					$temp[] = array("",(float)$row["porcentaje"]); 
-				    $filas = $temp;
-				    return $filas;
-				}
+					$temp[] = array("",(float)$key["cumplimiento_ot"]); 
+			    	$filas = $temp;
+		    	}
 
-				return FALSE;
-			
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
 			}
-			return FALSE;
 		
 		}
 
@@ -441,9 +460,15 @@ class Igtmodel extends CI_Model {
 			$desde_str= date('d-m', strtotime($desde));
 			$hasta_str= date('d-m', strtotime($hasta));
 
+			$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+			$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+			$anio_str= date('Y', strtotime($desde));
+			$periodo_str= $mes_str."-".$anio_str;
+
 			$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 				CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
+				'".$periodo_str."' as 'mes',
 
 				SUM(CASE 
 	        		WHEN p.falla ='si' 
@@ -497,7 +522,7 @@ class Igtmodel extends CI_Model {
 					}
 
 					$temp = array();
-				    $temp[] = (string)$key["periodo"]; 
+				    $temp[] = (string)$key["mes"]; 
 				    $temp[] = (float)$key["calidad"]; 
 				    $temp[] = (int) $key['ordenes'];
 				    $temp[] = (int) $key['fallos'];
@@ -514,9 +539,15 @@ class Igtmodel extends CI_Model {
 			$desde_str= date('d-m', strtotime($desde));
 			$hasta_str= date('d-m', strtotime($hasta));
 
+			$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+			$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+			$anio_str= date('Y', strtotime($desde));
+			$periodo_str= $mes_str."-".$anio_str;
+
 			$this->db->select("
 					CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 					CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
+					'".$periodo_str."' as 'mes',
 
 					SUM(CASE 
 		        		WHEN p.falla ='si' 
@@ -568,7 +599,7 @@ class Igtmodel extends CI_Model {
 					}
 
 					$temp = array();
-				    $temp[] = (string)$key["periodo"]; 
+				    $temp[] = (string)$key["mes"]; 
 				    $temp[] = (float)$key["calidad"]; 
 				    $temp[] = (int) $key['ordenes'];
 				    $temp[] = (int) $key['fallos'];
@@ -592,6 +623,7 @@ class Igtmodel extends CI_Model {
 
 		$this->db->join('usuarios_tecnicos_niveles utn', 'utn.id = u.id_nivel_tecnico', 'left');
 
+		$this->db->where('u.estado', "1");
 		if($this->session->userdata('id_perfil')==4){
 			$this->db->where('rut', $this->session->userdata('rut'));
 		}else{

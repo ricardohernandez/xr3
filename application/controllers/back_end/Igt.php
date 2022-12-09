@@ -29,6 +29,109 @@ class Igt extends CI_Controller {
 	    }
 	}
 
+
+	public function formCargaMasivaIgt(){
+
+		if (!function_exists('str_contains')) {
+		    function str_contains(string $haystack, string $needle): bool
+		    {
+		        return '' === $needle || false !== strpos($haystack, $needle);
+		    }
+		}
+
+		if($_FILES['userfile']['name']==""){
+		    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+		}
+		$fname = $_FILES['userfile']['name'];
+		if (strpos($fname, ".") == false) {
+	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
+        }
+        $chk_ext = explode(".",$fname);
+
+        if($chk_ext[1]!="csv"){
+        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
+        }
+
+        $fname = $_FILES['userfile']['name'];
+        $chk_ext = explode(".",$fname);
+
+        if(strtolower(end($chk_ext)) == "csv")  {
+            $filename = $_FILES['userfile']['tmp_name'];
+            $handle = fopen($filename, "r");
+            $i=0;$z=0;$y=0;     
+         	
+            while (($d = fgetcsv($handle, 9999, ";")) !== FALSE) {
+            	$mes_string = explode('-', $d[0]);
+            	$mes_numero = mesesTextoaNumero($mes_string[1]);
+
+            	if($mes_numero=="0"){
+        			echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => " Formato fecha inválido,debe ser año-mes(texto 3 primeros caracteres), ejemplo : dic-2022"));exit;
+            	}
+
+            	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
+
+	    	  	if($this->Igtmodel->existeMes($mes_completo)){
+	    	  		$this->Igtmodel->borrarMesActual($mes_completo);
+	    	  	}
+            }
+         	
+         	fclose($handle); 
+
+         	$filename = $_FILES['userfile']['tmp_name'];
+            $handle = fopen($filename, "r");
+
+            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
+                if(!empty($data[0])){
+            	  	
+            	  	$mes_string = explode('-', $data[0]);
+	            	$mes_numero = mesesTextoaNumero($mes_string[1]);
+	            	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
+
+            	  	$rut=str_replace('-', '', $data[1]);
+            	    $id_tecnico = $this->Igtmodel->getIdTecnico($rut);
+
+            	    if($id_tecnico!=FALSE){
+
+            	    	$arr=array(
+					    	"id_tecnico"=>$id_tecnico,
+ 					    	"mes"=>$mes_completo,
+					    	"q_ftth"=>str_replace('%', '', $data[2]),
+					    	"fallas_ftth"=>str_replace('%', '', $data[3]),
+					    	"calidad_ftth"=>str_replace('%', '', $data[4]),
+					    	"q_hfc"=>str_replace('%', '', $data[5]),
+					    	"fallas_hfc"=>str_replace('%', '', $data[6]),
+					    	"calidad_hfc"=>str_replace('%', '', $data[7]),
+					    	"cumplimiento_ot"=>str_replace('%', '', $data[8]),
+					    	"prom_ot_ftth"=>str_replace('%', '', $data[9]),
+					    	"dias_produccion_ftth"=>str_replace('%', '', $data[10]),
+					    	"promedio_puntos_hfc"=>str_replace('%', '', $data[11]),
+					    	"dias_produccion_hfc"=>str_replace('%', '', $data[12]),
+					    	"porcentaje_produccion_hfc"=>str_replace('%', '', $data[13]),
+					    	"porcentaje_calidad_hfc"=>str_replace('%', '', $data[14]),
+					    	"porcentaje_produccion_ftth"=>str_replace('%', '', $data[15]),
+					    	"porcentaje_calidad_ftth"=>str_replace('%', '', $data[16]),
+					    	"indice_asistencia"=>str_replace('%', '', $data[17]),
+						);	
+
+					    $this->Igtmodel->insertarIgt($arr);
+					    $i++;
+				  	 	$arr=array();
+            	    }
+	            }
+            }
+
+            if($i==0){
+            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
+            }
+
+            fclose($handle); 
+           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+        }else{
+        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
+        }   
+	}
+
+
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
@@ -79,6 +182,7 @@ class Igt extends CI_Controller {
 
 			}
 			
+
 			$datos = array(	
 				'desde_actual_calidad' => $desde_actual_calidad,
 		        'hasta_actual_calidad' => $hasta_actual_calidad,
@@ -90,6 +194,11 @@ class Igt extends CI_Controller {
 		        'desde_anterior_prod' => $desde_anterior_prod,
 		        'hasta_anterior_prod' => $hasta_anterior_prod,
 
+		        'desde_actual_relojes' => $desde_actual_prod,
+		        'hasta_actual_relojes' => $hasta_actual_prod,
+		        'desde_anterior_relojes' => $desde_anterior_prod,
+		        'hasta_anterior_relojes' => $hasta_anterior_prod,
+		        
 		        'mes_actual' => mesesPeriodo("actual"),
 		        'mes_anterior' =>mesesPeriodo("anterior"),
 		        'jefes' => $this->Calidadmodel->listaJefes(),
@@ -106,14 +215,19 @@ class Igt extends CI_Controller {
 		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
 		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
 		$perfil_tecnico = $this->Igtmodel->getPerfilTecnico($trabajador);
-		$array_data = array();
+
+		$rut=str_replace('-', '', $trabajador);
+        $id_tecnico = $this->Igtmodel->getIdTecnico($rut);
+
+   		$array_data = array();
 
 		/***********PRODUCTIVIDAD PROM FTTH *********************/
 
 			$meta_prom_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,1,$periodo);
 
 			if($meta_prom_ftth!="0"){
-				$data_prom_ftth = $this->Igtmodel->dataPromFTTH(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,$perfil_tecnico);
+
+				$data_prom_ftth = $this->Igtmodel->dataPromFTTH(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
 				
 				if($data_prom_ftth!=FALSE){
 					$array_data["data_prom_ftth"] = array("data" => $data_prom_ftth , "meta" => $meta_prom_ftth);
@@ -126,9 +240,9 @@ class Igt extends CI_Controller {
 
 			if($meta_prod_hfc_ftth!="0"){
 				$data_prod_hfc_ftth = $this->Igtmodel->dataProdHFCFTTH(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,$perfil_tecnico);
-				if($data_prod_hfc_ftth!=FALSE){
+				//if($data_prod_hfc_ftth!=FALSE){
 					$array_data["data_prod_hfc_ftth"] = array("data" => $data_prod_hfc_ftth , "meta" => $meta_prod_hfc_ftth);
-				}
+				//}
 			}
 
 		/***********PRODUCTIVIDAD PROMEDIO HFC *********************/
@@ -136,23 +250,32 @@ class Igt extends CI_Controller {
 			$meta_prom_hfc = $this->Igtmodel->getMetaIndicador($perfil_tecnico,3,$periodo);
 
 			if($meta_prom_hfc!="0"){
-				$data_prom_hfc = $this->Igtmodel->dataPromHFC(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,"prom");
-				if($data_prom_hfc!=FALSE){
+				$data_prom_hfc = $this->Igtmodel->dataPromHFC(getPeriodo($periodo),$id_tecnico);
+				//if($data_prom_hfc!=FALSE){
 					$array_data["data_prom_hfc"] = array("data" => $data_prom_hfc , "meta" => $meta_prom_hfc);
-				}
+				//}
 			}
 
 
-		/***********PRODUCTIVIDAD DIAS TRABAJADOS *********************/
+		/***********DIAS TRABAJADOS**********************/
 
 			$meta_dias = $this->Igtmodel->getMetaIndicador($perfil_tecnico,4,$periodo);
+
+			if($meta_dias!="0"){
+				$data_dias = $this->Igtmodel->dataDiasTrabajados(getPeriodo($periodo),$id_tecnico);
+				//if($data_dias!=FALSE){
+					$array_data["data_dias"] = array("data" => $data_dias , "meta" => $meta_dias);
+				//}
+			}
+
+			/*$meta_dias = $this->Igtmodel->getMetaIndicador($perfil_tecnico,4,$periodo);
 
 			if($meta_dias!="0"){
 				$data_dias = $this->Igtmodel->dataPromHFC(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,"dias");
 				if($data_dias!=FALSE){
 					$array_data["data_dias"] = array("data" => $data_dias , "meta" => $meta_dias);
 				}
-			}
+			}*/
 
 
 		/***********CALIDAD HFC*********************/
@@ -160,10 +283,11 @@ class Igt extends CI_Controller {
 			$meta_calidad_hfc = $this->Igtmodel->getMetaIndicador($perfil_tecnico,5,$periodo);
 
 			if($meta_calidad_hfc!="0"){
-				$data_calidad_hfc = $this->Igtmodel->dataCalidadHFC(getFechasPeriodo($periodo)["desde_calidad"],getFechasPeriodo($periodo)["hasta_calidad"],$trabajador);
-				if($data_calidad_hfc!=FALSE){
+				$data_calidad_hfc = $this->Igtmodel->dataCalidadHFC(getPeriodo($periodo),$id_tecnico);
+
+				//if($data_calidad_hfc!=FALSE){
 					$array_data["data_calidad_hfc"] = array("data" => $data_calidad_hfc , "meta" => $meta_calidad_hfc);
-				}
+				//}
 			}
 
 
@@ -172,10 +296,10 @@ class Igt extends CI_Controller {
 			$meta_calidad_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,6,$periodo);
 
 			if($meta_calidad_ftth!="0"){
-				$data_calidad_ftth = $this->Igtmodel->dataCalidadFTTH(getFechasPeriodo($periodo)["desde_calidad"],getFechasPeriodo($periodo)["hasta_calidad"],$trabajador);
-				if($data_calidad_ftth!=FALSE){
+				$data_calidad_ftth = $this->Igtmodel->dataCalidadFTTH(getPeriodo($periodo),$id_tecnico);
+				//if($data_calidad_ftth!=FALSE){
 					$array_data["data_calidad_ftth"] = array("data" => $data_calidad_ftth , "meta" => $meta_calidad_ftth);
-				}
+				//}
 			}
 
 
@@ -184,13 +308,13 @@ class Igt extends CI_Controller {
 			$meta_declaracion_ot = $this->Igtmodel->getMetaIndicador($perfil_tecnico,7,$periodo);
 
 			if($meta_declaracion_ot!="0"){
-				$data_declaracion_ot = $this->Igtmodel->dataDeclaracionOT(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador);
-				if($data_declaracion_ot!=FALSE){
+				$data_declaracion_ot = $this->Igtmodel->dataDeclaracionOT(getPeriodo($periodo),$id_tecnico);
+				//if($data_declaracion_ot!=FALSE){
 					$array_data["data_declaracion_ot"] = array("data" => $data_declaracion_ot , "meta" => $meta_declaracion_ot);
-				}
+				//}
 			}
 
-		/*******FOTO- ACTUALIZACIONES********/
+		/*******FOTO-ACTUALIZACIONES********/
 
 			$foto = $this->Igtmodel->getFotoTecnico($trabajador);
 
@@ -324,8 +448,9 @@ class Igt extends CI_Controller {
 
 			}
 
-				echo json_encode($array_data);
-			}
+			echo json_encode($array_data);
+
+		}
 
 		public function listaTrabajadoresIGT(){
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));

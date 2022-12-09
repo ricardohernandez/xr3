@@ -66,7 +66,7 @@ foreach($noticias as $n){
       <div class="entry__excerpt">
           <ul class="entry__meta">
             <li class="entry__meta-date" style="text-transform: none;font-size: 12px">
-              <?php echo fecha_to_str($n["fecha"]); ?> - <?php echo cortarTexto(strip_tags($n["descripcion"]),50) ?></p>
+              <?php echo fecha_to_str_noticias($n["fecha"]); ?> - <?php echo cortarTexto(strip_tags($n["descripcion"]),50) ?></p>
             </li>
         </ul>
       </div>

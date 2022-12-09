@@ -51,6 +51,7 @@
 	$route['excel_detalle_ots_drive/(:any)/(:any)/(:any)'] = "back_end/igt/excel_detalle_ots_drive/$1/$2/$3";
 	$route['listaTrabajadoresIGT'] = "back_end/igt/listaTrabajadoresIGT";
 	$route['dataGraficosIgt'] = "back_end/igt/dataGraficosIgt";
+	$route['formCargaMasivaIgt'] = "back_end/igt/formCargaMasivaIgt";
 
 /*******DOCUMENTACION*******/
 

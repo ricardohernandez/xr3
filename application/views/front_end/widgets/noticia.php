@@ -43,7 +43,7 @@ foreach($noticia as $n){
               <a href="#">DeoThemes</a>
             </li> -->
             <li class="entry__meta-date">
-             <?php echo fecha_to_str($n["fecha"]); ?>
+             <?php echo fecha_to_str_noticias($n["fecha"]); ?>
             </li>
 
             <!-- <li class="entry__meta-date">

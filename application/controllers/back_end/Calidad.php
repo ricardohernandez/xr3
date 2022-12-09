@@ -122,7 +122,8 @@ class Calidad extends CI_Controller {
 				}
 
 	         	$this->Calidadmodel->eliminarPeriodoActual($desde,$hasta);
-
+            	$array = array();
+	
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 
@@ -182,64 +183,41 @@ class Calidad extends CI_Controller {
 							$falla = "error";
 						}
 
-						// echo $fechaf;
-						// echo "<br>";
+						if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
 
-					    $arr=array(
-					    	"rut_tecnico"=>$rutf,
-							"comuna"=>$data[1],
-							"ot"=>$data[2],
-							"fecha"=>$fechaf1,
-							"descripcion"=>($data[4]),
-							"cierre"=>$data[5],
-							"ot_2davisita"=>$data[6],
-							"fecha_2davisita"=>$fechaf2,
-							"descripcion_2davisita"=>($data[8]),
-							"cierre_2davisita"=>$data[9],
-							"diferencia_dias"=>$data[12],
-							"tipo_red"=>$data[10],
-							"falla"=>$falla,
-							"ultima_actualizacion"=>$ultima_actualizacion
-						);	
+							$array[] = array(
+						    	"rut_tecnico"=>$rutf,
+								"comuna"=>$data[1],
+								"ot"=>$data[2],
+								"fecha"=>$fechaf1,
+								"descripcion"=>($data[4]),
+								"cierre"=>$data[5],
+								"ot_2davisita"=>$data[6],
+								"fecha_2davisita"=>$fechaf2,
+								"descripcion_2davisita"=>($data[8]),
+								"cierre_2davisita"=>$data[9],
+								"diferencia_dias"=>$data[12],
+								"tipo_red"=>$data[10],
+								"falla"=>$falla,
+								"ultima_actualizacion"=>$ultima_actualizacion);	
 
+					 	   $i++;
+					 	   /*echo $i;
+					 	   echo "<br>";*/
+						}else{
+							$z++;
+						}
+					}
+		        } 
+				/*
+		         echo "<pre>";
+		         print_r($array);exit;*/
 
-					    if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
-					    	$this->Calidadmodel->formCalidad($arr);
-					    	$i++;
-					    }/*else{
-
-					    	$data_bd = $this->Calidadmodel->dataPorOt(trim($data[2]));
-
-					    	if($data_bd!=FALSE){
-					    		foreach($data_bd as $d){
-						    		if($d["falla"]=="no" and $falla=="si"){
-
-						    			$data_mod = array(
-											"ot_2davisita"=>$data[6],
-											"fecha_2davisita"=>$fechaf2,
-											"descripcion_2davisita"=>($data[8]),
-											"cierre_2davisita"=>$data[9],
-											"diferencia_dias"=>$data[12],
-											"falla"=>$falla,
-											"ultima_actualizacion"=>$ultima_actualizacion
-										);	
-
-										if($this->Calidadmodel->formActualizaCalidad($d["id"], $data_mod)){
-											$data_mod = array();
-											$z++;
-										}
-						    		}
-						    	}
-					    	}
-
-					    }*/
-
-				  	 	$arr=array();
-		            }
-	            }
-
-	            fclose($handle); 
-	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+		        if($this->Calidadmodel->formCalidad($array)){
+		         	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas, ".$z." filas ignoradas."));exit;
+		        }
+		        
+		        fclose($handle); 
 
 	        }else{
 	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;

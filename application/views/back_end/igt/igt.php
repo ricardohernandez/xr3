@@ -137,6 +137,7 @@
         $("#trabajadores").select2().val(r).trigger("change");
       }else{
         $("#trabajadores").select2().val("173397666").trigger("change");
+        /*$("#trabajadores").select2().val("8352622K").trigger("change");*/
       }
 
       /*setTimeout( function () {
@@ -962,12 +963,24 @@
               var hasta_actual="<?php echo $hasta_actual_calidad; ?>"
               var desde_anterior="<?php echo $desde_anterior_calidad; ?>"
               var hasta_anterior="<?php echo $hasta_anterior_calidad; ?>"
+
+              var desde_actual="<?php echo $desde_actual_calidad; ?>"
+              var hasta_actual="<?php echo $hasta_actual_calidad; ?>"
+              var desde_anterior="<?php echo $desde_anterior_calidad; ?>"
+              var hasta_anterior="<?php echo $hasta_anterior_calidad; ?>"
+
+              var desde_actual_relojes ="<?php echo $desde_actual_relojes; ?>"
+              var hasta_actual_relojes ="<?php echo $hasta_actual_relojes; ?>"
+              var desde_anterior_relojes ="<?php echo $desde_anterior_relojes; ?>"
+              var hasta_anterior_relojes ="<?php echo $hasta_anterior_relojes; ?>"
+
+
               var periodo =$("#periodo_detalle").val()
 
               if(periodo=="actual"){
-                $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}` );
+                $("#fecha_f").val(`${desde_actual_relojes.substring(0,5)} - ${hasta_actual_relojes.substring(0,5)}` );
               }else if(periodo=="anterior"){
-                $("#fecha_f").val(`${desde_anterior.substring(0,5)} - ${hasta_anterior.substring(0,5)}`);
+                $("#fecha_f").val(`${desde_anterior_relojes.substring(0,5)} - ${hasta_anterior_relojes.substring(0,5)}`);
               }
 
               if($("#trabajadores").val()!=""){
@@ -1076,11 +1089,11 @@
             var hasta_anterior="<?php echo $hasta_anterior_prod; ?>"
             var periodo =$("#periodo_detalle").val()
 
-            if(periodo=="actual"){
+            /*if(periodo=="actual"){
               $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
             }else if(periodo=="anterior"){
               $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-            }
+            }*/
 
             if($("#trabajadores").val()!=""){
               return json
@@ -1196,11 +1209,11 @@
             var hasta_anterior="<?php echo $hasta_anterior_prod; ?>"
             var periodo =$("#periodo_detalle").val()
 
-            if(periodo=="actual"){
+           /* if(periodo=="actual"){
               $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
             }else if(periodo=="anterior"){
               $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-            }
+            }*/
 
             if($("#trabajadores").val()!=""){
               return json
@@ -1262,6 +1275,8 @@
         }
       }, 4000 ); 
 
+
+
       $(document).off('click', '.excel_drive').on('click', '.excel_drive',function(event) {
          event.preventDefault();
         // var hasta = $("#hasta_f").val();  
@@ -1290,13 +1305,131 @@
       });
 
 
+      $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
+        var myFormData = new FormData();
+        myFormData.append('userfile', $('#userfile').prop('files')[0]);
+        $.ajax({
+            url: "formCargaMasivaIgt"+"?"+$.now(),  
+            type: 'POST',
+            data: myFormData,
+            cache: false,
+            tryCount : 0,
+            retryLimit : 3,
+            processData: false,
+            contentType : false,
+            dataType:"json",
+            beforeSend:function(){
+              $(".btn_file_cs").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
+            },  
+            success: function (data) {
+               $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
+                if(data.res=="ok"){
+                  $.notify(data.msg, {
+                      className:data.tipo,
+                      globalPosition: 'top center',
+                      autoHideDelay: 20000,
+                  });
+                  
+                }else{
+                  $.notify(data.msg, {
+                      className:data.tipo,
+                      globalPosition: 'top center',
+                      autoHideDelay: 10000,
+                  });
+                }
+
+                $("#userfile").val(null);
+
+            },
+            error : function(xhr, textStatus, errorThrown ) {
+              $("#userfile").val(null);
+              if (textStatus == 'timeout') {
+                  this.tryCount++;
+                  if (this.tryCount <= this.retryLimit) {
+                      $.notify("Reintentando...", {
+                        className:'info',
+                        globalPosition: 'top center'
+                      });
+                      $.ajax(this);
+                      $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad').prop("disabled",false);
+                      return;
+                  } else{
+                     $.notify("Problemas cargando el archivo, intente nuevamente.", {
+                        className:'warn',
+                        globalPosition: 'top center',
+                        autoHideDelay: 10000,
+                      });
+                  }    
+                  return;
+              }
+
+              if (xhr.status == 500) {
+                 $.notify("Problemas cargando el archivo, intente nuevamente.", {
+                    className:'warn',
+                    globalPosition: 'top center',
+                    autoHideDelay: 10000,
+                 });
+              $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base').prop("disabled",false);
+              }
+          },timeout:120000
+        });
+      })
+
+      actualizacionProductividad()
+
+      function actualizacionProductividad(){
+        $.ajax({
+            url: "actualizacionProductividad"+"?"+$.now(),  
+            type: 'POST',
+            cache: false,
+            tryCount : 0,
+            retryLimit : 3,
+            dataType:"json",
+            beforeSend:function(){
+            },
+            success: function (data) {
+              if(data.res=="ok"){
+                $(".actualizacion_productividad").html("<b>Última actualización planilla : "+data.datos+"</b>");
+              }
+            },
+            error : function(xhr, textStatus, errorThrown ) {
+              if (textStatus == 'timeout') {
+                  this.tryCount++;
+                  if (this.tryCount <= this.retryLimit) {
+                      $.notify("Reintentando...", {
+                        className:'info',
+                        globalPosition: 'top right'
+                      });
+                      $.ajax(this);
+                      return;
+                  } else{
+                     $.notify("Problemas en el servidor, intente nuevamente.", {
+                        className:'warn',
+                        globalPosition: 'top right'
+                      });     
+                  }    
+                  return;
+              }
+
+              if (xhr.status == 500) {
+                  $.notify("Problemas en el servidor, intente más tarde.", {
+                    className:'warn',
+                    globalPosition: 'top right'
+                  });
+              }
+            },timeout:5000
+        }); 
+      }
+
+
+
   })  
 </script>
 
 <div class="content mt-2" style="padding: 2px 10px; background-color: #F9FAFB;">
 <div class="form-row">
 
-  <div class="col-12 col-lg-4">
+  <div class="col-12 col-sm-6 col-md-6 col-lg-3">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb" style="padding: 0.15rem 1rem!important;">
         <li class="breadcrumb-item active" aria-current="page" style="padding: 0.15rem 1rem!important;"><a href="" style="color:#32477C;font-size: 1rem;font-weight: bold;">IGT - Indicadores de gestión del técnico</a></li>
@@ -1304,7 +1437,23 @@
     </nav>
   </div>
 
-  <div class="col-6 col-lg-2">
+  <?php
+      if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+      ?>
+      <div class=" col-xs-6 col-sm-6  col-md-6  col-lg-2 d-none d-sm-block">  
+        <div class="form-group">
+           <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
+           <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
+           <i class="fa fa-file-import"></i> Cargar base IGT
+          </div>
+      </div>
+      <!-- <i class="fa-solid fa-circle-info ejemplo_planilla" title="Ver ejemplo" ></i> -->
+      <?php
+    }
+ ?>
+
+
+  <div class="col-8 col-lg-2">
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -1318,7 +1467,7 @@
     </div>
   </div>
 
-  <div class="col-6 col-lg-2">
+  <div class="col-4 col-lg-2">
     <div class="form-group">
       <div class="input-group">
           <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f"  style="font-size: 1rem!important;height: calc(1.4em + 0.5rem + 2px)!important;">
@@ -1395,7 +1544,7 @@
   <div class="body">
     <div class="form-row">
       
-      <div class="col-6 col-lg prom_ftth">
+      <div class="col-6 col-lg prom_ftth mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
             Prod. FTTH <span class="meta_prom_ftth"></span>
@@ -1410,7 +1559,7 @@
         </div>
       </div>
 
-      <div class="col-6 col-lg calidad_ftth">
+      <div class="col-6 col-lg calidad_ftth mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
             Calidad FTTH <span class="meta_calidad_ftth"></span>
@@ -1440,7 +1589,7 @@
         </div>
       </div> -->
 
-      <div class="col-6 col-lg prom_hfc">
+      <div class="col-6 col-lg prom_hfc mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
             Prod. HFC <span class="meta_prom_hfc"></span>
@@ -1455,7 +1604,7 @@
         </div>
       </div>
 
-      <div class="col-6 col-lg calidad_hfc">
+      <div class="col-6 col-lg calidad_hfc mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
            Calidad HFC  <span class="meta_calidad_hfc"></span>
@@ -1470,7 +1619,7 @@
         </div>
       </div>
 
-      <div class="col-6 col-lg dias_trabajados">
+      <div class="col-6 col-lg dias_trabajados mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
             Días háb. trabajados <span class="meta_dias_trabajados"></span>
@@ -1485,7 +1634,7 @@
         </div>
       </div>
 
-      <div class="col-6 col-lg declaracion_ot">
+      <div class="col-6 col-lg declaracion_ot mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
            Declaración OT  <span class="meta_declaracion_ot"></span>
@@ -1535,7 +1684,7 @@
           </div>
 
           <div class="form-row">
-            <div class="col-12 text-center">
+            <div class="col-12 text-center d-none d-sm-block">
                <span class="titulo_fecha_actualizacion_dias">
                 <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>
@@ -1615,7 +1764,7 @@
           </div>
 
           <div class="form-row">
-            <div class="col-12 text-center">
+            <div class="col-12 text-center d-none d-sm-block">
                <span class="titulo_fecha_actualizacion_dias">
                 <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>
@@ -1684,7 +1833,7 @@
 
           <div class="form-row">
 
-            <div class="col-12 text-center">
+            <div class="col-12 text-center d-none d-sm-block">
                <span class="titulo_fecha_actualizacion_dias">
                 <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>

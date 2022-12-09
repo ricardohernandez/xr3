@@ -36,6 +36,26 @@ function mesesCorto($mes){
 	return $mes;
 }
 
+
+function mesesTextoaNumero($mes){
+	switch ($mes) {
+		case 'ene':$mes="1";break;
+		case 'feb':$mes="2";break;
+		case 'mar':$mes="3";break;
+		case 'abr':$mes="4";break;
+		case 'may':$mes="5";break;
+		case 'jun':$mes="6";break;
+		case 'jul':$mes="7";break;
+		case 'ago':$mes="8";break;
+		case 'sep':$mes="9";break;
+		case 'oct':$mes="10";break;
+		case 'nov':$mes="11";break;
+		case 'dic':$mes="12";break;
+		default: $mes="0";
+	}
+	return $mes;
+}
+
 function meses_corto($mes){
 	switch ($mes) {
 		case '1':$mes="Ene";break;
@@ -179,6 +199,31 @@ function dia($dia){
 	return $this->dia($dia_semana)."".$dia."-".$mes;
 }*/
 
+
+/*function fecha_to_str_noticias($fecha){
+	$fecha1=explode('-',$fecha);
+	$anio=$fecha1[0];  
+	$mes=$fecha1[1];  
+	$dia=$fecha1[2];  
+	$dia_semana=date('d', strtotime($fecha));
+	return $this->diaCompleto($dia_semana)."".$dia."-".$mes;
+}*/
+
+function fecha_to_str_noticias($f){
+	$fecha = explode(' ',$f);
+	$fecha2 = $fecha[0];  
+	@$hora=$fecha[1]; 
+
+	$fecha3 = explode('-', $fecha2);
+
+	$anio = $fecha3[0];
+	$mes = $fecha3[1];
+	$dia = $fecha3[2];
+
+	return ($dia)." de ".meses($mes)."  ".$anio;
+	/*return $f;*/
+}
+
 function periodoFechas($desde,$hasta){
 	$mes1 = substr($desde,5,2);
 	$dia1 = substr($desde,8,9);
@@ -189,18 +234,79 @@ function periodoFechas($desde,$hasta){
 	return $dia1."-".$mes1." ".$dia2."-".$mes2;
 }
 
-
 function mesesPeriodo($periodo){
 
 	
 	if(date("d")>"24"){
-		$mes_actual = date('m', strtotime(date('Y-m-d'). ' -1 months'));
-		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -2 months'));
-		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -3 months'));
+
+		if($periodo=="actual"){
+			$mes_actual = date('m', strtotime('+1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior = date('m', strtotime(date('Y-m-25')));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('m', strtotime('-2 month', strtotime(date('Y-m-25'))));
+		}
+
 	}else{
-		$mes_actual = date('m');
-		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -1 months'));
-		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -2 months'));
+		
+		if($periodo=="actual"){
+			$mes_actual = date('m', strtotime(date('Y-m-25')));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior= date('m', strtotime('-1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('m', strtotime('-2 month', strtotime(date('Y-m-25'))));
+
+		}
+
+	}
+
+
+	if($periodo=="actual"){
+		return meses($mes_actual);
+	}
+
+	if($periodo=="anterior"){
+		return meses($mes_anterior);
+	}
+
+	if($periodo=="anterior2"){
+		return meses(@$mes_anterior2);
+	}
+
+}
+
+/*function mesesPeriodo($periodo){
+
+	
+	if(date("d")>"24"){
+
+		if($periodo=="actual"){
+			$mes_actual = date('m', strtotime(date('Y-m-25')));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior = date('m', strtotime('-1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('m', strtotime('-2 month', strtotime(date('Y-m-25'))));
+		}
+
+	}else{
+		
+		if($periodo=="actual"){
+			$mes_actual= date('m', strtotime('-1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior= date('m', strtotime('-2 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('m', strtotime('-4 month', strtotime(date('Y-m-25'))));
+
+		}
+
 	}
 
 
@@ -216,7 +322,98 @@ function mesesPeriodo($periodo){
 		return meses($mes_anterior2);
 	}
 
+}*/
+
+
+function getPeriodo($periodo){
+	
+	if(date("d")>"24"){
+
+		if($periodo=="actual"){
+			$mes_actual = date('Y-m-01', strtotime('+1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior = date('Y-m-01', strtotime(date('Y-m-25')));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('Y-m-01', strtotime('-1 month', strtotime(date('Y-m-25'))));
+		}
+
+	}else{
+		
+		if($periodo=="actual"){
+			$mes_actual = date('Y-m-01', strtotime(date('Y-m-25')));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior= date('Y-m-01', strtotime('-1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('Y-m-01', strtotime('-2 month', strtotime(date('Y-m-25'))));
+
+		}
+
+	}
+
+
+	if($periodo=="actual"){
+		return ($mes_actual);
+	}
+
+	if($periodo=="anterior"){
+		return ($mes_anterior);
+	}
+
+	if($periodo=="anterior2"){
+		return ($mes_anterior2);
+	}
+
 }
+
+
+/*function getPeriodo($periodo){
+	
+	if(date("d")>"24"){
+
+		if($periodo=="actual"){
+			$mes_actual = date('Y-m-01', strtotime(date('Y-m-25')));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior = date('Y-m-01', strtotime('-1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+		}
+
+	}else{
+		
+		if($periodo=="actual"){
+			$mes_actual= date('Y-m-01', strtotime('-1 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior"){
+			$mes_anterior= date('Y-m-01', strtotime('-2 month', strtotime(date('Y-m-25'))));
+
+		}elseif($periodo=="anterior_2"){
+			$mes_anterior2 = date('Y-m-01', strtotime('-4 month', strtotime(date('Y-m-25'))));
+
+		}
+
+	}
+
+
+	if($periodo=="actual"){
+		return ($mes_actual);
+	}
+
+	if($periodo=="anterior"){
+		return ($mes_anterior);
+	}
+
+	if($periodo=="anterior2"){
+		return ($mes_anterior2);
+	}
+
+}*/
+
 
 
 function mesesPeriodoCalidad($periodo){
