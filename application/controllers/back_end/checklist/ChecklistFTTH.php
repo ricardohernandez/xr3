@@ -728,7 +728,7 @@ class checklistFTTH extends CI_Controller {
 									 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
 									 <td><?php echo utf8_decode($d["codigo"]); ?></td>
-									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
+									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 
 									 <td><?php echo utf8_decode($d["n_ot"]); ?></td>
 									 <td><?php echo utf8_decode($d["tipo_actividad"]); ?></td>

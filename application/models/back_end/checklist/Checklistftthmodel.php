@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Checklisthfcmodel extends CI_Model {
+class Checklistftthmodel extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
@@ -13,20 +13,21 @@ class Checklisthfcmodel extends CI_Model {
 		return FALSE;
 	}
 
-	/*************CHECKLIST HFC*************/
+	/*************CHECKLIST FTTH*************/
 
-		public function listaChecklistHFC($desde,$hasta){
+		public function listaChecklistFTTH($desde,$hasta){
 
 			$this->db->select("sha1(o.id) as hash,
 				o.*,
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 			    CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
 			    u.comuna as comuna,
-			    u.rut as rut_tecnico,
 			    u.codigo as codigo,
+			    u.rut as rut_tecnico,
 				o.ultima_actualizacion as ultima_actualizacion,
 				uc.cargo as cargo,
 				ua.area as area,
+				upr.proyecto as proyecto,
 				cha.actividad as tipo_actividad,
 		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha'
 				");
@@ -35,20 +36,22 @@ class Checklisthfcmodel extends CI_Model {
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_hfc_actividades cha', 'cha.id = o.tipo_actividad', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
+			$this->db->join('checklist_ftth_actividades cha', 'cha.id = o.tipo_actividad', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 			}
 
-			$res=$this->db->get('checklist_hfc o');
+			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
 			return FALSE;
 		}
+					
 
-		public function getDataChecklistHFCCabecera($hash){
+		public function getDataChecklistFTTHCabecera($hash){
 			$this->db->select("sha1(o.id) as hash,
 				o.*,
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
@@ -65,7 +68,7 @@ class Checklisthfcmodel extends CI_Model {
 
 				usj.correo_empresa as correo_jefe_empresa,
 				usj.correo_personal as correo_jefe_personal,
-
+				upr.proyecto as proyecto,
 				uc.cargo as auditor_cargo,
 				ua.area as area,
 		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha'
@@ -75,33 +78,34 @@ class Checklisthfcmodel extends CI_Model {
 
 			$this->db->join('usuarios_jefes uj', 'uj.id = u.id_jefe', 'left');
 			$this->db->join('usuarios usj', 'usj.id = uj.id_jefe', 'left');
-
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
 			$this->db->where('sha1(o.id)', $hash);
-			$res=$this->db->get('checklist_hfc o');
+			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
 			return FALSE;
 		}
 
-		public function getDataChecklistHFC($hash){
+
+		public function getDataChecklistFTTH($hash){
 			$this->db->select("sha1(o.id) as hash,
-				o.*,		
-				cd.*,	
-				u.rut as rut,
-				u.comuna as comuna,
-				ua.area as area,
-				u.codigo as codigo,
-				uc.cargo as auditor_cargo,
+				o.*,
+				cd.*,
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
-				CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
-				if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
+			    CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
+			    u.comuna as comuna,
+			    u.codigo as codigo,
+				u.ultima_actualizacion as ultima_actualizacion,
+				uc.cargo as auditor_cargo,
+				ua.area as area,
+		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
 
-				cl.descripcion as descripcion,
+		        cl.descripcion as descripcion,
 				ct.tipo as tipo,
-
+				upr.proyecto as proyecto,
 				CASE 
 		          WHEN cd.estado=0 THEN 'ok'
 		          WHEN cd.estado=1 THEN 'nook'
@@ -109,26 +113,27 @@ class Checklisthfcmodel extends CI_Model {
 		        END AS estado_str,
 
 				cd.observacion as observacion
+
 				");
 			$this->db->join('usuarios u', 'u.id = o.tecnico_id', 'left');
 			$this->db->join('usuarios us', 'us.id = o.auditor_id', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
-			$this->db->join('checklist_hfc_listado cl', 'cl.id = cd.id_check', 'left');
-			$this->db->join('checklist_hfc_tipos ct', 'ct.id = cl.tipo', 'left');
+			$this->db->join('checklist_ftth_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('checklist_ftth_listado cl', 'cl.id = cd.id_check', 'left');
+			$this->db->join('checklist_ftth_tipos ct', 'ct.id = cl.tipo', 'left');
+
 			$this->db->where('ct.id is not null');
 			$this->db->where('sha1(o.id)', $hash);
-			$res=$this->db->get('checklist_hfc o');
+			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
 			return FALSE;
 		}
 
-		
-
-		public function listaChecklistHFCDetalle($desde,$hasta){
+		public function listaChecklistFTTHDetalle($desde,$hasta){
 			$this->db->select("sha1(o.id) as hash,
 				o.*,			
 				u.rut as rut,
@@ -148,7 +153,7 @@ class Checklisthfcmodel extends CI_Model {
 		          WHEN cd.estado=1 THEN 'nook'
 		          WHEN cd.estado=2 THEN 'no aplica'
 		        END AS estado_str,
-
+				upr.proyecto as proyecto,
 				cd.observacion as observacion
 
 				");
@@ -156,16 +161,17 @@ class Checklisthfcmodel extends CI_Model {
 			$this->db->join('usuarios as u', 'u.id = o.tecnico_id', 'left');
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
-			$this->db->join('checklist_hfc_listado cl', 'cl.id = cd.id_check', 'left');
-			$this->db->join('checklist_hfc_tipos ct', 'ct.id = cl.tipo', 'left');
+			$this->db->join('checklist_ftth_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('checklist_ftth_listado cl', 'cl.id = cd.id_check', 'left');
+			$this->db->join('checklist_ftth_tipos ct', 'ct.id = cl.tipo', 'left');
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
 			}
 
-			$res=$this->db->get('checklist_hfc o');
+			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -204,9 +210,24 @@ class Checklisthfcmodel extends CI_Model {
 			return FALSE;
 		}
 
+
+		public function formChecklistFTTH($data){
+			if($this->db->insert('checklist_ftth', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		}
+
+		public function formChecklistLista($data){
+			if($this->db->insert('checklist_ftth_listado', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		}
+
 		public function existeOT($ot){
 			$this->db->where('n_ot', $ot);
-			$res=$this->db->get('checklist_hfc');
+			$res=$this->db->get('checklist_ftth');
 			if($res->num_rows()>0){
 				return TRUE;
 			}
@@ -216,30 +237,17 @@ class Checklisthfcmodel extends CI_Model {
 		public function existeOTMod($hash,$ot){
 			$this->db->where('n_ot', $ot);
 			$this->db->where('sha1(id)<>', $hash);
-			$res=$this->db->get('checklist_hfc');
+			$res=$this->db->get('checklist_ftth');
 			if($res->num_rows()>0){
 				return TRUE;
 			}
 			return FALSE;
 		}
-		
-		public function formChecklistHFC($data){
-			if($this->db->insert('checklist_hfc', $data)){
-				return $this->db->insert_id();
-			}
-			return FALSE;
-		}
 
-		public function formChecklistLista($data){
-			if($this->db->insert('checklist_hfc_listado', $data)){
-				return $this->db->insert_id();
-			}
-			return FALSE;
-		}
 
 		public function actualizarOTS($hash,$data){
 			$this->db->where('sha1(id)', $hash);
-			if($this->db->update('checklist_hfc', $data)){
+			if($this->db->update('checklist_ftth', $data)){
 				return TRUE;
 			}
 			return FALSE;
@@ -247,10 +255,9 @@ class Checklisthfcmodel extends CI_Model {
 
 		public function listaTiposActividad(){
 			$this->db->order_by('actividad', 'asc');
-			$res = $this->db->get('checklist_hfc_actividades');
+			$res = $this->db->get('checklist_ftth_actividades');
 			return $res->result_array();
 		}
-
 
 		public function listaComunas(){
 			$this->db->order_by('titulo', 'asc');
@@ -260,7 +267,7 @@ class Checklisthfcmodel extends CI_Model {
 
 		public function listaTecnicos(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
-			$this->db->where('id_perfil', 4);
+			/*$this->db->where('id_perfil', 4);*/
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
 			return $res->result_array();
@@ -276,24 +283,24 @@ class Checklisthfcmodel extends CI_Model {
 
 		public function getIdTipo($tipo){
 			$this->db->where('tipo', $tipo);
-			$res=$this->db->get("checklist_hfc_tipos");
+			$res=$this->db->get("checklist_ftth_tipos");
 			$row=$res->row_array();
 			return $row["id"];
 		}
 
 		public function getIdPorHash($hash){
 			$this->db->where('sha1(id)', $hash);
-			$res=$this->db->get("checklist_hfc");
+			$res=$this->db->get("checklist_ftth");
 			if($res->num_rows()>0){
 				$row=$res->row_array();
 				return $row["id"];
 			}
 			return FALSE;
-			
 		}
 		
+
 		public function insertarItemChecklist($data){
-			if($this->db->insert('checklist_hfc_listado', $data)){
+			if($this->db->insert('checklist_ftth_listado', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
@@ -307,26 +314,27 @@ class Checklisthfcmodel extends CI_Model {
 		}
 		
 		public function insertaDetalleOTS($data){
-			if($this->db->insert('checklist_hfc_detalle', $data)){
+			if($this->db->insert('checklist_ftth_detalle', $data)){
 				return TRUE;
 			}
 			return FALSE;
 		}
 
+		
 		public function listaChecklist(){
 			$this->db->select('sha1(c.id) as hash,
 				c.*,
 				ct.tipo as tipo');
 
-			$this->db->join('checklist_hfc_tipos ct', 'ct.id = c.tipo', 'left');
+			$this->db->join('checklist_ftth_tipos ct', 'ct.id = c.tipo', 'left');
 			$this->db->order_by('c.id', 'asc');
-			$res=$this->db->get('checklist_hfc_listado c');
+			$res=$this->db->get('checklist_ftth_listado c');
 			return $res->result_array();
 		}
 
 		public function existeDetalleOTS($id){
 			$this->db->where('id_ots', $id);
-			$res=$this->db->get('checklist_hfc_detalle');
+			$res=$this->db->get('checklist_ftth_detalle');
 			if($res->num_rows()>0){
 				return TRUE;
 			}
@@ -336,7 +344,7 @@ class Checklisthfcmodel extends CI_Model {
 		public function getIddetalle($id_ots,$id_check){
 			$this->db->where('(id_ots)', $id_ots);
 			$this->db->where('(id_check)', $id_check);
-			$res=$this->db->get("checklist_hfc_detalle");
+			$res=$this->db->get("checklist_ftth_detalle");
 			if($res->num_rows()>0){
 				$row=$res->row_array();
 				return $row["id"];
@@ -347,19 +355,20 @@ class Checklisthfcmodel extends CI_Model {
 
 		public function actualizaDetalleOTS($id,$data){
 			$this->db->where('(id)', $id);
-			if($this->db->update('checklist_hfc_detalle', $data)){
+			if($this->db->update('checklist_ftth_detalle', $data)){
 				// echo $this->db->last_query();;
 				// echo "<br>";
 				return TRUE;
 			}
 			return FALSE;
 		}
+
 		
-		public function eliminaChecklistHFC($hash){
+		public function eliminaChecklist($hash){
 			$this->db->where('sha1(id)', $hash);
-		    if($this ->db->delete('checklist_hfc')){
+		    if($this ->db->delete('checklist_ftth')){
 		    	$this->db->where('sha1(id_ots)', $hash);
-			    if($this ->db->delete('checklist_hfc_detalle')){
+			    if($this ->db->delete('checklist_ftth_detalle')){
 			    	return TRUE;
 			    }
 		    }
@@ -368,7 +377,7 @@ class Checklisthfcmodel extends CI_Model {
 
 		
 		public function agregaImagenesChecklist($data){
-			if($this->db->insert('checklist_hfc_galeria', $data)){
+			if($this->db->insert('checklist_ftth_galeria', $data)){
 				return TRUE;
 			}
 			return FALSE;
@@ -376,37 +385,37 @@ class Checklisthfcmodel extends CI_Model {
 
 		public function cantidadImagenesChecklist($id){
 			$this->db->where('id_checklist', $id);
-			$res=$this->db->get('checklist_hfc_galeria');
+			$res=$this->db->get('checklist_ftth_galeria');
 			return $res->num_rows();
 		}
 
 		public function getImagenChecklist($id){
 			$this->db->select("imagen");
 			$this->db->where('sha1(id_checklist)', $id);
-			$res=$this->db->get("checklist_hfc_galeria");
+			$res=$this->db->get("checklist_ftth_galeria");
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
 			return FALSE;
 		}
 
-		public function eliminaImagenChecklistHFC($hash){
+		public function eliminaImagenChecklist($hash){
 			$this->db->where('sha1(id_checklist)', $hash);
-		    if($this ->db->delete('checklist_hfc_galeria')){
+		    if($this ->db->delete('checklist_ftth_galeria')){
 			    return TRUE;
 		    }
 		    return FALSE;
 		}
 
-		public function eliminaImagenIChecklistHFC($hash){
+		public function eliminaImagenIChecklist($hash){
 			$this->db->where('sha1(id)', $hash);
-		    if($this ->db->delete('checklist_hfc_galeria')){
+		    if($this ->db->delete('checklist_ftth_galeria')){
 			    return TRUE;
 		    }
 		    return FALSE;
 		}
 
-		public function getChecklistHFCGaleria($hash){
+		public function getChecklistGaleria($hash){
 			$this->db->select('
 				cg.id as id_galeria,
 				cg.id_checklist as id_checklist,
@@ -414,7 +423,7 @@ class Checklisthfcmodel extends CI_Model {
 				cg.imagen as imagen');
 
 			$this->db->where('sha1(cg.id_checklist)', $hash);
-			$res=$this->db->get("checklist_hfc_galeria as cg");
+			$res=$this->db->get("checklist_ftth_galeria as cg");
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -424,27 +433,39 @@ class Checklisthfcmodel extends CI_Model {
 		public function getImagenGaleria($id){
 			$this->db->select('imagen');
 			$this->db->where('id', $id);
-			$res=$this->db->get('checklist_hfc_galeria');
+			$res=$this->db->get('checklist_ftth_galeria');
 			$row=$res->row_array();
 			return $row["imagen"];
 		}
 
 
+		/*public function eliminaChecklistFTTH($hash){
+			$this->db->where('sha1(id)', $hash);
+		    if($this ->db->delete('checklist_ftth')){
+		    	
+		    	$this->db->where('sha1(id_ots)', $hash);
+			    if($this ->db->delete('checklist_ftth_detalle')){
+			    	return TRUE;
+			    }
+
+		    }
+		    return FALSE;
+		}*/
 
 	/*************REPORTE*********/
 
-		public function dataEstadosChecklistHFC(){
+		public function dataEstadosChecklistFTTH(){
 			$this->db->select("
 				CASE 
 		          WHEN cd.estado=0 THEN 'OK'
 		          WHEN cd.estado=1 THEN 'No Ok'
-		          WHEN cd.estado=2 THEN 'No aplica'
+		          WHEN cd.estado=2 THEN 'No Aplica'
 		        END AS estado,
 				count(cd.id) as cantidad,
 				");
 
 			$this->db->group_by('cd.estado');
-			$res=$this->db->get('checklist_hfc_detalle cd');
+			$res=$this->db->get('checklist_ftth_detalle cd');
 			$cabeceras = array("Tipo","Cantidad");
 			$array=array();
 			$array[]=$cabeceras;
@@ -460,7 +481,7 @@ class Checklisthfcmodel extends CI_Model {
 
 		}
 
-		public function dataTecnicosChecklistHFC(){
+		public function dataTecnicosChecklistFTTH(){
 			$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 
@@ -482,9 +503,9 @@ class Checklisthfcmodel extends CI_Model {
 				");
 
 			$this->db->group_by('c.tecnico_id');
-			$this->db->join('checklist_hfc c', 'c.id = cd.id_ots', 'left');	
+			$this->db->join('checklist_ftth c', 'c.id = cd.id_ots', 'left');	
 			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
-			$res=$this->db->get('checklist_hfc_detalle cd');
+			$res=$this->db->get('checklist_ftth_detalle cd');
 
 			$cabeceras = array("Técnico","OK",array('role'=> 'annotation'),"No OK",array('role'=> 'annotation'),"No aplica",array('role'=> 'annotation'));
 			$array=array();
@@ -503,12 +524,14 @@ class Checklisthfcmodel extends CI_Model {
 				$array[]=$temp;
 			}
 			return $array;
+
 		}
 		
 	
-	/*************FALLOS HFC****************/
+		
+	/*************FALLOS FTTH****************/
 
-		public function listaFHFC($desde,$hasta,$solucion_estado){
+		public function listaFFTTH($desde,$hasta,$solucion_estado){
 			$this->db->select("sha1(cd.id) as hash,
 				o.*,			
 				u.rut as rut,
@@ -543,9 +566,9 @@ class Checklisthfcmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
-			$this->db->join('checklist_hfc_listado cl', 'cl.id = cd.id_check', 'left');
-			$this->db->join('checklist_hfc_tipos ct', 'ct.id = cl.tipo', 'left');
+			$this->db->join('checklist_ftth_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('checklist_ftth_listado cl', 'cl.id = cd.id_check', 'left');
+			$this->db->join('checklist_ftth_tipos ct', 'ct.id = cl.tipo', 'left');
 			$this->db->where('cd.estado=1');
 			
 			if($desde!="" and $hasta!=""){
@@ -556,14 +579,14 @@ class Checklisthfcmodel extends CI_Model {
 				$this->db->where('solucion_estado', $solucion_estado);
 			}
 
-			$res=$this->db->get('checklist_hfc o');
+			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
 			return FALSE;
 		}
 
-		public function getDataFHFC($hash){
+		public function getDataFFTTH($hash){
 			$this->db->select("sha1(cd.id) as hash,
 				o.*,			
 				u.rut as rut,
@@ -596,12 +619,12 @@ class Checklisthfcmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
-			$this->db->join('checklist_hfc_detalle cd', 'cd.id_ots = o.id', 'left');
-			$this->db->join('checklist_hfc_listado cl', 'cl.id = cd.id_check', 'left');
-			$this->db->join('checklist_hfc_tipos ct', 'ct.id = cl.tipo', 'left');
+			$this->db->join('checklist_ftth_detalle cd', 'cd.id_ots = o.id', 'left');
+			$this->db->join('checklist_ftth_listado cl', 'cl.id = cd.id_check', 'left');
+			$this->db->join('checklist_ftth_tipos ct', 'ct.id = cl.tipo', 'left');
 			$this->db->where('cd.estado=1');
 			$this->db->where('sha1(cd.id)', $hash);
-			$res=$this->db->get('checklist_hfc o');
+			$res=$this->db->get('checklist_ftth o');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -611,7 +634,7 @@ class Checklisthfcmodel extends CI_Model {
 		public function getFechaSolucion($hash){
 			$this->db->select('solucion_fecha');
 			$this->db->where('sha1(id)', $hash);
-			$res = $this->db->get('checklist_hfc_detalle');
+			$res = $this->db->get('checklist_ftth_detalle');
 			if($res->num_rows()>0){
 				$row = $res->row_array();
 				return $row["solucion_fecha"];
@@ -619,16 +642,16 @@ class Checklisthfcmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function actualizarFHFC($hash,$data){
+		public function actualizarFFTTH($hash,$data){
 			$this->db->where('sha1(id)', $hash);
-			if($this->db->update('checklist_hfc_detalle', $data)){
+			if($this->db->update('checklist_ftth_detalle', $data)){
 				return TRUE;
 			}
 			return FALSE;
 		}
 
 		
-		public function listaTecnicosFHFC(){
+		public function listaTecnicosFFTTH(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
 			$this->db->where('id_perfil', 4);
 			$this->db->order_by('nombres', 'asc');
@@ -636,13 +659,14 @@ class Checklisthfcmodel extends CI_Model {
 			return $res->result_array();
 		}
 
-		public function listaAuditoresFHFC(){
+		public function listaAuditoresFFTTH(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
 			$this->db->where('id_perfil', 3);
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
 			return $res->result_array();
 		}
+
 
 	/****************GRAFICO FALLOS************************/
 
@@ -688,11 +712,10 @@ class Checklisthfcmodel extends CI_Model {
 			$this->db->group_by('MONTH(c.fecha)');
 			$this->db->group_by('YEAR(c.fecha)');
 			/*$this->db->where('cd.estado=1');*/
-			$this->db->join('checklist_hfc c', 'c.id = cd.id_ots', 'left');
+			$this->db->join('checklist_ftth c', 'c.id = cd.id_ots', 'left');
 			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
 			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
-
-			$res=$this->db->get("checklist_hfc_detalle cd");
+			$res=$this->db->get("checklist_ftth_detalle cd");
 			$array = array();
 			
 			if($res->num_rows()>0){
@@ -718,7 +741,7 @@ class Checklisthfcmodel extends CI_Model {
 				uj.id as id_jefe,
 				uj.id_jefe as id_usuario_jefe,
 				CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'
-				");
+			");
 
 			$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
 
@@ -748,7 +771,7 @@ class Checklisthfcmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function listaTrabajadoresHFC($jefe){
+		public function listaTrabajadoresFTTH($jefe){
 			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				empresa,id,rut,
 			    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
@@ -778,5 +801,5 @@ class Checklisthfcmodel extends CI_Model {
 			return FALSE;
 		}
 
-				
+
 }

@@ -114,14 +114,13 @@ class Ast extends CI_Controller {
 		
 		public function vistaAst(){
 			$this->visitas("Listado");
-			$desde=date('d-m-Y', strtotime('-360 day', strtotime(date("d-m-Y"))));
-	    	$hasta=date('d-m-Y');
+			$desde=date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d"))));
+	    	$hasta=date('Y-m-d');
 			$tecnicos=$this->Astmodel->listaTecnicos();
 			$auditores=$this->Astmodel->listaAuditores();
     		$comunas=$this->Astmodel->listaComunas();
     		$actividades=$this->Astmodel->listaActividades();
     		$estados=$this->Astmodel->listaEstados();
-    		
 
 			$datos=array(
 				'desde' => $desde,	   
@@ -138,9 +137,10 @@ class Ast extends CI_Controller {
 		public function listaAst(){
 			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
 			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$tecnico=$this->security->xss_clean(strip_tags($this->input->get_post("tecnico")));
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
-			echo json_encode($this->Astmodel->listaAst($desde,$hasta));
+			echo json_encode($this->Astmodel->listaAst($desde,$hasta,$tecnico));
 		}
 		
 		public function insertaChecklist($checklist,$hash){
@@ -487,7 +487,7 @@ class Ast extends CI_Controller {
 
 				$this->email->to($para);
 				$this->email->cc($copias);
-				$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl");
+				//$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl");
 				$this->email->subject($titulo);
 				$this->email->message($html); 
 				$nombre = url_title(convert_accented_characters($key["id"]."-".$key["rut_tecnico"])).".pdf";
@@ -542,7 +542,7 @@ class Ast extends CI_Controller {
 
 				$this->email->to($para);
 				$this->email->cc($copias);
-				$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));
+				//$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));
 				$this->email->subject($titulo);
 				$this->email->message($html); 
 				$resp=$this->email->send();
@@ -569,9 +569,11 @@ class Ast extends CI_Controller {
 		public function excel_ast(){
 			$desde=$this->uri->segment(2);
 			$hasta=$this->uri->segment(3);
+			$tecnico=$this->uri->segment(4);
+			
 			$desde=date("Y-m-d",strtotime($desde));
 			$hasta=date("Y-m-d",strtotime($hasta));
-			$data=$this->Astmodel->listaAstDetalle($desde,$hasta);
+			$data=$this->Astmodel->listaAstDetalle($desde,$hasta,$tecnico);
 
 			if(!$data){
 				return FALSE;

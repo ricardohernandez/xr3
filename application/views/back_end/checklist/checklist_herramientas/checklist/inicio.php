@@ -826,8 +826,22 @@
                     <option value="" selected>Seleccione...</option>
                         <?php 
                         foreach($auditores as $a){
+
+                          if($this->session->userdata('id') == $a["id"]){
+                            ?>
+
+                              <option selected value="<?php echo $a["id"]; ?>"><?php echo $a["nombre_completo"]; ?></option>
+
+                            <?php
+                          }else{
+                            ?>
+
+                              <option value="<?php echo $a["id"]; ?>"><?php echo $a["nombre_completo"]; ?></option>
+                              
+                            <?php
+                          }
                           ?>
-                            <option value="<?php echo $a["id"]; ?>"><?php echo $a["nombre_completo"]; ?></option>
+                           
                           <?php
                         }
                       ?>

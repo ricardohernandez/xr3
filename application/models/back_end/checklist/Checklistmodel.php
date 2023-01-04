@@ -59,6 +59,7 @@ class Checklistmodel extends CI_Model {
 				u.ultima_actualizacion as ultima_actualizacion,
 				u.correo_empresa as correo_tecnico_empresa,
 				u.correo_personal as correo_tecnico_personal,
+				upr.proyecto as proyecto,
 
 				us.correo_empresa as correo_auditor_empresa,
 				us.correo_personal as correo_auditor_personal,
@@ -75,7 +76,7 @@ class Checklistmodel extends CI_Model {
 
 			$this->db->join('usuarios_jefes uj', 'uj.id = u.id_jefe', 'left');
 			$this->db->join('usuarios usj', 'usj.id = uj.id_jefe', 'left');
-
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
 			$this->db->where('sha1(o.id)', $hash);
@@ -100,7 +101,6 @@ class Checklistmodel extends CI_Model {
 				uc.cargo as auditor_cargo,
 				ua.area as area,
 		        if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
-
 		        cl.descripcion as descripcion,
 				ct.tipo as tipo,
 
@@ -141,6 +141,7 @@ class Checklistmodel extends CI_Model {
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
 				CONCAT(us.nombres,' ',us.apellidos) as 'auditor',
 				if(o.fecha!='0000-00-00', DATE_FORMAT(o.fecha,'%d-%m-%Y'),'') as 'fecha',
+				upr.proyecto as proyecto,
 
 				cl.descripcion as descripcion,
 				ct.tipo as tipo,
@@ -159,6 +160,8 @@ class Checklistmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
+
 			$this->db->join('checklist_herramientas_detalle cd', 'cd.id_ots = o.id', 'left');
 			$this->db->join('checklist_herramientas_listado cl', 'cl.id = cd.id_check', 'left');
 			$this->db->join('checklist_herramientas_tipos ct', 'ct.id = cl.tipo', 'left');

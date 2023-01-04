@@ -178,9 +178,9 @@
 
 
           // GRAFICO PROMEDIO FTTH
-
-            if(json.hasOwnProperty("data_prom_ftth")){
-
+          
+            if(json.hasOwnProperty("data_prom_ftth") && json.data_prom_ftth.meta!="0"){
+              
               $("#prom_ftth").text(json.data_prom_ftth.data.puntos).show()
               $(".prom_ftth").show()
 
@@ -205,7 +205,7 @@
 
               const cumplimiento = json.data_prom_ftth.cumplimiento
 
-              $(".meta_calidad_hfc").html(` Meta : ${json.data_prom_ftth.meta}`)  
+              $(".meta_prom_ftth").html(` Meta : ${json.data_prom_ftth.meta}`)  
               $(".meta_prom_ftth_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
 
@@ -276,7 +276,7 @@
          
           // GRAFICO PROMEDIO PUNTOS HFC
 
-            if(json.hasOwnProperty("data_prom_hfc")){
+            if(json.hasOwnProperty("data_prom_hfc") && json.data_prom_hfc.meta!="0"){
 
               $("#prom_hfc").text(json.data_prom_hfc.data.promedio).show()
               $(".prom_hfc").show()
@@ -351,7 +351,7 @@
               const meta = json.data_dias_hfc.meta
               
               $(".meta_dias_trabajados_hfc").html(` Meta : ${json.data_dias_hfc.meta}`)  
-              $(".meta_dias_trabajados_hfc_green").html(`${value} <i class="fa-solid "></i>%`).show()
+             /* $(".meta_dias_trabajados_hfc_green").html(`${value} <i class="fa-solid "></i>%`).show()*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados_hfc'));
               chart.draw(data_dias, options);
@@ -384,7 +384,11 @@
 
               const value = json.data_dias_ftth.data[1][1]
               const meta = json.data_dias_ftth.meta
-              $(".meta_dias_trabajados_ftth_green").html(`${value} <i class="fa-solid "></i>%`).show()
+
+              $(".meta_dias_trabajados_ftth").html(` Meta : ${json.data_dias_ftth.meta}`)  
+             /* $(".meta_prom_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()*/
+
+              /* $(".meta_dias_trabajados_ftth_green").html(`${value} <i class="fa-solid "></i>%`).show()*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados_ftth'));
               chart.draw(data_dias, options);
@@ -396,7 +400,7 @@
             }
 
 
-            if(json.hasOwnProperty("data_asistencia")){
+            if(json.hasOwnProperty("data_asistencia") && json.data_asistencia.data!=false){
 
               $("#asistencia").text(json.data_dias_hfc.data).show()
               $(".asistencia").show()
@@ -435,7 +439,7 @@
 
           // GRAFICO CALIDAD HFC 
 
-            if(json.hasOwnProperty("data_calidad_hfc")){
+            if(json.hasOwnProperty("data_calidad_hfc") && json.data_calidad_hfc.meta!="0"){
 
               $("#calidad_hfc").text(json.data_calidad_hfc.data.calidad).show()
               $(".calidad_hfc").show()
@@ -457,7 +461,7 @@
               const cumplimiento = json.data_calidad_hfc.cumplimiento
 
 
-              $(".meta_calidad_hfc").html(` Meta : ${json.data_prom_hfc.meta}`)  
+              $(".meta_calidad_hfc").html(` Meta : ${json.data_calidad_hfc.meta}`)  
               $(".meta_calidad_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
               /*const diff = Math.abs(meta-value)
@@ -487,7 +491,7 @@
 
           // GRAFICO CALIDAD FTTH 
 
-            if(json.hasOwnProperty("data_calidad_ftth")){
+            if(json.hasOwnProperty("data_calidad_ftth") && json.data_calidad_ftth.meta!="0"){
 
               $("#calidad_ftth").text(json.data_calidad_ftth.data.calidad).show()
               $(".calidad_ftth").show()
@@ -541,7 +545,7 @@
 
           // GRAFICO  DECLARACION OT 
 
-            if(json.hasOwnProperty("data_declaracion_ot")){
+            if(json.hasOwnProperty("data_declaracion_ot") && json.data_declaracion_ot.data!=false){
 
               $("#declaracion_ot").text(json.data_declaracion_ot.data.declaracion).show()
               $(".declaracion_ot").show()
@@ -1727,7 +1731,7 @@
       </div>
 
 
-       <div class="col-6 col-lg dias_trabajados mb-2">
+       <div class="col-6 col-lg dias_trabajados_hfc mb-2">
         <div class="card text-center">
           <div class="card-header card_dash">
             Días háb. trabajados HFC<span class="meta_dias_trabajados_hfc"></span>

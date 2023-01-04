@@ -120,9 +120,13 @@ class Calidad extends CI_Controller {
 					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
+				/*
+				echo $desde;
+				echo $hasta;
+				exit;*/
+
 
 	         	$this->Calidadmodel->eliminarPeriodoActual($desde,$hasta);
-            	$array = array();
 	
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
@@ -185,7 +189,7 @@ class Calidad extends CI_Controller {
 
 						if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
 
-							$array[] = array(
+							$array = array(
 						    	"rut_tecnico"=>$rutf,
 								"comuna"=>$data[1],
 								"ot"=>$data[2],
@@ -201,21 +205,18 @@ class Calidad extends CI_Controller {
 								"falla"=>$falla,
 								"ultima_actualizacion"=>$ultima_actualizacion);	
 
-					 	   $i++;
-					 	   /*echo $i;
-					 	   echo "<br>";*/
+							  if($this->Calidadmodel->formCalidad($array));
+
+							  $array=array();
+
+					 	  	  $i++;
 						}else{
 							$z++;
 						}
 					}
 		        } 
-				/*
-		         echo "<pre>";
-		         print_r($array);exit;*/
 
-		        if($this->Calidadmodel->formCalidad($array)){
-		         	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas, ".$z." filas ignoradas."));exit;
-		        }
+			    echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas, ".$z." filas ignoradas."));exit;
 		        
 		        fclose($handle); 
 

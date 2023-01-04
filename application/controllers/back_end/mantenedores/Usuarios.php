@@ -43,9 +43,7 @@ class Usuarios extends CI_Controller {
 
 	//USUARIOS
 
-		
 		public function formCargaMasiva(){
-			//print_r($_FILES);exit;
 			sleep(1);
 			if($_FILES['userfile']['name']==""){
 			    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
@@ -68,76 +66,34 @@ class Usuarios extends CI_Controller {
 	            $handle = fopen($filename, "r");
 	            $i=0;$z=0;$y=0;     
 	         	
-	         	// $this->Usuariosmodel->truncateUsuarios();
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 	                $i++;
 
-		                if(!empty($data[0])){
-	                	  
-	                	    $cargo = $data[8];
-	                	    $area = $data[9];
-	                	    $proyecto = $data[10];
-	                	    $nombre_jefe = $data[11];
-	                	    $rut = $data[4];
-							$rut=str_replace('.', '', $rut);
-							$rutf=str_replace('-', '', $rut);
+	                if(!empty($data[0])){
+                	  
+                	  	$rut_tecnico = $data[0];
+                	  	$rut_jefe = $data[1];
 
-	                	    $id_cargo=$this->Usuariosmodel->getIdCargoPorNombre($cargo);
-	                	    $id_area=$this->Usuariosmodel->getIdAreaPorNombre($area);
-	                	    $id_proyecto=$this->Usuariosmodel->getIdProyectoPorNombre($proyecto);
-	                	    $id_jefe=$this->Usuariosmodel->getIdJefePorNombre($nombre_jefe);
-	                	    $id_usuario = $this->Usuariosmodel->getIdUsuarioPorRut($rutf);
+                	  	$id_usuario = $this->Usuariosmodel->getIdUsuarioPorRut($rut_tecnico);
 
-	                	    switch ($data[23]) {
-	                	    	case 1:	$id_perfil = 2;break;
-	                	    	case 2:	$id_perfil = 3;break;
-	                	    	case 3:	$id_perfil = 3;break;
-	                	    	case 4:	$id_perfil = 3;break;
-	                	    	case 5:	$id_perfil = 4;break;
-	                	    	default:$id_perfil = 4;break;
-	                	    }
+                	  	if($id_usuario!=FALSE){
+                	  		
+                	  		$id_jefe = $this->Usuariosmodel->getIdJefe($rut_jefe);
 
-	                	    $ultima_actualizacion=date("Y-m-d G:i:s");
-						 //    $arr=array("id_cargo"=>$id_cargo,
-							// 	"id_proyecto"=>$id_proyecto,
-							// 	"id_area"=>$id_area,
-							// 	"id_perfil"=>$id_perfil,
-							// 	"id_jefe"=>$id_jefe,
-							// 	"nombres"=>$data[0],
-							// 	"apellidos"=>$data[1],
-							// 	"empresa"=>$data[2],
-							// 	"comuna"=>$data[13],
-							// 	"sexo"=>$data[5],
-							// 	"nacionalidad"=>$data[6],
-							// 	"estado_civil"=>$data[7],
-							// 	"domicilio"=>$data[12],
-							// 	"ciudad"=>"",
-							// 	"sucursal"=>"",
-							// 	"celular_empresa"=>"",
-							// 	"celular_personal"=>$data[17],
-							// 	"correo_empresa"=>$data[18],
-							// 	"correo_personal"=>$data[19],
-							// 	"fecha_nacimiento"=>date("Y-m-d",strtotime($data[20])),
-							// 	"fecha_ingreso"=>date("Y-m-d",strtotime($data[21])),
-							// 	"fecha_salida"=>"0000-00-00",
-							// 	"talla_zapato"=>$data[24],
-							// 	"talla_pantalon"=>$data[25],
-							// 	"talla_polera"=>$data[26],
-							// 	"talla_cazadora"=>$data[27],
-							// 	"estado"=>1,
-							// 	"ultima_actualizacion"=>$ultima_actualizacion
-							// );	
-
-							$arr=array(
-								"id_jefe"=>$id_jefe,
-								"ultima_actualizacion"=>$ultima_actualizacion
-							);	
-							 
-					  	 	$this->Usuariosmodel->actualizarUsuario(sha1($id_usuario),$arr);
-					  	 	$arr=array();
-			            }
-	        	    
+	                	  	if($id_jefe!=FALSE){
+	                	  		
+	                	  		$arr = array(
+									"id_jefe"=>$id_jefe,
+								);	
+								 
+						  	 	$this->Usuariosmodel->actualizarUsuario(sha1($id_usuario),$arr);
+						  	 	$arr=array();
+	                	  	}
+                	  	}
+							
+		            }
 	            }
+
 	            fclose($handle); 
 	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito."));exit;
 

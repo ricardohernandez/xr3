@@ -110,6 +110,8 @@
           data: function(param){
             param.desde = $("#desde_f").val();
             param.hasta = $("#hasta_f").val();
+            param.tecnico = $("#tecnico_f").val();
+
           }
         },    
        "columns": [
@@ -424,12 +426,10 @@
 
   /********OTROS**********/
     
-    $(document).off('click', '.btn_filtro_ast').on('click', '.btn_filtro_ast',function(event) {
-      event.preventDefault();
-       $(this).prop("disabled" , true);
-       $(".btn_filtro_ast").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
-       listaAst.ajax.reload();
-    });
+    $(document).off('change', '#desde_f,#hasta_f,#tecnico_f').on('change', '#desde_f,#hasta_f,#tecnico_f', function(event) {
+      $(".btn_filtro_ast").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
+      listaAst.ajax.reload();
+    }); 
 
     $(".fecha_normal").datetimepicker({
         format: "DD-MM-YYYY",
@@ -511,9 +511,18 @@
 
     $(document).off('click', '.btn_excel').on('click', '.btn_excel',function(event) {
        event.preventDefault();
-       var desde = $("#desde_f").val();
-       var hasta = $("#hasta_f").val();
+       const desde = $("#desde_f").val();
+       const hasta = $("#hasta_f").val();
+       const tecnico = $("#tecnico_f").val();
        
+       if(tecnico==""){
+         $.notify("Debe seleccionar un técnico.", {
+             className:'error',
+             globalPosition: 'top right'
+         });  
+         return false;
+       }
+
        if(desde==""){
          $.notify("Debe seleccionar una fecha de inicio.", {
              className:'error',
@@ -529,7 +538,21 @@
         return false;
        }
 
-       window.location="excel_ast/"+desde+"/"+hasta;
+      const d = new Date(desde);
+      const h = new Date(hasta);
+
+      const diferenciamill = Math.abs(d - h);
+      const diferencia = Math.ceil(diferenciamill / (1000 * 60 * 60 * 24));
+
+      if(diferencia>30){
+        $.notify("El rango de fecha máximo debe ser de 30 días.", {
+             className:'error',
+             globalPosition: 'top right'
+         });  
+        return false;
+      }
+
+      window.location="excel_ast/"+desde+"/"+hasta+"/"+tecnico;
     });
 
     $(document).off('click', '.pdf_chk').on('click', '.pdf_chk',function(event) {
@@ -570,31 +593,62 @@
         </div>
       </div>
 
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:12px;"> Fecha <span></span> 
             </div>
-              <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
+              <input type="date" placeholder="Desde" class="form-control form-control-sm"  name="desde_f" id="desde_f">
+              <input type="date" placeholder="Hasta" class="form-control form-control-sm"  name="hasta_f" id="hasta_f">
           </div>
         </div>
       </div>
 
-      <div class="col-12 col-lg-4">  
+      <div class="col-lg-2">
+        <div class="form-group">
+         <select id="tecnico_f" name="tecnico_f" class="custom-select custom-select-sm">
+            <option value="" selected>Seleccione...</option>
+            <?php 
+            foreach($tecnicos as $t){
+
+              if($this->session->userdata('id_perfil')>3){
+
+                if($this->session->userdata('id') == $t["id"]){
+                  ?>  
+                     <option selected value="<?php echo $t["id"]; ?>"><?php echo $t["nombre_completo"]; ?></option>
+                  <?php
+                }
+                ?>
+                <?php
+
+              }else{
+                ?>
+                 <option value="<?php echo $t["id"]; ?>"><?php echo $t["nombre_completo"]; ?></option>
+                <?php
+              }
+              ?>
+               
+              <?php
+                }
+              ?>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_ast" class="buscador_ast form-control form-control-sm">
        </div>
       </div>
 
-      <div class="col-6 col-lg-1">
+      <!-- <div class="col-6 col-lg-1">
         <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_ast btn_xr3">
          <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
          </button>
        </div>
-      </div>
+      </div> -->
 
       <div class="col-6 col-lg-1">  
         <div class="form-group">

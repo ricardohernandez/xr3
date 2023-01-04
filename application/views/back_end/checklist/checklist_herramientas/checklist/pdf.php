@@ -128,7 +128,7 @@
               <td width="40%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Auditor : <?php echo $d["auditor"]; ?></b></td>
               <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Fecha : <?php echo $d["fecha"]; ?></b></td>
               <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Téc. Zona : <?php echo $d["area"]; ?></b></td>
-              <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Téc. Proyecto : <?php echo $d["comuna"] ?></b></td>
+              <td width="20%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Téc. Proyecto : <?php echo $d["proyecto"] ?></b></td>
             </tr>
         </thead>
       </table>

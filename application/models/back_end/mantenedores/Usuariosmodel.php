@@ -102,14 +102,7 @@ class Usuariosmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function actualizarUsuario($hash,$data){
-			$this->db->where('sha1(id)', $hash);
-			if($this->db->update('usuarios', $data)){
-				return TRUE;
-			}
-			return FALSE;
-		}
-
+		
 		public function listaNivelesTecnicos(){
 			$this->db->order_by('nivel', 'asc');
 			$res=$this->db->get('usuarios_tecnicos_niveles');
@@ -171,6 +164,62 @@ class Usuariosmodel extends CI_Model {
 			return FALSE;
 		}
 
+
+
+		public function getIdJefe($rut){
+			$this->db->select('id');
+			$this->db->where('rut', $rut);
+			$res=$this->db->get('usuarios');
+			
+			if($res->num_rows()==0){
+				return FALSE;
+			}else{
+
+				$row = $res->row_array();
+
+				$this->db->select('id');
+				$this->db->where('id_jefe', $row["id"]);
+				$res2=$this->db->get('usuarios_jefes');
+
+				if($res2->num_rows()==0){
+					return FALSE;
+				}else{
+					$row2 = $res2->row_array();
+					return $row2["id"];
+				}
+			}
+		}
+
+		public function actualizarUsuario($hash,$data){
+			$this->db->where('sha1(id)', $hash);
+			if($this->db->update('usuarios', $data)){
+				/*echo $this->db->last_query();
+				echo "<br>";*/
+
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+
+
+
+		public function getIdUsuarioPorRut($rut){
+			$this->db->select('id');
+			$this->db->where('rut', $rut);
+			$res=$this->db->get('usuarios');
+
+			if($res->num_rows()==0){
+				return FALSE;
+			}else{
+				$row = $res->row_array();
+				return $row["id"];
+			}
+
+			
+		}
+
+
 		public function getIdCargoPorNombre($cargo){
 			$this->db->where('cargo', $cargo);
 			$res=$this->db->get('usuarios_cargos');
@@ -205,13 +254,6 @@ class Usuariosmodel extends CI_Model {
 			echo "<br>";*/
 			$row=$res->row_array();
 			return $row["id_jefe"];
-		}
-
-		public function getIdUsuarioPorRut($rut){
-			$this->db->where('rut', $rut);
-			$res=$this->db->get('usuarios');
-			$row=$res->row_array();
-			return $row["id"];
 		}
 
 
@@ -326,7 +368,7 @@ class Usuariosmodel extends CI_Model {
 		    return FALSE;
 		}
 
-		public function existeProyecto($cargo){
+		public function existeProyecto($proyecto){
 			$this->db->where('proyecto', $proyecto);
 			$res=$this->db->get('usuarios_proyectos');
 			if($res->num_rows()>0){

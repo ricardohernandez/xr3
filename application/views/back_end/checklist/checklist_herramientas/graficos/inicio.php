@@ -70,23 +70,31 @@
         dataType:"json",
         success: function (json) {
        		var data = google.visualization.arrayToDataTable(json);
-       		data.sort([{column: 0, desc: false}])
+       		data.sort([{column: 1, desc: true}])
 
-        	 var options = {
+        	var options = {
+        	 	/*isStacked: true,*/
         	 	fontName: 'Nunito',
         	 	fontColor:'#32477C',
-	            colors: ['green', 'red' , 'grey'],
+        	 	bar: { groupWidth: '75%' },
+
+	            colors: ['green', 'red', 'grey'],
 		        chartArea:{
-		             left:210,
-		             right:110,
+		             left:280,
+		             right:210,
 		             bottom:30,
 		             top:30,
 		        },
 
-		        height:780,
+		        height:2580,
 		        hAxis: {
 		          title: '',
-		          minValue: 0
+		          minValue: 0,
+		          textStyle: {
+		            fontSize: 13,
+		            bold:true,
+		            color:'#32477C'
+	              }
 		        },
 		        vAxis: {
 		          title: '',
@@ -95,8 +103,29 @@
 		            bold:true,
 		            color:'#32477C'
 	              }
-		        }
-		      };
+		        },
+		        annotations: {
+			        alwaysOutside: true,
+			        textStyle: {
+			            fontSize: 12,
+			            auraColor: 'none'
+			        }
+			    },
+			    legend : {
+			        textStyle: {
+			            fontSize: 14,
+			            bold:true,
+			            color:'#32477C'
+		            }
+	            },
+	            tooltip: { 
+	            	textStyle: {  
+	            		color:'#32477C', 
+	            		fontSize: 13
+	            	}
+	            },       
+
+		    };
 
             var chart = new google.visualization.BarChart(document.getElementById('graficoTecnicos'));
 			chart.draw(data, options);
@@ -113,12 +142,12 @@
 
           <!--   <div class="card-body" style="padding: .4rem;"> -->
                 <div class="row">
-                  <div class="col-xs-12 col-lg-6">
+                  <div class="col-xs-12 col-lg-7">
 					<h6 class="titulo_grafico">Resultados por técnico </h6>
 			    	<div id="graficoTecnicos"></div>
 				  </div>
 
-                  <div class="col-xs-12 col-lg-6">
+                  <div class="col-xs-12 col-lg-5">
 					<h6 class="titulo_grafico">Estados checklist</h6>
 			    	<div id="graficoEstadosChecklist"></div>
 				  </div>

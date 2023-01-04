@@ -451,7 +451,7 @@ class Checklist extends CI_Controller {
 
 				$this->email->to($para);
 				$this->email->cc($copias);
-				$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl");
+				/*$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl");*/
 				$this->email->subject($titulo);
 				$this->email->message($html); 
 
@@ -532,7 +532,7 @@ class Checklist extends CI_Controller {
 
 					$this->email->to($para);
 					$this->email->cc($copias);
-					$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));
+					/*$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));*/
 					$this->email->subject($titulo);
 					$this->email->message($html); 
 
@@ -677,7 +677,7 @@ class Checklist extends CI_Controller {
 									 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
 									 <td><?php echo utf8_decode($d["codigo"]); ?></td>
-									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
+									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 
 									 <td><?php echo utf8_decode($d["tipo"]); ?></td>
 									 <td><?php echo utf8_decode($d["descripcion"]); ?></td>

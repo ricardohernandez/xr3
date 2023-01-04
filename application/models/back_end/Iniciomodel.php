@@ -189,7 +189,7 @@ class InicioModel extends CI_Model {
 
 		public function cargaCumpleanios(){
 			$fecha_actual=date("Y-m-d");
-			$start=date('m-d', strtotime($fecha_actual. ' - 3 days'));
+			$start=date('m-d', strtotime($fecha_actual. ' - 2 days'));
 			$end=date('m-d', strtotime($fecha_actual. ' + 15 days'));
 
 			$sql="SELECT distinct 

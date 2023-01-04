@@ -557,7 +557,7 @@ class checklistHFC extends CI_Controller {
 
 				$this->email->to($para);
 				$this->email->cc($copias);
-				$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl");
+				/*$this->email->bcc("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl");*/
 				$this->email->subject($titulo);
 				$this->email->message($html); 
 
@@ -719,7 +719,7 @@ class checklistHFC extends CI_Controller {
 									 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
 									 <td><?php echo utf8_decode($d["codigo"]); ?></td>
-									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
+									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									 <td><?php echo utf8_decode($d["n_ot"]); ?></td>
 									 <td><?php echo utf8_decode($d["tipo_actividad"]); ?></td>
 									 <td><?php echo utf8_decode($d["direccion"]); ?></td>

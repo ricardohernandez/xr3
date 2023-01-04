@@ -121,6 +121,7 @@ class Productividad extends CI_Controller {
 				}
 
 	         	$this->Productividadmodel->eliminarPeriodoActual($desde,$hasta);
+	         	$this->Productividadmodel->truncateTablaCargas();
 
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
@@ -172,11 +173,9 @@ class Productividad extends CI_Controller {
 							"ultima_actualizacion"=>$ultima_actualizacion
 						);	
 
-					    if(!$this->Productividadmodel->existeOrden($data[8])){
-					    	$this->Productividadmodel->formDetalle($arr);
-					    	$i++;
-					    }
-				  	 	
+				    	$this->Productividadmodel->formDetalle($arr);
+				    	$i++;
+				
 				  	 	$arr=array();
 		            // }
 	            }
@@ -186,10 +185,98 @@ class Productividad extends CI_Controller {
 	            }
 
 	            fclose($handle); 
+	            
+	            $this->enviaCorreo();
+
+	            /*if($i==0){
+	            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
+	            }*/
+
+	            /*fclose($handle); 
+
+	            $host = $_SERVER['HTTP_HOST'];
+				$ruta = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+				$html = 'cargaPlanillaProductividad';
+				$url = "http://$host$ruta/$html";
+				header("Location: $url");exit;
+				*/
+
 	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
 	        }else{
 	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
 	        }   
+		}
+
+
+		public function enviaCorreo(){
+			$this->load->library('email');
+		    $config = array (
+	       	  'mailtype' => 'html',
+	          'charset'  => 'utf-8',
+	          'priority' => '1',
+	          'wordwrap' => TRUE,
+	          'protocol' => "smtp",
+	          'smtp_port' => 587,
+	          'smtp_host' => 'mail.xr3t.cl',
+		      'smtp_user' => 'soporteplataforma@xr3t.cl',
+		      'smtp_pass' => '9mWj.RUhL&3)'
+	        );
+
+		    $this->email->initialize($config);
+			$asunto ="Ingreso planilla productividad";
+			$para=array("ricardo.hernandez@splice.cl");
+			$this->email->to($para);
+			$this->email->subject($asunto);
+			$this->email->message("Ingreso planilla productividad <a href='https://xr3t.cl/cargaPlanillaProductividad'>Ingresar</a>"); 
+			$resp=$this->email->send();
+		}
+
+		public function cargaPlanillaProductividad(){
+
+			/*if(date("d")>"24"){
+				$desde = date('Y-m-d', strtotime('-0 month', strtotime(date('Y-m-25'))));
+				$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+			}else{
+				$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta = date('Y-m-d', strtotime('-0 month', strtotime(date('Y-m-24'))));
+			}
+			*/
+			$data = $this->Productividadmodel->getDataProductividadCarga();
+			/*$data_prod = $this->Productividadmodel->getDataProductividadCarga($desde,$hasta);*/
+			$i=0;
+			foreach($data as $data){
+
+			    if(!$this->Productividadmodel->existeOrden($data["ot"])){
+
+				    $arr=array("rut_tecnico"=>$data["rut_tecnico"],
+						"fecha"=>$data["fecha"],
+						"direccion"=>$data["direccion"],
+						"tipo_actividad"=>$data["tipo_actividad"],
+						"comuna"=>$data["comuna"],
+						"estado"=>$data["estado"],
+						"derivado"=>$data["derivado"],
+						"puntaje"=>$data["puntaje"],
+						"ot"=>$data["ot"],
+						"estado_ot"=>$data["estado_ot"],
+						"categoria"=>$data["categoria"],
+						"equivalente"=>$data["equivalente"],
+						"tecnologia"=>$data["tecnologia"],
+						"ultima_actualizacion"=>$data["ultima_actualizacion"]
+					);	
+
+					$this->Productividadmodel->formProductividad($arr);
+					$i++;
+				}
+			}
+
+			echo $i." Filas insertadas";
+
+		   /* $host = $_SERVER['HTTP_HOST'];
+			$ruta = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			$html = 'productividad';
+			$url = "http://$host$ruta/$html";
+			header("Location: $url");*/
+
 		}
 
 		public function actualizacionProductividad(){

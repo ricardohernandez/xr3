@@ -15,7 +15,7 @@ class Astmodel extends CI_Model {
 
 	/*************AST*************/
 
-		public function listaAst($desde,$hasta){
+		public function listaAst($desde,$hasta,$tecnico){
 			$this->db->select("sha1(o.id) as hash,
 				o.id as id_astt,
 				o.*,
@@ -36,6 +36,10 @@ class Astmodel extends CI_Model {
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			}
+
+			if($tecnico!=""){
+				$this->db->where("o.tecnico_id" , $tecnico);	
 			}
 
 			$res=$this->db->get('ast_checklist o');
@@ -131,7 +135,7 @@ class Astmodel extends CI_Model {
 
 		
 
-		public function listaAstDetalle($desde,$hasta){
+		public function listaAstDetalle($desde,$hasta,$tecnico){
 			$this->db->select("sha1(o.id) as hash,
 				o.*,			
 				u.rut as rut,
@@ -152,7 +156,6 @@ class Astmodel extends CI_Model {
 		          WHEN cd.estado='no_ap' THEN 'no_ap'
 		        END AS estado_str,
 
-
 				cd.observacion as observacion
 
 				");
@@ -167,6 +170,10 @@ class Astmodel extends CI_Model {
 
 			if($desde!="" and $hasta!=""){
 				$this->db->where("o.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			}
+
+			if($tecnico!=""){
+				$this->db->where("o.tecnico_id",$tecnico);	
 			}
 
 			$res=$this->db->get('ast_checklist o');

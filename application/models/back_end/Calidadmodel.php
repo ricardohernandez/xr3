@@ -71,7 +71,7 @@ class Calidadmodel extends CI_Model {
 	}
 
 	public function formCalidad($data){
-		if($this->db->insert_batch('productividad_calidad', $data)){
+		if($this->db->insert('productividad_calidad', $data)){
 			return TRUE;
 		}
 		return FALSE;
@@ -79,7 +79,6 @@ class Calidadmodel extends CI_Model {
 
 	public function existeOrdenCalidad($orden){
 		$this->db->where('ot', $orden);
-		/*$this->db->limit(1);*/
 		$res=$this->db->get('productividad_calidad');
 		if($res->num_rows()>0){
 			return TRUE;

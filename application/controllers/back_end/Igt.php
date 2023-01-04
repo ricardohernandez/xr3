@@ -299,11 +299,11 @@ class Igt extends CI_Controller {
 			$meta_calidad_ftth = $this->Igtmodel->getMetaIndicador($perfil_tecnico,6,$periodo);
 
 			if($meta_calidad_ftth!="0"){
-				$data_calidad_ftth = $this->Igtmodel->dataCalidadFTTH(getPeriodo($periodo),$id_tecnico);
+				$calidad_ftth = $this->Igtmodel->dataCalidadFTTH(getPeriodo($periodo),$id_tecnico);
 				$porcentajeCalidadFTTH = $this->Igtmodel->porcentajeCalidadFTTH(getPeriodo($periodo),$id_tecnico);
 
-				if($data_calidad_ftth!=FALSE){
-					$array_data["data_calidad_ftth"] = array("data" => $data_calidad_ftth , "meta" => $meta_calidad_ftth, "cumplimiento" => $porcentajeCalidadFTTH);
+				if($calidad_ftth!=FALSE){
+					$array_data["data_calidad_ftth"] = array("data" => $calidad_ftth , "meta" => $meta_calidad_ftth, "cumplimiento" => $porcentajeCalidadFTTH);
 				}
 			}
 

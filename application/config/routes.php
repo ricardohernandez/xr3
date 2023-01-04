@@ -92,7 +92,7 @@
 	$route['getDataAst'] = "back_end/ast/getDataAst";
 	$route['formAst'] = "back_end/ast/formAst";
 	$route['eliminaAst'] = "back_end/ast/eliminaAst";
-	$route['excel_ast/(:any)/(:any)'] = "back_end/ast/excel_ast/$1/$2";
+	$route['excel_ast/(:any)/(:any)/(:any)'] = "back_end/ast/excel_ast/$1/$2/$3";
 	$route['generaPdfAstURL'] = "back_end/ast/generaPdfAstURL";
 	$route['formCargaMasivaAst'] = "back_end/ast/formCargaMasivaAst";
 
@@ -203,6 +203,7 @@
 	$route['getCabeceras'] = "back_end/productividad/getCabeceras";
 	$route['listaResumen'] = "back_end/productividad/listaResumen";
 	$route['listaResumen2'] = "back_end/productividad/listaResumen2";
+	$route['cargaPlanillaProductividad'] = "back_end/productividad/cargaPlanillaProductividad";
 
 /******************CALIDAD*************************/
 

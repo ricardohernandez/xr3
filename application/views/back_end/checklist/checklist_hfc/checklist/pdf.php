@@ -132,7 +132,7 @@
 
             <tr>
               <td width="50%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Direcci&oacute;n : <?php echo $d["direccion"] ?></b></td>
-              <td width="25%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Proyecto : <?php echo $d["comuna"] ?></b></td>
+              <td width="25%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>Proyecto : <?php echo $d["proyecto"] ?></b></td>
               <td width="25%" class="text-center color_xr3" style="padding: 4px!important;font-size: 10px!important;"><b>OT : <?php echo $d["n_ot"] ?></b></td>
             </tr>
             

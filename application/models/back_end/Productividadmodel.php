@@ -49,6 +49,13 @@ class Productividadmodel extends CI_Model {
 		}
 
 		public function formDetalle($data){
+			if($this->db->insert('productividad_carga', $data)){
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function formProductividad($data){
 			if($this->db->insert('productividad', $data)){
 				return TRUE;
 			}
@@ -108,6 +115,27 @@ class Productividadmodel extends CI_Model {
 		    }
 		    return FALSE;
 		}
+
+		public function truncateTablaCargas(){
+		    if($this ->db->truncate('productividad_carga')){
+		    	return TRUE;
+		    }
+		    return FALSE;
+		}
+
+		public function getDataProductividadCarga(){
+		    $res = $this->db->get('productividad_carga');
+		  	return $res->result_array();
+		}
+
+		public function getDataProductividadPeriodo($desde,$hasta){
+			$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");
+		    if($this ->db->delete('productividad')){
+		    	return TRUE;
+		    }
+		    return FALSE;
+		}
+		
 
 	/********GRAFICOS*************/
 

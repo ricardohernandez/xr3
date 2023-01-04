@@ -141,7 +141,7 @@
           { "data": "tecnico" ,"class":"margen-td centered"},
           { "data": "area" ,"class":"margen-td centered"},
           { "data": "codigo" ,"class":"margen-td centered"},
-          { "data": "comuna" ,"class":"margen-td centered"},
+          { "data": "proyecto" ,"class":"margen-td centered"},
           { "data": "n_ot" ,"class":"margen-td centered"},
           { "data": "tipo_actividad" ,"class":"margen-td centered"},
           { "data": "direccion" ,"class":"margen-td centered"},
@@ -323,7 +323,7 @@
               $("#cargo").val(data.datos[dato].auditor_cargo);
               $("#tecnico_zona").val(data.datos[dato].area);
               $("#tecnico_codigo").val(data.datos[dato].codigo);
-              $("#tecnico_comuna").val(data.datos[dato].comuna);
+              $("#tecnico_comuna").val(data.datos[dato].proyecto);
               $("#check_"+data.datos[dato].id_check).val(data.datos[dato].id_check);
               $("#estado_"+data.datos[dato].id_check+" option[value='"+data.datos[dato].estado+"'").prop("selected", true);
 
@@ -835,8 +835,23 @@
                     <option value="" selected>Seleccione...</option>
                         <?php 
                         foreach($auditores as $a){
+
+                           if($this->session->userdata('id') == $a["id"]){
+                            ?>
+
+                             <option selected value="<?php echo $a["id"]; ?>"><?php echo $a["nombre_completo"]; ?></option>
+
+                            <?php
+                           }else{
+                            ?>
+
+                             <option value="<?php echo $a["id"]; ?>"><?php echo $a["nombre_completo"]; ?></option>
+
+                            <?php
+                           }
+
                           ?>
-                            <option value="<?php echo $a["id"]; ?>"><?php echo $a["nombre_completo"]; ?></option>
+                           
                           <?php
                         }
                       ?>

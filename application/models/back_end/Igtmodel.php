@@ -417,6 +417,32 @@ class Igtmodel extends CI_Model {
 			}
 		}
 
+		public function dataDiasTrabajadosFTTH($mes,$trabajador){
+			$this->db->select('dias_produccion_ftth');
+			$this->db->where('id_tecnico', $trabajador);
+			$this->db->where('mes', $mes);
+			$res = $this->db->get('tecnicos_indicadores');
+			if($res->num_rows()>0){
+				
+				foreach($res->result_array() as $key){
+					
+					if($key["dias_produccion_ftth"]==0){
+						return FALSE;
+					}
+
+					$temp = array();
+					$temp[] = array("Label","Value"); 
+					$temp[] = array("",(float)$key["dias_produccion_ftth"]); 
+			    	$filas = $temp;
+		    	}
+
+		    	return $filas;
+		
+			}else{						
+		    	return FALSE;
+			}
+		}
+
 		public function dataAsistencia($mes,$trabajador){
 			$this->db->select('indice_asistencia');
 			$this->db->where('id_tecnico', $trabajador);
@@ -444,31 +470,7 @@ class Igtmodel extends CI_Model {
 		}
 		
 
-		public function dataDiasTrabajadosFTTH($mes,$trabajador){
-			$this->db->select('dias_produccion_ftth');
-			$this->db->where('id_tecnico', $trabajador);
-			$this->db->where('mes', $mes);
-			$res = $this->db->get('tecnicos_indicadores');
-			if($res->num_rows()>0){
-				
-				foreach($res->result_array() as $key){
-					
-					if($key["dias_produccion_ftth"]==0){
-						return FALSE;
-					}
-
-					$temp = array();
-					$temp[] = array("Label","Value"); 
-					$temp[] = array("",(float)$key["dias_produccion_ftth"]); 
-			    	$filas = $temp;
-		    	}
-
-		    	return $filas;
 		
-			}else{						
-		    	return FALSE;
-			}
-		}
 		
 		
 
