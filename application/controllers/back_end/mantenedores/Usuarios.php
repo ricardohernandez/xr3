@@ -102,6 +102,125 @@ class Usuarios extends CI_Controller {
 	        }   
 		}
 
+
+		
+		public function formCargaMasivaUsuarios(){
+			sleep(1);
+			if($_FILES['userfile']['name']==""){
+			    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+			}
+			$fname = $_FILES['userfile']['name'];
+			if (strpos($fname, ".") == false) {
+	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo válido."));exit;
+	        }
+	        $chk_ext = explode(".",$fname);
+
+	        if($chk_ext[1]!="csv"){
+	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
+	        }
+
+	        $fname = $_FILES['userfile']['name'];
+	        $chk_ext = explode(".",$fname);
+
+	        if(strtolower(end($chk_ext)) == "csv")  {
+	            $filename = $_FILES['userfile']['tmp_name'];
+	            $handle = fopen($filename, "r");
+	            $i=0;$z=0;$y=0;     
+	         	
+	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
+	                $i++;
+
+	                if(!empty($data[0])){
+                	  
+                	  	$nombre = $data[0];
+                	  	$apellidos = $data[1];
+                	  	$empresa = $data[2];
+                	  	$rut = $data[3];
+                	  	$sexo = $data[4];
+                	  	$nacionalidad = $data[5];
+                	  	$estado_civil = $data[6];
+                	  	$cargo = $data[7];
+                	  	$area = $data[8];
+                	  	$proyecto = $data[9];
+                	  	$jefe = $data[10];
+                	  	$codigo = $data[11];
+                	  	$nivel = $data[12];
+                	  	$domicilio = $data[13];
+                	  	$comuna = $data[14];
+                	  	$ciudad = $data[15];
+                	  	$sucursal = $data[16];
+                	  	$celular_empresa = $data[17];
+                	  	$celular_personal = $data[18];
+                	  	$correo_empresa = $data[19];
+                	  	$correo_personal = $data[20];
+                	  	$fecha_nacimiento = $data[21];
+                	  	$fecha_ingreso= $data[22];
+                	  	$fecha_salida = $data[23];
+                	  	$perfil = $data[24];
+                	  	$zapato = $data[25];
+                	  	$pantalon = $data[26];
+                	  	$polera = $data[27];
+                	  	$cazadora = $data[28];
+                	  	$estado = $data[29];
+                	  		
+						$id_jefe = $this->Usuariosmodel->getIdJefePorNombre($jefe);
+						$id_cargo = $this->Usuariosmodel->getIdCargoPorNombre($cargo);
+						$id_area = $this->Usuariosmodel->getIdAreaPorNombre($area);
+						$id_proyecto = $this->Usuariosmodel->getIdProyectoPorNombre($proyecto);
+						$id_perfil = $this->Usuariosmodel->getIdPerfilPorNombre($perfil);
+						$id_nivel = $this->Usuariosmodel->getNivelPorNombre($nivel);
+
+						if($id_jefe!=FALSE){
+							
+							$array = array(
+								"nombres" => $nombre,
+								"apellidos" => $apellidos,
+								"empresa" => $empresa,
+								"rut" =>  preg_replace('/-/', '', $rut) ,
+								"sexo" => $sexo,
+								"nacionalidad" => $nacionalidad,
+								"estado_civil" => $estado_civil,
+								"id_cargo" => $id_cargo,
+								"id_area" => $id_area,
+								"id_proyecto" => $id_proyecto,
+								"id_jefe" => $id_jefe,
+								"codigo" => $codigo,
+								"id_nivel_tecnico" => $nivel,
+								"domicilio" => $domicilio,
+								"comuna" => $comuna,
+								"ciudad" => $ciudad,
+								"sucursal" => $sucursal,
+								"celular_empresa" => $celular_empresa,
+								"celular_personal" => $celular_personal,
+								"correo_empresa" => $correo_empresa,
+								"correo_personal" => $correo_personal,
+								"fecha_nacimiento" => date('Y-m-d', strtotime($fecha_nacimiento)), 
+								"fecha_ingreso" => date('Y-m-d', strtotime($fecha_ingreso)), 
+								"fecha_salida" => $fecha_salida,
+								"id_perfil" => $id_perfil,
+								"talla_zapato" => $zapato,
+								"talla_pantalon" => $pantalon,
+								"talla_polera" => $polera,
+								"talla_cazadora" => $cazadora,
+								"estado" => "1"
+							);
+								
+							$this->Usuariosmodel->formUsuario($array);
+							
+							$arr=array();
+						}
+							
+		            }
+	            }
+
+	            fclose($handle); 
+	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito.".$i.", usuarios ingresados."));exit;
+
+	        }else{
+	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
+	        }   
+		}
+
 		public function index(){
 			$this->visitas("Usuarios");
 	    	$this->acceso();

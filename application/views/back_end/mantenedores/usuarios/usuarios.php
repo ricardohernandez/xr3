@@ -254,7 +254,7 @@
       myFormData.append('userfile', $('#userfile').prop('files')[0]);
 
       $.ajax({
-          url: "formCargaMasiva"+"?"+$.now(),  
+          url: "formCargaMasivaUsuarios"+"?"+$.now(),  
           type: 'POST',
           data: myFormData,
           cache: false,
@@ -660,11 +660,11 @@
   
   <div class="form-row">
 
-    <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
+    <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
        <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
        <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
        <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
-    </div> -->
+    </div>
 
     <div class="col-lg-2">  
       <div class="form-group">

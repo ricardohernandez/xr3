@@ -526,6 +526,100 @@ class Checklistftthmodel extends CI_Model {
 			return $array;
 
 		}
+
+		public function graficoAuditoriasDataFTTH($auditor,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				YEAR(c.fecha) as 'anio',
+				c.fecha as fecha_completa,
+
+				SUM(CASE 
+	             WHEN cd.estado = 0 THEN 1
+	             ELSE 0
+	            END) AS cantidad_ok,
+
+	            SUM(CASE 
+	             WHEN cd.estado = 1 THEN 1
+	             ELSE 0
+	            END) AS cantidad_nook,
+
+	            SUM(CASE 
+	             WHEN cd.estado = 2 THEN 1
+	             ELSE 0
+	            END) AS cantidad_noaplica
+
+				");
+
+				
+			$this->db->join('checklist_ftth c', 'c.id = cd.id_ots', 'left');	
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($auditor)){
+				$this->db->where('c.auditor_id', $auditor);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('us.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('us.id_proyecto', $comuna);
+			}
+
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+
+			$res = $this->db->get('checklist_ftth_detalle cd');
+
+			$cabeceras = array("Mes","OK",array('role'=> 'annotation'),"No OK",array('role'=> 'annotation'),"No aplica",array('role'=> 'annotation'),array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_nook"];
+				$temp[] = (int)$key["cantidad_nook"];
+				$temp[] = (int)$key["cantidad_noaplica"];
+				$temp[] = (int)$key["cantidad_noaplica"];
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function listaAuditoresFHFC(){
+			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
+			$this->db->where('id_perfil', 3);
+			$this->db->order_by('nombres', 'asc');
+			$res=$this->db->get("usuarios");
+			return $res->result_array();
+		}
+
+		public function listaZonas(){
+			$this->db->select('id,area');
+			$this->db->order_by('area', 'asc');
+			$res=$this->db->get('usuarios_areas');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function listaProyectos(){
+			$this->db->order_by('proyecto', 'asc');
+			$res=$this->db->get('usuarios_proyectos');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
 		
 	
 		
@@ -800,6 +894,8 @@ class Checklistftthmodel extends CI_Model {
 			}
 			return FALSE;
 		}
+
+
 
 
 }

@@ -761,11 +761,19 @@ class checklistFTTH extends CI_Controller {
 				if($this->input->is_ajax_request()){
 					$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 			    	$fecha_hoy=date('d-m-Y');
-			    	// echo "<pre>";
-			    	// print_r($this->Checklistftthmodel->dataEstadosChecklist());
+			    	
+					$auditores = $this->Checklistftthmodel->listaAuditoresFHFC();
+					$zonas = $this->Checklistftthmodel->listaZonas();
+					$comunas = $this->Checklistftthmodel->listaProyectos();
+
+
 					$datos=array(	
 						'fecha_anio_atras' => $fecha_anio_atras,	   
 				        'fecha_hoy' => $fecha_hoy,
+
+						'auditores' => $auditores,
+						'zonas' => $zonas,
+						'comunas' => $comunas,
 				   	);
 
 					$this->load->view('back_end/checklist/checklist_ftth/graficos/inicio',$datos);
@@ -780,6 +788,14 @@ class checklistFTTH extends CI_Controller {
 				echo json_encode($this->Checklistftthmodel->dataTecnicosChecklistFTTH());
 			}
 
+			public function graficoAuditoriasDataFTTH(){
+				$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+				$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+				$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+				echo json_encode($this->Checklistftthmodel->graficoAuditoriasDataFTTH($auditor,$zona,$comuna));
+			}
+	
+
 
 	/**********FALLOS HERRAMIENTAS************/
 		
@@ -789,6 +805,7 @@ class checklistFTTH extends CI_Controller {
 	    	$fecha_hoy=date('d-m-Y');
 			$tecnicos=$this->Checklistftthmodel->listaTecnicosFFTTH();
     		$auditores=$this->Checklistftthmodel->listaAuditoresFFTTH();
+
 
 			$datos=array(
 				'fecha_anio_atras' => $fecha_anio_atras,	   

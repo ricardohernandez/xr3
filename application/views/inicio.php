@@ -129,7 +129,7 @@
                 </aside> 
 
 		            <?php 
-		            if($this->session->userdata('perfil')<=3){
+		            if($this->session->userdata('id_perfil')<3){
 		                ?>
 
 		                <aside class="widget widget-popular-posts">

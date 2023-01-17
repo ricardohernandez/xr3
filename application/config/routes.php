@@ -155,11 +155,14 @@
 	$route['listaTrabajadoresHFC'] = "back_end/checklist/ChecklistHFC/listaTrabajadoresHFC";
 	$route['generaPdfChecklistHFCURL'] = "back_end/checklist/ChecklistHFC/generaPdfChecklistHFCURL";
 
+	
+
+	$route['graficoAuditoriasDataHFC'] = "back_end/checklist/ChecklistHFC/graficoAuditoriasDataHFC";
 	$route['vistaFHFC'] = "back_end/checklist/ChecklistHFC/vistaFHFC";
 	$route['listaFHFC'] = "back_end/checklist/ChecklistHFC/listaFHFC";
 	$route['getDataFHFC'] = "back_end/checklist/ChecklistHFC/getDataFHFC";
 	$route['formFHFC'] = "back_end/checklist/ChecklistHFC/formFHFC";
-
+	
 /*******CHECKLIST FTTH*******/
 
 	$route['checklistFTTH'] = "back_end/checklist/ChecklistFTTH/index";
@@ -181,6 +184,7 @@
 	$route['listaTrabajadoresFTTH'] = "back_end/checklist/ChecklistFTTH/listaTrabajadoresFTTH";
 	$route['generaPdfChecklistFTTHURL'] = "back_end/checklist/ChecklistFTTH/generaPdfChecklistFTTHURL";
 
+	$route['graficoAuditoriasDataFTTH'] = "back_end/checklist/ChecklistFTTH/graficoAuditoriasDataFTTH";
 	$route['vistaFFTTH'] = "back_end/checklist/ChecklistFTTH/vistaFFTTH";
 	$route['listaFFTTH'] = "back_end/checklist/ChecklistFTTH/listaFFTTH";
 	$route['getDataFFTTH'] = "back_end/checklist/ChecklistFTTH/getDataFFTTH";
@@ -271,8 +275,9 @@
 	$route['getDataUsuarios'] = "back_end/mantenedores/usuarios/getDataUsuarios";
 	$route['formUsuario'] = "back_end/mantenedores/usuarios/formUsuario";
 	$route['formCargaMasiva'] = "back_end/mantenedores/usuarios/formCargaMasiva";
+	$route['formCargaMasivaUsuarios'] = "back_end/mantenedores/usuarios/formCargaMasivaUsuarios";
 	$route['excelUsuarios/(:any)'] = "back_end/mantenedores/usuarios/excelUsuarios/$1";
-
+	
 	$route['vistaCargos'] = "back_end/mantenedores/usuarios/vistaCargos";
 	$route['listaCargos'] = "back_end/mantenedores/usuarios/listaCargos";
 	$route['getDataCargos'] = "back_end/mantenedores/usuarios/getDataCargos";

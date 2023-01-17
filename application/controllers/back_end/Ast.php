@@ -591,9 +591,11 @@ class Ast extends CI_Controller {
 				<h3>Reporte AST <?php echo date("d-m-Y",strtotime($desde)); ?> - <?php echo date("d-m-Y",strtotime($hasta)); ?></h3>
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
-			                <th class="head">Supervisor</th> 
+			                <th class="head">Auditor</th> 
 				            <th class="head">Fecha</th>   
 				            <th class="head">T&eacute;cnico</th>   
+				            <th class="head">T&eacute;cnico Zona</th>   
+				            <th class="head">T&eacute;cnico Comuna</th>   
 				            <th class="head">Tipo</th>   
 				            <th class="head">Item</th>   
 				            <th class="head">Estado</th>   
@@ -609,6 +611,8 @@ class Ast extends CI_Controller {
 									 <td><?php echo utf8_decode($d["auditor"]); ?></td>
 									 <td><?php echo utf8_decode($d["fecha"]); ?></td>
 									 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
+									 <td><?php echo utf8_decode($d["area"]); ?></td>
+									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									 <td><?php echo utf8_decode($d["tipo"]); ?></td>
 									 <td><?php echo utf8_decode($d["descripcion"]); ?></td>
 

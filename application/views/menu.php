@@ -170,11 +170,10 @@
 	          			if($this->session->userdata('id_perfil')<=3){
 	         	    ?>
           		 	<li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
-                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
           		 	<?php
 				          }
 				        ?>
-             
+                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
                 <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>calidad"> RCO - reporte calidad operaciones</a></li>
                 <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>productividad"> RPO - Reporte productividad operaciones</a></li>
 	            </ul>
@@ -307,10 +306,11 @@
 		          				if($this->session->userdata('id_perfil')<=3){
 			         	    ?>
 	          		    <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
- 						        <li><a  class="menu_list" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
 	          		    <?php
 						          }
 						        ?>
+
+					<li><a  class="menu_list" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
                   	<li><a  class="menu_list" href="<?php echo base_url() ?>calidad"> RCO - Reporte calidad operaciones</a></li>
                   	<li><a  class="menu_list" href="<?php echo base_url() ?>productividad"> RPO - Reporte productividad operaciones</a></li>
                     <!-- <li class="nav__dropdown">

@@ -746,11 +746,17 @@ class checklistHFC extends CI_Controller {
 			if($this->input->is_ajax_request()){
 				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 		    	$fecha_hoy=date('d-m-Y');
-		    	// echo "<pre>";
-		    	// print_r($this->Checklisthfcmodel->dataEstadosChecklist());
+
+				$auditores = $this->Checklisthfcmodel->listaAuditoresFHFC();
+				$zonas = $this->Checklisthfcmodel->listaZonas();
+				$comunas = $this->Checklisthfcmodel->listaProyectos();
+
 				$datos=array(	
 					'fecha_anio_atras' => $fecha_anio_atras,	   
 			        'fecha_hoy' => $fecha_hoy,
+			        'auditores' => $auditores,
+			        'zonas' => $zonas,
+			        'comunas' => $comunas,
 			   	);
 
 				$this->load->view('back_end/checklist/checklist_hfc/graficos/inicio',$datos);
@@ -765,7 +771,14 @@ class checklistHFC extends CI_Controller {
 			echo json_encode($this->Checklisthfcmodel->dataTecnicosChecklistHFC());
 		}
 
+		public function graficoAuditoriasDataHFC(){
+			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+			echo json_encode($this->Checklisthfcmodel->graficoAuditoriasDataHFC($auditor,$zona,$comuna));
+		}
 
+		
 
 	/**********FALLOS HFC************/
 		

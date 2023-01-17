@@ -210,35 +210,62 @@ class Usuariosmodel extends CI_Model {
 			$res=$this->db->get('usuarios');
 
 			if($res->num_rows()==0){
-				return FALSE;
+				return '';
 			}else{
 				$row = $res->row_array();
 				return $row["id"];
 			}
-
-			
+		}
+		
+		public function getNivelPorNombre($nivel){
+			$this->db->where('nivel', $nivel);
+			$res=$this->db->get('usuarios_tecnicos_niveles');
+			if($res->num_rows()>0){
+				$row=$res->row_array();
+				return $row["id"];
+			}
+			return '';
 		}
 
-
 		public function getIdCargoPorNombre($cargo){
-			$this->db->where('cargo', $cargo);
+			$this->db->like('cargo', trim($cargo) ,'before');
 			$res=$this->db->get('usuarios_cargos');
-			$row=$res->row_array();
-			return $row["id"];
+			if($res->num_rows()>0){
+				$row=$res->row_array();
+				return $row["id"];
+			}
+			return '';
 		}
 
 		public function getIdAreaPorNombre($area){
 			$this->db->where('area', $area);
 			$res=$this->db->get('usuarios_areas');
-			$row=$res->row_array();
-			return $row["id"];
+			if($res->num_rows()>0){
+				$row=$res->row_array();
+				return $row["id"];
+			}
+			return '';
 		}
 
+		public function getIdPerfilPorNombre($perfil){
+			$this->db->where('perfil', $perfil);
+			$res=$this->db->get('usuarios_perfiles');
+			if($res->num_rows()>0){
+				$row=$res->row_array();
+				return $row["id"];
+			}
+			return '';
+		}
+
+		
 		public function getIdProyectoPorNombre($proyecto){
 			$this->db->where('proyecto', $proyecto);
 			$res=$this->db->get('usuarios_proyectos');
-			$row=$res->row_array();
-			return $row["id"];
+			if($res->num_rows()>0){
+				$row=$res->row_array();
+				return $row["id"];
+			}
+			return '';
 		}
 
 		public function getIdJefePorNombre($nombre_jefe){

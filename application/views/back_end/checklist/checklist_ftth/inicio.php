@@ -169,9 +169,17 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_checklist_ftth" class="active"><a> <i class="fa fa-th-list"></i> Checklist FTTH</a></li>   
-        <li id="menu_graficos" class="active"><a> <i class="fa fa-fa-chart-line"></i> Graficos </a></li>   
-        <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
-        <li id="menu_graficos_fallos_ftth" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
+
+        <?php  
+          if($this->session->userdata('id_perfil')<=3){
+            ?>
+              <li id="menu_graficos" class="active"><a> <i class="fa fa-fa-chart-line"></i> Graficos </a></li>   
+              <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
+              <li id="menu_graficos_fallos_ftth" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
+            <?php
+          }
+        ?>
+   
       </ul>  
     </div> 
   </div>

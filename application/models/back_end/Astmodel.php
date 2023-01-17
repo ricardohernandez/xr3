@@ -141,6 +141,7 @@ class Astmodel extends CI_Model {
 				u.rut as rut,
 				u.comuna as comuna,
 				ua.area as area,
+				up.proyecto as proyecto,
 				u.codigo as codigo,
 				uc.cargo as auditor_cargo,
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
@@ -163,6 +164,7 @@ class Astmodel extends CI_Model {
 			$this->db->join('usuarios as u', 'u.id = o.tecnico_id', 'left');
 			$this->db->join('usuarios as us', 'us.id = o.auditor_id', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
+			$this->db->join('usuarios_proyectos up', 'up.id = u.id_proyecto', 'left');
 			$this->db->join('usuarios_cargos uc', 'uc.id = us.id_cargo', 'left');
 			$this->db->join('ast_checklist_detalle cd', 'cd.id_ast = o.id', 'left');
 			$this->db->join('ast_checklist_listado cl', 'cl.id = cd.id_check', 'left');
@@ -235,6 +237,7 @@ class Astmodel extends CI_Model {
 		public function listaTecnicos(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
 			/*$this->db->where('id_perfil', 4);*/
+			$this->db->where('estado', 1);
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
 			return $res->result_array();
