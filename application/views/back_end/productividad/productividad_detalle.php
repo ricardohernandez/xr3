@@ -46,16 +46,20 @@
             $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
             $(".btn_filtro_detalle").prop("disabled" , false);
 
-            var desde_actual="<?php echo $desde_actual; ?>"
-            var hasta_actual="<?php echo $hasta_actual; ?>"
-            var desde_anterior="<?php echo $desde_anterior; ?>"
-            var hasta_anterior="<?php echo $hasta_anterior; ?>"
+            var desde_actual = "<?php echo $desde_actual; ?>"
+            var hasta_actual = "<?php echo $hasta_actual; ?>"
+            var desde_anterior = "<?php echo $desde_anterior; ?>"
+            var hasta_anterior = "<?php echo $hasta_anterior; ?>"
+            var desde_anterior2 = "<?php echo $desde_anterior2; ?>"
+            var hasta_anterior2 = "<?php echo $hasta_anterior2; ?>"
             var periodo =$("#periodo").val()
 
-            if(periodo=="actual"){
+            if(periodo == "actual"){
               $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-            }else if(periodo=="anterior"){
-              $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+            }else if(periodo == "anterior"){
+              $("#fecha_f").val(`${desde_anterior.substring(0,5)} - ${hasta_anterior.substring(0,5)}`);
+            }else if(periodo == "anterior2"){
+              $("#fecha_f").val(`${desde_anterior2.substring(0,5)} - ${hasta_anterior2.substring(0,5)}`);
             }
 
             return json;
@@ -516,6 +520,7 @@
               <select id="periodo" name="periodo" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
                 <option value="anterior">Anterior - <?php echo $mes_anterior?> </option>
+                <option value="anterior2">Anterior 2- <?php echo $mes_anterior2?> </option>
              </select>
           </div>
         </div>
@@ -529,7 +534,6 @@
         </div>
       </div>
 
- 
       <?php  
         if($this->session->userdata('id_perfil')<3){
       ?>

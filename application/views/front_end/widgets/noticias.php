@@ -28,7 +28,7 @@ foreach($noticias as $n){
     <div class="entry__img-holder card__img-holder">
       <a href="#!">
         <!-- <div class="thumb-container thumb-60"> -->
-        <div class="thumb-container" style="height: 400px;">
+        <div class="thumb-container" style="height: 220px;">
          <?php  
            $archivo=explode('.',$n["imagen"]);
            $extension=$archivo[1];

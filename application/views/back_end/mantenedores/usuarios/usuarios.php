@@ -1,7 +1,7 @@
 <style type="text/css">
-  .red{
-    background-color: #DC3545;
-    color: #fff;
+  .borrar_usuario{
+    color: red;
+    margin-left:10px;
   }
   .modal-header{
     padding:0.1rem 0.1rem!important;
@@ -254,7 +254,7 @@
       myFormData.append('userfile', $('#userfile').prop('files')[0]);
 
       $.ajax({
-          url: "formCargaMasivaUsuarios"+"?"+$.now(),  
+          url: "formCargaMasiva"+"?"+$.now(),  
           type: 'POST',
           data: myFormData,
           cache: false,
@@ -355,7 +355,7 @@
           {
            "class":"centered center margen-td","data": function(row,type,val,meta){
               btn='<center><a data-toggle="modal" href="#modal_usuario" data-hash_usuario="'+row.hash_usuario+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar_usuario"></a>';
-              // btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_usuario" data-hash_usuario="'+row.hash_usuario+'"></a></center>';
+              btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_usuario" data-hash_usuario="'+row.hash_usuario+'"></a></center>';
               return btn;
             }
           },
@@ -447,9 +447,11 @@
         $(".btn_guardar_usuario").html('<i class="fa fa-save"></i> Guardar');
         $(".btn_guardar_usuario").attr("disabled", false);
         $(".cierra_modal_usuario").attr("disabled", false);
+        $(".eliminar_modal_usuario").attr("disabled", false);
         $('#formUsuario')[0].reset();
         $("#hash_usuario").val("");
         $("#formUsuario input,#formUsuario select,#formUsuario button,#formUsuario").prop("disabled", false);
+        $(".cont_edit").hide();
     });     
 
     $(document).off('submit', '#formUsuario').on('submit', '#formUsuario',function(event) {
@@ -467,6 +469,7 @@
             beforeSend:function(){
               $(".btn_guardar_usuario").attr("disabled", true);
               $(".cierra_modal_usuario").attr("disabled", true);
+              $(".eliminar_modal_usuario").attr("disabled", true);
               $("#formUsuario input,#formUsuario select,#formUsuario button,#formUsuario").prop("disabled", true);
             },
             success: function (data) {
@@ -474,6 +477,7 @@
 
                 $(".btn_guardar_usuario").attr("disabled", false);
                 $(".cierra_modal_usuario").attr("disabled", false);
+                $(".eliminar_modal_usuario").attr("disabled", false);
 
                 $.notify(data.msg, {
                   className:'error',
@@ -486,6 +490,7 @@
               }else if(data.res == "ok"){
                   $(".btn_guardar_usuario").attr("disabled", false);
                   $(".cierra_modal_usuario").attr("disabled", false);
+                  $(".eliminar_modal_usuario").attr("disabled", false);
 
                   $.notify("Datos ingresados correctamente.", {
                     className:'success',
@@ -499,6 +504,7 @@
 
             $(".btn_guardar_usuario").attr("disabled", false);
             $(".cierra_modal_usuario").attr("disabled", false);
+            $(".eliminar_modal_usuario").attr("disabled", false);
             $("#formUsuario input,#formUsuario select,#formUsuario button,#formUsuario").prop("disabled", false);
           },
           error : function(xhr, textStatus, errorThrown ) {
@@ -534,6 +540,7 @@
     });
 
    $(document).off('click', '.btn_modificar_usuario').on('click', '.btn_modificar_usuario',function(event) {
+      $(".cont_edit").show();
       $("#hash_usuario").val("");
       hash_usuario = $(this).attr("data-hash_usuario");
       $("#hash_usuario").val(hash_usuario);
@@ -549,11 +556,13 @@
         beforeSend:function(){
           $(".btn_guardar_usuario").attr("disabled", true);
           $(".cierra_modal_usuario").attr("disabled", true);
+          $(".eliminar_modal_usuario").attr("disabled", true);
           $("#formUsuario input,#formUsuario select,#formUsuario button,#formUsuario").prop("disabled", true);
         },
         success: function (data) {
           $(".btn_guardar_usuario").attr("disabled", false);
           $(".cierra_modal_usuario").attr("disabled", false);
+          $(".eliminar_modal_usuario").attr("disabled", false);
           $("#formUsuario input,#formUsuario select,#formUsuario button,#formUsuario").prop("disabled", false);
         
           if(data.res=="ok"){
@@ -623,10 +632,7 @@
       }); 
     });
 
-
-
-
-  /********OTROS**********/
+    /********OTROS**********/
     
     $(document).off('change', '#estado').on('change', '#estado',function(event) {
       if($(this).val()=="0"){
@@ -653,18 +659,52 @@
       window.location="excelUsuarios/"+estado;
     });
 
+
+    $(document).off('click', '.borrar_usuario').on('click', '.borrar_usuario',function(event) {
+        var hash_usuario=$(this).attr("data-hash_usuario");
+          if(confirm("¿Esta seguro que desea eliminar este registro?")){
+
+            $.post('eliminaUsuario'+"?"+$.now(),{"hash_usuario": hash_usuario}, function(data) {
+
+              if(data.res=="ok"){
+
+                $.notify(data.msg, {
+                  className:'success',
+                  globalPosition: 'top right'
+                });
+
+                listaUsuarios.ajax.reload();
+
+              }else{
+                $.notify(data.msg, {
+                  className:'danger',
+                  globalPosition: 'top right'
+                });
+              }
+
+            },"json");
+        }
+
+
+
+    });
+    
+
   })
+
+ 
+
 </script>
 
 <!-- FILTROS -->
   
   <div class="form-row">
 
-    <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
+    <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
        <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
        <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
        <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
-    </div>
+    </div> -->
 
     <div class="col-lg-2">  
       <div class="form-group">
@@ -771,6 +811,11 @@
                <!--   <i class="fa fa-window-close"></i>  -->Cerrar
                 </button>
               </div>
+              <!--
+              <div class="col-3 col-lg-6 cont_edit">
+                <button class="btn-block btn btn-sm btn-danger eliminar_modal_usuario" data-dismiss="modal" aria-hidden="true">Eliminar</button>
+              </div>
+              -->
             </div>
           </div>
         </div>

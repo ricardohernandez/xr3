@@ -593,7 +593,41 @@
               $(".meta_declaracion_ot_green ").html("")*/
             }
 
+
+          // AST
+
+            
+          if(json.hasOwnProperty("data_ast") && json.data_ast.data!=false){
+
+            $("#ast").text(json.data_ast.data.declaracion).show()
+            $(".ast").show()
+
+            var declaracion_ot = google.visualization.arrayToDataTable(json.data_ast.data);
+            var options = {
+              height: 130,
+                min: 0,
+                max: json.data_ast.data[1],
+              /*    greenFrom: 1,
+                greenTo:json.data_ast.data[1], */
+                minorTicks: 5,
+            };
+
+            const value = json.data_ast.data[1]
+            const meta = json.data_ast.meta
+
+            $(".meta_ast_green").text(value).show()
+
+            var chart = new google.visualization.Gauge(document.getElementById('grafico_ast'));
+            chart.draw(declaracion_ot, options);
+
+            $(".ast").show()
+
+            }else{
+              $(".ast").hide()
+            }
+            
           // FOTO
+
 
             if(json.hasOwnProperty("foto")){
               $("#foto_tecnico").attr("src", `./fotos_usuarios/${json.foto}`).height(130).width(130);
@@ -1773,6 +1807,21 @@
           <div class="card-footer card_dash">
             <span class="meta_declaracion_ot_green " style="display: none;"></span> 
             <span class="meta_declaracion_ot_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg ast mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           AST Realizados  <span class="meta_ast"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_ast" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_ast_green"></span> 
+            <span class="meta_ast_red red2" style="display: none;"> </span> 
           </div>
         </div>
       </div>

@@ -273,6 +273,15 @@ class Igt extends CI_Controller {
 			    $array_data["data_dias_ftth"] = array("data" => $data_dias_ftth , "meta" => $meta_dias);
 			}
 
+
+		/**************AST*******************/
+
+			$data_ast = $this->Igtmodel->getDataAst(getFechasPeriodo("actual")["desde_prod"],getFechasPeriodo("actual")["hasta_prod"],$id_tecnico);
+
+			if($data_ast){
+				$array_data["data_ast"] = array("data" => $data_ast , "meta" => 100);
+			}
+			
 		
 		/***********INDICE ASISTENCIA **********************/
 

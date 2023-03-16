@@ -236,41 +236,38 @@ function periodoFechas($desde,$hasta){
 
 function mesesPeriodo($periodo){
 
-	
 	if(date("d")>"24"){
 
-		if($periodo=="actual"){
+		if($periodo == "actual"){
 			$mes_actual = date('m', strtotime('+1 month', strtotime(date('Y-m-25'))));
 
-		}elseif($periodo=="anterior"){
+		}elseif($periodo == "anterior"){
 			$mes_anterior = date('m', strtotime(date('Y-m-25')));
 
-		}elseif($periodo=="anterior_2"){
-			$mes_anterior2 = date('m', strtotime('-2 month', strtotime(date('Y-m-25'))));
+		}elseif($periodo == "anterior2"){
+			$mes_anterior2 = date('m', strtotime('-1 month', strtotime(date('Y-m-25'))));
 		}
 
 	}else{
 		
-		if($periodo=="actual"){
+		if($periodo == "actual"){
 			$mes_actual = date('m', strtotime(date('Y-m-25')));
 
-		}elseif($periodo=="anterior"){
+		}elseif($periodo == "anterior"){
 			$mes_anterior= date('m', strtotime('-1 month', strtotime(date('Y-m-25'))));
 
-		}elseif($periodo=="anterior_2"){
+		}elseif($periodo == "anterior2"){
 			$mes_anterior2 = date('m', strtotime('-2 month', strtotime(date('Y-m-25'))));
-
 		}
 
 	}
-
 
 	if($periodo=="actual"){
 		return meses($mes_actual);
 	}
 
 	if($periodo=="anterior"){
-		return meses($mes_anterior);
+		return meses(@$mes_anterior);
 	}
 
 	if($periodo=="anterior2"){
@@ -422,10 +419,16 @@ function mesesPeriodoCalidad($periodo){
 		$mes_actual = date('m', strtotime(date('Y-m-d'). ' -2 months'));
 		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -3 months'));
 		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -4 months'));
+		$mes_anterior3 = date('m', strtotime(date('Y-m-d'). ' -5 months'));
+		$mes_anterior4 = date('m', strtotime(date('Y-m-d'). ' -6 months'));
+		$mes_anterior5 = date('m', strtotime(date('Y-m-d'). ' -7 months'));
 	}else{
 		$mes_actual = date('m', strtotime(date('Y-m-d'). ' -1 months'));
 		$mes_anterior = date('m', strtotime(date('Y-m-d'). ' -2 months'));
 		$mes_anterior2 = date('m', strtotime(date('Y-m-d'). ' -3 months'));
+		$mes_anterior3 = date('m', strtotime(date('Y-m-d'). ' -4 months'));
+		$mes_anterior4 = date('m', strtotime(date('Y-m-d'). ' -5 months'));
+		$mes_anterior5 = date('m', strtotime(date('Y-m-d'). ' -6 months'));
 	}
 
 
@@ -439,6 +442,17 @@ function mesesPeriodoCalidad($periodo){
 
 	if($periodo=="anterior2"){
 		return meses($mes_anterior2);
+	}
+
+	if($periodo=="anterior3"){
+		return meses($mes_anterior3);
+	}
+	if($periodo=="anterior4"){
+		return meses($mes_anterior4);
+	}
+
+	if($periodo=="anterior5"){
+		return meses($mes_anterior5);
 	}
 
 }

@@ -48,8 +48,17 @@ class Productividadmodel extends CI_Model {
 			return FALSE;
 		}
 
+		public function existeOrden($orden){
+			$this->db->where('ot', $orden);
+			$res=$this->db->get('productividad');
+			if($res->num_rows()>0){
+				return TRUE;
+			}
+			return FALSE;
+		}
+
 		public function formDetalle($data){
-			if($this->db->insert('productividad_carga', $data)){
+			if($this->db->insert('productividad', $data)){
 				return TRUE;
 			}
 			return FALSE;
@@ -62,14 +71,7 @@ class Productividadmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function existeOrden($orden){
-			$this->db->where('ot', $orden);
-			$res=$this->db->get('productividad');
-			if($res->num_rows()>0){
-				return TRUE;
-			}
-			return FALSE;
-		}
+		
 
 		public function getIdTecnicoPorRut($rut){
 			$this->db->where('rut', $rut);

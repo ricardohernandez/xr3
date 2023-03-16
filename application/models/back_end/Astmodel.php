@@ -234,14 +234,13 @@ class Astmodel extends CI_Model {
 		}
 
 
-		public function listaTecnicos(){
+		/* public function listaTecnicos(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
-			/*$this->db->where('id_perfil', 4);*/
 			$this->db->where('estado', 1);
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
 			return $res->result_array();
-		}
+		} */
 
 		public function listaAuditores(){
 			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
@@ -564,5 +563,345 @@ class Astmodel extends CI_Model {
 			$res=$this->db->get('ast_checklist_listado');
 			return $res->result_array();
 		}
+
+	/*********GRAFICOS************ */
+
+		public function graficoAstDetalleTecnico($tecnico,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				DATE_FORMAT((c.fecha), '%y')  as 'anio',
+				c.fecha as fecha_completa,
+
+				SUM(CASE 
+				WHEN cd.estado = 0 THEN 1
+				ELSE 0
+				END) AS cantidad_ok,
+
+				SUM(CASE 
+				WHEN cd.estado = 1 THEN 1
+				ELSE 0
+				END) AS cantidad_nook,
+
+				SUM(CASE 
+				WHEN cd.estado = 2 THEN 1
+				ELSE 0
+				END) AS cantidad_noaplica
+				");
+
+				
+			$this->db->join('ast_checklist c', 'c.id = cd.id_ast', 'left');	
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+
+			$res = $this->db->get('ast_checklist_detalle cd');
+
+			$cabeceras = array("Mes","OK",array('role'=> 'annotation'),"No OK","No aplica",array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_nook"];
+				/* $temp[] = (int)$key["cantidad_nook"]; */
+				$temp[] = (int)$key["cantidad_noaplica"];
+				/* $temp[] = (int)$key["cantidad_noaplica"]; */
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function graficoAstTecnico($tecnico,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				DATE_FORMAT((c.fecha), '%y')  as 'anio',
+				c.fecha as fecha_completa,
+				COUNT(c.id) as cantidad
+				");
+
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+			
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+			$res = $this->db->get('ast_checklist c');
+
+			$cabeceras = array("Mes","Cantidad",array('role'=> 'annotation'),array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function graficoTotalTecnicos($tecnico,$zona,$comuna,$desde,$hasta){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				count(c.id) as cantidad");
+
+			$this->db->group_by('c.tecnico_id');
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+
+			if($desde!="" and $hasta!=""){
+				$this->db->where("c.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			}
+			
+			$res=$this->db->get('ast_checklist c');
+
+			$cabeceras = array("Técnico","Cantidad",array('role'=> 'annotation'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)$key["tecnico"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = (int)$key["cantidad"];
+				$array[]=$temp;
+			}
+			return $array;
+		}
+
+		public function graficoAstTotalTecnicos($tecnico,$zona,$comuna,$desde,$hasta){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				u.comuna as comuna,
+				upr.proyecto as proyecto,
+				ua.area as area,
+				count(c.id) as cantidad");
+
+			$this->db->group_by('c.tecnico_id');
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
+			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+
+			if($desde!="" and $hasta!=""){
+				$this->db->where("c.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			}
+
+			$this->db->order_by('cantidad', 'desc');
+			
+			
+
+			$res = $this->db->get('ast_checklist c');
+			return $res->result_array();
+		}
+
+
+		public function graficoTotalItems($tecnico,$zona,$comuna,$item){
+
+			$this->db->select("
+				cl.descripcion as descripcion,
+
+				SUM(CASE 
+	             WHEN cd.estado = 'si' THEN 1
+	             ELSE 0
+	            END) AS cantidad_ok,
+	            SUM(CASE 
+	             WHEN cd.estado = 'no' THEN 1
+	             ELSE 0
+	            END) AS cantidad_nook,
+				
+				");
+
+			/* $this->db->group_by('cl.id'); */
+			$this->db->group_by('cl.descripcion');
+			$this->db->order_by('cantidad_nook', 'desc');
+			$this->db->join('ast_checklist_listado cl', 'cd.id_check = cl.id', 'left');	
+			$this->db->join('ast_checklist c', 'c.id = cd.id_ast', 'left');	
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+
+			if(!empty($item)){
+				$this->db->where('cl.descripcion', $item);
+			}
+
+			$res = $this->db->get('ast_checklist_detalle cd');
+
+			$cabeceras = array("Descripcion","Ok",array('role'=> 'annotation'),"No ok",array('role'=> 'annotation'));
+			$array = array();
+			$array[] = $cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)$key["descripcion"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_nook"];
+				$temp[] = (int)$key["cantidad_nook"];
+				$array[]=$temp;
+			}
+			return $array;
+		}
+		
+		public function dataItemsEstado($tecnico,$zona,$comuna,$item){
+			$this->db->select("
+				cl.descripcion as descripcion,
+				SUM(CASE 
+				WHEN cd.estado = 'si' THEN 1
+				ELSE 0
+				END) AS cantidad_ok,
+				SUM(CASE 
+				WHEN cd.estado = 'no' THEN 1
+				ELSE 0
+				END) AS cantidad_nook
+			");
+
+			/* $this->db->group_by('cl.id'); */
+			$this->db->group_by('cl.descripcion');
+			$this->db->order_by('cantidad_nook', 'desc');
+			$this->db->join('ast_checklist_listado cl', 'cd.id_check = cl.id', 'left');	
+			$this->db->join('ast_checklist c', 'c.id = cd.id_ast', 'left');	
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+
+			if(!empty($item)){
+				$this->db->where('cl.descripcion', $item);
+			}
+
+			$res = $this->db->get('ast_checklist_detalle cd');
+			return $res->result_array();
+		}
+		
+		public function listaTecnicos(){
+			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
+			$this->db->where('id_perfil', 4);
+			$this->db->where('estado', 1);
+			$this->db->order_by('nombres', 'asc');
+			$res=$this->db->get("usuarios");
+			return $res->result_array();
+		}
+
+		public function listaZonas(){
+			$this->db->select('id,area');
+			$this->db->order_by('area', 'asc');
+			$res=$this->db->get('usuarios_areas');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function listaProyectos(){
+			$this->db->order_by('proyecto', 'asc');
+			$res=$this->db->get('usuarios_proyectos');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function listaItems(){
+			$this->db->group_by('descripcion');
+			$this->db->order_by('descripcion', 'asc');
+			$res=$this->db->get('ast_checklist_listado');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		
+	
 
 }

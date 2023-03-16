@@ -148,7 +148,118 @@ class Calidadmodel extends CI_Model {
 		return $row["id_cargo"];
 	}
 	
-	public function listaResumenCalidad($desde,$hasta,$trabajador,$jefe,$tipo_red,$desde_prod,$hasta_prod,$proyecto){
+	
+	public function listaTecnicosLideres($jefe){
+		/*$this->db->select("id,rut,CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'");
+		$this->db->where('id_jefe', $jefe);
+		$res=$this->db->get('usuarios u');*/
+
+		$this->db->select("uj.id id,CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'");
+		$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
+		$this->db->where('u.id_jefe', $jefe);
+		$res=$this->db->get('usuarios_jefes uj');
+		return $res->result_array();
+	}
+
+	public function listaResumenCalidadLideres($desde,$hasta,$trabajador,$jefe,$tipo_red,$proyecto){
+		$desde_str= date('d-m', strtotime($desde));
+		$hasta_str= date('d-m', strtotime($hasta));
+		//LIDER DE OPERACIONES TECNICAS mostrar los SUBTOTAL DE GRUPO de cada uno de sus TECNICOS LIDER A CARGO 
+		
+		$tecnicos_lideres = $this->listaTecnicosLideres($jefe);
+		/*echo "<pre>";
+		print_r($tecnicos_lideres);*/
+		$array = array();
+		foreach($tecnicos_lideres as $lider){
+
+			$desde_str= date('d-m', strtotime($desde));
+			$hasta_str= date('d-m', strtotime($hasta));
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
+				p.rut_tecnico as rut,
+				CONCAT('".$desde_str."','  ','".$hasta_str."') as 'periodo',
+				
+				SUM(CASE 
+	             WHEN p.tipo_red='HFC' THEN 1
+	             ELSE 0
+	            END) as q_HFC,
+
+				SUM(CASE 
+	             WHEN p.falla ='si' and p.tipo_red='HFC' THEN 1
+	             ELSE 0
+	            END) as fallos_HFC,
+
+	            SUM(CASE 
+	             WHEN p.tipo_red='FTTH' THEN 1
+	             ELSE 0
+	            END) as q_FTTH,
+
+	            SUM(CASE 
+	             WHEN p.falla ='si' and p.tipo_red='FTTH' THEN 1
+	             ELSE 0
+	            END) as fallos_FTTH,
+
+	            CONCAT(ROUND((
+		            SUM(CASE 
+		        		WHEN p.falla ='si' 
+		        		and p.tipo_red='HFC' 
+		        		THEN 1
+		            ELSE 0
+		            END)
+		            /
+		            SUM(CASE 
+		                WHEN p.tipo_red ='HFC'
+		                THEN 1
+		                ELSE 0
+		            END)
+	            * 100 ),2),'%') AS 'calidad_HFC',
+
+		        CONCAT(ROUND((
+		            SUM(CASE 
+		        		WHEN p.falla ='si' 
+		        		and p.tipo_red='FTTH' 
+		        		THEN 1
+		            ELSE 0
+		            END)
+		            /
+		            SUM(CASE 
+		                WHEN p.tipo_red ='FTTH'
+		                THEN 1
+		                ELSE 0
+		            END)
+	            * 100 ),2),'%') AS 'calidad_FTTH'
+		    ");
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
+			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
+			$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			$this->db->where('u.id_jefe', $lider["id"]);
+			$this->db->group_by('u.id_jefe');
+			$res_tecnicos=$this->db->get('productividad_calidad p');
+			/*echo $this->db->last_query();
+			echo "<br>";*/
+			foreach($res_tecnicos->result_array() as $tecnicos){
+				$temp = array();
+				$temp["trabajador"] = $lider["nombre_jefe"];
+				$temp["rut"] = $tecnicos["rut"];
+				$temp["periodo"] = $tecnicos["periodo"];
+				$temp["q_HFC"] = $tecnicos["q_HFC"];
+				$temp["fallos_HFC"] = $tecnicos["fallos_HFC"];
+				$temp["q_FTTH"] = $tecnicos["q_FTTH"];
+				$temp["fallos_FTTH"] = $tecnicos["fallos_FTTH"];
+				$temp["calidad_HFC"] = $tecnicos["calidad_HFC"];
+				$temp["calidad_FTTH"] = $tecnicos["calidad_FTTH"];
+				$array[] = $temp;
+			}
+
+		}
+			
+		/*echo "<pre>";
+		print_r($array);exit;*/
+
+		return $array;
+	}
+
+	public function listaResumenCalidad($desde,$hasta,$trabajador,$jefe,$tipo_red,$proyecto){
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
@@ -263,119 +374,14 @@ class Calidadmodel extends CI_Model {
 		}
 	}
 
-	public function listaTecnicosLideres($jefe){
-		/*$this->db->select("id,rut,CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'");
-		$this->db->where('id_jefe', $jefe);
-		$res=$this->db->get('usuarios u');*/
-
-		$this->db->select("uj.id id,CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'");
-		$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
-		$this->db->where('u.id_jefe', $jefe);
-		$res=$this->db->get('usuarios_jefes uj');
-		return $res->result_array();
-	}
-
-	public function listaResumenCalidadLideres($desde,$hasta,$trabajador,$jefe,$tipo_red,$desde_prod,$hasta_prod,$proyecto){
-		$desde_str= date('d-m', strtotime($desde));
-		$hasta_str= date('d-m', strtotime($hasta));
-		//LIDER DE OPERACIONES TECNICAS mostrar los SUBTOTAL DE GRUPO de cada uno de sus TECNICOS LIDER A CARGO 
-		
-		$tecnicos_lideres = $this->listaTecnicosLideres($jefe);
-		/*echo "<pre>";
-		print_r($tecnicos_lideres);*/
-		$array = array();
-		foreach($tecnicos_lideres as $lider){
-
-			$desde_str= date('d-m', strtotime($desde));
-			$hasta_str= date('d-m', strtotime($hasta));
-			$this->db->select("
-				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
-				p.rut_tecnico as rut,
-				CONCAT('".$desde_str."','  ','".$hasta_str."') as 'periodo',
-				
-				SUM(CASE 
-	             WHEN p.tipo_red='HFC' THEN 1
-	             ELSE 0
-	            END) as q_HFC,
-
-				SUM(CASE 
-	             WHEN p.falla ='si' and p.tipo_red='HFC' THEN 1
-	             ELSE 0
-	            END) as fallos_HFC,
-
-	            SUM(CASE 
-	             WHEN p.tipo_red='FTTH' THEN 1
-	             ELSE 0
-	            END) as q_FTTH,
-
-	            SUM(CASE 
-	             WHEN p.falla ='si' and p.tipo_red='FTTH' THEN 1
-	             ELSE 0
-	            END) as fallos_FTTH,
-
-	            CONCAT(ROUND((
-		            SUM(CASE 
-		        		WHEN p.falla ='si' 
-		        		and p.tipo_red='HFC' 
-		        		THEN 1
-		            ELSE 0
-		            END)
-		            /
-		            SUM(CASE 
-		                WHEN p.tipo_red ='HFC'
-		                THEN 1
-		                ELSE 0
-		            END)
-	            * 100 ),2),'%') AS 'calidad_HFC',
-
-		        CONCAT(ROUND((
-		            SUM(CASE 
-		        		WHEN p.falla ='si' 
-		        		and p.tipo_red='FTTH' 
-		        		THEN 1
-		            ELSE 0
-		            END)
-		            /
-		            SUM(CASE 
-		                WHEN p.tipo_red ='FTTH'
-		                THEN 1
-		                ELSE 0
-		            END)
-	            * 100 ),2),'%') AS 'calidad_FTTH'
-		    ");
-			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
-			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
-			$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
-			$this->db->where('u.id_jefe', $lider["id"]);
-			$this->db->group_by('u.id_jefe');
-			$res_tecnicos=$this->db->get('productividad_calidad p');
-			/*echo $this->db->last_query();
-			echo "<br>";*/
-			foreach($res_tecnicos->result_array() as $tecnicos){
-				$temp = array();
-				$temp["trabajador"] = $lider["nombre_jefe"];
-				$temp["rut"] = $tecnicos["rut"];
-				$temp["periodo"] = $tecnicos["periodo"];
-				$temp["q_HFC"] = $tecnicos["q_HFC"];
-				$temp["fallos_HFC"] = $tecnicos["fallos_HFC"];
-				$temp["q_FTTH"] = $tecnicos["q_FTTH"];
-				$temp["fallos_FTTH"] = $tecnicos["fallos_FTTH"];
-				$temp["calidad_HFC"] = $tecnicos["calidad_HFC"];
-				$temp["calidad_FTTH"] = $tecnicos["calidad_FTTH"];
-				$array[] = $temp;
-			}
-
-		}
-			
-		/*echo "<pre>";
-		print_r($array);exit;*/
-
-		return $array;
-	}
-
 	public function graficoHFC($desde,$hasta,$trabajador,$jefe,$proyecto){
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
+
+		$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+		$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+		$anio_str= date('Y', strtotime($desde));
+		$periodo_str= $mes_str."-".$anio_str;
 
 		if($jefe!=""){
 			$rut_jefe = $this->getRutTecnicoJefe($jefe);
@@ -385,6 +391,7 @@ class Calidadmodel extends CI_Model {
 		$this->db->select("
 			CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 			CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
+			'".$periodo_str."' as 'mes',
 
 			SUM(CASE 
         		WHEN p.falla ='si' 
@@ -462,7 +469,7 @@ class Calidadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				if($key["trabajador"]!=""){
 					$temp = array();
-				    $temp[] = (string)$key["periodo"]; 
+				    $temp[] = (string)$key["mes"]; 
 				    $temp[] = (float)$key["calidad"]; 
 				    $temp[] = (int) $key['ordenes'];
 				    $temp[] = (int) $key['fallos'];
@@ -484,6 +491,11 @@ class Calidadmodel extends CI_Model {
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
+		$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+		$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+		$anio_str= date('Y', strtotime($desde));
+		$periodo_str= $mes_str."-".$anio_str;
+
 		if($jefe!=""){
 			$rut_jefe = $this->getRutTecnicoJefe($jefe);
 			$cargo_jefe = $this->getCargoJefe($jefe);
@@ -498,6 +510,7 @@ class Calidadmodel extends CI_Model {
 			$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 				CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
+				'".$periodo_str."' as 'mes',
 
 				SUM(CASE 
 	        		WHEN p.falla ='si' 
@@ -544,7 +557,7 @@ class Calidadmodel extends CI_Model {
 			
 			foreach($res_tecnicos->result_array() as $tecnicos){
 				if($tecnicos["trabajador"]!=""){
-					$periodo = $tecnicos["periodo"];
+					$periodo = $tecnicos["mes"];
 					/*if($tecnicos["calidad"]!=""){
 						$promedio_calidad[]= $tecnicos["calidad"];
 					}*/
@@ -586,6 +599,11 @@ class Calidadmodel extends CI_Model {
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
+		$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+		$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+		$anio_str= date('Y', strtotime($desde));
+		$periodo_str= $mes_str."-".$anio_str;
+
 		if($jefe!=""){
 			$rut_jefe = $this->getRutTecnicoJefe($jefe);
 			$cargo_jefe = $this->getCargoJefe($jefe);
@@ -594,6 +612,7 @@ class Calidadmodel extends CI_Model {
 		$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 				CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
+				'".$periodo_str."' as 'mes',
 
 				SUM(CASE 
 	        		WHEN p.falla ='si' 
@@ -666,7 +685,7 @@ class Calidadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				if($key["trabajador"]!=""){
 					$temp = array();
-				    $temp[] = (string)$key["periodo"]; 
+				    $temp[] = (string)$key["mes"]; 
 				    $temp[] = (float)$key["calidad"]; 
 				    $temp[] = (int) $key['ordenes'];
 				    $temp[] = (int) $key['fallos'];
@@ -688,6 +707,11 @@ class Calidadmodel extends CI_Model {
 		$desde_str= date('d-m', strtotime($desde));
 		$hasta_str= date('d-m', strtotime($hasta));
 
+		$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+		$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+		$anio_str= date('Y', strtotime($desde));
+		$periodo_str= $mes_str."-".$anio_str;
+
 		if($jefe!=""){
 			$rut_jefe = $this->getRutTecnicoJefe($jefe);
 			$cargo_jefe = $this->getCargoJefe($jefe);
@@ -702,6 +726,7 @@ class Calidadmodel extends CI_Model {
 			$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
 				CONCAT('".$desde_str."',' ','".$hasta_str."') as 'periodo',
+				'".$periodo_str."' as 'mes',
 
 				SUM(CASE 
 	        		WHEN p.falla ='si' 
@@ -748,7 +773,7 @@ class Calidadmodel extends CI_Model {
 			
 			foreach($res_tecnicos->result_array() as $tecnicos){
 				if($tecnicos["trabajador"]!=""){
-					$periodo = $tecnicos["periodo"];
+					$periodo = $tecnicos["mes"];
 					if($tecnicos["calidad"]!=""){
 						$promedio_calidad[]= $tecnicos["calidad"];
 					}
@@ -847,74 +872,6 @@ class Calidadmodel extends CI_Model {
 		return FALSE;
 	}
 
-
-	/*public function getCabecerasCalidad(){
-		$cabeceras = array();
-		$cabeceras[] = "Zona";
-		$cabeceras[] = "Trabajador";
-		$periodo_actual = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25')))) . " - ".date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-		$periodo_anterior1 = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25')))) . " - ".date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
-		$periodo_anterior2 = date('d-m-Y', strtotime('-4 month', strtotime(date('Y-m-25')))) . " - ".date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-24'))));
-		$periodo_anterior3 = date('d-m-Y', strtotime('-5 month', strtotime(date('Y-m-25')))) . " - ".date('d-m-Y', strtotime('-4 month', strtotime(date('Y-m-24'))));
-		$cabeceras[] = $periodo_anterior3;
-		$cabeceras[] = $periodo_anterior2;
-		$cabeceras[] = $periodo_anterior1;
-		$cabeceras[] = $periodo_actual;
-		return $cabeceras;
-		
-	}*/
-	
-	/*public function listaResumenCalidad($desde,$hasta,$trabajador){
-		$this->db->select("
-			CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
-			a.area as zona,
-
-			SUM(CASE 
-             WHEN p.tipo_red ='HFC' THEN 1
-             ELSE 0
-            END) AS HFC,
-
-	        SUM(CASE 
-             WHEN p.falla ='si' and p.tipo_red='HFC' THEN 1
-             ELSE 0
-            END) as falla_HFC,
-
-            CONCAT(ROUND((
-	            SUM(CASE 
-	        		WHEN p.falla ='si' 
-	        		and p.tipo_red='HFC' 
-	        		and p.fecha BETWEEN '".$desde."' AND '".$hasta."'
-	        		THEN 1
-	            ELSE 0
-	            END)
-	            /
-                SUM(CASE 
-	                WHEN p.tipo_red ='HFC'
-	                and p.fecha BETWEEN '".$desde."' AND '".$hasta."'
-	                THEN 1
-	                ELSE 0
-                END)
-             * 100 ),2),'%') AS 'actual'
-			
-		  ");
-
-		$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
-		//$this->db->where('p.rut_tecnico', '173397666');
-		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
-		$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');
-		$this->db->group_by('p.rut_tecnico');
-		$res=$this->db->get('productividad_calidad p');
-		$array = array();
-
-		foreach($res->result_array() as $key){
-			$temp = array();
-			$temp["Zona"] = $key["zona"];
-			$temp["Trabajador"] = $key["trabajador"];
-			$temp["Actual"] = $key["actual"];
-			$array[] = $temp;
-		}
-		return $array;
-	}*/
 
 
 	

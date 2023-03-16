@@ -42,46 +42,65 @@ class Productividad extends CI_Controller {
 		
 	    public function index(){
 	    	$this->acceso();
+
     	    $datos = array(
 		        'titulo' => "Productividad XR3",
 		        'contenido' => "productividad/inicio",
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
-			);  
+			);
+			
 			$this->load->view('plantillas/plantilla_back_end',$datos);
+
 		}
 
 		public function vistaDetalle(){
 			$this->visitas("detalle");
 			if($this->input->is_ajax_request()){
 				if(date("d")>"24"){
+
 					$desde_actual = date('d-m-Y', strtotime(date('Y-m-25')));
 					$hasta_actual = date('d-m-Y', strtotime('+1 month', strtotime(date('Y-m-24'))));
+
 					$desde_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta_anterior = date('d-m-Y', strtotime(date('Y-m-24')));
+
+					$desde_anterior_2 = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_2 = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+
 				}else{
+					
 					$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta_actual = date('d-m-Y',  strtotime(date('Y-m-24')));
+
 					$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+
+					$desde_anterior_2 = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta_anterior_2 = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 				
-				$datos=array(	
+				$datos = array(	
 					'desde_actual' => $desde_actual,
 			        'hasta_actual' => $hasta_actual,
+
 			        'desde_anterior' => $desde_anterior,
 			        'hasta_anterior' => $hasta_anterior,
+
+					'desde_anterior2' => $desde_anterior_2,
+			        'hasta_anterior2' => $hasta_anterior_2,
+
        		        'jefes' => $this->Productividadmodel->listaJefes(),
 
        		        'mes_actual' => mesesPeriodo("actual"),
 		       	    'mes_anterior' =>mesesPeriodo("anterior"),
 		       	    'mes_anterior2' =>mesesPeriodo("anterior2"),
-
 			    );
+
 				$this->load->view('back_end/productividad/productividad_detalle',$datos);
 			}
 		}
 
-		public function formCargaMasivaDetalle(){
+		/* public function formCargaMasivaDetalle(){
 
 			if (!function_exists('str_contains')) {
 			    function str_contains(string $haystack, string $needle): bool
@@ -188,19 +207,117 @@ class Productividad extends CI_Controller {
 	            
 	            $this->enviaCorreo();
 
-	            /*if($i==0){
+	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+	        }else{
+	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
+	        }   
+		} */
+
+		public function formCargaMasivaDetalle(){
+
+			if (!function_exists('str_contains')) {
+			    function str_contains(string $haystack, string $needle): bool
+			    {
+			        return '' === $needle || false !== strpos($haystack, $needle);
+			    }
+			}
+
+			if($_FILES['userfile']['name']==""){
+			    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+			}
+			$fname = $_FILES['userfile']['name'];
+			if (strpos($fname, ".") == false) {
+		        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
+	        }
+	        $chk_ext = explode(".",$fname);
+
+	        if($chk_ext[1]!="csv"){
+	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
+	        }
+
+	        $fname = $_FILES['userfile']['name'];
+	        $chk_ext = explode(".",$fname);
+
+	        if(strtolower(end($chk_ext)) == "csv")  {
+	            $filename = $_FILES['userfile']['tmp_name'];
+	            $handle = fopen($filename, "r");
+	            $i=0;$z=0;$y=0;     
+	         	
+
+	         	if(date("d")>"24"){
+					$desde = date('Y-m-d', strtotime('-0 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}else{
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-0 month', strtotime(date('Y-m-24'))));
+				}
+
+	         	$this->Productividadmodel->eliminarPeriodoActual($desde,$hasta);
+
+	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
+				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
+
+	            	if(count($data)!=13){
+	            		echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido, 13 columnas esperadas,".count($data)." obtenidas."));exit;
+	            	}
+
+	                // if(!empty($data[0])){
+                	    $rut = $data[0];
+						$rutf=str_replace('-', '', $rut);
+
+						if (str_contains($data[1], '/')) { 
+
+							$fecha=explode('/',trim($data[1]));
+						    $dia=$fecha[0];
+							$mes=$fecha[1]; 
+							$anio=$fecha[2]; 
+							$fechaf = $anio."-".$mes."-".$dia;
+
+						}elseif(str_contains($data[1], '-')){
+
+							$fecha=explode('-',trim($data[1]));
+							$dia=$fecha[0];
+							$mes=$fecha[1]; 
+							$anio=$fecha[2]; 
+							$fechaf = $anio."-".$mes."-".$dia;
+
+						}else{
+							$fechaf = "1970-01-01";
+						}
+
+						// echo $fechaf;
+						// echo "<br>";
+
+					    $arr=array("rut_tecnico"=>$rutf,
+							"fecha"=>$fechaf,
+							"direccion"=>$data[2],
+							"tipo_actividad"=>utf8_encode($data[3]),
+							"comuna"=>$data[4],
+							"estado"=>$data[5],
+							"derivado"=>$data[6],
+							"puntaje"=>$data[7],
+							"ot"=>$data[8],
+							"estado_ot"=>$data[9],
+							"categoria"=>$data[10],
+							"equivalente"=>$data[11],
+							"tecnologia"=>$data[12],
+							"ultima_actualizacion"=>$ultima_actualizacion
+						);	
+
+					    if(!$this->Productividadmodel->existeOrden($data[8])){
+					    	$this->Productividadmodel->formDetalle($arr);
+					    	$i++;
+					    }
+				  	 	
+				  	 	$arr=array();
+		            // }
+	            }
+
+	            if($i==0){
 	            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
-	            }*/
+	            }
 
-	            /*fclose($handle); 
-
-	            $host = $_SERVER['HTTP_HOST'];
-				$ruta = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-				$html = 'cargaPlanillaProductividad';
-				$url = "http://$host$ruta/$html";
-				header("Location: $url");exit;
-				*/
-
+	            fclose($handle); 
 	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
 	        }else{
 	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
@@ -300,25 +417,42 @@ class Productividad extends CI_Controller {
 			if(date("d")>"24"){
 
 				if($periodo=="actual"){
+
 					$desde = date('Y-m-d', strtotime(date('Y-m-25')));
 					$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
+
 				}elseif($periodo=="anterior"){
+
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+					
+				}elseif($periodo=="anterior2"){
+
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+
 				}
 
 			}else{
+
 				if($periodo=="actual"){
+
 					$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d');
+
 				}elseif($periodo=="anterior"){
+
 					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+
+				}elseif($periodo=="anterior_2"){
+
+					$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
 			echo json_encode($this->Productividadmodel->listaDetalle($desde,$hasta,$trabajador,$jefe));
-
 
 		}	
 
@@ -395,9 +529,9 @@ class Productividad extends CI_Controller {
 		}
 
 		public function excel_detalle(){
-			$periodo=$this->uri->segment(2);
-			$trabajador=$this->uri->segment(3);
-			$jefe=$this->uri->segment(4);
+			$periodo = $this->uri->segment(2);
+			$trabajador = $this->uri->segment(3);
+			$jefe = $this->uri->segment(4);
 			
 			if($trabajador=="-"){
 				$trabajador="";
@@ -408,24 +542,29 @@ class Productividad extends CI_Controller {
 			}
 
 			if(date("d")>"24"){
-				if($periodo=="actual"){
+				if($periodo == "actual"){
 					$desde = date('Y-m-d', strtotime(date('Y-m-25')));
 					$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
-				}elseif($periodo=="anterior"){
+				}elseif($periodo == "anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo == "anterior2"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 				
 			}else{
-				if($periodo=="actual"){
-					$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d');
-				}elseif($periodo=="anterior"){
-					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
-					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				if($periodo == "actual"){
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d');
+				}elseif($periodo == "anterior"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo == "anterior2"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
-
 
 			$data=$this->Productividadmodel->listaDetalle($desde,$hasta,$trabajador,$jefe);
 
@@ -437,18 +576,18 @@ class Productividad extends CI_Controller {
 				$nombre="reporte-detalle-".date("d-m-Y",strtotime($desde))."-".date("d-m-Y",strtotime($hasta)).".xls";
 				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
 				header("Content-Disposition: attachment; filename=$nombre");
+
 				?>
 				<style type="text/css">
 				.head{font-size:13px;height: 30px; background-color:#32477C;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
 				td{font-size:12px;text-align:center;   vertical-align:middle;}
-				
 				</style>
 				<h3>Reporte detalle productividad <?php echo date("d-m-Y",strtotime($desde)); ?> - <?php echo date("d-m-Y",strtotime($hasta)); ?></h3>
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
 			                <th class="head">T&eacute;cnico</th> 
 				            <th class="head">Fecha</th> 
-				            <th class="head">Dirección</th> 
+				            <th class="head">Direcci&oacute;n</th> 
 				            <th class="head">Tipo actividad</th> 
 				            <th class="head">Comuna</th> 
 				            <th class="head">Estado</th> 

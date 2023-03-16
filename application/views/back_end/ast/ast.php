@@ -74,6 +74,25 @@
     }
   }
 
+  .dataTables_paginate .paginate_button {
+    margin-top: 20px!important;
+    padding: 5px 11px!important;
+    line-height: 1.42857143;
+    text-decoration: none;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #32477C!important;
+    border: 1px solid transparent;
+    margin-left: -1px;
+    cursor: pointer;
+  }
+
+  div.dataTables_wrapper div.dataTables_info {
+    padding-top: 0.1em!important;
+    white-space: nowrap;
+  }
+  
+
 </style>
 
 <script type="text/javascript">
@@ -87,16 +106,20 @@
 
   /*****DATATABLE*****/   
     var listaAst = $('#listaAst').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":-1, 
+      dom: "<'row '<'col-sm-12'f>>" +
+            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+       "iDisplayLength":50, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": false,
        "aaSorting" : [[9,"desc"]],
        "scrollY": "60vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "paging":true,
+       "lengthChange": true,
+       "pagingType": "simple", 
+       "bPaginate": true,
        "columnDefs" : [
           { orderable: false , targets: 0 }
        ],

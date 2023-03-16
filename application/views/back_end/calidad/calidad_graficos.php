@@ -402,11 +402,11 @@
             var periodo =$("#periodo").val()
 
             if(periodo=="actual"){
-            	$("#fecha_g").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+            	$("#fecha_g").val(`${desde_actual.substring(5,10)} - ${hasta_actual.substring(5,10)}`);
             }else if(periodo=="anterior"){
-            	$("#fecha_g").val(`${desde_anterior.substring(0,5)} - ${hasta_anterior.substring(0,5)}`);
-            }else if(periodo=="sub_anterior"){
-            	$("#fecha_g").val(`${desde_anterior2.substring(0,5)} - ${hasta_anterior2.substring(0,5)}`);
+            	$("#fecha_g").val(`${desde_anterior.substring(5,10)} - ${hasta_anterior.substring(5,10)}`);
+            }else if(periodo=="anterior_2"){
+            	$("#fecha_g").val(`${desde_anterior2.substring(5,10)} - ${hasta_anterior2.substring(5,10)}`);
             }
 
             /*console.log(json)*/
@@ -610,19 +610,22 @@
             <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
           </div>
             <select id="periodo" name="periodo" class="custom-select custom-select-sm">
-              <option selected value="actual">Actual - <?php echo $mes_actual ?></option>
-              <option value="anterior">Anterior - <?php echo $mes_anterior?></option>
-              <option value="sub_anterior">Sub anterior - <?php echo $mes_anterior2 ?></option>
+              <option selected value="actual"><?php echo $mes_actual ?></option>
+              <option value="anterior"><?php echo $mes_anterior?></option>
+              <option value="anterior_2"><?php echo $mes_anterior2 ?></option>
+            <!--   <option value="anterior_3"><?php echo $mes_anterior3 ?></option>
+              <option value="anterior_4"><?php echo $mes_anterior4 ?></option>
+              <option value="anterior_5"><?php echo $mes_anterior5 ?></option> -->
            </select>
         </div>
       </div>
   </div>
 
-  <div class="col-lg-1">
+  <!-- <div class="col-lg-1">
     <div class="form-group">
         <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_g" id="fecha_g">
     </div>
-  </div>
+  </div> -->
 
 	<?php  
     if($this->session->userdata('id_perfil')<3){
@@ -786,11 +789,11 @@
 
 	        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
             <div class="short-div">
-            		<h6 class="titulo_grafico">Calidad HFC Últimos 3 periodos</h6>
+            		<h6 class="titulo_grafico">Calidad HFC Últimos 6 periodos</h6>
 	    					<div id="graficoHFC"></div>
 	          </div>
             <div class="short-div">
-            		<h6 class="titulo_grafico">Calidad FTTH Últimos 3 periodos</h6>
+            		<h6 class="titulo_grafico">Calidad FTTH Últimos 6 periodos</h6>
     			  	<div id="graficoFTTH"></div>
             </div>
 	        </div>

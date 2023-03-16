@@ -698,33 +698,71 @@ class Checklist extends CI_Controller {
 
 	/**********GRAFICOS**************/
 
+		public function vistaGraficos(){
+			$this->visitas("Graficos");
 
-			public function vistaGraficos(){
+			if($this->input->is_ajax_request()){
+				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
+				$fecha_hoy=date('d-m-Y');
 
-				$this->visitas("Graficos");
-
-				if($this->input->is_ajax_request()){
-					$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
-			    	$fecha_hoy=date('d-m-Y');
-			    	// echo "<pre>";
-			    	// print_r($this->Checklistmodel->dataEstadosChecklist());
-					$datos=array(	
-						'fecha_anio_atras' => $fecha_anio_atras,	   
-				        'fecha_hoy' => $fecha_hoy,
-				   	);
-
-					$this->load->view('back_end/checklist/checklist_herramientas/graficos/inicio',$datos);
-				}
+				$auditores = $this->Checklistmodel->listaAuditoresCH();
+				$tecnicos = $this->Checklistmodel->listaTecnicosCH();
+				$zonas = $this->Checklistmodel->listaZonas();
+				$comunas = $this->Checklistmodel->listaProyectos();
+				$datos=array(	
+					'fecha_anio_atras' => $fecha_anio_atras,	   
+					'fecha_hoy' => $fecha_hoy,
+					'auditores' => $auditores,
+					'tecnicos' => $tecnicos,
+					'zonas' => $zonas,
+					'comunas' => $comunas,
+				);
+				$this->load->view('back_end/checklist/checklist_herramientas/graficos/inicio',$datos);
 			}
+		}
 
-			public function dataEstadosChecklist(){
-				echo json_encode($this->Checklistmodel->dataEstadosChecklist());
-			}
+		public function dataEstadosChecklistCH(){
+			echo json_encode($this->Checklistmodel->dataEstadosChecklistCH());
+		}
 
-			public function dataTecnicos(){
-				echo json_encode($this->Checklistmodel->dataTecnicos());
-			}
+		public function dataTecnicosChecklistCH(){
+			echo json_encode($this->Checklistmodel->dataTecnicosChecklistCH());
+		}
 
+		public function dataAuditoresChecklistCH(){
+			echo json_encode($this->Checklistmodel->dataAuditoresChecklistCH());
+		}
+
+		public function graficoAuditoriasDataCH(){
+			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+			echo json_encode($this->Checklistmodel->graficoAuditoriasDataCH($auditor,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataCHQ(){
+			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+			echo json_encode($this->Checklistmodel->graficoAuditoriasDataCHQ($auditor,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataCHTecnico(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Checklistmodel->graficoAuditoriasDataCHTecnico($tecnico,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataCHTecnicoQ(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Checklistmodel->graficoAuditoriasDataCHTecnicoQ($tecnico,$zona,$comuna));
+		}
+
+
+		
 
 	/**********FALLOS HERRAMIENTAS************/
 		

@@ -753,48 +753,71 @@ class checklistFTTH extends CI_Controller {
 
 	/*********GRAFICOS**************/
 
+		public function vistaGraficosChecklistFTTH(){
+			$this->visitas("Graficos");
+			if($this->input->is_ajax_request()){
+				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
+				$fecha_hoy=date('d-m-Y');
 
-			public function vistaGraficosChecklistFTTH(){
+				$auditores = $this->Checklistftthmodel->listaAuditoresFTTH();
+				$tecnicos = $this->Checklistftthmodel->listaTecnicosFTTH();
+				$zonas = $this->Checklistftthmodel->listaZonas();
+				$comunas = $this->Checklistftthmodel->listaProyectos();
+				
+				$datos=array(	
+					'fecha_anio_atras' => $fecha_anio_atras,	   
+					'fecha_hoy' => $fecha_hoy,
+					'auditores' => $auditores,
+					'tecnicos' => $tecnicos,
+					'zonas' => $zonas,
+					'comunas' => $comunas,
+				);
 
-				$this->visitas("Graficos");
-
-				if($this->input->is_ajax_request()){
-					$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
-			    	$fecha_hoy=date('d-m-Y');
-			    	
-					$auditores = $this->Checklistftthmodel->listaAuditoresFHFC();
-					$zonas = $this->Checklistftthmodel->listaZonas();
-					$comunas = $this->Checklistftthmodel->listaProyectos();
-
-
-					$datos=array(	
-						'fecha_anio_atras' => $fecha_anio_atras,	   
-				        'fecha_hoy' => $fecha_hoy,
-
-						'auditores' => $auditores,
-						'zonas' => $zonas,
-						'comunas' => $comunas,
-				   	);
-
-					$this->load->view('back_end/checklist/checklist_ftth/graficos/inicio',$datos);
-				}
+				$this->load->view('back_end/checklist/checklist_ftth/graficos/inicio',$datos);
 			}
+		}
 
-			public function dataEstadosChecklistFTTH(){
-				echo json_encode($this->Checklistftthmodel->dataEstadosChecklistFTTH());
-			}
+		public function dataEstadosChecklistFTTH(){
+			echo json_encode($this->Checklistftthmodel->dataEstadosChecklistFTTH());
+		}
 
-			public function dataTecnicosChecklistFTTH(){
-				echo json_encode($this->Checklistftthmodel->dataTecnicosChecklistFTTH());
-			}
+		public function dataTecnicosChecklistFTTH(){
+			echo json_encode($this->Checklistftthmodel->dataTecnicosChecklistFTTH());
+		}
 
-			public function graficoAuditoriasDataFTTH(){
-				$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
-				$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
-				$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
-				echo json_encode($this->Checklistftthmodel->graficoAuditoriasDataFTTH($auditor,$zona,$comuna));
-			}
-	
+		public function dataAuditoresChecklistFTTH(){
+			echo json_encode($this->Checklistftthmodel->dataAuditoresChecklistFTTH());
+		}
+
+		public function graficoAuditoriasDataFTTH(){
+			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+			echo json_encode($this->Checklistftthmodel->graficoAuditoriasDataFTTH($auditor,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataFTTHQ(){
+			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+			echo json_encode($this->Checklistftthmodel->graficoAuditoriasDataFTTHQ($auditor,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataFTTHTecnico(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Checklistftthmodel->graficoAuditoriasDataFTTHTecnico($tecnico,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataFTTHTecnicoQ(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Checklistftthmodel->graficoAuditoriasDataFTTHTecnicoQ($tecnico,$zona,$comuna));
+		}
+
+		
 
 
 	/**********FALLOS HERRAMIENTAS************/

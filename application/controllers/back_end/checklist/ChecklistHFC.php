@@ -748,13 +748,15 @@ class checklistHFC extends CI_Controller {
 		    	$fecha_hoy=date('d-m-Y');
 
 				$auditores = $this->Checklisthfcmodel->listaAuditoresFHFC();
+				$tecnicos = $this->Checklisthfcmodel->listaTecnicosFHFC();
 				$zonas = $this->Checklisthfcmodel->listaZonas();
 				$comunas = $this->Checklisthfcmodel->listaProyectos();
-
+				
 				$datos=array(	
 					'fecha_anio_atras' => $fecha_anio_atras,	   
 			        'fecha_hoy' => $fecha_hoy,
 			        'auditores' => $auditores,
+			        'tecnicos' => $tecnicos,
 			        'zonas' => $zonas,
 			        'comunas' => $comunas,
 			   	);
@@ -771,12 +773,40 @@ class checklistHFC extends CI_Controller {
 			echo json_encode($this->Checklisthfcmodel->dataTecnicosChecklistHFC());
 		}
 
+		public function dataAuditoresChecklistHFC(){
+			echo json_encode($this->Checklisthfcmodel->dataAuditoresChecklistHFC());
+		}
+
+		
+
 		public function graficoAuditoriasDataHFC(){
 			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
 			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
 			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
 			echo json_encode($this->Checklisthfcmodel->graficoAuditoriasDataHFC($auditor,$zona,$comuna));
 		}
+
+		public function graficoAuditoriasDataHFCQ(){
+			$auditor = $this->security->xss_clean(strip_tags($this->input->post("auditor_gm")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gm")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gm")));
+			echo json_encode($this->Checklisthfcmodel->graficoAuditoriasDataHFCQ($auditor,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataHFCTecnico(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Checklisthfcmodel->graficoAuditoriasDataHFCTecnico($tecnico,$zona,$comuna));
+		}
+
+		public function graficoAuditoriasDataHFCTecnicoQ(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Checklisthfcmodel->graficoAuditoriasDataHFCTecnicoQ($tecnico,$zona,$comuna));
+		}
+
 
 		
 

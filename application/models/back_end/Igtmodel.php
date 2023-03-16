@@ -468,11 +468,42 @@ class Igtmodel extends CI_Model {
 		    	return FALSE;
 			}
 		}
-		
 
-		
-		
-		
+		public function getDataAst($desde,$hasta,$trabajador){
+			$desde_str= date('d-m', strtotime($desde));
+			$hasta_str= date('d-m', strtotime($hasta));
+			$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+			$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+			$anio_str= date('Y', strtotime($desde));
+			$periodo_str= $mes_str."-".$anio_str;
+
+			$this->db->select("CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				count(c.id) as cantidad");
+			$this->db->group_by('c.tecnico_id');
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+
+			if(!empty($trabajador)){
+				$this->db->where('c.tecnico_id', $trabajador);
+			}
+
+			$this->db->where("c.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			$res=$this->db->get('ast_checklist c');
+
+			$cabeceras = array("Cantidad");
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp[] = (int)$key["cantidad"];
+					$array[]=$temp;
+				}
+				return $array;
+			}
+			return FALSE;
+		}
 
 
 	/******************CALIDAD HFC*********************/

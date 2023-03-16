@@ -201,71 +201,40 @@ class Usuariosmodel extends CI_Model {
 			return FALSE;
 		}
 
-
-
-
 		public function getIdUsuarioPorRut($rut){
 			$this->db->select('id');
 			$this->db->where('rut', $rut);
 			$res=$this->db->get('usuarios');
 
 			if($res->num_rows()==0){
-				return '';
+				return FALSE;
 			}else{
 				$row = $res->row_array();
 				return $row["id"];
 			}
-		}
-		
-		public function getNivelPorNombre($nivel){
-			$this->db->where('nivel', $nivel);
-			$res=$this->db->get('usuarios_tecnicos_niveles');
-			if($res->num_rows()>0){
-				$row=$res->row_array();
-				return $row["id"];
-			}
-			return '';
+
+			
 		}
 
 		public function getIdCargoPorNombre($cargo){
-			$this->db->like('cargo', trim($cargo) ,'before');
+			$this->db->where('cargo', $cargo);
 			$res=$this->db->get('usuarios_cargos');
-			if($res->num_rows()>0){
-				$row=$res->row_array();
-				return $row["id"];
-			}
-			return '';
+			$row=$res->row_array();
+			return $row["id"];
 		}
 
 		public function getIdAreaPorNombre($area){
 			$this->db->where('area', $area);
 			$res=$this->db->get('usuarios_areas');
-			if($res->num_rows()>0){
-				$row=$res->row_array();
-				return $row["id"];
-			}
-			return '';
+			$row=$res->row_array();
+			return $row["id"];
 		}
 
-		public function getIdPerfilPorNombre($perfil){
-			$this->db->where('perfil', $perfil);
-			$res=$this->db->get('usuarios_perfiles');
-			if($res->num_rows()>0){
-				$row=$res->row_array();
-				return $row["id"];
-			}
-			return '';
-		}
-
-		
 		public function getIdProyectoPorNombre($proyecto){
 			$this->db->where('proyecto', $proyecto);
 			$res=$this->db->get('usuarios_proyectos');
-			if($res->num_rows()>0){
-				$row=$res->row_array();
-				return $row["id"];
-			}
-			return '';
+			$row=$res->row_array();
+			return $row["id"];
 		}
 
 		public function getIdJefePorNombre($nombre_jefe){
@@ -286,6 +255,23 @@ class Usuariosmodel extends CI_Model {
 
 		public function truncateUsuarios(){
 			$this->db->truncate('usuarios');
+		}
+
+		public function existeUsuario($rut){
+			$this->db->where('u.rut', $rut);
+			$res=$this->db->get('usuarios u');
+		    if($res->num_rows()==0){
+		    	return FALSE;
+		    }
+		    return TRUE;
+		}
+
+		public function eliminaUsuario($hash){
+			$this->db->where('sha1(id)', $hash);
+		    if($this ->db->delete('usuarios')){
+		    	return TRUE;
+		    }
+		    return FALSE;
 		}
 
 	//CARGOS

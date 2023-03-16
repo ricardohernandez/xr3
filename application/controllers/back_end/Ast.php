@@ -764,5 +764,178 @@ class Ast extends CI_Controller {
 					}
 				}	
 		}
+	
+	/************GRAFICOS*****************/
+
+		public function vistaGraficosAst(){
+			$this->visitas("Graficos");
+
+			if($this->input->is_ajax_request()){
+				$fecha_anio_atras=date('Y-m-d', strtotime('-31 day', strtotime(date("d-m-Y"))));
+				$fecha_hoy=date('Y-m-d');
+
+				$tecnicos = $this->Astmodel->listaTecnicos();
+				$zonas = $this->Astmodel->listaZonas();
+				$comunas = $this->Astmodel->listaProyectos();
+				$items = $this->Astmodel->listaItems();
+
+				$datos=array(	
+					'desde' => $fecha_anio_atras,	   
+					'hasta' => $fecha_hoy,
+					'tecnicos' => $tecnicos,
+					'zonas' => $zonas,
+					'comunas' => $comunas,
+					'items' => $items,
+				);
+				$this->load->view('back_end/ast/graficos',$datos);
+			}
+		}
+
+		public function graficoAstTecnico(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Astmodel->graficoAstTecnico($tecnico,$zona,$comuna));
+		}
+
+		public function graficoAstDetalleTecnico(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Astmodel->graficoAstDetalleTecnico($tecnico,$zona,$comuna));
+		}
+
+		public function graficoTotalTecnicos(){
+			$desde = $this->security->xss_clean(strip_tags($this->input->post("desde")));
+			$hasta = $this->security->xss_clean(strip_tags($this->input->post("hasta")));
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			echo json_encode($this->Astmodel->graficoTotalTecnicos($tecnico,$zona,$comuna,$desde,$hasta));
+		}
+
+		public function graficoTotalItems(){
+			$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico_gmt")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->post("zona_gmt")));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna_gmt")));
+			$item = $this->security->xss_clean(strip_tags($this->input->post("item_gmt")));
+			echo json_encode($this->Astmodel->graficoTotalItems($tecnico,$zona,$comuna,$item));
+		}
+		
+		
+		public function excel_items_ast(){
+			$tecnico_gmt = $this->uri->segment(2);
+			$zona_gmt = $this->uri->segment(3);
+			$comuna_gmt = $this->uri->segment(4);
+			$item_gmt = urldecode($this->uri->segment(5));
+			
+			$tecnico_gmt = ($tecnico_gmt == "-") ? "" : $tecnico_gmt;
+			$zona_gmt = ($zona_gmt == "-") ? "" : $zona_gmt;
+			$comuna_gmt = ($comuna_gmt == "-") ? "" : $comuna_gmt;
+			$item_gmt = ($item_gmt == "-") ? "" : $item_gmt;
+
+			$data = $this->Astmodel->dataItemsEstado($tecnico_gmt,$zona_gmt,$comuna_gmt,$item_gmt);
+
+			if(!$data){
+				return FALSE;
+			}else{
+
+				$nombre="reporte-items-ast-".date("d-m-Y").".xls";
+				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
+				header("Content-Disposition: attachment; filename=$nombre");
+				?>
+				<style type="text/css">
+					.head{font-size:13px;height: 30px; background-color:#32477C;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
+					.verde{background-color:#107C41;color:#fff;}
+					.rojo{background-color:#A70A00;color:#fff;}
+					td{font-size:12px;text-align:left;   vertical-align:middle;.}
+				</style>
+				<h3>Reporte Items AST <?php echo date("d-m-Y"); ?></h3>
+					<table align='center' border="1"> 
+				        <tr style="background-color:#F9F9F9">
+			                <th class="head">Descripcion</th> 
+				            <th class="head">OK</th>   
+				            <th class="head">NO OK</th>   
+				        </tr>
+				        </thead>	
+						<tbody>
+				        <?php 
+				        	if($data !=FALSE){
+					      		foreach($data as $d){
+				      			?>
+				      			 <tr>
+									 <td><?php echo utf8_decode($d["descripcion"]); ?></td>
+									 <td class="verde"><?php echo utf8_decode($d["cantidad_ok"]); ?></td>
+									 <td class="rojo"><?php echo utf8_decode($d["cantidad_nook"]); ?></td>
+								 </tr>
+				      			<?php
+				      			}
+				      		}
+				          ?>
+				        </tbody>
+			        </table>
+			    <?php
+			}
+		}
+
+		public function excel_ast_totales(){
+			$tecnico_gmt = $this->uri->segment(2);
+			$zona_gmt = $this->uri->segment(3);
+			$comuna_gmt = $this->uri->segment(4);
+			$desde = urldecode($this->uri->segment(5));
+			$hasta = urldecode($this->uri->segment(6));
+			
+			$tecnico_gmt = ($tecnico_gmt == "-") ? "" : $tecnico_gmt;
+			$zona_gmt = ($zona_gmt == "-") ? "" : $zona_gmt;
+			$comuna_gmt = ($comuna_gmt == "-") ? "" : $comuna_gmt;
+			$desde = ($desde == "-") ? "" : $desde;
+			$hasta = ($hasta == "-") ? "" : $hasta;
+			$data = $this->Astmodel->graficoAstTotalTecnicos($tecnico_gmt,$zona_gmt,$comuna_gmt,$desde,$hasta);
+
+			if(!$data){
+				return FALSE;
+			}else{
+
+				$nombre="reporte-ast-totales-".date("d-m-Y").".xls";
+				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
+				header("Content-Disposition: attachment; filename=$nombre");
+				?>
+				<style type="text/css">
+					.head{font-size:13px;height: 30px; background-color:#32477C;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
+					.verde{background-color:#107C41;color:#fff;}
+					.rojo{background-color:#A70A00;color:#fff;}
+					td{font-size:12px;text-align:left;   vertical-align:middle;.}
+				</style>
+				<h3>AST Totales por t&eacute;cnico</h3>
+					<table align='center' border="1"> 
+				        <tr style="background-color:#F9F9F9">
+							<th class="head">T&eacute;cnico</th> 
+							<th class="head">Zona</th> 
+							<th class="head">Comuna</th> 
+				            <th class="head">Cantidad</th>   
+				        </tr>
+				        </thead>	
+						<tbody>
+				        <?php 
+				        	if($data !=FALSE){
+					      		foreach($data as $d){
+				      			?>
+				      			 <tr>
+								   <td><?php echo utf8_decode($d["tecnico"]); ?></td>
+								   <td><?php echo utf8_decode($d["area"]); ?></td>
+								   <td><?php echo utf8_decode($d["proyecto"]); ?></td>
+								   <td><?php echo utf8_decode($d["cantidad"]); ?></td>
+								 </tr>
+				      			<?php
+				      			}
+				      		}
+				          ?>
+				        </tbody>
+			        </table>
+			    <?php
+			}
+		}
+	
+		
 
 }

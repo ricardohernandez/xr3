@@ -10,7 +10,6 @@
 	$route['login'] = "inicio/login";
 	$route['unlogin'] = "inicio/unlogin";
 	$route['inicio'] = "inicio/inicio";
-
 	$route['cargaInicio'] = "inicio/cargaInicio";
 	$route['cargaInformaciones'] = "inicio/cargaInformaciones";
 	$route['cargaVistaNoticias'] = "inicio/cargaVistaNoticias";
@@ -25,8 +24,6 @@
 /*************CRON******************/
 	
 	$route['saludoCumpleanios'] = "inicio/saludoCumpleanios";
-
-
 	$route['admin_xr3'] = "admin";
 	$route['cargaVistaNoticiasAdmin'] = "admin/cargaVistaNoticiasAdmin";
 	$route['listaNoticiasAdmin'] = "admin/listaNoticiasAdmin";
@@ -34,7 +31,6 @@
 	$route['getDataNoticia'] = "admin/getDataNoticia";
 	$route['eliminaNoticia'] = "admin/eliminaNoticia";
 	$route['eliminaImagen'] = "admin/eliminaImagen";
-
 	$route['cargaVistaInformaciones'] = "admin/cargaVistaInformaciones";
 	$route['listaInformaciones'] = "admin/listaInformaciones";
 	$route['nuevaInformacion'] = "admin/nuevaInformacion";
@@ -61,28 +57,24 @@
 	$route['getDataRegistroCapacitacion'] = "back_end/documentacion/getDataRegistroCapacitacion";
 	$route['formIngresoCapacitacion'] = "back_end/documentacion/formIngresoCapacitacion";
 	$route['eliminaCapacitacion'] = "back_end/documentacion/eliminaCapacitacion";
-
 	$route['documentacion/reportes'] = "back_end/documentacion/indexReportes";
 	$route['vistaReportes'] = "back_end/documentacion/vistaReportes";
 	$route['getReportesList'] = "back_end/documentacion/getReportesList";
 	$route['getDataRegistroReportes'] = "back_end/documentacion/getDataRegistroReportes";
 	$route['formIngresoReportes'] = "back_end/documentacion/formIngresoReportes";
 	$route['eliminaReportes'] = "back_end/documentacion/eliminaReportes";
-
 	$route['documentacion/prevencion_riesgos'] = "back_end/documentacion/indexPrevencion";
 	$route['vistaPrevencion'] = "back_end/documentacion/vistaPrevencion";
 	$route['getPrevencionList'] = "back_end/documentacion/getPrevencionList";
 	$route['getDataRegistroPrevencion'] = "back_end/documentacion/getDataRegistroPrevencion";
 	$route['formIngresoPrevencion'] = "back_end/documentacion/formIngresoPrevencion";
 	$route['eliminaPrevencion'] = "back_end/documentacion/eliminaPrevencion";
-
 	$route['documentacion/datas_mandante'] = "back_end/documentacion/indexDatas";
 	$route['vistaDatas'] = "back_end/documentacion/vistaDatas";
 	$route['getDatasList'] = "back_end/documentacion/getDatasList";
 	$route['getDataRegistroDatas'] = "back_end/documentacion/getDataRegistroDatas";
 	$route['formIngresoDatas'] = "back_end/documentacion/formIngresoDatas";
 	$route['eliminaDatas'] = "back_end/documentacion/eliminaDatas";
-
 
 /*******AST*******/
 
@@ -95,7 +87,6 @@
 	$route['excel_ast/(:any)/(:any)/(:any)'] = "back_end/ast/excel_ast/$1/$2/$3";
 	$route['generaPdfAstURL'] = "back_end/ast/generaPdfAstURL";
 	$route['formCargaMasivaAst'] = "back_end/ast/formCargaMasivaAst";
-
 	$route['vistaMantActividades'] = "back_end/ast/vistaMantActividades";
 	$route['listaMantActividades'] = "back_end/ast/listaMantActividades";
 	$route['getDataMantActividades'] = "back_end/ast/getDataMantActividades";
@@ -105,6 +96,16 @@
 	$route['getUserChecklistView'] = "back_end/ast/getUserChecklistView";
 	$route['llenarMant'] = "back_end/ast/llenarMant";
 
+	/*******GRAFICOS*******/
+	
+	$route['vistaGraficosAst'] = "back_end/ast/vistaGraficosAst";
+	$route['graficoAstTecnico'] = "back_end/ast/graficoAstTecnico";
+	$route['graficoAstDetalleTecnico'] = "back_end/ast/graficoAstDetalleTecnico";
+	$route['graficoTotalTecnicos'] = "back_end/ast/graficoTotalTecnicos";
+	$route['graficoTotalItems'] = "back_end/ast/graficoTotalItems";
+	$route['excel_items_ast/(:any)/(:any)/(:any)/(:any)'] = "back_end/ast/excel_items_ast/$1/$2/$3/$4";
+	$route['excel_ast_totales/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/ast/excel_ast_totales/$1/$2/$3/$4/$5";
+	
 /*******CHECKLIST*******/
 
 	$route['checklist_herramientas'] = "back_end/checklist/checklist/index";
@@ -125,6 +126,16 @@
 	$route['graficoFallosH'] = "back_end/checklist/checklist/graficoFallosH";
 	$route['listaTrabajadoresCH'] = "back_end/checklist/checklist/listaTrabajadoresCH";
 	$route['generaPdfChecklistHerramientasURL'] = "back_end/checklist/checklist/generaPdfChecklistHerramientasURL";
+
+	/*******GRAFICOS*******/
+		
+		$route['graficoAuditoriasDataCH'] = "back_end/checklist/checklist/graficoAuditoriasDataCH";
+		$route['graficoAuditoriasDataCHQ'] = "back_end/checklist/checklist/graficoAuditoriasDataCHQ";
+		$route['graficoAuditoriasDataCHTecnico'] = "back_end/checklist/checklist/graficoAuditoriasDataCHTecnico";
+		$route['graficoAuditoriasDataCHTecnicoQ'] = "back_end/checklist/checklist/graficoAuditoriasDataCHTecnicoQ";
+		$route['dataAuditoresChecklistCH'] = "back_end/checklist/checklist/dataAuditoresChecklistCH";
+		$route['dataEstadosChecklistCH'] = "back_end/checklist/checklist/dataEstadosChecklistCH";
+		$route['dataTecnicosChecklistCH'] = "back_end/checklist/checklist/dataTecnicosChecklistCH";
 
 	/*******FALLOS*******/
 	
@@ -155,9 +166,15 @@
 	$route['listaTrabajadoresHFC'] = "back_end/checklist/ChecklistHFC/listaTrabajadoresHFC";
 	$route['generaPdfChecklistHFCURL'] = "back_end/checklist/ChecklistHFC/generaPdfChecklistHFCURL";
 
-	
 
 	$route['graficoAuditoriasDataHFC'] = "back_end/checklist/ChecklistHFC/graficoAuditoriasDataHFC";
+	$route['graficoAuditoriasDataHFCQ'] = "back_end/checklist/ChecklistHFC/graficoAuditoriasDataHFCQ";
+	$route['graficoAuditoriasDataHFCTecnico'] = "back_end/checklist/ChecklistHFC/graficoAuditoriasDataHFCTecnico";
+	$route['graficoAuditoriasDataHFCTecnicoQ'] = "back_end/checklist/ChecklistHFC/graficoAuditoriasDataHFCTecnicoQ";
+	$route['dataAuditoresChecklistHFC'] = "back_end/checklist/ChecklistHFC/dataAuditoresChecklistHFC";
+
+	
+	
 	$route['vistaFHFC'] = "back_end/checklist/ChecklistHFC/vistaFHFC";
 	$route['listaFHFC'] = "back_end/checklist/ChecklistHFC/listaFHFC";
 	$route['getDataFHFC'] = "back_end/checklist/ChecklistHFC/getDataFHFC";
@@ -176,8 +193,6 @@
 	$route['formCargaMasivaChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/formCargaMasivaChecklistFTTH";
 	$route['excel_checklistFTTH/(:any)/(:any)'] = "back_end/checklist/ChecklistFTTH/excel_checklistFTTH/$1/$2";
 	$route['vistaGraficosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/vistaGraficosChecklistFTTH";
-	$route['dataEstadosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataEstadosChecklistFTTH";
-	$route['dataTecnicosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataTecnicosChecklistFTTH";
 	$route['eliminaImagenChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/eliminaImagenChecklistFTTH";
 	$route['vistaGraficosFallosFTTH'] = "back_end/checklist/ChecklistFTTH/vistaGraficosFallosFTTH";
 	$route['graficoFallosFTTH'] = "back_end/checklist/ChecklistFTTH/graficoFallosFTTH";
@@ -185,6 +200,13 @@
 	$route['generaPdfChecklistFTTHURL'] = "back_end/checklist/ChecklistFTTH/generaPdfChecklistFTTHURL";
 
 	$route['graficoAuditoriasDataFTTH'] = "back_end/checklist/ChecklistFTTH/graficoAuditoriasDataFTTH";
+	$route['graficoAuditoriasDataFTTHQ'] = "back_end/checklist/ChecklistFTTH/graficoAuditoriasDataFTTHQ";
+	$route['graficoAuditoriasDataFTTHTecnico'] = "back_end/checklist/ChecklistFTTH/graficoAuditoriasDataFTTHTecnico";
+	$route['graficoAuditoriasDataFTTHTecnicoQ'] = "back_end/checklist/ChecklistFTTH/graficoAuditoriasDataFTTHTecnicoQ";
+	$route['dataAuditoresChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataAuditoresChecklistFTTH";
+	$route['dataEstadosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataEstadosChecklistFTTH";
+	$route['dataTecnicosChecklistFTTH'] = "back_end/checklist/ChecklistFTTH/dataTecnicosChecklistFTTH";
+
 	$route['vistaFFTTH'] = "back_end/checklist/ChecklistFTTH/vistaFFTTH";
 	$route['listaFFTTH'] = "back_end/checklist/ChecklistFTTH/listaFFTTH";
 	$route['getDataFFTTH'] = "back_end/checklist/ChecklistFTTH/getDataFFTTH";
@@ -277,6 +299,8 @@
 	$route['formCargaMasiva'] = "back_end/mantenedores/usuarios/formCargaMasiva";
 	$route['formCargaMasivaUsuarios'] = "back_end/mantenedores/usuarios/formCargaMasivaUsuarios";
 	$route['excelUsuarios/(:any)'] = "back_end/mantenedores/usuarios/excelUsuarios/$1";
+	$route['formCargaMasivaUsuarios'] = "back_end/mantenedores/usuarios/formCargaMasivaUsuarios";
+	$route['eliminaUsuario'] = "back_end/mantenedores/usuarios/eliminaUsuario";
 	
 	$route['vistaCargos'] = "back_end/mantenedores/usuarios/vistaCargos";
 	$route['listaCargos'] = "back_end/mantenedores/usuarios/listaCargos";

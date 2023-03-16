@@ -502,17 +502,19 @@ class Checklistmodel extends CI_Model {
 
 	/*************REPORTE HERRAMIENTAS*********/
 
-		public function dataEstadosChecklist(){
+		public function dataEstadosChecklistCH(){
 			$this->db->select("
 				CASE 
-		          WHEN cd.estado=0 THEN 'OK'
-		          WHEN cd.estado=1 THEN 'No Ok'
-		          WHEN cd.estado=2 THEN 'No aplica'
-		        END AS estado,
+				WHEN cd.estado=0 THEN 'OK'
+				WHEN cd.estado=1 THEN 'No Ok'
+				WHEN cd.estado=2 THEN 'No aplica'
+				END AS estado,
 				count(cd.id) as cantidad,
 				");
 
 			$this->db->group_by('cd.estado');
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
 			$res=$this->db->get('checklist_herramientas_detalle cd');
 			$cabeceras = array("Tipo","Cantidad");
 			$array=array();
@@ -529,35 +531,46 @@ class Checklistmodel extends CI_Model {
 
 		}
 
-		public function dataTecnicos(){
+		public function dataAuditoresChecklistCH(){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'auditor',
+				count(c.id) as cantidad
+				");
 
+			$this->db->group_by('c.auditor_id');
+			$this->db->join('usuarios u', 'u.id = c.auditor_id', 'left');
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$res=$this->db->get('checklist_herramientas c');
+
+			$cabeceras = array("Auditor","Cantidad",array('role'=> 'annotation'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)$key["auditor"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = (int)$key["cantidad"];
+				$array[]=$temp;
+			}
+			return $array;
+		}
+
+		public function dataTecnicosChecklistCH(){
 			$this->db->select("
 				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
-
-				SUM(CASE 
-	             WHEN cd.estado = 0 THEN 1
-	             ELSE 0
-	            END) AS cantidad_ok,
-
-	            SUM(CASE 
-	             WHEN cd.estado = 1 THEN 1
-	             ELSE 0
-	            END) AS cantidad_nook,
-				
-				SUM(CASE 
-	             WHEN cd.estado = 2 THEN 1
-	             ELSE 0
-	            END) AS cantidad_noaplica				
-
-
+				count(c.id) as cantidad
 				");
 
 			$this->db->group_by('c.tecnico_id');
-			$this->db->join('checklist_herramientas c', 'c.id = cd.id_ots', 'left');	
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
 			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
-			$res=$this->db->get('checklist_herramientas_detalle cd');
+			$res=$this->db->get('checklist_herramientas c');
 
-			$cabeceras = array("Técnico","OK",array('role'=> 'annotation'),"No OK",array('role'=> 'annotation'),"No aplica",array('role'=> 'annotation'));
+			$cabeceras = array("Técnico","Cantidad",array('role'=> 'annotation'));
 			$array=array();
 			$array[]=$cabeceras;
 			$contador=0;
@@ -565,16 +578,280 @@ class Checklistmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				$temp=array();
 				$temp[] = (string)$key["tecnico"];
-				$temp[] = (int)$key["cantidad_ok"];
-				$temp[] = (int)$key["cantidad_ok"];
-				$temp[] = (int)$key["cantidad_nook"];
-				$temp[] = (int)$key["cantidad_nook"];
-				$temp[] = (int)$key["cantidad_noaplica"];
-				$temp[] = (int)$key["cantidad_noaplica"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = (int)$key["cantidad"];
 				$array[]=$temp;
 			}
 			return $array;
+		}
 
+		public function graficoAuditoriasDataCHTecnicoQ($tecnico,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				DATE_FORMAT((c.fecha), '%y')  as 'anio',
+				c.fecha as fecha_completa,
+				COUNT(c.id) as cantidad
+				");
+
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+			$res = $this->db->get('checklist_herramientas c');
+
+			$cabeceras = array("Mes","Cantidad",array('role'=> 'annotation'),array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function graficoAuditoriasDataCHTecnico($tecnico,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				DATE_FORMAT((c.fecha), '%y')  as 'anio',
+				c.fecha as fecha_completa,
+
+				SUM(CASE 
+				WHEN cd.estado = 0 THEN 1
+				ELSE 0
+				END) AS cantidad_ok,
+
+				SUM(CASE 
+				WHEN cd.estado = 1 THEN 1
+				ELSE 0
+				END) AS cantidad_nook,
+
+				SUM(CASE 
+				WHEN cd.estado = 2 THEN 1
+				ELSE 0
+				END) AS cantidad_noaplica
+
+				");
+
+				
+			$this->db->join('checklist_herramientas c', 'c.id = cd.id_ots', 'left');	
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($tecnico)){
+				$this->db->where('c.tecnico_id', $tecnico);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('u.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('u.id_proyecto', $comuna);
+			}
+
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+
+			$res = $this->db->get('checklist_herramientas_detalle cd');
+
+			$cabeceras = array("Mes","OK",array('role'=> 'annotation'),"No OK","No aplica",array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_nook"];
+				/* $temp[] = (int)$key["cantidad_nook"]; */
+				$temp[] = (int)$key["cantidad_noaplica"];
+				/* $temp[] = (int)$key["cantidad_noaplica"]; */
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function graficoAuditoriasDataCHQ($auditor,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				DATE_FORMAT((c.fecha), '%y')  as 'anio',
+				c.fecha as fecha_completa,
+				COUNT(c.id) as cantidad
+				");
+
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($auditor)){
+				$this->db->where('c.auditor_id', $auditor);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('us.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('us.id_proyecto', $comuna);
+			}
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+
+			$res = $this->db->get('checklist_herramientas c');
+			
+			$cabeceras = array("Mes","Cantidad",array('role'=> 'annotation'),array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = (int)$key["cantidad"];
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function graficoAuditoriasDataCH($auditor,$zona,$comuna){
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+				CONCAT(MONTH(c.fecha),'-',YEAR(c.fecha)) as 'fecha',
+				MONTH(c.fecha) as 'mes',
+				DATE_FORMAT((c.fecha), '%y')  as 'anio',
+				c.fecha as fecha_completa,
+
+				SUM(CASE 
+				WHEN cd.estado = 0 THEN 1
+				ELSE 0
+				END) AS cantidad_ok,
+
+				SUM(CASE 
+				WHEN cd.estado = 1 THEN 1
+				ELSE 0
+				END) AS cantidad_nook,
+
+				SUM(CASE 
+				WHEN cd.estado = 2 THEN 1
+				ELSE 0
+				END) AS cantidad_noaplica
+
+				");
+
+				
+			$this->db->join('checklist_herramientas c', 'c.id = cd.id_ots', 'left');	
+			$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
+			$this->db->join('usuarios us', 'us.id = c.auditor_id', 'left');
+
+			if(!empty($auditor)){
+				$this->db->where('c.auditor_id', $auditor);
+			}
+
+			if(!empty($zona)){
+				$this->db->where('us.id_area', $zona);
+			}
+
+			if(!empty($comuna)){
+				$this->db->where('us.id_proyecto', $comuna);
+			}
+
+			$this->db->where('c.fecha >=', 'DATE_SUB(NOW(), INTERVAL 12 MONTH)', FALSE);
+			$this->db->where('c.fecha <=', 'NOW()', FALSE);
+			$this->db->group_by('MONTH(c.fecha)');
+			$this->db->group_by('YEAR(c.fecha)');
+
+			$res = $this->db->get('checklist_herramientas_detalle cd');
+
+			$cabeceras = array("Mes","OK",array('role'=> 'annotation'),"No OK","No aplica",array('role'=> 'annotationText'));
+			$array=array();
+			$array[]=$cabeceras;
+			$contador=0;
+
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp[] = (string)mesesCorto($key["mes"])."-".$key["anio"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_ok"];
+				$temp[] = (int)$key["cantidad_nook"];
+				/* $temp[] = (int)$key["cantidad_nook"]; */
+				$temp[] = (int)$key["cantidad_noaplica"];
+				/* $temp[] = (int)$key["cantidad_noaplica"]; */
+				$temp[] = strtotime($key["fecha_completa"]);
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		
+		public function listaTecnicosCH(){
+			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
+			$this->db->where('id_perfil', 4);
+			$this->db->where('estado', 1);
+			$this->db->order_by('nombres', 'asc');
+			$res=$this->db->get("usuarios");
+			return $res->result_array();
+		}
+
+		public function listaAuditoresCH(){
+			$this->db->select("id,CONCAT(nombres,' ',apellidos) as 'nombre_completo'");
+			$this->db->where('id_perfil', 3);
+			$this->db->where('estado', 1);
+			$this->db->order_by('nombres', 'asc');
+			$res=$this->db->get("usuarios");
+			return $res->result_array();
+		}
+
+		
+		public function listaZonas(){
+			$this->db->select('id,area');
+			$this->db->order_by('area', 'asc');
+			$res=$this->db->get('usuarios_areas');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function listaProyectos(){
+			$this->db->order_by('proyecto', 'asc');
+			$res=$this->db->get('usuarios_proyectos');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
 		}
 		
 	

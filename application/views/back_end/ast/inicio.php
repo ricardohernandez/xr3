@@ -112,6 +112,19 @@
       });
     });
 
+    $(document).off('click', '#menu_grafico').on('click', '#menu_grafico',function(event) {
+      event.preventDefault();
+      $("#menu_grafico").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa fa-cog fa-spin fa-4x' style='color:#233294;'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');  
+      $("#menu_grafico").addClass('menuActivo');  
+      
+      $.get("vistaGraficosAst", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_grafico").removeClass('disabled_sub');
+      });
+    });
+
     $(document).off('click', '#menu_mantenedor_actividades').on('click', '#menu_mantenedor_actividades',function(event) {
       event.preventDefault();
       $("#menu_mantenedor_actividades").addClass('disabled_sub');
@@ -139,7 +152,16 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_ast" class="active"><a> <i class="fa fa-th-list"></i> AST Análisis seguro de trabajo </a></li>   
-        <li id="menu_mantenedor_actividades" class="active"><a> <i class="fa fa-th-list"></i> Mantenedor Subactividades </a></li>   
+
+        <?php  
+        if($this->session->userdata('id_perfil')<=3){
+        ?>
+          <li id="menu_grafico" class="active"><a> <i class="fa fa-dashboard"></i> Graficos </a></li>   
+          <li id="menu_mantenedor_actividades" class="active"><a> <i class="fa fa-th-list"></i> Mantenedor Subactividades </a></li>   
+        <?php  
+        }
+        ?>
+        
       </ul>  
     </div> 
   </div>
