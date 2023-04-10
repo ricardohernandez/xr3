@@ -14,14 +14,15 @@ class Usuariosmodel extends CI_Model {
 	}
 
 	//USUARIOS
+	
 		public function listaUsuarios($estado){
 			$this->db->select("sha1(u.id) as hash_usuario,
 				u.*,
 				concat(substr(replace(u.rut,'-',''),1,char_length(replace(u.rut,'-',''))-1),'-',substr(replace(u.rut,'-',''),char_length(replace(u.rut,'-','')))) as 'rut',
 				up.perfil as perfil,
 				upr.proyecto as proyecto,
-				CONCAT(u.nombres,' ',u.apellidos)  'nombre',
-				CONCAT(u2.nombres,' ',u2.apellidos)  'jefe',
+				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', 1), ' ', SUBSTRING_INDEX(u.apellidos, ' ', 1)) AS nombre, 
+				CONCAT(SUBSTRING_INDEX(u2.nombres, ' ', 1), ' ', SUBSTRING_INDEX(u2.apellidos, ' ', 1)) AS jefe ,
 				uc.cargo as cargo,
 				ua.area as area,
 			    if(u.fecha_nacimiento!='1970-01-01' and u.fecha_nacimiento!='0000-00-00',DATE_FORMAT(u.fecha_nacimiento,'%Y-%m-%d'),'') as 'fecha_nacimiento',
@@ -34,9 +35,6 @@ class Usuariosmodel extends CI_Model {
 		        END AS estado_str,			
 		        utn.nivel as nivel_tecnico
 			");
-
-				
-
 
 			$this->db->join('usuarios_perfiles as up', 'up.id = u.id_perfil', 'left');
 			$this->db->join('usuarios_proyectos upr', 'upr.id = u.id_proyecto', 'left');

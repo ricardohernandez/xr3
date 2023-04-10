@@ -248,7 +248,38 @@
 	$route['graficoFTTH'] = "back_end/calidad/graficoFTTH";
 	$route['listaTrabajadoresCalidad'] = "back_end/calidad/listaTrabajadoresCalidad";
 
+
+/*******MATERIALES*******/
+
+	$route['materiales'] = "back_end/materiales/index";
+	$route['listaTrabajadoresMateriales'] = "back_end/materiales/listaTrabajadoresMateriales";
+	$route['vistaMaterialesDetalle'] = "back_end/materiales/vistaMaterialesDetalle";
+	$route['cargaPlanillaMateriales'] = "back_end/materiales/cargaPlanillaMateriales";
+	$route['listaDetalleMateriales'] = "back_end/materiales/listaDetalleMateriales";
+	$route['excel_detalle_materiales/(:any)/(:any)'] = "back_end/materiales/excel_detalle_materiales/$1/$2";
+
+	
+	$route['vistaMaterialesPorTecnico'] = "back_end/materiales/vistaMaterialesPorTecnico";
+	$route['listaTecnico'] = "back_end/materiales/listaTecnico";
+	$route['excel_tecnico/(:any)/(:any)'] = "back_end/materiales/excel_tecnico/$1/$2";
+
+	$route['vistaMaterialesPorMaterial'] = "back_end/materiales/vistaMaterialesPorMaterial";
+	$route['listaMaterial'] = "back_end/materiales/listaMaterial";
+	$route['excel_material/(:any)/(:any)'] = "back_end/materiales/excel_material/$1/$2";
+
+
+	$route['vistaSeriesPorTecnico'] = "back_end/materiales/vistaSeriesPorTecnico";
+	$route['listaSeriesDevolucion'] = "back_end/materiales/listaSeriesDevolucion";
+	$route['listaSeriesOperativos'] = "back_end/materiales/listaSeriesOperativos";
+	$route['excel_series_devolucion/(:any)/(:any)'] = "back_end/materiales/excel_series_devolucion/$1/$2";
+	$route['excel_series_operativos/(:any)/(:any)'] = "back_end/materiales/excel_series_operativos/$1/$2";
+
+	
+
+
+
 /******************TICKET*************************/
+
 	$route['ticket'] = "back_end/ticket/index";
 	$route['getTicketInicio'] = "back_end/ticket/getTicketInicio";
 	$route['getTicketList'] = "back_end/ticket/getTicketList";
@@ -283,6 +314,7 @@
 	$route['getDataRegistroVacaciones'] = "back_end/cao/getDataRegistroVacaciones";
 
 /******************MANTENEDOR TURNOS*************************/
+
 	$route['vistaMantenedorTurnos'] = "back_end/cao/vistaMantenedorTurnos";
 	$route['getMantenedorTurnosList'] = "back_end/cao/getMantenedorTurnosList";
 	$route['formMantenedorTurnos'] = "back_end/cao/formMantenedorTurnos";
@@ -291,6 +323,7 @@
 
 
 /*******MANTENEDORES*******/
+
 	$route['mantenedor_usuarios'] = "back_end/mantenedores/usuarios/index";
 	$route['vistaUsuarios'] = "back_end/mantenedores/usuarios/vistaUsuarios";
 	$route['listaUsuarios'] = "back_end/mantenedores/usuarios/listaUsuarios";
@@ -319,7 +352,6 @@
 	$route['getDataAreas'] = "back_end/mantenedores/usuarios/getDataAreas";
 	$route['formAreas'] = "back_end/mantenedores/usuarios/formAreas";
 	$route['eliminaAreas'] = "back_end/mantenedores/usuarios/eliminaAreas";
-
 
 	$route['vistaJefes'] = "back_end/mantenedores/usuarios/vistaJefes";
 	$route['listaJefes'] = "back_end/mantenedores/usuarios/listaJefes";

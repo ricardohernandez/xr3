@@ -20,6 +20,7 @@ class Caomodel extends CI_Model {
 			$array_fechas = arrayRangoFechas($desde,$hasta,"+1 day", "Y-m-d");
 			$cabeceras = array();
 			$cabeceras[] = "Trabajador";
+			$cabeceras[] = "RUT";
 			$cabeceras[] = "Jefe";
 			$cabeceras[] = "Proyecto";
 			$cabeceras[] = "Nivel Técnico";
@@ -37,7 +38,7 @@ class Caomodel extends CI_Model {
 		public function listaTurnos($desde,$hasta,$jefe,$trabajador,$nivel_tecnico,$tipo){
 			$this->db->select("sha1(c.id) as hash,
 				c.id as id,
-				c.rut_tecnico as rut_tecnico,
+				CONCAT(SUBSTRING(c.rut_tecnico, 1, LENGTH(c.rut_tecnico) - 1), '-', SUBSTRING(c.rut_tecnico, -1))  as rut_tecnico,
 				CONCAT(u.nombres,' ',u.apellidos)  'trabajador',
 				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', 1),' ',SUBSTRING_INDEX(u.apellidos, ' ', 1))  'trabajador',
 
@@ -67,6 +68,7 @@ class Caomodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				$temp=array();
 				$temp["Trabajador"] = $key["trabajador"];
+				$temp["RUT"] = $key["rut_tecnico"];
 				$temp["Jefe"] = $key["jefe"];
 				$temp["Proyecto"] = $key["proyecto"];
 				$temp["Nivel Técnico"] = $key["nivel_tecnico"];

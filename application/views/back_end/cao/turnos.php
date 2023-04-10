@@ -692,7 +692,7 @@
                 <div class="col-lg-3">               
                   <div class="form-group">
                     <select id="turno" name="turno" class="custom-select custom-select-sm">
-                    <option value="" selected>Tipo turno</option>
+                    <option value="" selected>Justificación</option>
                         <?php 
                         foreach($turnos as $t){
                           ?>

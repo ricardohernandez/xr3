@@ -768,7 +768,7 @@
             <th class="centered">Código</th> 
             <th class="centered">Nivel Técnico</th> 
             <th class="centered">Domicilio</th> 
-            <th class="centered">Comuna</th> 
+            <th class="centered">Plaza operacional</th> 
             <th class="centered">Cuidad</th> 
             <th class="centered">Sucursal</th> 
             <th class="centered">Celular empresa</th> 
@@ -987,8 +987,8 @@
 
               <div class="col-lg-3">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Comuna </label>
-                <input placeholder="Comuna"  type="text" name="comuna"  id="comuna" class="form-control form-control-sm" autocomplete="off" />
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Plaza operacional </label>
+                <input placeholder="Plaza operacional"  type="text" name="comuna"  id="comuna" class="form-control form-control-sm" autocomplete="off" />
                 </div>
               </div>
 
