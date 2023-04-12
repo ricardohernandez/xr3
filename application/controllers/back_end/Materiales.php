@@ -112,7 +112,7 @@ class Materiales extends CI_Controller {
 							"ultima_actualizacion"=>$ultima_actualizacion,
 							
 						);	
-
+						$i++;
 						$this->Materialesmodel->formMateriales($arr);
 						$arr=array();
 					}

@@ -76,7 +76,7 @@ class Caomodel extends CI_Model {
 				foreach($array_fechas as $fecha){
 					$this->db->select('sha1(c.id) as hash_turnos,ct.codigo as codigo,ct.rango_horario');
 					$this->db->join('cao_turnos_ausencias ct', 'ct.id = c.id_turno', 'left');
-					$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.$key["rut_tecnico"].'"');
+					$this->db->where('fecha="'.$fecha.'" AND `rut_tecnico` = "'.str_replace('-', '', $key["rut_tecnico"]).'"');
 					$res2=$this->db->get('cao c');
 					
 					if($res2->num_rows()>0){

@@ -296,7 +296,7 @@
                 });
                 $('#modal_ftth').modal("toggle");
             }
-          },timeout:105000
+          },timeout:150000
         });
       return false; 
     });
