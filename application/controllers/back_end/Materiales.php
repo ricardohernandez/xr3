@@ -16,7 +16,7 @@ class Materiales extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>12,
+			"id_aplicacion"=>19,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -211,7 +211,7 @@ class Materiales extends CI_Controller {
 	/********* POR TECNICO************/
 		
 		public function vistaMaterialesPorTecnico(){
-			$this->visitas("tecnico");
+			$this->visitas("tecnicos");
 			if($this->input->is_ajax_request()){
 				$datos = array();
 				$this->load->view('back_end/materiales/tecnico',$datos);

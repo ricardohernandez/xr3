@@ -407,5 +407,14 @@
 	$route['actualizarMetaActual'] = "back_end/mantenedores/metasIgt/actualizarMetaActual";
 
 
+	
+/******************LIQUIDACIONES*************************/
+
+	$route['ticket'] = "back_end/ticket/index";
+	$route['getTicketInicio'] = "back_end/ticket/getTicketInicio";
+	$route['getTicketList'] = "back_end/ticket/getTicketList";
+	$route['formTicket'] = "back_end/ticket/formTicket";
+	$route['eliminaTicket'] = "back_end/ticket/eliminaTicket";
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

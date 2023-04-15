@@ -206,7 +206,7 @@
       $("#actividad").prop("disabled",false);
       $(".cont_mod").hide();
       $(".contenedor_checklist").html("")
-      $("#checkcorreo").prop( "checked", true );
+     /*  $("#checkcorreo").prop( "checked", true ); */
       $("#id").prop("disabled",true)
       $("#riesgos_no_controlados").prop("disabled",true)
       $("#auditor").prop("disabled",true)
@@ -325,7 +325,7 @@
       $(".estado").removeClass("red");
       $(".estado").removeClass("grey");
       $(".btn_guardar_ast").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
-      $("#checkcorreo").prop( "checked", true );
+      /* $("#checkcorreo").prop( "checked", true ); */
       getDataAst(hash)        
     });
 

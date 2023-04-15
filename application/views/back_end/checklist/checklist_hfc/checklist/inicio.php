@@ -804,7 +804,7 @@
             <div class="col-4 col-lg-4">
               <div class="form-group">  
                 <div class="form-check mt-1">
-                  <input type="checkbox" checked name="checkcorreo"  class="form-check-input mt-2" id="checkcorreo">
+                  <input type="checkbox"  name="checkcorreo"  class="form-check-input mt-2" id="checkcorreo">
                   <label class="form-check-label" style="font-size: 14px;" for="checkcorreo">¿Enviar correo?</label>
                 </div>
               </div>
