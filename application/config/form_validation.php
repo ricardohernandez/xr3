@@ -364,7 +364,24 @@ $config = array(
                      'label'   => 'Plazo',
                      'rules'   => 'trim|required'
                     ),
-            )
+                  ),
+
+                  
+            'formLiquidaciones' => array(
+                  array(
+                        'field'   => 'trabajadores',
+                        'label'   => 'Trabajador',
+                        'rules'   => 'trim|required'
+                       ),
+   
+                  array(
+                        'field'   => 'periodo',
+                        'label'   => 'Periodo',
+                        'rules'   => 'trim|required'
+                       ),
+   
+               )
+               
             
                
  );

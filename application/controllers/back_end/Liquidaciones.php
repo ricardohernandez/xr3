@@ -1,10 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Ticket extends CI_Controller {
+class Liquidaciones extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("back_end/Ticketmodel");
+		$this->load->model("back_end/Liquidacionesmodel");
 		$this->load->model("back_end/Iniciomodel");
 		$this->load->helper(array('fechas','str'));
 		$this->load->library('user_agent');
@@ -19,7 +19,7 @@ class Ticket extends CI_Controller {
 	
 	public function acceso(){
 		if($this->session->userdata('id')){
-	      	if($this->session->userdata('id_perfil')>3){
+	      	if($this->session->userdata('id_perfil')==""){
 	      		redirect("./login");
 	      	}
 	      }else{
@@ -30,184 +30,198 @@ class Ticket extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
+			"id_aplicacion"=>20,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
 	    	"ip"=>$this->input->ip_address(),
     	);
-    	$this->Ticketmodel->insertarVisita($data);
+    	$this->Liquidacionesmodel->insertarVisita($data);
 	}
 
 	public function index(){
-		/*$this->visitas("Ticket");*/
+		$this->visitas("Liquidaciones");
     	$this->acceso();
 	    $datos = array(
-	        'titulo' => "Ticket",
-	        'contenido' => "ticket/inicio",
+	        'titulo' => "Liquidaciones",
+	        'contenido' => "liquidaciones/inicio",
 	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 	    );  
 		$this->load->view('plantillas/plantilla_back_end',$datos);
 	}
 
-    public function getTicketInicio(){
+    public function getLiquidacionesInicio(){
 		if($this->input->is_ajax_request()){
-			$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
-	    	$fecha_hoy=date('d-m-Y');
-	    	$datos = array('tipos' => $this->Ticketmodel->listaTipos());
-			$this->load->view('back_end/ticket/ticket',$datos);
+			$fecha_anio_atras = date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
+	    	$fecha_hoy = date('d-m-Y');
+			
+	    	$datos = array(
+				'jefes' => $this->Liquidacionesmodel->listaJefes(),
+			);
+
+			$this->load->view('back_end/liquidaciones/liquidaciones',$datos);
 		}
 	}
 
-	public function getTicketList(){
-		$estado=$this->security->xss_clean(strip_tags($this->input->get_post("estado")));
-		echo json_encode($this->Ticketmodel->getTicketList($estado));
+	public function getLiquidacionesList(){
+		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+		echo json_encode($this->Liquidacionesmodel->getLiquidacionesList($jefe,$trabajador));
 	}
+
 	
-	public function formTicket(){
+	public function formLiquidaciones(){
+
 		if($this->input->is_ajax_request()){
 			$this->checkLogin();	
-			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			$id_usuario=$this->security->xss_clean(strip_tags($this->input->post("usuarios")));
-			$fecha_inicio=date("Y-m-d");
-			$titulo=$this->security->xss_clean(strip_tags($this->input->post("titulo")));
-			$descripcion=$this->security->xss_clean(strip_tags($this->input->post("descripcion")));
-			$tipo=$this->security->xss_clean(strip_tags($this->input->post("tipo")));
-			$estado=$this->security->xss_clean(strip_tags($this->input->post("estado")));
-			$id_digitador=$this->session->userdata("id");
-			$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
-	   		$adjunto=@$_FILES["userfile"]["name"];
-		    $checkcorreo=$this->security->xss_clean(strip_tags($this->input->post("checkcorreo")));
+			$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_liqui")));
+			$id_trabajador = $this->security->xss_clean(strip_tags($this->input->post("trabajadores")));
+			$periodo = $this->security->xss_clean(strip_tags($this->input->post("periodo")));
+			$fecha_subida = date("d-m-Y");
+			$id_digitador = $this->session->userdata("id");
+			$adjunto = $_FILES["userfile"]["name"];
+			$ultima_actualizacion = date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 
-   			if ($this->form_validation->run("formTicket") == FALSE){
+   			if ($this->form_validation->run("formLiquidaciones") == FALSE){
 				echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 			}else{	
 
-		    	if($hash==""){
+				$area = $this->Liquidacionesmodel->getAreaUsuario($id_trabajador);
 
-		    		$data = array(
-		    		 	'titulo' => $titulo,
-		    		 	'descripcion' => $descripcion,
-		    		 	'fecha_ingreso' => date("Y-m-d"),
-		    		 	'tipo' => $tipo,
-		    		 	'estado' => "pendiente",
-		    		 	'id_usuario' => $id_digitador,
-		    		 	'id_respuesta' => "",
-		    		 	"ultima_actualizacion" => $ultima_actualizacion);
+				$rut = $this->Liquidacionesmodel->getRutUsuario($id_trabajador);
 
-		    		if($adjunto!=""){
-						$nombre=$this->procesaArchivo($_FILES["userfile"],$id_usuario."_".date("ymdHis"),1);
-						$data["adjunto"]=$nombre;
+				$mes = date("m", strtotime($periodo));
+
+				$anio = date("Y", strtotime($periodo));
+
+				$fecha_creacion_carpeta = $mes.'-'.$anio;
+
+				if($hash==""){
+
+					if($adjunto==""){
+
+						echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo.'));exit;
+
 					}else{
-						$data["adjunto"]="";
-					}
 
-					$insert_id=$this->Ticketmodel->formIngreso($data);
-					if($insert_id!=FALSE){
+						$path = $_FILES['userfile']['name'];
 
-						if($checkcorreo=="on"){
-							$this->EnviaCorreo(sha1($insert_id),"0");
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+	
+						$carpeta = "archivos/liquidaciones/".$fecha_creacion_carpeta.'_'.convert_accented_characters(trim($area));
+
+						$nombre_archivo = $carpeta.'/'.$rut.'_'.$periodo.".".$ext;
+
+						$archivo =  $rut.'_'.$periodo.".".$ext;
+
+						if (!file_exists($carpeta)) { 
+							mkdir($carpeta, 0777, true); 
+						}
+						
+						$data = array('id_usuario' => $id_trabajador,
+							'id_digitador' => $id_digitador,
+							'archivo' => $nombre_archivo,
+							'fecha' =>  date("Y-m-d"),
+							'fecha_carpeta' => $fecha_creacion_carpeta,
+							'carpeta' => $carpeta,
+							'periodo' => $fecha_creacion_carpeta,
+							'ultima_actualizacion'=>$ultima_actualizacion
+						);
+	
+						
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
+							$data["nombre_archivo"]=$nombre;
+						}
+	
+						$insert_id=$this->Liquidacionesmodel->ingresarLiquidacion($data);
+
+						if($insert_id!=FALSE){
+
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+
+						}else{
+
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+
 						}
 
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-
-					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
 					}
 
 				}else{
-					
-					$data_mod = array(
-						'titulo' => $titulo,
-		    		 	'descripcion' => $descripcion,
-		    		 	'tipo' => $tipo,
-		    		 	'estado' => $estado,
-		    		 	'id_respuesta' => $this->session->userdata("id"),
-		    		 	"ultima_actualizacion" => $ultima_actualizacion);
 
+					if($adjunto==""){
 
-					if($estado=="finalizado"){
-						$data_mod['fecha_respuesta'] = date("Y-m-d");	
-					}
-					
-					if($this->Ticketmodel->formActualizar($hash,$data_mod)){
-						if($checkcorreo=="on"){
-							$this->EnviaCorreo($hash,"1");
-						}
-						echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
+						echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo.'));exit;
+
 					}else{
-						echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
+							
+						$path = $_FILES['userfile']['name'];
+
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+
+						$carpeta = "archivos/liquidaciones/".$fecha_creacion_carpeta.'_'.convert_accented_characters(trim($area));
+
+						$nombre_archivo = $carpeta.'/'.$rut.'_'.$periodo.".".$ext;
+
+						$archivo =  $rut.'_'.$periodo.".".$ext;
+
+						if (!file_exists($carpeta)) { 
+							mkdir($carpeta, 0777, true); 
+						}
+
+						$data_mod= array('id_usuario' => $id_trabajador,
+							'id_digitador' => $id_digitador,
+							'archivo' => $nombre_archivo,
+							'fecha' =>  date("Y-m-d"),
+							'fecha_carpeta' => $fecha_creacion_carpeta,
+							'carpeta' => $carpeta,
+							'periodo' => $fecha_creacion_carpeta,
+							'ultima_actualizacion'=>$ultima_actualizacion
+						);
+
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
+							$data_mod["nombre_archivo"]=$nombre;
+						}
+
 					}
+
+					if($this->Liquidacionesmodel->formActualizar($hash,$data_mod)){
+
+						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+					}else{
+						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+
+					}
+
 				}
+
 			}
 
 		}else{
 			exit('No direct script access allowed');
 		}
+		
+	}
+	
+
+	public function listaTrabajadores(){
+		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+		echo $this->Liquidacionesmodel->listaTrabajadores($jefe);exit;
 	}
 
+	
 
-	public function enviaCorreo($hash,$tipo){
-		$this->load->library('email');
-		$data=$this->Ticketmodel->getDataTicket($hash);
-		$prueba=FALSE;
-
-		foreach($data as $key){
-		    $config = array (
-	       	  'mailtype' => 'html',
-	          'charset'  => 'utf-8',
-	          'priority' => '1',
-	          'wordwrap' => TRUE,
-	          'protocol' => "smtp",
-	          'smtp_port' => 587,
-	          'smtp_host' => 'mail.xr3t.cl',
-		      'smtp_user' => 'soporteplataforma@xr3t.cl',
-		      'smtp_pass' => '9mWj.RUhL&3)'
-	        );
-
-		    $this->email->initialize($config);
-			$asunto ="Ticket plataforma XR3 (".$key["estado"].") : ".$key["titulo"]." | ".date('d-m-Y', strtotime($key["fecha_ingreso"]));
-			$datos=array("data"=>$data,"titulo"=>$asunto);
-			$html=$this->load->view('back_end/ticket/correo',$datos,TRUE);
-
-			if($prueba){
-				$para=array("ricardo.hernandez@splice.cl");
-				$copias=array("ricardo.hernandez@km-t.cl");
-				$this->email->from("soporteplataforma@xr3t.cl","Soporte plataforma XR3");
-			}else{
-				$para=array("german.cortes@km-telecomunicaciones.cl","ricardo.hernandez@km-telecomunicaciones.cl","sebastian.celis@splice.cl");
-				$copias=array("roberto.segovia@xr3.cl","cristian.cortes@xr3.cl");
-				$this->email->from("soporteplataforma@xr3t.cl","Soporte plataforma XR3");
-			}
-
-			$this->email->to($para);
-			$this->email->cc($copias);
-	    	$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","soporteplataforma@xr3t.cl"));
-			$this->email->subject($asunto);
-			$this->email->message($html); 
-			/*if($key["adjunto"]!="") {$this->email->attach(base_url()."lic/".$key["adjunto"]);}*/
-
-			$resp=$this->email->send();
-
-			if ($resp) {
-				return TRUE;
-			}else{
-				return FALSE;
-			}
-		}
-	}
-
-	public function procesaArchivo($file,$titulo){
+	public function procesaArchivo($file,$titulo,$carpeta){
 			$path = $file['name'];
-			$ext = pathinfo($path, PATHINFO_EXTENSION);
-			$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-			$config['upload_path'] = './archivos/ticket';
-			$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC';
-		    $config['file_name'] = $archivo;
+ 			$config['upload_path'] = $carpeta;
+			$config['allowed_types'] = 'pdf|PDF|jpg|JPG|jpeg|JPEG|png|PNG';
+		    $config['file_name'] = $titulo;
 			$config['max_size']	= '5300';
 			$config['overwrite']	= FALSE;
 			$this->load->library('upload', $config);
-			$_FILES['userfile']['name'] = $archivo;
+			$_FILES['userfile']['name'] = $titulo;
 		    $_FILES['userfile']['type'] = $file['type'];
 		    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
 		    $_FILES['userfile']['error'] = $file['error'];
@@ -218,24 +232,24 @@ class Ticket extends CI_Controller {
 			    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
 		    }else{
 		    	unset($config);
-		    	return $archivo;
+		    	return $titulo;
 		    }
     }
 
-	public function eliminaTicket(){
+	public function eliminaLiquidaciones(){
 		$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-	    if($this->Ticketmodel->eliminaTicket($hash)){
+	    if($this->Liquidacionesmodel->eliminaLiquidaciones($hash)){
 	      echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 	    }else{
 	      echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 	    }
 	}
 
-	public function getDataTicket(){
+	public function getDataLiquidaciones(){
 		if($this->input->is_ajax_request()){
 			$this->checkLogin();	
 			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			$data=$this->Ticketmodel->getDataTicket($hash);
+			$data=$this->Liquidacionesmodel->getDataLiquidaciones($hash);
 			if($data){
 				echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 			}else{

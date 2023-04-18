@@ -46,6 +46,7 @@
           /* { "data": "tipo" ,"class":"margen-td centered"}, */
           { "data": "material" ,"class":"margen-td centered"},
           { "data": "serie" ,"class":"margen-td centered"},
+          { "data": "tipo" ,"class":"margen-td centered"},
         ]
       }); 
 
@@ -301,6 +302,7 @@
             <!-- <th class="centered">Tipo</th>  -->
             <th class="centered">Descripción</th> 
             <th class="centered">Serie</th> 
+            <th class="centered">Tipo</th> 
           </tr>
         </thead>
       </table>

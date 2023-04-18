@@ -410,11 +410,15 @@
 	
 /******************LIQUIDACIONES*************************/
 
-	$route['ticket'] = "back_end/ticket/index";
-	$route['getTicketInicio'] = "back_end/ticket/getTicketInicio";
-	$route['getTicketList'] = "back_end/ticket/getTicketList";
-	$route['formTicket'] = "back_end/ticket/formTicket";
-	$route['eliminaTicket'] = "back_end/ticket/eliminaTicket";
+	$route['liquidaciones'] = "back_end/liquidaciones/index";
+	$route['getLiquidacionesInicio'] = "back_end/liquidaciones/getLiquidacionesInicio";
+	$route['getLiquidacionesList'] = "back_end/liquidaciones/getLiquidacionesList";
+	$route['formLiquidaciones'] = "back_end/liquidaciones/formLiquidaciones";
+	$route['eliminaLiquidaciones'] = "back_end/liquidaciones/eliminaLiquidaciones";
+	$route['getDataLiquidaciones'] = "back_end/liquidaciones/getDataLiquidaciones";
+	$route['listaTrabajadores'] = "back_end/liquidaciones/listaTrabajadores";
+	$route['listaTrabajadoresFiltros'] = "back_end/liquidaciones/listaTrabajadores";
+	
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

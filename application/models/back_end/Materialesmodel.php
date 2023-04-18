@@ -69,6 +69,9 @@ class Materialesmodel extends CI_Model {
 			if($this->session->userdata('id_perfil')==4){
 				$this->db->where('rut', $this->session->userdata('rut'));
 			}
+
+			$this->db->where('estado', "1");
+			$this->db->where('id_perfil',4);
  
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
@@ -134,14 +137,14 @@ class Materialesmodel extends CI_Model {
 				m.*,
 			");
 
-			$this->db->where('tipo', "RETIRO");
 			
-			$this->db->group_by('m.serie');
-			$this->db->order_by('m.material', 'asc');
-
 			if($trabajador!=""){
 				$this->db->where('m.id_tecnico', $trabajador);
 			}
+
+			$this->db->where('tipo<>', 'OPERATIVO');
+			$this->db->group_by('m.serie');
+			$this->db->order_by('m.material', 'asc');
 
 			$res=$this->db->get('materiales m');
 

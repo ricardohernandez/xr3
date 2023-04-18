@@ -44,27 +44,27 @@
      },
     });
 
-    $("#menu_ticket").addClass('disabled_sub');
+    $("#menu_listado").addClass('disabled_sub');
 	  $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
 	  $(".menu_lista li").removeClass('menuActivo');       
-	  $("#menu_ticket").addClass('menuActivo');  
+	  $("#menu_listado").addClass('menuActivo');  
 
-    $.get(base_url+"getTicketInicio", function( data ) {
+    $.get(base_url+"getLiquidacionesInicio", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_ticket").removeClass('disabled_sub');
+        $("#menu_listado").removeClass('disabled_sub');
     });
  
 
-    $(document).off('click', '#menu_ticket').on('click', '#menu_ticket',function(event) {
+    $(document).off('click', '#menu_listado').on('click', '#menu_listado',function(event) {
       event.preventDefault();
-      $("#menu_ticket").addClass('disabled_sub');
+      $("#menu_listado").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_ticket").addClass('menuActivo');  
+      $("#menu_listado").addClass('menuActivo');  
 
-      $.get(base_url+"getTicketInicio", function( data ) {
+      $.get(base_url+"getLiquidacionesInicio", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_ticket").removeClass('disabled_sub');
+        $("#menu_listado").removeClass('disabled_sub');
       });
     });
 
@@ -81,13 +81,13 @@
 <section>
 <article class="content">
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-        <li id="menu_ticket" class="active"><a> <i class="fa fa-list-alt"></i> Listado Ticket</a></li>   
+       <li id="menu_listado" class="active"><a> <i class="fa fa-list-alt"></i> Liquidaciones  </a></li>
       </ul>  
     </div> 
-  </div>
+  </div> -->
 
   <div class="row">
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
