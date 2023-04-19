@@ -125,7 +125,7 @@
           {
             "class":"centered margen-td","width" : "30px","data": function(row,type,val,meta){
               btn = "";
-              if(p<=2){
+              if(p<=3){
                 btn  =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar" style="font-size:14px!important;"><i class="fas fa-edit"></i> </a>`;
                 btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar rojo"><i class="fa fa-trash"></i></a></center>';
               }
@@ -178,10 +178,10 @@
     }, 4000 ); 
  
     $(document).off('click', '.btn_filtro_liquidacion').on('click', '.btn_filtro_liquidacion',function(event) {
-     event.preventDefault();
+      event.preventDefault();
       $(this).prop("disabled" , true);
       $(".btn_filtro_liquidacion").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
-       tabla_liquidaciones.ajax.reload();
+      tabla_liquidaciones.ajax.reload();
     });
 
     $(document).off('click', '.btn_nueva_liquidacion').on('click', '.btn_nueva_liquidacion', function(event) {
@@ -192,135 +192,73 @@
         $(".btn_ingreso").attr("disabled", false);
         $(".cierra_modal").attr("disabled", false);
         $("#periodo").val(new Date().getFullYear() + '-' + ((new Date().getMonth()+1) < 10 ? '0' : '') + (new Date().getMonth()+1))
+       
+        $.getJSON("listaTrabajadores",  { 'jefe' : $("#jefe_t").val() } ,function(data) {
+          response = data;
+        }).done(function() {
+            $("#trabajadores").select2({
+            placeholder: 'Seleccione Trabajador | Todos',
+            data: response,
+            width: 'resolve',
+            allowClear:true,
+            })
+        })
+        
     });
 
     $(document).off('submit', '#formLiquidaciones').on('submit', '#formLiquidaciones',function(event) {
-        var url="<?php echo base_url()?>";
-        var formElement = document.querySelector("#formLiquidaciones");
-        var formData = new FormData(formElement);
-          $.ajax({
-              url: $('#formLiquidaciones').attr('action')+"?"+$.now(),  
-              type: 'POST',
-              data: formData,
-              cache: false,
-              processData: false,
-              dataType: "json",
-              contentType : false,
-              beforeSend:function(){
-                /* $(".btn_ingreso").attr("disabled", true);
-                $(".cierra_modal").attr("disabled", true);
-                $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", true); */
-              },
-              success: function (data) {
-
-                if(data.res == "sess"){
-                  window.location="unlogin";
-
-                }else if(data.res=="ok"){
-
-                  $('#modal_liquidacion').modal('toggle'); 
-                  $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", false);
-                  $(".btn_ingreso").attr("disabled", false);
-                  $(".cierra_modal").attr("disabled", false);
-
-                  $.notify(data.msg, {
-                    className:'success',
-                    globalPosition: 'top right',
-                    autoHideDelay:5000,
-                  });
-
-                  $('#formLiquidaciones')[0].reset();
-                  tabla_liquidaciones.ajax.reload();
-
-                }else if(data.res=="error"){
-                      
-                  $(".btn_ingreso").attr("disabled", false);
-                  $(".cierra_modal").attr("disabled", false);
-                  $.notify(data.msg, {
-                    className:'error',
-                    globalPosition: 'top right',
-                    autoHideDelay:5000,
-                  });
-                  $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", false);
-
-                }
-              },
-              error : function(xhr, textStatus, errorThrown ) {
-                if (textStatus == 'timeout') {
-                  this.tryCount++;
-                  if (this.tryCount <= this.retryLimit) {
-                      $.notify("Reintentando...", {
-                        className:'info',
-                        globalPosition: 'top right'
-                      });
-                      $.ajax(this);
-                      return;
-                  } else{
-                      $.notify("Problemas en el servidor, intente nuevamente.", {
-                        className:'warn',
-                        globalPosition: 'top right'
-                      });     
-                     /*  $('#modal_liquidacion').modal("toggle"); */
-                  }    
-                  return;
-                }
-                if (xhr.status == 500) {
-                  $.notify("Problemas en el servidor, intente más tarde.", {
-                    className:'warn',
-                    globalPosition: 'top right'
-                  });
-                  /* $('#modal_liquidacion').modal("toggle"); */
-                }
-            },timeout:35000
-          }); 
-        return false; 
-    });
-
-    $(document).off('click', '.btn_editar').on('click', '.btn_editar',function(event) {
-        event.preventDefault();
-        $("#hash_liqui").val("");
-        hash=$(this).data("hash");
-        $('#formLiquidaciones')[0].reset();
-        $("#hash_liqui").val(hash);
-        $('#modal_liquidacion').modal('toggle'); 
-        $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", true);
-        $(".btn_ingreso").attr("disabled", true);
-        $(".cierra_modal").attr("disabled", true);
-
+      var url="<?php echo base_url()?>";
+      var formElement = document.querySelector("#formLiquidaciones");
+      var formData = new FormData(formElement);
         $.ajax({
-          url: base+"getDataLiquidaciones"+"?"+$.now(),  
-          type: 'POST',
-          cache: false,
-          tryCount : 0,
-          retryLimit : 3,
-          data:{hash:hash},
-          dataType:"json",
-          beforeSend:function(){
-           $(".btn_ingreso").prop("disabled",true); 
-           $(".cierra_modal").prop("disabled",true); 
-          },
-          success: function (data) {
-            if(data.res=="ok"){
+            url: $('#formLiquidaciones').attr('action')+"?"+$.now(),  
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            dataType: "json",
+            contentType : false,
+            beforeSend:function(){
+              $(".btn_ingreso").attr("disabled", true);
+              $(".cierra_modal").attr("disabled", true);
+              $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", true);
+            },
+            success: function (data) {
 
-              for(dato in data.datos){
-                $("#hash_liqui").val(data.datos[dato].hash);
-                $('#trabajadores').val(data.datos[dato].id_usuario).trigger('change');
-                $("#periodo").val(data.datos[dato].periodo);
+              if(data.res == "sess"){
+                window.location="unlogin";
+
+              }else if(data.res=="ok"){
+
+                $('#modal_liquidacion').modal('toggle'); 
+                $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", false);
+                $(".btn_ingreso").attr("disabled", false);
+                $(".cierra_modal").attr("disabled", false);
+
+                $.notify(data.msg, {
+                  className:'success',
+                  globalPosition: 'top right',
+                  autoHideDelay:5000,
+                });
+
+                $('#formLiquidaciones')[0].reset();
+                tabla_liquidaciones.ajax.reload();
+
+              }else if(data.res=="error"){
+                    
+                $(".btn_ingreso").attr("disabled", false);
+                $(".cierra_modal").attr("disabled", false);
+                $.notify(data.msg, {
+                  className:'error',
+                  globalPosition: 'top right',
+                  autoHideDelay:5000,
+                });
+                $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", false);
+
               }
-
-              $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", false);
-              $(".cierra_modal").prop("disabled", false);
-              $(".btn_ingreso").prop("disabled", false);
-
-            }else if(data.res == "sess"){
-              window.location="../";
-            }
-
-            $(".btn_ingreso").prop("disabled",false); 
-            $(".cierra_modal").prop("disabled",false); 
-          },
-          error : function(xhr, textStatus, errorThrown ) {
-            if (textStatus == 'timeout') {
+            },
+            error : function(xhr, textStatus, errorThrown ) {
+              if (textStatus == 'timeout') {
                 this.tryCount++;
                 if (this.tryCount <= this.retryLimit) {
                     $.notify("Reintentando...", {
@@ -330,119 +268,174 @@
                     $.ajax(this);
                     return;
                 } else{
-                   $.notify("Problemas en el servidor, intente nuevamente.", {
+                    $.notify("Problemas en el servidor, intente nuevamente.", {
                       className:'warn',
                       globalPosition: 'top right'
                     });     
-                    $('#modal_nuevo_usuario').modal("toggle");
+                    /*  $('#modal_liquidacion').modal("toggle"); */
                 }    
                 return;
-            }
-            if (xhr.status == 500) {
+              }
+              if (xhr.status == 500) {
                 $.notify("Problemas en el servidor, intente más tarde.", {
                   className:'warn',
                   globalPosition: 'top right'
                 });
-                $('#modal_liquidacion').modal("toggle");
-            }
-        },timeout:35000
-      }); 
-    });
+                /* $('#modal_liquidacion').modal("toggle"); */
+              }
+          },timeout:35000
+        }); 
+      return false; 
+    })
 
+    $(document).off('click', '.btn_editar').on('click', '.btn_editar',function(event) {
+      event.preventDefault();
+      $("#hash_liqui").val("")
+      hash=$(this).data("hash")
+      $('#formLiquidaciones')[0].reset()
+      $("#hash_liqui").val(hash)
+      $('#modal_liquidacion').modal('toggle')
+      $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", true)
+      $(".btn_ingreso").attr("disabled", true)
+      $(".cierra_modal").attr("disabled", true)
+
+      $.ajax({
+        url: base+"getDataLiquidaciones"+"?"+$.now(),  
+        type: 'POST',
+        cache: false,
+        tryCount : 0,
+        retryLimit : 3,
+        data:{hash:hash},
+        dataType:"json",
+        beforeSend:function(){
+          $(".btn_ingreso").prop("disabled",true); 
+          $(".cierra_modal").prop("disabled",true); 
+        },
+        success: function (data) {
+
+          if(data.res=="ok"){
+
+            for(dato in data.datos){
+              $("#hash_liqui").val(data.datos[dato].hash);
+              $('#trabajadores').val(data.datos[dato].id_usuario).trigger('change');
+              $("#periodo").val(data.datos[dato].periodo);
+            }
+          
+            $("#formLiquidaciones input,#formLiquidaciones select,#formLiquidaciones button,#formLiquidaciones").prop("disabled", false);
+            $(".cierra_modal").prop("disabled", false);
+            $(".btn_ingreso").prop("disabled", false);
+
+          }else if(data.res == "sess"){
+            window.location="../";
+          }
+
+          $(".btn_ingreso").prop("disabled",false); 
+          $(".cierra_modal").prop("disabled",false); 
+        },
+        error : function(xhr, textStatus, errorThrown ) {
+          if (textStatus == 'timeout') {
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                  $.notify("Reintentando...", {
+                    className:'info',
+                    globalPosition: 'top right'
+                  });
+                  $.ajax(this);
+                  return;
+              } else{
+                  $.notify("Problemas en el servidor, intente nuevamente.", {
+                    className:'warn',
+                    globalPosition: 'top right'
+                  });     
+                  $('#modal_nuevo_usuario').modal("toggle");
+              }    
+              return;
+          }
+          if (xhr.status == 500) {
+              $.notify("Problemas en el servidor, intente más tarde.", {
+                className:'warn',
+                globalPosition: 'top right'
+              });
+              $('#modal_liquidacion').modal("toggle");
+          }
+        } , timeout:35000
+      }) 
+    })
+    
     $(document).off('click', '.btn_eliminar').on('click', '.btn_eliminar',function(event) {
       hash=$(this).data("hash");
       if(confirm("¿Esta seguro que desea eliminar este registro?")){
         $.post('eliminaLiquidaciones'+"?"+$.now(),{"hash": hash}, function(data) {
 
           if(data.res=="ok"){
-
             $.notify(data.msg, {
               className:'success',
               globalPosition: 'top right'
-            });
-            
+            })
             tabla_liquidaciones.ajax.reload();
 
           }else{
-
             $.notify(data.msg, {
               className:'danger',
               globalPosition: 'top right'
-            });
-
+            })
           }
-        },"json");
+        },"json")
       }
-    });
+    })
 
     $.getJSON(base + "listaTrabajadoresFiltros", { jefe : $("#jefe_t").val() } , function(data) {
-      response = data;
+      response = data
 
-    }).done(function() {
-
+      }).done(function() {
          $("#trabajadores_t").select2({
           placeholder: 'Seleccione Trabajador | Todos',
           data: response,
           width: 'resolve',
           allowClear:true,
-        });
-
+        })
         $("#trabajador").select2({
           placeholder: 'Seleccione Trabajador | Todos',
           data: response,
           width: 'resolve',
           allowClear:true,
-        });
-    });
+        })
+    })
 
-
-    $.getJSON("listaTrabajadores", function(data) {
-      response = data;
-    }).done(function() {
-        $("#trabajadores").select2({
-         placeholder: 'Seleccione Trabajador | Todos',
-         data: response,
-         width: 'resolve',
-         allowClear:true,
-        });
-    });
-
-
+  
     
-
     $(document).off('change', '#jefe_t').on('change', '#jefe_t',function(event) {
       $.getJSON(base + "listaTrabajadoresFiltros", { 'jefe' : $(this).val() } , function(data) {
-      response = data;
+      response = data
+
       }).done(function() {
 
-        $("#trabajadores_t").empty(); // Vaciar el select2
-        $("#trabajadores_t").trigger('change'); // Forzar un cambio para actualizar la vista
-
-        tabla_liquidaciones.ajax.reload()
+        $("#trabajadores_t").empty()
+        $("#trabajadores_t").trigger('change')
 
         $("#trabajadores_t").select2({
           placeholder: 'Seleccione Trabajador | Todos',
           data: response,
           width: 'resolve',
           allowClear:true,
-        });
+        })
 
         $("#trabajador").select2({
           placeholder: 'Seleccione Trabajador | Todos',
           data: response,
           width: 'resolve',
           allowClear:true,
-        });
-      });
-      
-    }); 
+        })
 
+        tabla_liquidaciones.ajax.reload()
+      })
+    }) 
 
-   /*  $(document).off('change', '#trabajadores_t').on('change', '#trabajadores_t',function(event) {
+    $(document).off('change', '#trabajadores_t').on('change', '#trabajadores_t',function(event) {
       tabla_liquidaciones.ajax.reload()
-    });  */
+    }) 
 
-  });
+  })
 </script>
   
 <!--FILTROS-->
@@ -485,7 +478,9 @@
       </div>
 
     <?php
+
       }elseif($this->session->userdata('id_perfil')==3){
+
         ?>
         
         <div class="col-lg-2">
@@ -597,9 +592,7 @@
 
           </div>
 
-          </fieldset>
-
-          <br>
+          </fieldset><br>
 
           <div class="col-lg-12">
             <div class="form-row">

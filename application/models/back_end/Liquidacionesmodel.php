@@ -108,6 +108,7 @@ class Liquidacionesmodel extends CI_Model {
 
 	
 	public function listaTrabajadores($jefe){
+		
 		$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 			empresa,id,rut,
 			CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
@@ -122,9 +123,8 @@ class Liquidacionesmodel extends CI_Model {
 			}
 		}
 
-
 		$this->db->order_by('nombres', 'asc');
-		$res=$this->db->get("usuarios");
+		$res = $this->db->get("usuarios");
 
 		if($res->num_rows()>0){
 			$array=array();
