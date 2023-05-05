@@ -75,6 +75,15 @@
   }
   
 
+  .select2-container--default .select2-selection--single {
+      border: 1px solid #ced4da!important;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+      font-size:12px!important;
+  }
+
+
 </style>
 
 

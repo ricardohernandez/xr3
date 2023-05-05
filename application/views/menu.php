@@ -115,12 +115,13 @@
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
                <?php  
                   if($this->session->userdata('id_perfil')<=3){
-                   ?>
+               ?>
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante </a></li>
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n de riesgos </a></li>
                <?php
                   }
-                  ?>
+               ?>
+
                <?php  
                   if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
                   ?>
@@ -178,13 +179,21 @@
             }
             ?>
          <?php  
-            if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+            if($this->session->userdata('id_perfil')<=2){
               ?>
          <li>
             <a href="#" class="sidenav__menu-url">Mantenedores</a>
             <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
             <ul class="sidenav__menu-dropdown">
-               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
+
+               <?php  
+               if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+               ?>
+                  <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
+               <?php
+                  }
+               ?>
+
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Checklist Herramientas</a></li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_hfc"> Checklist HFC</a></li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_ftth"> Checklist HFC</a></li>
@@ -194,7 +203,7 @@
          </li>
          <?php
             }
-            ?>
+         ?>
          <li>
             <a href="#" class="sidenav__menu-url"><?php echo $this->session->userdata("nombre_completo")?></a>
             <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
@@ -304,13 +313,24 @@
                   <?php
                      }
                      ?>
+
                   <?php  
-                     if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
-                       ?>
+                     if($this->session->userdata('id_perfil')<=2){
+                  ?>
+
                   <li class="nav__dropdown ">
                      <a href="#">Mantenedores</a>
                      <ul class="nav__dropdown-menu">
+
+                     <?php  
+                     if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+                     ?>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
+                     <?php
+                        }
+                     ?>
+
+                     
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas">Checklist Herramientas</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_hfc">Checklist HFC</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_ftth">Checklist FTTH</a></li>

@@ -94,6 +94,8 @@ class Materiales extends CI_Controller {
 	         	
 	       	   /* $this->Materialesmodel->eliminarPeriodoActual($desde,$hasta); */
 
+			   	$this->Materialesmodel->truncateMateriales();
+
 	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 

@@ -223,7 +223,7 @@
     <div class="form-row">
 
       <?php
-        if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+        if($this->session->userdata('id_perfil')<=2){
           ?>
           <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">  
              <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />

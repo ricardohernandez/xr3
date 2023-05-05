@@ -178,7 +178,11 @@ class Materialesmodel extends CI_Model {
 			return FALSE;
 		}
 		
-		
+		public function truncateMateriales(){
+			$this->db->truncate('materiales');
+
+			return TRUE;
+		}
 	
 
 }
