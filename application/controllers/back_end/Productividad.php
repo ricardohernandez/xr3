@@ -685,12 +685,12 @@ class Productividad extends CI_Controller {
 					/*$puntaje = $puntaje+$dia["puntos"];*/
 				}
 
-				$a = array_filter($puntajes);
+				/* $a = array_filter($puntajes);
 				if(count($a)) {
 				    $temp["Promedio"] = round(array_sum($a)/count($a),2);
 				}else{
 					$temp["Promedio"] = 0;
-				}
+				} */
 
 				$array[] = $temp;
 

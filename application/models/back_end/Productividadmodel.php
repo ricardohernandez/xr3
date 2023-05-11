@@ -562,7 +562,7 @@ class Productividadmodel extends CI_Model {
 			$cabeceras[] = "Zona";
 			$cabeceras[] = "Trabajador";
 			$cabeceras[] = "Días";
-			$cabeceras[] = "Promedio";
+		/* 	$cabeceras[] = "Promedio"; */
 
 			foreach($array_fechas as $fecha){
 				$cabeceras[] = $this->fecha_to_str($fecha);

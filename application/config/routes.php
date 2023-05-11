@@ -287,6 +287,21 @@
 	$route['eliminaTicket'] = "back_end/ticket/eliminaTicket";
 	$route['getDataTicket'] = "back_end/ticket/getDataTicket";
 
+
+/******************ROP*************************/
+
+	$route['rop'] = "back_end/rop/index";
+	$route['getRopInicio'] = "back_end/rop/getRopInicio";
+	$route['getRopList'] = "back_end/rop/getRopList";
+	$route['formRop'] = "back_end/rop/formRop";
+	$route['eliminaRop'] = "back_end/rop/eliminaRop";
+	$route['getDataRop'] = "back_end/rop/getDataRop";
+	$route['listaRequerimientos'] = "back_end/rop/listaRequerimientos";
+	$route['listaPersonas'] = "back_end/rop/listaPersonas";
+	$route['listaResponsables'] = "back_end/rop/listaResponsables";
+	$route['excel_rop/(:any)/(:any)/(:any)/(:any)'] = "back_end/rop/excel_rop/$1/$2/$3/$4";
+
+	
 /*****************TURNOS*******/
 	$route['cao'] = "back_end/cao/index";
 	$route['vistaTurnos'] = "back_end/cao/vistaTurnos";

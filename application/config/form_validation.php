@@ -380,7 +380,26 @@ $config = array(
                         'rules'   => 'trim|required'
                        ),
    
-               )
+                  ),
+                  
+            'formRop' => array(
+                  array(
+                        'field'   => 'tipo',
+                        'label'   => 'Tipo',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'requerimiento',
+                        'label'   => 'Requerimiento',
+                        'rules'   => 'trim|required'
+                  ), 
+                  array(
+                        'field'   => 'descripcion',
+                        'label'   => 'Descripción',
+                        'rules'   => 'trim|required'
+                  ),
+   
+            )
                
             
                
