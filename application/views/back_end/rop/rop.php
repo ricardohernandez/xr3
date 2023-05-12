@@ -81,7 +81,10 @@
                   "";
                 
                 btn =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar_rop" style="color:${color};font-size:12px!important;"><i class="fas fa-edit"></i> ${row.estado}</a>`;
-                btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar_rop rojo"><i class="fa fa-trash"></i></a></center>';
+              
+                if(row.id_estado==="0" || row.id_estado==="1"){
+                  btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar_rop rojo"><i class="fa fa-trash"></i></a></center>';
+                }
 
                 /* btn='<center><a href="#!" title="Modificar" data-hash="'+row.hash+'" class="btn_editar_rop"><i class="fa fa-edit"></i></a>'; */
 
@@ -238,9 +241,9 @@
               dataType: "json",
               contentType : false,
               beforeSend:function(){
-              /*   $(".btn_ingreso_rop").attr("disabled", true);
+                $(".btn_ingreso_rop").attr("disabled", true);
                 $(".cierra_modal_rop").attr("disabled", true);
-                $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true); */
+                $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true);
               },
 
               success: function (data) {

@@ -68,6 +68,19 @@
       });
     });
 
+    $(document).off('click', '#menu_mantenedor_rop').on('click', '#menu_mantenedor_rop',function(event) {
+      event.preventDefault();
+      $("#menu_mantenedor_rop").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_mantenedor_rop").addClass('menuActivo');  
+
+      $.get(base_url+"getMantenedorReq", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_mantenedor_rop").removeClass('disabled_sub');
+      });
+    });
+
   })
 </script>
 

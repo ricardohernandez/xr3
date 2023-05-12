@@ -301,6 +301,13 @@
 	$route['listaResponsables'] = "back_end/rop/listaResponsables";
 	$route['excel_rop/(:any)/(:any)/(:any)/(:any)'] = "back_end/rop/excel_rop/$1/$2/$3/$4";
 
+	$route['getMantenedorReq'] = "back_end/rop/getMantenedorReq";
+	$route['getMantenedorReqList'] = "back_end/rop/getMantenedorReqList";
+	$route['formMantenedorReq'] = "back_end/rop/formMantenedorReq";
+	$route['eliminaMantenedorReq'] = "back_end/rop/eliminaMantenedorReq";
+	$route['getDataMantReq'] = "back_end/rop/getDataMantReq";
+	$route['excelMantReq/(:any)'] = "back_end/rop/excelMantReq/$1";
+	
 	
 /*****************TURNOS*******/
 	$route['cao'] = "back_end/cao/index";

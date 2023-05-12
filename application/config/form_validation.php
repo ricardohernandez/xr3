@@ -397,9 +397,39 @@ $config = array(
                         'field'   => 'descripcion',
                         'label'   => 'Descripción',
                         'rules'   => 'trim|required'
+                  ), 
+            ),
+
+            'formMantenedorReq' => array(
+                  array(
+                        'field'   => 'tipo',
+                        'label'   => 'Tipo',
+                        'rules'   => 'trim|required'
                   ),
-   
-            )
+                  array(
+                        'field'   => 'estado',
+                        'label'   => 'Estado',
+                        'rules'   => 'trim|required'
+                  ), 
+                  array(
+                        'field'   => 'requerimiento',
+                        'label'   => 'Requerimiento',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'requiere_validacion',
+                        'label'   => 'Requiere validación',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'responsable1',
+                        'label'   => 'Responsable 1',
+                        'rules'   => 'trim|required'
+                  ),
+
+                  
+                  
+             )
                
             
                
