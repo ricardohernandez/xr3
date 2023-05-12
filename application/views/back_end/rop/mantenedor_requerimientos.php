@@ -63,8 +63,8 @@
           "columns": [
             {
               "class":"centered margen-td","data": function(row,type,val,meta){
-                btn =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar_mant_req" style="font-size:12px!important;"><i class="fas fa-edit"></i> ${row.estado}</a>`;
-                btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar_mant_req rojo"><i class="fa fa-trash"></i></a></center>';
+                btn =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar_mant_req" style="font-size:12px!important;"><i class="fas fa-edit"></i> ${row.estado}</a></center>`;
+                //btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar_mant_req rojo"><i class="fa fa-trash"></i></a></center>';
                 return btn;
               }
             },
@@ -472,14 +472,14 @@
                     <label for="">Requiere validación</label>
 
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="requiere_validacion" id="radioSi" value="0">
+                        <input class="form-check-input" type="radio" name="requiere_validacion" id="radioSi" value="1">
                         <label class="form-check-label" for="radioSi">
                           Sí
                         </label>
                       </div>
 
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="requiere_validacion" id="radioNo" value="1">
+                        <input class="form-check-input" type="radio" name="requiere_validacion" id="radioNo" value="0">
                         <label class="form-check-label" for="radioNo">
                           No
                         </label>
