@@ -244,7 +244,7 @@ class Ropmodel extends CI_Model {
 				}
 				return json_encode($array);
 			}
-			return FALSE;
+			return "[]";
 		}
 
 		public function listaPersonas(){
@@ -392,8 +392,8 @@ class Ropmodel extends CI_Model {
 				r.estado as id_estado,
 
 				CONCAT(CASE r.requiere_validacion
-					WHEN  0 THEN "Si"
-					WHEN  1 THEN "No"
+					WHEN  1 THEN "Si"
+					WHEN  0 THEN "No"
 				END) AS requiere_validacion,
 
 			');
@@ -425,8 +425,8 @@ class Ropmodel extends CI_Model {
 				r.estado as id_estado,
 
 				CONCAT(CASE r.requiere_validacion
-					WHEN  0 THEN "Si"
-					WHEN  1 THEN "No"
+					WHEN  1 THEN "Si"
+					WHEN  0 THEN "No"
 				END) AS requiere_validacion,
 
 			');

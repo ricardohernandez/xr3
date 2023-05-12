@@ -461,17 +461,22 @@
        
       $.getJSON(base + "listaRequerimientos" , {tipo: $(this).val()},function(data) {
           response = data;
+         
       }).done(function() {
-
-          $("#requerimiento").empty().select2('destroy');
-
-
-          $("#requerimiento").select2({
-            placeholder: 'Seleccione requerimiento',
-            data: response,
-            width: 'resolve',
-            allowClear:true,
-          });
+          if(response!=""){
+            $("#requerimiento").empty().select2('destroy');
+            $("#requerimiento").select2({
+              placeholder: 'Seleccione requerimiento',
+              data: response,
+              width: 'resolve',
+              allowClear:true,
+            });
+          }else{
+            /* $("#requerimiento").empty().select2('destroy'); */
+            $("#requerimiento").empty()
+            $('#requerimiento').val("").trigger('change');
+          }
+         
       });
       
 
