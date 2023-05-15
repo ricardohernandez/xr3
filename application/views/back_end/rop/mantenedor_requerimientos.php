@@ -33,7 +33,18 @@
     /*****DATATABLE*****/  
       const base = "<?php echo base_url() ?>";
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
-
+      
+      $(document).off('keydown', '.numbersOnly').on('keydown', '.numbersOnly',function(e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+      });
+      
       var tabla_mant_req = $('#tabla_mant_req').DataTable({
          /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
          "iDisplayLength":-1, 
@@ -122,6 +133,8 @@
         $("#formMantReq input,#formMantReq select,#formMantReq button,#formMantReq").prop("disabled", false);
         $(".btn_ingreso_mant_req").attr("disabled", false);
         $(".cierra_modal_mant_req").attr("disabled", false);
+        $('#responsable1').val("").trigger('change');
+        $('#responsable2').val("").trigger('change');
     });
 
     $(document).off('submit', '#formMantReq').on('submit', '#formMantReq',function(event) {
@@ -214,10 +227,13 @@
         $("#hash_mant_req").val("");
         hash=$(this).data("hash");
         $('#formMantReq')[0].reset();
-         $('#modal_mant_req').modal('toggle'); 
+        $('#modal_mant_req').modal('toggle'); 
         $("#formMantReq input,#formMantReq select,#formMantReq button,#formMantReq").prop("disabled", true);
         $(".btn_ingreso_mant_req").attr("disabled", true);
         $(".cierra_modal_mant_req").attr("disabled", true);
+        $('#responsable1').val("").trigger('change');
+        $('#responsable2').val("").trigger('change');
+        
 
         $.ajax({
           url: base+"getDataMantReq"+"?"+$.now(),  
@@ -236,12 +252,13 @@
               for(dato in data.datos){
 
                   $("#hash_mant_req").val(data.datos[dato].hash);
+                  $("#horas_estimadas").val(data.datos[dato].horas_estimadas);
                   $("#tipo_m option[value='"+data.datos[dato].id_tipo+"'").prop("selected", true);
                   $("#estado_m option[value='"+data.datos[dato].id_estado+"'").prop("selected", true);
                   $("#requerimiento").val(data.datos[dato].requerimiento);
                   $('#responsable1').val(data.datos[dato].id_responsable1).trigger('change');
                   $('#responsable2').val(data.datos[dato].id_responsable2).trigger('change');
-                 
+                  
                   var valorRequiereValidacion = data.datos[dato].requiere_validacion;
 
 
@@ -466,6 +483,13 @@
                       </select>
                     </div>
                   </div>
+
+                  <div class="col-lg-12">  
+                    <div class="form-group">
+                      <label for="">Horas estimadas</label>
+                      <input type="text" placeholder="Horas estimadas" id="horas_estimadas"  name="horas_estimadas" class="numbersOnly form-control form-control-sm">
+                    </div>
+                  </div> 
 
                   <div class="col-lg-12">  
                     <div class="form-group">

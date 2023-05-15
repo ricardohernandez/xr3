@@ -33,7 +33,8 @@ class Usuariosmodel extends CI_Model {
 		          WHEN u.estado=0 THEN 'Baja'
 		          ELSE ''
 		        END AS estado_str,			
-		        utn.nivel as nivel_tecnico
+		        utn.nivel as nivel_tecnico,
+				utc.tipo as tipo_contrato
 			");
 
 			$this->db->join('usuarios_perfiles as up', 'up.id = u.id_perfil', 'left');
@@ -45,6 +46,7 @@ class Usuariosmodel extends CI_Model {
 			$this->db->join('usuarios_cargos uc', 'uc.id = u.id_cargo', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
 			$this->db->join('usuarios_tecnicos_niveles utn', 'utn.id = u.id_nivel_tecnico', 'left');
+			$this->db->join('usuarios_tipos_contrato utc', 'utc.id = u.id_tipo_contrato', 'left');
 
 			if($this->session->userdata('id_perfil')<>1){
 				$this->db->where('u.id_perfil<>', 1);
@@ -270,6 +272,15 @@ class Usuariosmodel extends CI_Model {
 		    	return TRUE;
 		    }
 		    return FALSE;
+		}
+
+		public function listaTiposContratos(){
+			$this->db->order_by('tipo', 'asc');
+			$res=$this->db->get('usuarios_tipos_contrato');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
 		}
 
 	//CARGOS

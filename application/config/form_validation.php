@@ -422,6 +422,11 @@ $config = array(
                         'rules'   => 'trim|required'
                   ),
                   array(
+                        'field'   => 'horas_estimadas',
+                        'label'   => 'Horas estimadas',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
                         'field'   => 'responsable1',
                         'label'   => 'Responsable 1',
                         'rules'   => 'trim|required'

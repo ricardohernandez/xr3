@@ -126,6 +126,7 @@ class Usuarios extends CI_Controller {
 			        'areas' => $this->Usuariosmodel->getAreas(),
 			        'proyectos' => $this->Usuariosmodel->getProyectos(),
 			        'jefes' => $this->Usuariosmodel->getJefes(),
+					'tipos_contrato' => $this->Usuariosmodel->listaTiposContratos(),
 			        'nivelesTecnicos' => $this->Usuariosmodel->listaNivelesTecnicos(),
 			    );
 				$this->load->view('back_end/mantenedores/usuarios/usuarios',$datos);
@@ -155,6 +156,7 @@ class Usuarios extends CI_Controller {
 				$cargo=$this->security->xss_clean(strip_tags($this->input->post("cargo")));
 				$area=$this->security->xss_clean(strip_tags($this->input->post("area")));
 				$proyecto=$this->security->xss_clean(strip_tags($this->input->post("proyecto")));
+				$tipo_contrato=$this->security->xss_clean(strip_tags($this->input->post("tipo_contrato")));
 				$jefe=$this->security->xss_clean(strip_tags($this->input->post("jefe")));
 				$proyecto=$this->security->xss_clean(strip_tags($this->input->post("proyecto")));
 				$jefe=$this->security->xss_clean(strip_tags($this->input->post("jefe")));
@@ -189,6 +191,7 @@ class Usuarios extends CI_Controller {
 						"id_area"=>$area,
 						"id_perfil"=>$perfil,
 						"id_jefe"=>$jefe,
+						"id_tipo_contrato"=>$tipo_contrato,
 						"nombres"=>$nombres,
 						"apellidos"=>$apellidos,
 						"rut"=>$rutf,
@@ -336,6 +339,7 @@ class Usuarios extends CI_Controller {
 						    <th class="head">&Aacute;rea</th> 
 						    <th class="head">Proyecto</th> 
 						    <th class="head">Jefe</th> 
+						    <th class="head">Tipo contrato</th> 
 						    <th class="head">C&oacute;digo</th> 
 						    <th class="head">Nivel técnico</th> 
 						    <th class="head">Domicilio</th> 
@@ -375,6 +379,7 @@ class Usuarios extends CI_Controller {
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
 									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									 <td><?php echo utf8_decode($d["jefe"]); ?></td>
+									 <td><?php echo utf8_decode($d["tipo_contrato"]); ?></td>
 									 <td><?php echo utf8_decode($d["codigo"]); ?></td>
 									 <td><?php echo utf8_decode($d["nivel_tecnico"]); ?></td>
 									 <td><?php echo utf8_decode($d["domicilio"]); ?></td>

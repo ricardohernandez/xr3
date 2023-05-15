@@ -322,12 +322,14 @@
     })
 
   /*****DATATABLE*****/   
+    var indexLastColumn = $("#listaUsuarios").find('tr')[0].cells.length-1;
+
     var listaUsuarios = $('#listaUsuarios').DataTable({
        /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
        "iDisplayLength":-1, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
-       "aaSorting" : [[32,"desc"]],
+       "order":[[indexLastColumn,'desc']],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -380,6 +382,7 @@
           { "data": "area" ,"class":"margen-td centered"},
           { "data": "proyecto" ,"class":"margen-td centered"},
           { "data": "jefe" ,"class":"margen-td centered"},
+          { "data": "tipo_contrato" ,"class":"margen-td centered"},
           { "data": "codigo" ,"class":"margen-td centered"},
           { "data": "nivel_tecnico" ,"class":"margen-td centered"},
           { "data": "domicilio" ,"class":"margen-td centered"},
@@ -596,7 +599,8 @@
               $("#pantalon  option[value='"+data.datos[dato].talla_pantalon+"'").prop("selected", true);
               $("#polera  option[value='"+data.datos[dato].talla_polera+"'").prop("selected", true);
               $("#cazadora  option[value='"+data.datos[dato].talla_cazadora+"'").prop("selected", true);
-
+              $("#tipo_contrato  option[value='"+data.datos[dato].id_tipo_contrato+"'").prop("selected", true);
+              
             } 
           }
         },
@@ -727,7 +731,7 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-2">
+    <div class="col-6 col-lg-1">
       <div class="form-group">
        <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_usuarios btn_xr3">
        <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
@@ -735,7 +739,7 @@
      </div>
     </div>
 
-    <div class="col-6 col-lg-2">  
+    <div class="col-6 col-lg-1">  
       <div class="form-group">
        <button type="button"  class="btn-block btn btn-sm btn-primary excel_usuarios btn_xr3">
        <i class="fa fa-save"></i> Excel
@@ -749,7 +753,7 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <table id="listaUsuarios" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+      <table id="listaUsuarios" class="tablaUsuarios table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;"></th>    
@@ -765,6 +769,7 @@
             <th class="centered">Área</th> 
             <th class="centered">Proyecto</th> 
             <th class="centered">Jefe</th> 
+            <th class="centered">Tipo contrato</th> 
             <th class="centered">Código</th> 
             <th class="centered">Nivel Técnico</th> 
             <th class="centered">Domicilio</th> 
@@ -956,6 +961,22 @@
 
               <div class="col-lg-3">               
                 <div class="form-group">
+                  <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo contrato </label>
+                  <select id="tipo_contrato" name="tipo_contrato" class="custom-select custom-select-sm">
+                  <option value="" selected>Seleccione </option>
+                      <?php 
+                      foreach($tipos_contrato as $tc){
+                        ?>
+                        <option value="<?php echo $tc["id"]; ?>"><?php echo $tc["tipo"]; ?></option>
+                        <?php
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-lg-3">               
+                <div class="form-group">
                   <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Nivel técnico</label>
                   <select id="nivel_tecnico" name="nivel_tecnico" class="custom-select custom-select-sm">
                   <option value="" selected>Seleccione </option>
@@ -1074,6 +1095,8 @@
                   </select>
                 </div>
               </div>
+
+           
 
               <div class="col-lg-3">
                 <div class="form-group">
