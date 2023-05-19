@@ -50,7 +50,7 @@
          "iDisplayLength":-1, 
          "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
          "bPaginate": false,
-         "aaSorting" : [[8,"desc"]],
+         "aaSorting" : [[10,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        
@@ -83,7 +83,9 @@
             { "data": "tipo" ,"class":"margen-td centered"},
             { "data": "requerimiento" ,"class":"margen-td centered"},
             { "data": "responsable1" ,"class":"margen-td centered"},
+            { "data": "correo_responsable1" ,"class":"margen-td centered"},
             { "data": "responsable2" ,"class":"margen-td centered"},
+            { "data": "correo_responsable2" ,"class":"margen-td centered"},
             { "data": "horas_estimadas" ,"class":"margen-td centered"},
             { "data": "requiere_validacion" ,"class":"margen-td centered"},
             { "data": "estado" ,"class":"margen-td centered"},
@@ -419,7 +421,9 @@
             <th class="centered">Tipo </th>    
 						<th class="centered">Requerimiento </th>    
 						<th class="centered">Responsable 1 </th>    
+						<th class="centered">Correo responsable 1 </th>    
 						<th class="centered">Responsable 2 </th> 
+            <th class="centered">Correo responsable 2 </th>    
 						<th class="centered">Horas estimadas</th> 
 						<th class="centered">Requiere validación</th> 
 						<th class="centered">Estado</th> 

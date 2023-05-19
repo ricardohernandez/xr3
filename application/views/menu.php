@@ -162,6 +162,7 @@
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>materiales"> MAT - Materiales seriados</a></li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>calidad"> RCO - reporte calidad operaciones</a></li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>productividad"> RPO - Reporte productividad operaciones</a></li>
+               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>syr"> SYR - Solicitudes y requerimientos</a></li>
             </ul>
          </li>
          <?php  
@@ -292,6 +293,9 @@
                         <li><a  class="menu_list" href="<?php echo base_url() ?>materiales"> MAT - Materiales seriados</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>calidad"> RCO - Reporte calidad operaciones</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>productividad"> RPO - Reporte productividad operaciones</a></li>
+                        <li><a  class="menu_list" href="<?php echo base_url() ?>syr"> SYR - Solicitudes y requerimientos</a></li>
+
+                      
                         <!-- <li class="nav__dropdown">
                            <a class="menu_list" href="#!">sub</a>
                            <ul class="nav__dropdown-menu">

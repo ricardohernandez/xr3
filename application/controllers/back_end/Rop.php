@@ -44,7 +44,7 @@ class Rop extends CI_Controller {
     	$this->acceso();
 
 	    $datos = array(
-	        'titulo' => "Rop (Requerimientos operacionales de personas)",
+	        'titulo' => "SYR (Solicitudes y requerimientos)",
 	        'contenido' => "rop/inicio",
 	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 	        'tipos' => $this->Ropmodel->listaTipos()
@@ -586,7 +586,9 @@ class Rop extends CI_Controller {
 						<th class="head">Tipo </th>    
 						<th class="head">Requerimiento </th>    
 						<th class="head">Responsable1 </th>    
+						<th class="head">Correo Responsable1 </th>    
 						<th class="head">Responsable2 </th> 
+						<th class="head">Correo Responsable2 </th> 
 						<th class="head">horas estimadas</th> 
 						<th class="head">Requiere validacion</th> 
 						<th class="head">Estado</th> 
@@ -602,7 +604,9 @@ class Rop extends CI_Controller {
 									<td><?php echo utf8_decode($d["tipo"]); ?></td>
 									<td><?php echo utf8_decode($d["requerimiento"]); ?></td>
 									<td><?php echo utf8_decode($d["responsable1"]); ?></td>
+									<td><?php echo utf8_decode($d["correo_responsable1"]); ?></td>
 									<td><?php echo utf8_decode($d["responsable2"]); ?></td>
+									<td><?php echo utf8_decode($d["correo_responsable2"]); ?></td>
 									<td><?php echo utf8_decode($d["horas_estimadas"]); ?></td>
 									<td><?php echo utf8_decode($d["requiere_validacion"]); ?></td>
 									<td><?php echo utf8_decode($d["estado"]); ?></td>

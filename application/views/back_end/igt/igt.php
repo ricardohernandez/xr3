@@ -205,7 +205,7 @@
 
               const cumplimiento = json.data_prom_ftth.cumplimiento
 
-              $(".meta_prom_ftth").html(` Meta : ${json.data_prom_ftth.meta}`)  
+              /* $(".meta_prom_ftth").html(` Meta : ${json.data_prom_ftth.meta}`)   */
               $(".meta_prom_ftth_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
 
@@ -299,7 +299,7 @@
               const meta = json.data_prom_hfc.meta
               const cumplimiento = json.data_prom_hfc.cumplimiento
 
-              $(".meta_prom_hfc").html(` Meta : ${json.data_prom_hfc.meta}`)  
+              /* $(".meta_prom_hfc").html(` Meta : ${json.data_prom_hfc.meta}`)   */
               $(".meta_prom_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
              /* const diff = Math.abs(meta-value)
@@ -350,7 +350,7 @@
               const value = json.data_dias_hfc.data[1][1]
               const meta = json.data_dias_hfc.meta
               
-              $(".meta_dias_trabajados_hfc").html(` Meta : ${json.data_dias_hfc.meta}`)  
+             /*  $(".meta_dias_trabajados_hfc").html(` Meta : ${json.data_dias_hfc.meta}`)   */
              /* $(".meta_dias_trabajados_hfc_green").html(`${value} <i class="fa-solid "></i>%`).show()*/
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_dias_trabajados_hfc'));
@@ -385,7 +385,7 @@
               const value = json.data_dias_ftth.data[1][1]
               const meta = json.data_dias_ftth.meta
 
-              $(".meta_dias_trabajados_ftth").html(` Meta : ${json.data_dias_ftth.meta}`)  
+             /*  $(".meta_dias_trabajados_ftth").html(` Meta : ${json.data_dias_ftth.meta}`)   */
              /* $(".meta_prom_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()*/
 
               /* $(".meta_dias_trabajados_ftth_green").html(`${value} <i class="fa-solid "></i>%`).show()*/
@@ -423,7 +423,7 @@
               const value = json.data_asistencia.data[1][1]
               const meta = json.data_asistencia.meta
               
-              $(".meta_asistencia").html(` Meta : ${json.data_asistencia.meta}`)  
+             /*  $(".meta_asistencia").html(` Meta : ${json.data_asistencia.meta}`)   */
               $(".meta_asistencia_green").html(`${value} <i class="fa-solid "></i>%`).show()
 
               var chart = new google.visualization.Gauge(document.getElementById('grafico_asistencia'));
@@ -461,7 +461,7 @@
               const cumplimiento = json.data_calidad_hfc.cumplimiento
 
 
-              $(".meta_calidad_hfc").html(` Meta : ${json.data_calidad_hfc.meta}`)  
+              /* $(".meta_calidad_hfc").html(` Meta : ${json.data_calidad_hfc.meta}`)   */
               $(".meta_calidad_hfc_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
               /*const diff = Math.abs(meta-value)
@@ -514,7 +514,7 @@
 
               const cumplimiento = json.data_calidad_ftth.cumplimiento
 
-              $(".meta_calidad_ftth").html(` Meta : ${json.data_calidad_ftth.meta}`)  
+              /* $(".meta_calidad_ftth").html(` Meta : ${json.data_calidad_ftth.meta}`)   */
               $(".meta_calidad_ftth_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
 

@@ -12,17 +12,7 @@ class MetasIgt extends CI_Controller {
 		$this->load->library('user_agent');
 	}
 
-	public function visitas($modulo){
-		$this->load->library('user_agent');
-		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>1,
-			"modulo"=>$modulo,
-	     	"fecha"=>date("Y-m-d G:i:s"),
-	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
-	    	"ip"=>$this->input->ip_address(),
-    	);
-    	$this->MetasIgtmodel->insertarVisita($data);
-	}
+	
 
 	public function checkLogin(){
 		if(!$this->session->userdata('id')){
@@ -43,7 +33,6 @@ class MetasIgt extends CI_Controller {
 
 
 	public function index(){
-		$this->visitas("Mantenedor metas igt");
     	$this->acceso();
 	    $datos = array(
 	        'titulo' => "Mantenedor metas igt",

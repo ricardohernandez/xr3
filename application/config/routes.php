@@ -290,7 +290,7 @@
 
 /******************ROP*************************/
 
-	$route['rop'] = "back_end/rop/index";
+	$route['syr'] = "back_end/rop/index";
 	$route['getRopInicio'] = "back_end/rop/getRopInicio";
 	$route['getRopList'] = "back_end/rop/getRopList";
 	$route['formRop'] = "back_end/rop/formRop";
