@@ -47,7 +47,7 @@
          "iDisplayLength":-1, 
          "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
          "bPaginate": false,
-         "aaSorting" : [[22,"desc"]],
+         "aaSorting" : [[21,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        
@@ -80,7 +80,7 @@
                   row.id_estado === "3" ? "black" :
                   "";
                 
-                btn =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar_rop" style="color:${color};font-size:12px!important;"><i class="fas fa-edit"></i> ${row.estado}</a>`;
+                btn =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar_rop" style="color:${color};font-size:12px!important;"><i class="fas fa-edit"></i> </a>`;
               
                 if(row.id_estado==="0" || row.id_estado==="1"){
                   btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar_rop rojo"><i class="fa fa-trash"></i></a></center>';
@@ -124,7 +124,6 @@
             { "data": "tipo" ,"class":"margen-td centered"},
             { "data": "requerimiento" ,"class":"margen-td centered"},
             { "data": "responsable1" ,"class":"margen-td centered"},
-            { "data": "validador_sistema" ,"class":"margen-td centered"},
             { "data": "validador_real" ,"class":"margen-td centered"},
             { "data": "fecha_validacion" ,"class":"margen-td centered"},
             { "data": "hora_validacion" ,"class":"margen-td centered"},
@@ -476,9 +475,7 @@
             $("#requerimiento").empty()
             $('#requerimiento').val("").trigger('change');
           }
-         
       });
-      
 
     }); 
 
@@ -515,7 +512,6 @@
 		    });
 	  });
 
-
     $(document).off('click', '.btn_excel_rop').on('click', '.btn_excel_rop',function(event) {
       event.preventDefault();
       const desde = $("#desde_f").val()
@@ -538,7 +534,6 @@
         });  
        return false;
       }
-
 
       const estado_f = estado === "" ? "-" : estado;
       const responsable_f  = responsable === "" ? "-" : responsable;
@@ -627,26 +622,25 @@
           <thead>
             <tr>
               <th class="centered">Acciones</th> 
-              <th class="centered">Archivo Req. </th>    
-              <th class="centered">Archivo Resp.</th>    
+              <th class="centered">Arch. Req. </th>    
+              <th class="centered">Arch. Resp.</th>    
               <th class="centered">Estado </th>    
               <th class="centered">Solicitante </th>    
               <th class="centered">Comuna </th>    
-              <th class="centered">Fecha ingreso </th> 
-              <th class="centered">Hora de ingreso </th> 
+              <th class="centered">Fecha Ing. </th> 
+              <th class="centered">Hr.Ing. </th> 
               <th class="centered">Tipo</th> 
               <th class="centered">Requerimiento </th> 
               <th class="centered">Responsable </th> 
-              <th class="centered">Validador por sistema  </th> 
-              <th class="centered">Validador real  </th> 
-              <th class="centered">Fecha  Validación  </th> 
-              <th class="centered">Hora Validación  </th> 
+              <th class="centered">Validador  </th> 
+              <th class="centered">Fecha val. </th> 
+              <th class="centered">Hr.Val. </th> 
               <th class="centered">Persona asignada  </th> 
-              <th class="centered">Horas estimadas  </th> 
-              <th class="centered">Horas pendiente  </th> 
+              <th class="centered">Hr.est </th> 
+              <th class="centered">Hr.pend.  </th> 
               <th class="centered">Detalle de requerimiento  </th> 
-              <th class="centered">Fecha finalizado  </th> 
-              <th class="centered">Hora Finalizado   </th> 
+              <th class="centered">Fecha fin  </th> 
+              <th class="centered">Hr.fin   </th> 
               <th class="centered">Observación de finalizado   </th> 
               <th class="centered">Última actualización</th> 
             </tr>

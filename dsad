@@ -1,0 +1,6 @@
+  feature/ast_excel      [m 6d4a071 materiales ok , correccion cao ok
+  feature/liquidaciones  [m a294b5f liquidaciones filtradas x jefe ok
+  feature/materiales     [m a37846e truncate materiales al guardar ok
+  feature/rop            [m cb072d2 correccion requiere validacion
+  feature/tipos_contratos[m e624c76 tipos contratos ok
+* [32mmaster                 [m e624c76 tipos contratos ok
