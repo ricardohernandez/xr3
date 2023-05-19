@@ -277,9 +277,11 @@ class Igt extends CI_Controller {
 		/**************AST*******************/
 
 			$data_ast = $this->Igtmodel->getDataAst(getFechasPeriodo("actual")["desde_prod"],getFechasPeriodo("actual")["hasta_prod"],$id_tecnico);
+			$cantidad_ordenes =  $this->Igtmodel->getPorcentajeAst(getFechasPeriodo("actual")["desde_prod"],getFechasPeriodo("actual")["hasta_prod"],$rut);
 
-			if($data_ast){
-				$array_data["data_ast"] = array("data" => $data_ast , "meta" => 100);
+			if($data_ast and $cantidad_ordenes){
+				$porcentaje = round(($data_ast[1][0] / $cantidad_ordenes) * 100,1);
+				$array_data["data_ast"] = array("data" => $data_ast , "meta" => 100 , "porcentaje" => $porcentaje);
 			}
 			
 		

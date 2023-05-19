@@ -3,6 +3,16 @@
       display: inline-block;
       font-size: 13px;
   }
+
+  div.dataTables_info {
+    padding-top: 0.05em!important;
+  }
+
+  div.dataTables_paginate {
+    margin-top:1px!important;
+    margin-bottom:10px!important;
+  }
+
   .nav__holder {
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.0)!important; 
@@ -595,8 +605,7 @@
 
 
           // AST
-
-            
+ 
           if(json.hasOwnProperty("data_ast") && json.data_ast.data!=false){
 
             $("#ast").text(json.data_ast.data.declaracion).show()
@@ -614,8 +623,9 @@
 
             const value = json.data_ast.data[1]
             const meta = json.data_ast.meta
+            const porcentaje = json.data_ast.porcentaje
 
-            $(".meta_ast_green").text(value).show()
+            $(".meta_ast_green").html(`${porcentaje} <i class="fa-solid"></i>%`).show()
 
             var chart = new google.visualization.Gauge(document.getElementById('grafico_ast'));
             chart.draw(declaracion_ot, options);
@@ -1071,11 +1081,13 @@
 
     /*****CALIDAD*****/   
         var lista_detalle_calidad = $('#lista_detalle_calidad').DataTable({
-         /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
+          dom: "<'row '<'col-sm-12'f>>" +
+            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+            "iDisplayLength":25, 
          "iDisplayLength":25, 
          "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
          "bPaginate": true,
-         "info":false,
+         "info":true,
          "aaSorting" : [[4,"desc"]],
          "scrollY": "162",
          "scrollX": true,
@@ -1198,10 +1210,12 @@
     /*****PRODUCTIVIDAD*****/   
 
       var lista_detalle_productividad = $('#lista_detalle_productividad').DataTable({
-       "iDisplayLength":25, 
+        dom: "<'row '<'col-sm-12'f>>" +
+            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+            "iDisplayLength":25, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": true,
-       "info":false,
+       "info":true,
        "aaSorting" : [[1,"desc"]],
        "scrollY": "200",
        "scrollX": true,
@@ -1319,10 +1333,12 @@
     /*****DETALLE OTS DRIVE*****/   
 
       var lista_detalle_ots_drive = $('#lista_detalle_ots_drive').DataTable({
+        dom: "<'row '<'col-sm-12'f>>" +
+            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
        "iDisplayLength":100, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": true,
-       "info":false,
+       "info":true,
        "aaSorting" : [[1,"desc"]],
        "scrollY": "168px",
        "scrollX": true,

@@ -505,6 +505,33 @@ class Igtmodel extends CI_Model {
 			return FALSE;
 		}
 
+		public function getPorcentajeAst($desde,$hasta,$trabajador){
+			$desde_str= date('d-m', strtotime($desde));
+			$hasta_str= date('d-m', strtotime($hasta));
+			$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
+			$mes_str= mesesCorto(date('m', strtotime($desde_c)));
+			$anio_str= date('Y', strtotime($desde));
+			$periodo_str= $mes_str."-".$anio_str;
+
+			$this->db->select("count(p.id) as cantidad");
+			$this->db->group_by('p.rut_tecnico');
+			$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
+
+			if(!empty($trabajador)){
+				$this->db->where('p.rut_tecnico', $trabajador);
+			}
+
+			$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+			$res=$this->db->get('productividad p');
+
+			if($res->num_rows()>0){
+				$row = $res->row_array();
+				return $row["cantidad"];
+			}
+
+			return FALSE;
+		}
+
 
 	/******************CALIDAD HFC*********************/
 
