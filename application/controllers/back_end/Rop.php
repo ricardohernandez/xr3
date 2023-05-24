@@ -384,6 +384,7 @@ class Rop extends CI_Controller {
 				<h3>Reporte Rop (Requerimientos operacionales de personas)</h3>
 				<table align='center' border="1"> 
 					<tr style="background-color:#F9F9F9">
+						<th class="head">ID </th>    
 						<th class="head">Estado </th>    
 						<th class="head">Solicitante </th>    
 						<th class="head">Comuna </th>    
@@ -412,6 +413,7 @@ class Rop extends CI_Controller {
 							foreach($data as $d){
 							?>
 								<tr>
+									<td><?php echo utf8_decode($d["id"]); ?></td>
 									<td><?php echo utf8_decode($d["estado"]); ?></td>
 									<td><?php echo utf8_decode($d["solicitante"]); ?></td>
 									<td><?php echo utf8_decode($d["comuna"]); ?></td>
