@@ -201,7 +201,7 @@ class Rop extends CI_Controller {
 
 						if($checkfin=="on"){
 							$data_mod["id_estado"] = 2;
-							$data_mod["fecha_fin"] = date("Y-d-m");
+							$data_mod["fecha_fin"] = date("Y-m-d");
 							$data_mod["hora_fin"] = date("G:i:s");
 						}
 
