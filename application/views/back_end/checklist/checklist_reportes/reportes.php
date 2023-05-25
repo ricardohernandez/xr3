@@ -133,12 +133,28 @@
     $(document).off('change', '#periodo, #supervisor, #zona').on('change', '#periodo, #supervisor, #zona', function(event) {
         tabla_checklistreporte.ajax.reload();
         graficoReporteChecklist();
-        setTimeout(function() {
-          var tabla_checklistreporte = $.fn.dataTable.tables({visible: true});
-          if (tabla_checklistreporte.length > 0) {
-              $(tabla_checklistreporte).DataTable().columns.adjust().draw();
+        
+
+        setTimeout( function () {
+        var listaChecklistHFC = $.fn.dataTable.fnTables(true);
+          if ( listaChecklistHFC.length > 0 ) {
+              $(listaChecklistHFC).dataTable().fnAdjustColumnSizing();
+        }}, 200 ); 
+
+        setTimeout( function () {
+          var listaChecklistHFC = $.fn.dataTable.fnTables(true);
+          if ( listaChecklistHFC.length > 0 ) {
+              $(listaChecklistHFC).dataTable().fnAdjustColumnSizing();
+        }}, 2000 ); 
+
+        setTimeout( function () {
+          var listaChecklistHFC = $.fn.dataTable.fnTables(true);
+          if ( listaChecklistHFC.length > 0 ) {
+              $(listaChecklistHFC).dataTable().fnAdjustColumnSizing();
           }
-      }, 200);
+        }, 4000 ); 
+
+
     });
 
 
@@ -273,13 +289,25 @@
       String.prototype.capitalize = function() {
           return this.charAt(0).toUpperCase() + this.slice(1);
       }
+      
+      setTimeout( function () {
+        var listaChecklistHFC = $.fn.dataTable.fnTables(true);
+        if ( listaChecklistHFC.length > 0 ) {
+            $(listaChecklistHFC).dataTable().fnAdjustColumnSizing();
+      }}, 200 ); 
 
-      setTimeout(function() {
-          var tabla_checklistreporte = $.fn.dataTable.tables({visible: true});
-          if (tabla_checklistreporte.length > 0) {
-              $(tabla_checklistreporte).DataTable().columns.adjust().draw();
-          }
-      }, 200);
+      setTimeout( function () {
+        var listaChecklistHFC = $.fn.dataTable.fnTables(true);
+        if ( listaChecklistHFC.length > 0 ) {
+            $(listaChecklistHFC).dataTable().fnAdjustColumnSizing();
+      }}, 2000 ); 
+
+      setTimeout( function () {
+        var listaChecklistHFC = $.fn.dataTable.fnTables(true);
+        if ( listaChecklistHFC.length > 0 ) {
+            $(listaChecklistHFC).dataTable().fnAdjustColumnSizing();
+        }
+      }, 4000 ); 
 
       $(document).off('click', '.excel_reporte_checklist').on('click', '.excel_reporte_checklist',function(event) {
          event.preventDefault();

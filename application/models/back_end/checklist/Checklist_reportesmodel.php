@@ -173,12 +173,12 @@ class Checklist_reportesmodel extends CI_Model {
 				$lider = (string)$key["lider"];
 				if ($key["suma_herramientas"] != 0 || $key["suma_hfc"] != 0 || $key["suma_ftth"] != 0) {
 					$temp[] = $lider;
-					$temp[] = ($key["suma_herramientas"] != 0) ? (int)$key["suma_herramientas"] : null;
-					$temp[] = ($key["suma_herramientas"] != 0) ? (int)$key["suma_herramientas"] : null;
-					$temp[] = ($key["suma_hfc"] != 0) ? (int)$key["suma_hfc"] : null;
-					$temp[] = ($key["suma_hfc"] != 0) ? (int)$key["suma_hfc"] : null;
-					$temp[] = ($key["suma_ftth"] != 0) ? (int)$key["suma_ftth"] : null;
-					$temp[] = ($key["suma_ftth"] != 0) ? (int)$key["suma_ftth"] : null;
+					$temp[] = ($key["suma_herramientas"] != 0) ? (int)$key["suma_herramientas"] : 0;
+					$temp[] = ($key["suma_herramientas"] != 0) ? (int)$key["suma_herramientas"] : 0;
+					$temp[] = ($key["suma_hfc"] != 0) ? (int)$key["suma_hfc"] : 0;
+					$temp[] = ($key["suma_hfc"] != 0) ? (int)$key["suma_hfc"] : 0;
+					$temp[] = ($key["suma_ftth"] != 0) ? (int)$key["suma_ftth"] : 0;
+					$temp[] = ($key["suma_ftth"] != 0) ? (int)$key["suma_ftth"] : 0;
 					$array[] = $temp;
 				}
 			}
@@ -187,67 +187,6 @@ class Checklist_reportesmodel extends CI_Model {
 	
 	}
 	
-	
-	/* public function graficoTotalItems($tecnico,$zona,$comuna,$item){
-
-		$this->db->select("
-			cl.descripcion as descripcion,
-
-			SUM(CASE 
-			 WHEN cd.estado = 'si' THEN 1
-			 ELSE 0
-			END) AS cantidad_ok,
-			SUM(CASE 
-			 WHEN cd.estado = 'no' THEN 1
-			 ELSE 0
-			END) AS cantidad_nook,
-			
-			");
-
- 		$this->db->group_by('cl.descripcion');
-		$this->db->order_by('cantidad_nook', 'desc');
-		$this->db->join('ast_checklist_listado cl', 'cd.id_check = cl.id', 'left');	
-		$this->db->join('ast_checklist c', 'c.id = cd.id_ast', 'left');	
-		$this->db->join('usuarios u', 'u.id = c.tecnico_id', 'left');
-
-
-		if(!empty($tecnico)){
-			$this->db->where('c.tecnico_id', $tecnico);
-		}
-
-		if(!empty($zona)){
-			$this->db->where('u.id_area', $zona);
-		}
-
-		if(!empty($comuna)){
-			$this->db->where('u.id_proyecto', $comuna);
-		}
-
-		if(!empty($item)){
-			$this->db->where('cl.descripcion', $item);
-		}
-
-		$res = $this->db->get('ast_checklist_detalle cd');
-
-		$cabeceras = array("Descripcion","Ok",array('role'=> 'annotation'),"No ok",array('role'=> 'annotation'));
-		$array = array();
-		$array[] = $cabeceras;
-		$contador=0;
-
-		foreach($res->result_array() as $key){
-			$temp=array();
-			$temp[] = (string)$key["descripcion"];
-			$temp[] = (int)$key["cantidad_ok"];
-			$temp[] = (int)$key["cantidad_ok"];
-			$temp[] = (int)$key["cantidad_nook"];
-			$temp[] = (int)$key["cantidad_nook"];
-			$array[]=$temp;
-		}
-		return $array;
-	} */
-
-
-		
 	public function listaSupervisores(){
 		$this->db->select("id,CONCAT(nombres,'  ',apellidos) as 'nombre_completo'");
 		$this->db->where('u.estado', "1");
