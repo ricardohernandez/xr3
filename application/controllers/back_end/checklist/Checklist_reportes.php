@@ -19,7 +19,7 @@ class Checklist_reportes extends CI_Controller {
 	public function visitas($modulo){
 		$this->load->library('user_agent');
 		$data=array("id_usuario"=>$this->session->userdata('id'),
-			"id_aplicacion"=>22,
+			"id_aplicacion"=>21,
 			"modulo"=>$modulo,
 	     	"fecha"=>date("Y-m-d G:i:s"),
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
@@ -29,13 +29,13 @@ class Checklist_reportes extends CI_Controller {
 	}
 
 	public function checkLogin(){
-		// if($this->session->userdata('rutUsuario')==""){
-		// 	echo json_encode(array('res'=>"sess"));exit;
-		// }
+		/* if($this->session->userdata('rutUsuario')==""){
+			echo json_encode(array('res'=>"sess"));exit;
+		} */
 	}
 
 	public function acceso(){
-		if(!$this->session->userdata('id')){
+		if(!$this->session->userdata('perfil')>3){
 	      	redirect("./login");
 	    }
 
@@ -62,13 +62,16 @@ class Checklist_reportes extends CI_Controller {
 			$desde = date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
 	    	$hasta = date('d-m-Y');
 			$supervisores=$this->Checklist_reportesmodel->listaSupervisores();
+			$areas=$this->Checklist_reportesmodel->listaAreas();
     
 			$datos=array(
 				'desde' => $desde,	   
 		        'hasta' => $hasta,
 				'supervisores' => $supervisores,
+				'areas' => $areas,
 				'mes_actual' => mesesPeriodo("actual"),
 		        'mes_anterior' =>mesesPeriodo("anterior"),
+		        'mes_anterior2' =>mesesPeriodo("anterior2"),
 		   	);
 
 			$this->load->view('back_end/checklist/checklist_reportes/reportes',$datos);
@@ -77,6 +80,7 @@ class Checklist_reportes extends CI_Controller {
 		public function listaReporteChecklist(){
 			$periodo = $this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$supervisor = $this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$zona = $this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 
 			if(date("d")>"24"){
 
@@ -86,6 +90,9 @@ class Checklist_reportes extends CI_Controller {
 				}elseif($periodo == "anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo == "anterior2"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -95,53 +102,20 @@ class Checklist_reportes extends CI_Controller {
 				}elseif($periodo == "anterior"){
 					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo == "anterior2"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
-			echo json_encode($this->Checklist_reportesmodel->listaReporteChecklist($desde,$hasta,$supervisor));
+			echo json_encode($this->Checklist_reportesmodel->listaReporteChecklist($desde,$hasta,$supervisor,$zona));
 		}
 
 		public function graficoReporteChecklist(){
-			/* $periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
-			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-			$perfil_tecnico = $this->Igtmodel->getPerfilTecnico($trabajador);
-	
-			$rut=str_replace('-', '', $trabajador);
-			$id_tecnico = $this->Igtmodel->getIdTecnico($rut);
-	
-			$array_data = array();
-	
-	
-			$data_calidad_hfc = array();
-			
-			if($this->Igtmodel->graficoHFC(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador)!=FALSE){
-				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("actual")["desde_calidad"],getFechasPeriodo("actual")["hasta_calidad"],$trabajador);
-			}
-
-		
-			$cabeceras_calidad = array(
-				"Periodo",
-				"Calidad",
-				"Ordenes",
-				"Fallos",
-				array('role'=> 'annotationText'),
-			);
-
-			$list = array();
-			$list[] = $cabeceras_calidad;
-
-			foreach($data_calidad_hfc as $arr) {
-				if(is_array($arr)) {
-					$list = array_merge($list, $arr);
-				}
-			}
-
-			echo json_encode($array_data); */
-
 			$periodo = $this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$supervisor = $this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-
+			$zona = $this->security->xss_clean(strip_tags($this->input->get_post("zona")));
+			
 			if(date("d")>"24"){
 
 				if($periodo == "actual"){
@@ -150,6 +124,9 @@ class Checklist_reportes extends CI_Controller {
 				}elseif($periodo == "anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo == "anterior2"){
+					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -159,10 +136,13 @@ class Checklist_reportes extends CI_Controller {
 				}elseif($periodo == "anterior"){
 					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo == "anterior2"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
  
-			echo json_encode($this->Checklist_reportesmodel->graficoReporteChecklist($desde,$hasta,$supervisor));
+			echo json_encode($this->Checklist_reportesmodel->graficoReporteChecklist($desde,$hasta,$supervisor,$zona));
 
 		}
  

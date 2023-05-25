@@ -128,43 +128,41 @@
     const perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const r = "<?php echo $this->session->userdata('rut'); ?>";
     const base_url = "<?php echo base_url() ?>";
-	google.charts.setOnLoadCallback(graficoReporteChecklist);
+	  google.charts.setOnLoadCallback(graficoReporteChecklist);
 
-    $("#load").show()
-    $(".body").hide()
-    $("#load").hide()
-    $(".body").fadeIn(500)
+    $(document).off('change', '#periodo, #supervisor, #zona').on('change', '#periodo, #supervisor, #zona', function(event) {
+        tabla_checklistreporte.ajax.reload();
+        graficoReporteChecklist();
+        setTimeout(function() {
+          var tabla_checklistreporte = $.fn.dataTable.tables({visible: true});
+          if (tabla_checklistreporte.length > 0) {
+              $(tabla_checklistreporte).DataTable().columns.adjust().draw();
+          }
+      }, 200);
+    });
 
-    $(document).off('change', '#periodo').on('change', '#periodo', function(event) {
-        tabla_checklistreporte.ajax.reload()
-        graficoReporteChecklist()
-    }); 
-
-    $(document).off('change', '#supervisor').on('change', '#supervisor', function(event) {
-        tabla_checklistreporte.ajax.reload()
-        graficoReporteChecklist()
-    }); 
 
     function graficoReporteChecklist(){
 
-        var periodo = $("#periodo").val();
-        var supervisor = $("#supervisor").val();
+      var periodo = $("#periodo").val();
+      var supervisor = $("#supervisor").val();
+      var zona = $("#zona").val();
 
 	    $.ajax({
         url: base_url+"graficoReporteChecklist"+"?"+$.now(),  
         type: 'POST',
-        data:{periodo:periodo,supervisor:supervisor},
+        data:{periodo:periodo,supervisor:supervisor,zona:zona},
         dataType:"json",
         beforeSend:function(){
-         /*    $("#load").show()
-            $(".body").hide() */
+            $("#load").show()
+            $(".body").hide()
         },
         success: function (json) {
-
-         
+            $("#load").hide()
+            $(".body").fadeIn(500)
 
             let size = Object.keys(json).length
-            let height = 400
+            let height = 500
 
             var data = google.visualization.arrayToDataTable(json);
             data.sort([{column: 0, desc: false}])
@@ -177,9 +175,9 @@
 
                 colors: ['#172969','#F48432','#A5A5A5'],
                 chartArea:{
-                    left:230,
+                    left:270,
                     right:50,
-                    bottom:30,
+                    bottom:130,
                     top:20,
                 },
 
@@ -188,7 +186,7 @@
                 title: '',
                 minValue: 0,
                 textStyle: {
-                    fontSize: 11,
+                    fontSize: 12,
                     bold:true,
                     color:'#32477C'
                 }
@@ -196,25 +194,26 @@
                 vAxis: {
                 title: '',
                 textStyle: {
-                    fontSize: 11,
+                    fontSize: 12,
                     bold:true,
                     color:'#32477C'
                 }
                 },
                 annotations: {
-                    alwaysOutside: true,
+                    alwaysOutside: false,
                     textStyle: {
-                        fontSize: 12,
+                        fontSize: 13,
                         auraColor: 'none'
                     }
                 },
                 legend : {
-                    position: 'none', alignment: 'center' ,
-                    textStyle: {
-                        fontSize: 14,
-                        bold:true,
-                        color:'#32477C'
-                    }
+                  position: 'bottom',
+                  alignment: 'center',
+                  textStyle: {
+                      fontSize: 14,
+                      bold: true,
+                      color: '#32477C'
+                  }
                 },
                 tooltip: { 
                     textStyle: {  
@@ -255,6 +254,7 @@
           data: function(param){ 
             param.periodo = $("#periodo").val();
             param.supervisor = $("#supervisor").val(); 
+            param.zona = $("#zona").val(); 
           }
         },    
        
@@ -274,25 +274,12 @@
           return this.charAt(0).toUpperCase() + this.slice(1);
       }
 
-      setTimeout( function () {
-        var tabla_checklistreporte = $.fn.dataTable.fnTables(true);
-        if ( tabla_checklistreporte.length > 0 ) {
-            $(tabla_checklistreporte).dataTable().fnAdjustColumnSizing();
-      }}, 200 ); 
-
-      setTimeout( function () {
-        var tabla_checklistreporte = $.fn.dataTable.fnTables(true);
-        if ( tabla_checklistreporte.length > 0 ) {
-            $(tabla_checklistreporte).dataTable().fnAdjustColumnSizing();
-      }}, 2000 ); 
-
-      setTimeout( function () {
-        var tabla_checklistreporte = $.fn.dataTable.fnTables(true);
-        if ( tabla_checklistreporte.length > 0 ) {
-            $(tabla_checklistreporte).dataTable().fnAdjustColumnSizing();
-        }
-      }, 4000 ); 
- 
+      setTimeout(function() {
+          var tabla_checklistreporte = $.fn.dataTable.tables({visible: true});
+          if (tabla_checklistreporte.length > 0) {
+              $(tabla_checklistreporte).DataTable().columns.adjust().draw();
+          }
+      }, 200);
 
       $(document).off('click', '.excel_reporte_checklist').on('click', '.excel_reporte_checklist',function(event) {
          event.preventDefault();
@@ -330,13 +317,14 @@
                     <select id="periodo" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
                     <option value="actual" selected><?php echo $mes_actual ?></option>
                     <option value="anterior"><?php echo $mes_anterior ?></option>
+                    <option value="anterior2"><?php echo $mes_anterior2 ?></option>
                     </select>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div class="form-group">
-                <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
+                <select id="supervisor" name="supervisor" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
                 <option value="">Supervisor | Todos</option>
                 <?php  
                     foreach($supervisores as $s){
@@ -348,6 +336,22 @@
                 </select>
             </div>
         </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="form-group">
+                <select id="zona" name="zona" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+                <option value="">Zona | Todos</option>
+                <?php  
+                    foreach($areas as $a){
+                    ?>
+                        <option  value="<?php echo $a["id"]?>" ><?php echo $a["area"]?> </option>
+                    <?php
+                    }
+                ?>
+                </select>
+            </div>
+        </div>
+
     </div>       
 </div>       
 
@@ -397,9 +401,9 @@
                 <div class="form-row">
                     
                     <div class="col-lg-12 graficoChecklistReporte">
-                    <div class="card-header card_dash">
+                   <!--  <div class="card-header card_dash">
                         <span class="titulo_seccion"></span>
-                    </div>
+                    </div> -->
                     <div id="graficoChecklistReporte"></div>
                     </div>
 

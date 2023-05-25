@@ -13,12 +13,16 @@ class Checklist_reportesmodel extends CI_Model {
 		return FALSE;
 	}
 
-	public function listaReporteChecklist($desde, $hasta, $supervisor) {
+	public function listaReporteChecklist($desde, $hasta, $supervisor,$area) {
 		$this->db->select('CONCAT(u.nombres," ",u.apellidos) as lider, COUNT(c.id) AS suma_hfc');
 		$this->db->join('usuarios u', 'u.id = c.auditor_id');
 	
 		if (!empty($supervisor)) {
 			$this->db->where('c.auditor_id', $supervisor);
+		}
+
+		if (!empty($area)) {
+			$this->db->where('u.id_area', $area);
 		}
 	
 		if (!empty($desde) && !empty($hasta)) {
@@ -36,6 +40,10 @@ class Checklist_reportesmodel extends CI_Model {
 		if (!empty($supervisor)) {
 			$this->db->where('c.auditor_id', $supervisor);
 		}
+
+		if (!empty($area)) {
+			$this->db->where('u.id_area', $area);
+		}
 	
 		if (!empty($desde) && !empty($hasta)) {
 			$this->db->where('c.fecha >=', $desde);
@@ -51,6 +59,10 @@ class Checklist_reportesmodel extends CI_Model {
 	
 		if (!empty($supervisor)) {
 			$this->db->where('c.auditor_id', $supervisor);
+		}
+
+		if (!empty($area)) {
+			$this->db->where('u.id_area', $area);
 		}
 	
 		if (!empty($desde) && !empty($hasta)) {
@@ -108,15 +120,8 @@ class Checklist_reportesmodel extends CI_Model {
 	}
 	
 
-	public function graficoReporteChecklist($desde, $hasta, $supervisor) {
-	/* 	$desde_str= date('d-m', strtotime($desde));
-		$hasta_str= date('d-m', strtotime($hasta));
-		$desde_c = date('Y-m-d', strtotime('+1 month', strtotime($desde)));
-		$mes_str= mesesCorto(date('m', strtotime($desde_c)));
-		$anio_str= date('Y', strtotime($desde));
-		$periodo_str= $mes_str."-".$anio_str; */
-
-
+	public function graficoReporteChecklist($desde, $hasta, $supervisor,$zona) {
+ 
 		$this->db->select("
 				CONCAT(u.nombres, ' ', u.apellidos) as lider,
 				(
@@ -125,6 +130,7 @@ class Checklist_reportesmodel extends CI_Model {
 					LEFT JOIN usuarios us ON c.auditor_id = us.id
 					WHERE us.id = u.id
 					" . (!empty($supervisor) ? "AND c.auditor_id = '$supervisor'" : "") . "
+					" . (!empty($zona) ? "AND us.id_area = '$zona'" : "") . "
 					" . (!empty($desde) && !empty($hasta) ? "AND c.fecha BETWEEN '$desde' AND '$hasta'" : "") . "
 				) as suma_hfc,
 			
@@ -135,6 +141,7 @@ class Checklist_reportesmodel extends CI_Model {
 					LEFT JOIN usuarios us ON c.auditor_id = us.id
 					WHERE us.id = u.id
 					" . (!empty($supervisor) ? "AND c.auditor_id = '$supervisor'" : "") . "
+					" . (!empty($zona) ? "AND us.id_area = '$zona'" : "") . "
 					" . (!empty($desde) && !empty($hasta) ? "AND c.fecha BETWEEN '$desde' AND '$hasta'" : "") . "
 				) as suma_herramientas,
 			
@@ -145,6 +152,7 @@ class Checklist_reportesmodel extends CI_Model {
 					LEFT JOIN usuarios us ON c.auditor_id = us.id
 					WHERE us.id = u.id
 					" . (!empty($supervisor) ? "AND c.auditor_id = '$supervisor'" : "") . "
+					" . (!empty($zona) ? "AND us.id_area = '$zona'" : "") . "
 					" . (!empty($desde) && !empty($hasta) ? "AND c.fecha BETWEEN '$desde' AND '$hasta'" : "") . "
 				) as suma_ftth
 			");
@@ -155,23 +163,26 @@ class Checklist_reportesmodel extends CI_Model {
 		
 		$this->db->order_by('u.nombres', 'asc');
 			$res = $this->db->get('usuarios u');
-			$cabeceras = array("Lider","CHL",array('role'=> 'annotation'),"CHFC",array('role'=> 'annotation'),"CFTTH",array('role'=> 'annotation'));
+			$cabeceras = array("Lider","Suma de CHL",array('role'=> 'annotation'),"Suma de HFC",array('role'=> 'annotation'),"Suma de FTTH",array('role'=> 'annotation'));
 			$array = array();
 			$array[] = $cabeceras;
 			$contador=0;
 
-			foreach($res->result_array() as $key){
-				$temp=array();
-				$temp[] = (string)$key["lider"];
-				$temp[] = (int)$key["suma_herramientas"];
-				$temp[] = (int)$key["suma_herramientas"];
-				$temp[] = (int)$key["suma_hfc"];
-				$temp[] = (int)$key["suma_hfc"];
-				$temp[] = (int)$key["suma_ftth"];
-				$temp[] = (int)$key["suma_ftth"];
-	
-				$array[]=$temp;
+			foreach($res->result_array() as $key) {
+				$temp = array();
+				$lider = (string)$key["lider"];
+				if ($key["suma_herramientas"] != 0 || $key["suma_hfc"] != 0 || $key["suma_ftth"] != 0) {
+					$temp[] = $lider;
+					$temp[] = ($key["suma_herramientas"] != 0) ? (int)$key["suma_herramientas"] : null;
+					$temp[] = ($key["suma_herramientas"] != 0) ? (int)$key["suma_herramientas"] : null;
+					$temp[] = ($key["suma_hfc"] != 0) ? (int)$key["suma_hfc"] : null;
+					$temp[] = ($key["suma_hfc"] != 0) ? (int)$key["suma_hfc"] : null;
+					$temp[] = ($key["suma_ftth"] != 0) ? (int)$key["suma_ftth"] : null;
+					$temp[] = ($key["suma_ftth"] != 0) ? (int)$key["suma_ftth"] : null;
+					$array[] = $temp;
+				}
 			}
+			
 			return $array;
 	
 	}
@@ -248,6 +259,17 @@ class Checklist_reportesmodel extends CI_Model {
 		}
 		return FALSE;
 	}
+
+	public function listaAreas(){
+		$this->db->order_by('area', 'asc');
+		$res=$this->db->get("usuarios_areas");
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
+
+	
 
 	
 

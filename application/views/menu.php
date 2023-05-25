@@ -1,5 +1,6 @@
 <script type="text/javascript">
    $(function(){
+     
    	$(".btn_modal_pass").click(function(event) {
    	    $("#modal_pass").modal('toggle'); 
    	    $(".cont_mensajes").html();
@@ -149,6 +150,16 @@
                         }
                         ?>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
+
+                     <?php  
+                        if($this->session->userdata('id_perfil')<=3){
+                     ?>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_reportes">RCH - Reporte Checklist</a></li>
+                     <?php
+                        }
+                     ?>
+
+
                   </ul>
                </li>
                <?php  
@@ -206,6 +217,9 @@
             }
          ?>
          <li>
+
+
+
             <a href="#" class="sidenav__menu-url"><?php echo $this->session->userdata("nombre_completo")?></a>
             <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
             <ul class="sidenav__menu-dropdown">
@@ -280,6 +294,14 @@
                                  }
                                  ?>
                               <li><a  class="menu_list" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
+
+                              <?php  
+                                 if($this->session->userdata('id_perfil')<=3){
+                              ?>
+                              <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_reportes">RCH - Reporte Checklist</a></li>
+                              <?php
+                                 }
+                              ?>
                            </ul>
                         </li>
                         <?php  
@@ -395,6 +417,7 @@
                 <ul class="nav__menu menu_derecho">
 					<li class="nav__dropdown">
 
+
 					<a href="#"> 
 						<?php  
 							if($this->session->userdata('foto')!=""){
@@ -405,6 +428,8 @@
 						?>
 						<?php echo $this->session->userdata("nombre_completo")?>
 					</a>
+
+
 
 					<ul class="nav__dropdown-menu">
 						<li class="nav__dropdown">

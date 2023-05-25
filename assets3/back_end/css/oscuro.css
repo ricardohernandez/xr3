@@ -1,0 +1,42 @@
+
+
+/* Estilos generales para el tema oscuro */
+.dark-theme {
+    background-color: #161B22;
+    color: #fff;
+  }
+  
+  /* Estilos específicos para componentes en el tema oscuro */
+  .dark-theme .navbar {
+    background-color: #2A2A2A;
+    color: #fff;
+  }
+  
+  .dark-theme .btn {
+    background-color: #161B22;
+    color: #fff;
+    border-color: #161B22;
+  }
+  
+  .dark-theme .card {
+    background-color: #0D1117;
+    color: #fff;
+  }
+  
+  
+  .dark-theme h1 {
+    color: #ff9900;
+  }
+  
+  .dark-theme a {
+    color: #66b3ff;
+  }
+  
+  .dark-theme .form-control {
+    background-color: #0D1117;
+    color: #fff;
+    border-color: #555;
+  }
+  
+  /* Otros estilos específicos según sea necesario */
+  
