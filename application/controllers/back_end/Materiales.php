@@ -62,7 +62,7 @@ class Materiales extends CI_Controller {
 			}
 		}
 
-		public function cargaPlanillaMateriales(){
+		public function cargaPlanillaMateriales2(){
 
 			if (!function_exists('str_contains')) {
 			    function str_contains(string $haystack, string $needle): bool
@@ -132,6 +132,108 @@ class Materiales extends CI_Controller {
 	        }   
 		}
 		
+		public function cargaPlanillaMateriales()
+		{
+			if (!function_exists('str_contains')) {
+				function str_contains(string $haystack, string $needle): bool
+				{
+					return '' === $needle || false !== strpos($haystack, $needle);
+				}
+			}
+
+			if (empty($_FILES['userfile']['name'])) {
+				echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Debe seleccionar un archivo.'));
+				exit;
+			}
+
+			$fname = $_FILES['userfile']['name'];
+			if (!str_contains($fname, ".")) {
+				echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Debe seleccionar un archivo CSV válido.'));
+				exit;
+			}
+
+			$chk_ext = explode(".", $fname);
+			if ($chk_ext[1] !== "csv") {
+				echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Debe seleccionar un archivo CSV.'));
+				exit;
+			}
+
+			$fname = $_FILES['userfile']['name'];
+			$chk_ext = explode(".", $fname);
+
+			if (strtolower(end($chk_ext)) === "csv") {
+				$filename = $_FILES['userfile']['tmp_name'];
+				$handle = fopen($filename, "r");
+				$i = 0;
+				$z = 0;
+				$y = 0;
+
+				$this->Materialesmodel->truncateMateriales();
+
+				$dataArr = array(); // Array para almacenar los datos a insertar
+				$rutNoExistentes = array(); // Array para almacenar los RUTs no existentes
+
+
+				while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
+					$ultima_actualizacion = date("Y-m-d G:i:s") . " | " . $this->session->userdata("nombre_completo");
+
+					if (count($data) != 4) {
+						echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Archivo CSV inválido, se esperan 4 columnas, pero se obtuvieron ' . count($data) . '.'));
+						exit;
+					}
+
+					$id_tecnico = $this->Materialesmodel->getIdTecnicoPorRut(str_replace(array('-', '.'), '', $data[0]));
+
+					if (empty($id_tecnico)) {
+						$rutNoExistentes[$data[0]] = true; // Agregar RUT no existente al array asociativo
+						$id_tecnico = $data[0];
+					}
+				
+					/* if (!empty($id_tecnico)) { */
+						$arr = array(
+							'id_tecnico' => $id_tecnico,
+							'material' => utf8_encode($data[1]),
+							'serie' => utf8_encode($data[2]),
+							'tipo' => utf8_encode($data[3]),
+							'ultima_actualizacion' => $ultima_actualizacion,
+						);
+						$dataArr[] = $arr;
+						$i++;
+
+						if ($i % 500 === 0) {
+							// Insertar en lotes de 500 filas
+							$this->Materialesmodel->formMaterialesBatch($dataArr);
+							$dataArr = array(); // Reiniciar el array para el próximo lote
+						}
+					/* } */
+				}
+
+				if (!empty($dataArr)) {
+					// Insertar las filas restantes
+					$this->Materialesmodel->formMaterialesBatch($dataArr);
+				}
+
+				if ($i == 0) {
+					echo json_encode(array('res' => 'ok', 'tipo' => 'success', 'msg' => 'No se insertaron filas.'));
+					exit;
+				}
+				
+				$rutNoExistentesList = array_keys($rutNoExistentes);
+				$msg = 'Archivo cargado con éxito, ' . $i . ' filas insertadas.';
+				if (!empty($rutNoExistentesList)) {
+					$rutNoExistentesMsg = implode("\n", $rutNoExistentesList);
+					$msg .= "\n\nRUTs no existentes:\n" . $rutNoExistentesMsg;
+				}
+
+				fclose($handle);
+				echo json_encode(array('res' => 'ok', 'tipo' => 'success', 'msg' => $msg));
+				exit;
+			} else {
+				echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Archivo CSV inválido.'));
+				exit;
+			}
+		}
+
 
 		public function listaDetalleMateriales(){
 			$desde = $this->security->xss_clean(strip_tags($this->input->get_post("desde")));
