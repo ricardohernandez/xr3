@@ -212,7 +212,17 @@
 	$route['getDataFFTTH'] = "back_end/checklist/ChecklistFTTH/getDataFFTTH";
 	$route['formFFTTH'] = "back_end/checklist/ChecklistFTTH/formFFTTH";
 
-		
+
+/*******CHECKLIST REPORTES*******/
+
+	$route['checklist_reportes'] = "back_end/checklist/checklist_reportes/index";	
+	$route['getChecklistReportesInicio'] = "back_end/checklist/checklist_reportes/getChecklistReportesInicio";
+	$route['listaReporteChecklist'] = "back_end/checklist/checklist_reportes/listaReporteChecklist";
+
+	$route['graficoReporteChecklist'] = "back_end/checklist/checklist_reportes/graficoReporteChecklist";
+	$route['excel_reporte_checklist/(:any)/(:any)'] = "back_end/checklist/checklist_reportes/excel_reporte_checklist/$1/$2";
+
+
 /*******PRODUCTIVIDAD*******/
 	$route['productividad'] = "back_end/productividad/index";
 	$route['vistaDetalle'] = "back_end/productividad/vistaDetalle";

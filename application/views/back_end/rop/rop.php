@@ -47,7 +47,7 @@
          "iDisplayLength":-1, 
          "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
          "bPaginate": false,
-         "aaSorting" : [[21,"desc"]],
+         "aaSorting" : [[22,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        
@@ -92,6 +92,7 @@
                 return btn;
               }
             },
+            { "data": "id" ,"class":"margen-td centered"},
 
             {
               "class":"centered margen-td","data": function(row,type,val,meta){
@@ -340,6 +341,7 @@
               for(dato in data.datos){
 
                   $("#hash_rop").val(data.datos[dato].hash);
+                  $("#id_rop").val(data.datos[dato].id);
                   $("#titulo").val(data.datos[dato].titulo);
                   $("#descripcion").val(data.datos[dato].descripcion);
                   $("#tipo option[value='"+data.datos[dato].id_tipo+"'").prop("selected", true);
@@ -622,6 +624,7 @@
           <thead>
             <tr>
               <th class="centered">Acciones</th> 
+              <th class="centered">ID</th>    
               <th class="centered">Arch. Req. </th>    
               <th class="centered">Arch. Resp.</th>    
               <th class="centered">Estado </th>    
@@ -660,6 +663,14 @@
 	           <fieldset class="form-ing-cont">
               <legend class="form-ing-border">Solicitud de requerimiento</legend>
                 <div class="form-row">
+
+                  <div class="col-lg-1">  
+                    <div class="form-group">
+                    <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">ID  </label>
+                    <input type="text" placeholder="ID" id="id_rop"  readonly class="form-control form-control-sm">
+                    </div>
+                  </div>
+
                   <div class="col-lg-4">  
                     <div class="form-group">
                     <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo </label>
