@@ -160,7 +160,8 @@
                   $.notify(data.msg, {
                       className:data.tipo,
                       globalPosition: 'top center',
-                      autoHideDelay: 20000,
+                      autoHideDelay: 30000,
+                      clickToHide: false,
                   });
                   lista_detalle.ajax.reload();
                   actualizacionProductividad()
@@ -168,7 +169,8 @@
                   $.notify(data.msg, {
                       className:data.tipo,
                       globalPosition: 'top center',
-                      autoHideDelay: 10000,
+                      autoHideDelay: 30000,
+                      clickToHide: false,
                   });
                 }
 

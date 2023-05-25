@@ -47,7 +47,12 @@ class Materialesmodel extends CI_Model {
 			}
 			return FALSE;
 		}
-		
+
+		public function formMaterialesBatch($dataArr)
+		{
+			$this->db->insert_batch('materiales', $dataArr);
+		}
+				
 		
 		public function getIdTecnicoPorRut($rut){
 			$this->db->where('rut', $rut);
