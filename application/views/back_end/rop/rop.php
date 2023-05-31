@@ -130,26 +130,20 @@
             { "data": "hora_validacion" ,"class":"margen-td centered"},
             { "data": "usuario_asignado" ,"class":"margen-td centered"},
             { "data": "horas_estimadas" ,"class":"margen-td centered"},
-            { "data": "horas_pendientes" ,"class":"margen-td centered"},
-            { "data": "descripcion" ,"class":"margen-td centered"},
+
+            {
+              "class":"centered margen-td","data": function(row,type,val,meta){
+                var color = row.vigencia === "vencido" && (row.id_estado === "0" || row.id_estado === "1") ? "red" : "#000";
+                html =`<span  style="color:${color};font-size:12px!important;">${row.horas_pendientes}</span>`;
+                return html;
+              }
+            },
+
+             { "data": "descripcion" ,"class":"margen-td centered"},
             { "data": "fecha_fin" ,"class":"margen-td centered"},
             { "data": "hora_fin" ,"class":"margen-td centered"},
             { "data": "observacion_fin" ,"class":"margen-td centered"},
             { "data": "ultima_actualizacion" ,"class":"margen-td centered"},
-           /*  {
-             "class":"centered margen-td","data": function(row,type,val,meta){
-                if(row.titulo!="" && row.titulo!=null){
-                   if(row.titulo.length > 60) {
-                     str = row.titulo.substring(0,60)+"...";
-                     return "<span class='btndesp2'>"+str+"</span><span title='Ver texto completo' class='ver_obs_desp' data-tit="+row.titulo.replace(/ /g,"_")+" data-title="+row.titulo.replace(/ /g,"_")+">Ver más</span>";
-                   }else{
-                     return "<span class='btndesp2' data-title="+row.titulo.replace(/ /g,"_")+">"+row.titulo+"</span>";
-                  }
-                }else{
-                  return "-";
-                }
-              }
-            },   */
           
           ]
     }); 
@@ -223,8 +217,10 @@
 
         $(".finalizado_cont").show()
         $(".guardar_cont").show()
+        $(".cont_correo").show()
         $(".requiere_validar_cont").hide()
         $(".finalizado_cont").hide()
+        $('#checkcorreo').prop('checked', true);
         
     });
 
@@ -241,9 +237,9 @@
               dataType: "json",
               contentType : false,
               beforeSend:function(){
-                $(".btn_ingreso_rop").attr("disabled", true);
+               /*  $(".btn_ingreso_rop").attr("disabled", true);
                 $(".cierra_modal_rop").attr("disabled", true);
-                $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true);
+                $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true); */
               },
 
               success: function (data) {
@@ -323,6 +319,7 @@
         $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true);
         $(".btn_ingreso_rop").attr("disabled", true);
         $(".cierra_modal_rop").attr("disabled", true);
+        $('#checkcorreo').prop('checked', true);
 
         $.ajax({
           url: base+"getDataRop"+"?"+$.now(),  
@@ -349,14 +346,14 @@
                   $('#usuario_asignado').val(data.datos[dato].id_usuario_asignado).trigger('change');
                   $("#observacion").val(data.datos[dato].observacion);
 
-                  $("#fecha_ingreso").val(data.datos[dato].fecha_hora_ingreso);
+                  $("#fecha_ingreso").val(data.datos[dato].fecha_ingreso+" "+data.datos[dato].hora_ingreso);
                   $("#responsable").val(data.datos[dato].responsable1);
                   $("#validador_sistema").val(data.datos[dato].validador_sistema);
                   $("#validador_real").val(data.datos[dato].validador_real);
-                  $("#fecha_validacion").val(data.datos[dato].fecha_validacion);
+                  $("#fecha_validacion").val(data.datos[dato].fecha_validacion+" "+data.datos[dato].hora_validacion);
                   $("#horas_estimadas").val(data.datos[dato].horas_estimadas);
                   $("#horas_pendiente").val(data.datos[dato].horas_pendientes);
-                  $("#fecha_finalizado").val(data.datos[dato].fecha_hora_fin);
+                  $("#fecha_finalizado").val(data.datos[dato].fecha_fin+" "+data.datos[dato].hora_fin);
                   $("#observacion").val(data.datos[dato].observacion_fin);
                   /* $("#checkvalidar").val(data.datos[dato].titulo);
                   $("#checkfin").val(data.datos[dato].checkfin); */
@@ -368,9 +365,11 @@
                      $(".requiere_validar_cont").hide()
                      $(".finalizado_cont").hide()
                      $(".guardar_cont").hide()
+                     $(".cont_correo").hide()
                   }else{
                     $(".guardar_cont").show()
                     $(".finalizado_cont").show()
+                    $(".cont_correo").show()
                   }
 
                   $.getJSON(base + "listaRequerimientos" , {tipo:data.datos[dato].id_tipo},function(data) {
@@ -671,7 +670,7 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-4">  
+                  <div class="col-lg-2">  
                     <div class="form-group">
                     <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo </label>
                     <select id="tipo" name="tipo" class="custom-select custom-select-sm">
@@ -688,7 +687,7 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-4">  
+                  <div class="col-lg-3">  
                     <div class="form-group">
                       <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Requerimiento </label>
                       <select id="requerimiento" name="requerimiento" style="width:100%!important;">
@@ -697,7 +696,7 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-4"> 
+                  <div class="col-lg-6"> 
                     <div class="form-group"> 
                     <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Archivo requerimiento adj.1</label>
                       <input type="file" id="adjunto_req1" name="adjunto_req1">
@@ -824,9 +823,18 @@
 
 	            <br>
 
-              <div class="col-lg-8 offset-lg-2">
+              <div class="col-lg-12">
                 <div class="form-row justify-content-center">
-                  
+
+                  <div class="col-lg-2">
+                    <div class="form-group">  
+                      <div class="form-check">
+                        <input type="checkbox"  name="checkcorreo" class="form-check-input" id="checkcorreo">
+                        <label class="form-check-label" style="font-size: 13px;" for="checkcorreo">¿Enviar correo?</label>
+                      </div>
+                    </div>
+                  </div>
+                      
                   <div class="col-lg-2 requiere_validar_cont cont_edicion">
                     <div class="form-group">
                       <div class="form-check">

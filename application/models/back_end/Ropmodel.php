@@ -31,12 +31,14 @@ class Ropmodel extends CI_Model {
 				END AS fecha_validacion,
 			
 				IF(STR_TO_DATE(r.fecha_fin, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_fin,"%d-%m-%Y"),"") as fecha_fin,
-				IFNULL(LEAST(TIMESTAMPDIFF(HOUR, CONCAT(r.fecha_ingreso, " ", r.hora_ingreso), NOW()), 0), 0) as horas_pendientes,
+				IFNULL(TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()), 0) as horas_pendientes,
 
 				CASE
 				WHEN STR_TO_DATE(r.hora_ingreso, "%H:%i") IS NULL OR r.hora_ingreso = "" THEN NULL
 					ELSE LEFT(r.hora_ingreso, 5)
 				END AS hora_ingreso,
+
+				CASE WHEN TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()) > req_mant.horas_estimadas AND r.id_estado IN (0, 1, 4) THEN "vencido" ELSE "vigente" END AS vigencia,
 
 				CASE req_mant.requiere_validacion
 					WHEN 0 THEN "No aplica"
@@ -125,12 +127,11 @@ class Ropmodel extends CI_Model {
 					WHEN 1 THEN IF(STR_TO_DATE(r.fecha_validacion, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_validacion, "%d-%m-%Y"), "")
 				END AS fecha_validacion,
 
-			
 				IF(STR_TO_DATE(r.fecha_fin, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_fin,"%d-%m-%Y"),"") as fecha_fin,
-				IFNULL(LEAST(TIMESTAMPDIFF(HOUR, CONCAT(r.fecha_ingreso, " ", r.hora_ingreso), NOW()), 0), 0) as horas_pendientes,
+				IFNULL(TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()), 0) as horas_pendientes,
 
 				CASE
-				WHEN STR_TO_DATE(r.hora_ingreso, "%H:%i") IS NULL OR r.hora_ingreso = "" THEN NULL
+				WHEN STR_TO_DATE(r.hora_ingreso, "%H:%i") IS NULL OR r.hora_ingreso = "" THEN ""
 					ELSE LEFT(r.hora_ingreso, 5)
 				END AS hora_ingreso,
 
@@ -139,14 +140,14 @@ class Ropmodel extends CI_Model {
 					WHEN 1 THEN 
 
 						CASE
-						WHEN STR_TO_DATE(r.hora_validacion, "%H:%i") IS NULL OR r.hora_validacion = "" THEN NULL
+						WHEN STR_TO_DATE(r.hora_validacion, "%H:%i") IS NULL OR r.hora_validacion = "" THEN ""
 							ELSE LEFT(r.hora_validacion, 5)
 						END
 
 				END AS hora_validacion,
 
 				CASE
-				WHEN STR_TO_DATE(r.hora_fin, "%H:%i") IS NULL OR r.hora_fin = "" THEN NULL
+				WHEN STR_TO_DATE(r.hora_fin, "%H:%i") IS NULL OR r.hora_fin = "" THEN ""
 					ELSE LEFT(r.hora_fin, 5)
 				END AS hora_fin,
 
@@ -159,7 +160,12 @@ class Ropmodel extends CI_Model {
 
 				CONCAT(usr.nombres," " ,usr.apellidos) as responsable1,
 				CONCAT(usr2.nombres," ",usr2.apellidos) as responsable2,
-				
+
+				us3.correo_empresa as correo_solicitante,
+				usr.correo_empresa as correo_responsable1,
+				usr2.correo_empresa as correo_responsable2,
+				usj.correo_empresa as correo_jefe,
+
 				CONCAT(CASE r.id_estado
 					WHEN  0 THEN "Pendiente"
 					WHEN  1 THEN "Asignado"
@@ -189,6 +195,86 @@ class Ropmodel extends CI_Model {
 			$this->db->where('sha1(r.id)', $hash);
 			$res=$this->db->get('rop as r');
 			return $res->result_array();
+		}
+		
+		public function getRopListVencidas(){
+			$this->db->select('r.*,
+			sha1(r.id) as hash,
+			CONCAT(LEFT(us.nombres, 1), ". ", SUBSTRING_INDEX(us.apellidos, " ", 1)) AS usuario_asignado,
+			CONCAT(LEFT(us2.nombres, 1), ". ", SUBSTRING_INDEX(us2.apellidos, " ", 1)) AS validador_real,
+			CONCAT(LEFT(us3.nombres, 1), ". ", SUBSTRING_INDEX(us3.apellidos, " ", 1)) AS solicitante,
+			CONCAT(LEFT(usj.nombres, 1), ". ", SUBSTRING_INDEX(usj.apellidos, " ", 1)) AS jefe_solicitante,
+			IF(STR_TO_DATE(r.fecha_ingreso, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_ingreso,"%d-%m-%Y"),"") as fecha_ingreso,
+			CASE req_mant.requiere_validacion
+				WHEN 0 THEN "No aplica"
+				WHEN 1 THEN IF(STR_TO_DATE(r.fecha_validacion, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_validacion, "%d-%m-%Y"), "")
+			END AS fecha_validacion,
+			IF(STR_TO_DATE(r.fecha_fin, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_fin,"%d-%m-%Y"),"") as fecha_fin,
+			IFNULL(TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()), 0) as horas_pendientes,
+			CASE
+				WHEN STR_TO_DATE(r.hora_ingreso, "%H:%i") IS NULL OR r.hora_ingreso = "" THEN NULL
+				ELSE LEFT(r.hora_ingreso, 5)
+			END AS hora_ingreso,
+			CASE WHEN TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()) > req_mant.horas_estimadas AND r.id_estado IN (0, 1, 4) THEN "vencido" ELSE "vigente" END AS vigencia,
+			CASE req_mant.requiere_validacion
+				WHEN 0 THEN "No aplica"
+				WHEN 1 THEN 
+					CASE
+						WHEN STR_TO_DATE(r.hora_validacion, "%H:%i") IS NULL OR r.hora_validacion = "" THEN NULL
+						ELSE LEFT(r.hora_validacion, 5)
+					END
+			END AS hora_validacion,
+			CASE
+				WHEN STR_TO_DATE(r.hora_fin, "%H:%i") IS NULL OR r.hora_fin = "" THEN NULL
+				ELSE LEFT(r.hora_fin, 5)
+			END AS hora_fin,
+			req_mant.*,
+			CASE req_mant.requiere_validacion
+				WHEN 0 THEN "No aplica"
+				WHEN 1 THEN CONCAT(LEFT(usj.nombres, 1), ". ", SUBSTRING_INDEX(usj.apellidos, " ", 1))
+			END AS validador_sistema,
+			CONCAT(LEFT(usr.nombres, 1), ". ", SUBSTRING_INDEX(usr.apellidos, " ", 1)) AS responsable1,
+			CONCAT(LEFT(usr2.nombres, 1), ". ", SUBSTRING_INDEX(usr2.apellidos, " ", 1)) AS responsable2,
+			CONCAT(CASE r.id_estado
+				WHEN  0 THEN "Pendiente"
+				WHEN  1 THEN "Asignado"
+				WHEN  2 THEN "Finalizado"
+				WHEN  3 THEN "Cancelado"
+				ELSE "Pendiente"
+			END) AS estado,
+
+			us3.correo_empresa as correo_solicitante,
+			usr.correo_empresa as correo_responsable1,
+			usr2.correo_empresa as correo_responsable2,
+			usj.correo_empresa as correo_jefe,
+
+			r.id_estado as id_estado,
+			r.ultima_actualizacion as ultima_actualizacion,
+			req_mant_t.tipo as tipo,
+			');
+			
+			$this->db->join('usuarios as us', 'us.id = r.id_usuario_asignado', 'left');
+			$this->db->join('usuarios as us2', 'us2.id = r.id_validador_real', 'left');
+			$this->db->join('usuarios as us3', 'us3.id = r.id_solicitante', 'left');
+
+			$this->db->join('usuarios_jefes uj', 'uj.id = us3.id_jefe', 'left');
+			$this->db->join('usuarios usj', 'usj.id = uj.id_jefe', 'left');
+
+			$this->db->join('rop_mantenedor_requerimientos req_mant', 'req_mant.id = r.id_requerimiento', 'left');
+			$this->db->join('rop_tipos req_mant_t', 'req_mant_t.id = req_mant.id_tipo', 'left');
+		
+			$this->db->join('usuarios as usr', 'usr.id = req_mant.id_responsable1', 'left');
+			$this->db->join('usuarios as usr2', 'usr2.id = req_mant.id_responsable2', 'left');
+
+			$this->db->where("(CASE WHEN TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()) > req_mant.horas_estimadas THEN 'vencido' ELSE 'vigente' END = 'vencido' AND (r.id_estado = 0 OR r.id_estado = 1 OR r.id_estado = 4))");
+			$this->db->order_by("horas_pendientes", 'DESC');
+			$res = $this->db->get('rop as r');
+
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+
+			return FALSE;
 		}
 
 		public function formActualizar($id,$data){

@@ -283,10 +283,7 @@
 	$route['listaSeriesOperativos'] = "back_end/materiales/listaSeriesOperativos";
 	$route['excel_series_devolucion/(:any)/(:any)'] = "back_end/materiales/excel_series_devolucion/$1/$2";
 	$route['excel_series_operativos/(:any)/(:any)'] = "back_end/materiales/excel_series_operativos/$1/$2";
-
-	
-
-
+ 
 
 /******************TICKET*************************/
 
@@ -298,7 +295,7 @@
 	$route['getDataTicket'] = "back_end/ticket/getDataTicket";
 
 
-/******************ROP*************************/
+/******************SYR*************************/
 
 	$route['syr'] = "back_end/rop/index";
 	$route['getRopInicio'] = "back_end/rop/getRopInicio";
@@ -309,8 +306,9 @@
 	$route['listaRequerimientos'] = "back_end/rop/listaRequerimientos";
 	$route['listaPersonas'] = "back_end/rop/listaPersonas";
 	$route['listaResponsables'] = "back_end/rop/listaResponsables";
+	$route['solicitudesVencidas'] = "back_end/rop/solicitudesVencidas";
 	$route['excel_rop/(:any)/(:any)/(:any)/(:any)'] = "back_end/rop/excel_rop/$1/$2/$3/$4";
-
+	
 	$route['getMantenedorReq'] = "back_end/rop/getMantenedorReq";
 	$route['getMantenedorReqList'] = "back_end/rop/getMantenedorReqList";
 	$route['formMantenedorReq'] = "back_end/rop/formMantenedorReq";
