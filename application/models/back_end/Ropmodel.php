@@ -161,6 +161,7 @@ class Ropmodel extends CI_Model {
 				CONCAT(usr.nombres," " ,usr.apellidos) as responsable1,
 				CONCAT(usr2.nombres," ",usr2.apellidos) as responsable2,
 
+				us.correo_empresa as correo_asignado,
 				us3.correo_empresa as correo_solicitante,
 				usr.correo_empresa as correo_responsable1,
 				usr2.correo_empresa as correo_responsable2,

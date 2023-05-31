@@ -139,7 +139,7 @@
               }
             },
 
-             { "data": "descripcion" ,"class":"margen-td centered"},
+            { "data": "descripcion" ,"class":"margen-td centered"},
             { "data": "fecha_fin" ,"class":"margen-td centered"},
             { "data": "hora_fin" ,"class":"margen-td centered"},
             { "data": "observacion_fin" ,"class":"margen-td centered"},
@@ -237,9 +237,9 @@
               dataType: "json",
               contentType : false,
               beforeSend:function(){
-               /*  $(".btn_ingreso_rop").attr("disabled", true);
+                $(".btn_ingreso_rop").attr("disabled", true);
                 $(".cierra_modal_rop").attr("disabled", true);
-                $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true); */
+                $("#formRop input,#formRop select,#formRop button,#formRop").prop("disabled", true);
               },
 
               success: function (data) {
@@ -350,7 +350,13 @@
                   $("#responsable").val(data.datos[dato].responsable1);
                   $("#validador_sistema").val(data.datos[dato].validador_sistema);
                   $("#validador_real").val(data.datos[dato].validador_real);
-                  $("#fecha_validacion").val(data.datos[dato].fecha_validacion+" "+data.datos[dato].hora_validacion);
+                  
+                  if(data.datos[dato].fecha_validacion!="No aplica"){
+                    $("#fecha_validacion").val(data.datos[dato].fecha_validacion+" "+data.datos[dato].hora_validacion);
+                  }else{
+                    $("#fecha_validacion").val('No aplica');
+                  }
+
                   $("#horas_estimadas").val(data.datos[dato].horas_estimadas);
                   $("#horas_pendiente").val(data.datos[dato].horas_pendientes);
                   $("#fecha_finalizado").val(data.datos[dato].fecha_fin+" "+data.datos[dato].hora_fin);

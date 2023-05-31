@@ -272,23 +272,32 @@ class Rop extends CI_Controller {
 				if($tipo==0){ //NUEVO
 					$asunto = "Solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
 					$cuerpo = "Le informamos que se ha ingresado la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
-					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en  ".$key["horas_estimadas"]." hrs aprox, terminado dicho plazo la solicitud sera escalada al responsable superior predefinido por su organización. 
-					Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad";
+					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en  ".$key["horas_estimadas"]." hrs aprox, terminado dicho plazo la solicitud sera escalada al responsable superior predefinido por su organización.<br> 
+					Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
-					$para = array($key["correo_responsable1"]);
-					$copias = array($key["correo_solicitante"],$key["correo_jefe"],"roberto.segovia@xr3.cl");
+					$para = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+
+					$copias[] = "roberto.segovia@xr3.cl";
+
 				}
 
 				if($tipo==1){ //ASIGNADO
 					$asunto = "Asignación solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
 					$cuerpo = "Le informamos que se ha asignado la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
-					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en  ".$key["horas_estimadas"]." hrs aprox , terminado dicho día la solciitud sera escalada al responsable superior predefinido por su organización. 
+					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en  ".$key["horas_estimadas"]." hrs aprox, terminado dicho día la solciitud sera escalada al responsable superior predefinido por su organización.<br> 
 					Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
-					$para = array($key["correo_responsable1"]);
-					$copias = array($key["correo_solicitante"],$key["correo_jefe"],"roberto.segovia@xr3.cl");
+					$para = !empty($key["correo_asignado"]) ? [$key["correo_asignado"]] : [];
+					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_responsable1"]) ? array_merge($copias, [$key["correo_responsable1"]]) : $copias;
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+
+					$copias[] = "roberto.segovia@xr3.cl";
+
 				}
 
 				if($tipo==2){//FINALIZAR
@@ -297,8 +306,13 @@ class Rop extends CI_Controller {
 					$cuerpo2 = "Para más detalles puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
-					$para = array($key["correo_solicitante"]);
-					$copias = array($key["correo_responsable1"],$key["correo_responsable2"],$key["correo_jefe"],"roberto.segovia@xr3.cl");
+					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_responsable2"]) ? array_merge($copias, [$key["correo_responsable2"]]) : $copias;
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+
+					$copias[] = "roberto.segovia@xr3.cl";
+
 				}
 
 				if($tipo==3){//CANCELADA
@@ -307,8 +321,12 @@ class Rop extends CI_Controller {
 					$cuerpo2 = "Para más detalles puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
-					$para = array($key["correo_solicitante"]);
-					$copias = array($key["correo_responsable1"],$key["correo_responsable2"],$key["correo_jefe"],"roberto.segovia@xr3.cl");
+					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_responsable2"]) ? array_merge($copias, [$key["correo_responsable2"]]) : $copias;
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+
+					$copias[] = "roberto.segovia@xr3.cl";
 				}
 
 				if($tipo==4){//VALIDAR
@@ -317,13 +335,16 @@ class Rop extends CI_Controller {
 					$cuerpo2 = "Para más detalles puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
-					$para = array($key["correo_solicitante"]);
-					$copias = array($key["correo_responsable1"],$key["correo_jefe"],"roberto.segovia@xr3.cl");
+					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+
+					$copias[] = "roberto.segovia@xr3.cl";
+
 				}
 
-
 				if($prueba){
-					$para = array("ricardo.hernandez@splice.cl");
+					$para = array("ricardo.hernandez@splice.cl","roberto.segovia@xr3.cl","german.cortes@km-telecomunicaciones.cl");
 					$copias = array("ricardo.hernandez@km-t.cl");
 				}
 
@@ -353,17 +374,16 @@ class Rop extends CI_Controller {
 		}
 
 		public function solicitudesVencidas(){
-			$this->load->library('email');
 			$data = $this->Ropmodel->getRopListVencidas();
 			$prueba = TRUE;
-			
-			/* print_r($data);exit; */
-			if($data!=FALSE){
-				foreach($data as $key){
-				
-					$config = array (
+
+			if ($data != FALSE) {
+				foreach ($data as $key) {
+					$this->load->library('email');
+					/* 	print_r($key);exit; */
+					$config = array(
 						'mailtype' => 'html',
-						'charset'  => 'utf-8',
+						'charset' => 'UTF-8',
 						'priority' => '1',
 						'wordwrap' => TRUE,
 						'protocol' => "smtp",
@@ -374,41 +394,59 @@ class Rop extends CI_Controller {
 					);
 
 					$this->email->initialize($config);
-				
-					$asunto = "Escalamiento por vencimiento de plazo solicitud SYR N° ".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
-					$cuerpo = "Le informamos que se la solicitud SYR N° ".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] has superado el tiempo predefinido para responder y finalizar por parte del responsable primario de la actividad por lo que el sistema automáticamente le esta reasignando la respuesta a usted como escalamiento superior predefinido , el detalle es el siguiente.";
-					$cuerpo2 = "Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
-					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
-					$para = array($key["correo_responsable2"]);
-					$copias = array($key["correo_responsable1"],$key["correo_solicitante"],$key["correo_jefe"],"roberto.segovia@xr3.cl");
-			
-					if($prueba){
-						$para = array("ricardo.hernandez@splice.cl");
+
+					$asunto = "Escalamiento por vencimiento de plazo solicitud SYR N° " . $key["id"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ";
+					$cuerpo = "Le informamos que se la solicitud SYR N° " . $key["id"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ha superado el tiempo predefinido para responder y finalizar por parte del responsable primario de la actividad, por lo que el sistema automáticamente le está reasignando la respuesta a usted como escalamiento superior predefinido. El detalle es el siguiente.";
+					$cuerpo2 = "Para contestar, puede ingresar al siguiente enlace con previo ingreso de sus credenciales de seguridad.";
+					$this->email->from("syr@xr3t.cl", "Solicitudes y requerimientos plataforma XR3");
+
+					$para = !empty($key["correo_responsable2"]) ? [$key["correo_responsable2"]] : [];
+					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_solicitante"]) ? array_merge($copias, [$key["correo_solicitante"]]) : $copias;
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+
+					$copias[] = "roberto.segovia@xr3.cl";
+
+					if ($prueba) {
+						$para = array("ricardo.hernandez@splice.cl","roberto.segovia@xr3.cl","german.cortes@km-telecomunicaciones.cl");
 						$copias = array("ricardo.hernandez@km-t.cl");
 					}
 
-					$datos = array("data"=>$data,"asunto"=>$asunto,"cuerpo"=>$cuerpo,"cuerpo2"=>$cuerpo2);
-					$html = $this->load->view('back_end/rop/correo',$datos,TRUE);
-
 					$this->email->to($para);
 					$this->email->cc($copias);
-					/* $this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl")); */
-					$this->email->subject($asunto); 
-					$this->email->message($html); 
-					
-					if($key["adjunto_requerimiento_1"]!="") {$this->email->attach(base_url()."archivos/rop/".$key["adjunto_requerimiento_1"]);}
-					if($key["adjunto_respuesta_1"]!="") {$this->email->attach(base_url()."archivos/rop/".$key["adjunto_respuesta_1"]);}
-					if($key["adjunto_requerimiento_2"]!="") {$this->email->attach(base_url()."archivos/rop/".$key["adjunto_requerimiento_2"]);}
+					$this->email->subject($asunto);
 
-					$resp=$this->email->send();
+					$datos = array("dato" => $key, "asunto" => $asunto, "cuerpo" => $cuerpo, "cuerpo2" => $cuerpo2);
+					$html = $this->load->view('back_end/rop/correo', $datos, TRUE);
 
-					if ($resp) {
-						return TRUE;
-					}else{
-						return FALSE;
+					$this->email->message($html);
+
+					if ($key["adjunto_requerimiento_1"] != "") {
+						$this->email->attach(base_url() . "archivos/rop/" . $key["adjunto_requerimiento_1"]);
+					}
+					if ($key["adjunto_respuesta_1"] != "") {
+						$this->email->attach(base_url() . "archivos/rop/" . $key["adjunto_respuesta_1"]);
+					}
+					if ($key["adjunto_requerimiento_2"] != "") {
+						$this->email->attach(base_url() . "archivos/rop/" . $key["adjunto_requerimiento_2"]);
+					}
+
+					$resp = $this->email->send();
+
+					if (!$resp) {
+						// Si ocurre un error al enviar el correo, puedes manejarlo aquí
+						// Puedes mostrar un mensaje de error o guardar registros de los envíos fallidos
 					}
 				}
 			}
+
+			// Después de enviar todos los correos, puedes retornar TRUE o FALSE según sea necesario
+			if (!empty($data)) {
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+
 		}
 
 		

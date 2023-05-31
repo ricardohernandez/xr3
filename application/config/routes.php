@@ -224,6 +224,7 @@
 
 
 /*******PRODUCTIVIDAD*******/
+
 	$route['productividad'] = "back_end/productividad/index";
 	$route['vistaDetalle'] = "back_end/productividad/vistaDetalle";
 	$route['listaDetalle'] = "back_end/productividad/listaDetalle";
@@ -268,7 +269,6 @@
 	$route['listaDetalleMateriales'] = "back_end/materiales/listaDetalleMateriales";
 	$route['excel_detalle_materiales/(:any)/(:any)'] = "back_end/materiales/excel_detalle_materiales/$1/$2";
 
-	
 	$route['vistaMaterialesPorTecnico'] = "back_end/materiales/vistaMaterialesPorTecnico";
 	$route['listaTecnico'] = "back_end/materiales/listaTecnico";
 	$route['excel_tecnico/(:any)/(:any)'] = "back_end/materiales/excel_tecnico/$1/$2";
@@ -276,7 +276,6 @@
 	$route['vistaMaterialesPorMaterial'] = "back_end/materiales/vistaMaterialesPorMaterial";
 	$route['listaMaterial'] = "back_end/materiales/listaMaterial";
 	$route['excel_material/(:any)/(:any)'] = "back_end/materiales/excel_material/$1/$2";
-
 
 	$route['vistaSeriesPorTecnico'] = "back_end/materiales/vistaSeriesPorTecnico";
 	$route['listaSeriesDevolucion'] = "back_end/materiales/listaSeriesDevolucion";
@@ -293,7 +292,6 @@
 	$route['formTicket'] = "back_end/ticket/formTicket";
 	$route['eliminaTicket'] = "back_end/ticket/eliminaTicket";
 	$route['getDataTicket'] = "back_end/ticket/getDataTicket";
-
 
 /******************SYR*************************/
 

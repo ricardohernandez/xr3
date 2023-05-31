@@ -7,7 +7,7 @@
 </head>
 
 <?php
-foreach($data as $dato){
+
   if($dato["estado"]=="1"){
     $color = "#107C41";
   }else{
@@ -171,7 +171,5 @@ foreach($data as $dato){
 
 </div>
 </body>
-<?php
-}
-?>
+ 
 </html>
