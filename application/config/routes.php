@@ -212,7 +212,6 @@
 	$route['getDataFFTTH'] = "back_end/checklist/ChecklistFTTH/getDataFFTTH";
 	$route['formFFTTH'] = "back_end/checklist/ChecklistFTTH/formFFTTH";
 
-
 /*******CHECKLIST REPORTES*******/
 
 	$route['checklist_reportes'] = "back_end/checklist/checklist_reportes/index";	

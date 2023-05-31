@@ -71,6 +71,7 @@ class Ropmodel extends CI_Model {
 					WHEN  1 THEN "Asignado"
 					WHEN  2 THEN "Finalizado"
 					WHEN  3 THEN "Cancelado"
+					WHEN  4 THEN "Validado"
 					ELSE "Pendiente"
 
 				END) AS estado,

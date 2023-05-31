@@ -189,7 +189,9 @@ class Rop extends CI_Controller {
 						}
 
 						//SI VIENE CHECK VALIDADO Y EL USUARIO ACTUAL ES DIFERENTE AL YA GUARDADO
-						if($checkvalidar=="on" and $this->session->userdata("id")<>$validadorRealRop){//
+						// and $this->session->userdata("id")<>$validadorRealRop
+
+						if($checkvalidar=="on"){//
 							$id_validador_real = $this->session->userdata("id");
 							$data_mod["id_validador_real"] = $id_validador_real;
 							$data_mod["fecha_validacion"] = date("Y-m-d");
@@ -254,7 +256,7 @@ class Rop extends CI_Controller {
 			$prueba = TRUE;
 
 			foreach($data as $key){
-			
+				
 				$config = array (
 					'mailtype' => 'html',
 					'charset'  => 'utf-8',
@@ -348,7 +350,7 @@ class Rop extends CI_Controller {
 					$copias = array("ricardo.hernandez@km-t.cl");
 				}
 
-				$datos = array("data"=>$data,"asunto"=>$asunto,"cuerpo"=>$cuerpo,"cuerpo2"=>$cuerpo2);
+				$datos = array("dato"=>$key,"asunto"=>$asunto,"cuerpo"=>$cuerpo,"cuerpo2"=>$cuerpo2);
 				$html = $this->load->view('back_end/rop/correo',$datos,TRUE);
 
 				/* echo $html;exit; */
@@ -433,46 +435,44 @@ class Rop extends CI_Controller {
 
 					$resp = $this->email->send();
 
-					if (!$resp) {
-						// Si ocurre un error al enviar el correo, puedes manejarlo aquí
-						// Puedes mostrar un mensaje de error o guardar registros de los envíos fallidos
-					}
+					if ($resp) {
+						return TRUE;
+					}else{
+						return FALSE;
+					} 
 				}
 			}
 
-			// Después de enviar todos los correos, puedes retornar TRUE o FALSE según sea necesario
-			if (!empty($data)) {
+ 			if (!empty($data)) {
 				return TRUE;
 			} else {
 				return FALSE;
-			}
-
+			} 
 		}
 
-		
 		public function procesaArchivo($file,$titulo){
-				$path = $file['name'];
-				$ext = pathinfo($path, PATHINFO_EXTENSION);
-				$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-				$config['upload_path'] = './archivos/rop';
-				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC';
-				$config['file_name'] = $archivo;
-				$config['max_size']	= '5300';
-				$config['overwrite']	= FALSE;
-				$this->load->library('upload', $config);
-				$_FILES['userfile']['name'] = $archivo;
-				$_FILES['userfile']['type'] = $file['type'];
-				$_FILES['userfile']['tmp_name'] = $file['tmp_name'];
-				$_FILES['userfile']['error'] = $file['error'];
-				$_FILES['userfile']['size'] = $file['size'];
-				$this->upload->initialize($config);
+			$path = $file['name'];
+			$ext = pathinfo($path, PATHINFO_EXTENSION);
+			$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
+			$config['upload_path'] = './archivos/rop';
+			$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC';
+			$config['file_name'] = $archivo;
+			$config['max_size']	= '5300';
+			$config['overwrite']	= FALSE;
+			$this->load->library('upload', $config);
+			$_FILES['userfile']['name'] = $archivo;
+			$_FILES['userfile']['type'] = $file['type'];
+			$_FILES['userfile']['tmp_name'] = $file['tmp_name'];
+			$_FILES['userfile']['error'] = $file['error'];
+			$_FILES['userfile']['size'] = $file['size'];
+			$this->upload->initialize($config);
 
-				if (!$this->upload->do_upload()){ 
-					echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
-				}else{
-					unset($config);
-					return $archivo;
-				}
+			if (!$this->upload->do_upload()){ 
+				echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
+			}else{
+				unset($config);
+				return $archivo;
+			}
 		}
 
 		public function eliminaRop(){

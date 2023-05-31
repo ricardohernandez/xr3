@@ -27,8 +27,8 @@
     </table>
 
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
-      <p style="text-align:center;">
-      <span style="color: #32477C;text-decoration: none;font-size:14px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
+      <p>
+      <span style="text-decoration: none;font-size:14px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
       <?php echo $cuerpo?>
       </span>
       </p>
@@ -148,7 +148,7 @@
 
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
       <p>
-        <span style="color: #32477C;text-decoration: none;font-size:14px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
+        <span style="text-decoration: none;font-size:14px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
         <?php echo $cuerpo2?>
       </span>
       </p>
@@ -162,7 +162,7 @@
 
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
       <p>
-      <span style="color: #32477C;font-size:13px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;"> 
+      <span style=";font-size:13px;padding:2px;margin:1px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;"> 
        Atte.<br> Sistema PTO-XR3 
       </span>
       </p>
