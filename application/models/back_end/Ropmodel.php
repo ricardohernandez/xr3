@@ -31,7 +31,7 @@ class Ropmodel extends CI_Model {
 				END AS fecha_validacion,
 			
 				IF(STR_TO_DATE(r.fecha_fin, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_fin,"%d-%m-%Y"),"") as fecha_fin,
-				IFNULL(TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()), 0) as horas_pendientes,
+				IF(r.id_estado = 0 OR r.id_estado = 1, IFNULL(TIMESTAMPDIFF(HOUR, TIMESTAMP(r.fecha_ingreso, r.hora_ingreso), NOW()), 0), "") as horas_pendientes,
 
 				CASE
 				WHEN STR_TO_DATE(r.hora_ingreso, "%H:%i") IS NULL OR r.hora_ingreso = "" THEN NULL
