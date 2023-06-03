@@ -21,6 +21,33 @@
 <script src="<?php echo base_url();?>assets3/front_end/js/lazysizes.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/loader.js" charset="UTF-8"></script>
 
+<script>
+      // Obtener el valor del token CSRF desde la cookie
+      function getCsrfToken() {
+        var name = 'csrf_cookie=';
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var cookieArray = decodedCookie.split(';');
+        for (var i = 0; i < cookieArray.length; i++) {
+          var cookie = cookieArray[i];
+          while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+          }
+          if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+          }
+        }
+        return '';
+      }
+
+      // Agregar el token CSRF a todas las solicitudes AJAX
+      $.ajaxSetup({
+        data: {
+          csrf_token: getCsrfToken()
+        }
+      });
+    </script>
+
+	
 <script type="text/javascript">
   $(function(){
    url="<?php echo base_url(); ?>";

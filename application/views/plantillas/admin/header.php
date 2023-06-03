@@ -21,5 +21,31 @@
    <!--  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
 
   </head>
+  <script>
+  // Obtener el valor del token CSRF desde la cookie
+  function getCsrfToken() {
+    var name = 'csrf_cookie=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i];
+      while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return '';
+  }
+
+  // Agregar el token CSRF a todas las solicitudes AJAX
+  $.ajaxSetup({
+    data: {
+      csrf_token: getCsrfToken()
+    }
+  });
+</script>
+
 
   <body class="h-100">

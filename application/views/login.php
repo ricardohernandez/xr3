@@ -22,6 +22,33 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+<script>
+  // Obtener el valor del token CSRF desde la cookie
+  function getCsrfToken() {
+    var name = 'csrf_cookie=';
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i];
+      while (cookie.charAt(0) === ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return '';
+  }
+
+  // Agregar el token CSRF a todas las solicitudes AJAX
+  $.ajaxSetup({
+    data: {
+      csrf_token: getCsrfToken()
+    }
+  });
+</script>
+
 <style type="text/css" media="screen">
   @media (max-width: 768px){
     .log_tit{
