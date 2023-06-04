@@ -1,47 +1,4 @@
-<style type="text/css">
-  html, body{
-    min-height: calc(100vh - 110px)
-  }
-
-  .disabled_sub{
-      pointer-events:none;
-      opacity:0.4;
-  }
-
-  ::selection {
-    background: #8AC007; 
-    color:#fff;
-  }
-
-  .contenedor_app{
-    border: 1px solid #dce4ec;
-    background-color: #F8F8F8;
-    padding: 10px 5px;
-    margin-bottom: 40px;
-    border-radius: 1px;
-    min-height: calc(100vh - 110px)
-
-  }
-  .btn-top{
-    margin-top: 1px;
-  }
-  .btn-xs {
-    padding: 0px 5px!important;
-    font-size: 12px;
-  }
-  hr{
-    margin-top: 9px!important;
-    margin-bottom: 3px!important;;
-  }
-  .loader{
-    margin-top:150px;
-    height:100px;
-    width:100px;
-  }
-   
-
-</style>
-
+ 
 <script type="text/javascript">
   $(function(){
 

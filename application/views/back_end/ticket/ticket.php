@@ -1,5 +1,5 @@
 <style type="text/css">
-  .red{
+  /* .red{
     background-color: #DC3545;
     color: #fff;
   }
@@ -253,7 +253,7 @@
      display: none;
     }
 
-  }
+  } */
 </style>
 
 <script type="text/javascript" charset="utf-8"> 

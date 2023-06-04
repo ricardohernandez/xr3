@@ -73,24 +73,6 @@
       font-size: 11px!important;
     }
   }
-
-  .dataTables_paginate .paginate_button {
-    margin-top: 20px!important;
-    padding: 5px 11px!important;
-    line-height: 1.42857143;
-    text-decoration: none;
-    font-size: 14px;
-    color: #ffffff;
-    background-color: #32477C!important;
-    border: 1px solid transparent;
-    margin-left: -1px;
-    cursor: pointer;
-  }
-
-  div.dataTables_wrapper div.dataTables_info {
-    padding-top: 0.1em!important;
-    white-space: nowrap;
-  }
   
 
 </style>

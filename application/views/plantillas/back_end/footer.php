@@ -22,17 +22,17 @@
 <link rel="stylesheet" href="hhttps://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/select.dataTables.min.css">
+
 
 <!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap.min.css" > -->
- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap-night.min.css" >
+ <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap-night.css" >
 
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap-datetimepicker.min2.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/normalize.min.css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos11.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estiloszzz.css"> -->
 
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos.css"> 
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos-oscuro.css"> 
 
 
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/fontawesome-all.min.css">
