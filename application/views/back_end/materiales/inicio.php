@@ -4,11 +4,16 @@
     const perfil = "<?php echo $this->session->userdata('id_perfil'); ?>"
 
     $.extend(true,$.fn.dataTable.defaults,{
+      dom: "<'row '<'col-sm-12'f>>" +
+            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+      "iDisplayLength":50, 
+      "paging":true,
+      "lengthChange": true,
+      "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
       info:true,
-      paging:false,
       ordering:true,
       searching:true,
-      lengthChange: false,
+      lengthChange: true,
       bSort: true,
       bFilter: true,
       bProcessing: true,

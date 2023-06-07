@@ -46,18 +46,13 @@
       });
       
       var tabla_mant_req = $('#tabla_mant_req').DataTable({
-         /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-         "iDisplayLength":-1, 
-         "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-         "bPaginate": false,
          "aaSorting" : [[10,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        
          "bDeferRender": true,
          "select" : true,
-          info:false,
-          columnDefs: [
+           columnDefs: [
               { orderable: false, targets: 0 }
           ],
           "ajax": {
@@ -376,9 +371,9 @@
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-1 col-lg-2"> 
+	  <div class="col-lg-1"> 
       <div class="form-group">
-          <button type="button" class="btn-block btn btn-sm btn-outline-primary btn_nuevo_mant_req btn_xr3">
+          <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_mant_req btn_xr3">
           <i class="fa fa-plus-circle"></i>  Nuevo 
           </button>
       </div>

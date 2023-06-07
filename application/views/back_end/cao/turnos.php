@@ -2,7 +2,6 @@
   .DTFC_LeftBodyLiner {
     overflow-x: hidden;
   }
-
   .azul{
     background-color: #233294;
     color:white;
@@ -176,6 +175,7 @@
                 bSort: true,
                 scrollCollapse: true,
                 paging:false,
+                responsive:false,
                 oLanguage: { 
                   sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
@@ -535,7 +535,7 @@
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
+            <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
           </div>
           <input type="date" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_t" id="desde_t">
           <input type="date" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_t" id="hasta_t">
@@ -640,7 +640,7 @@
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12">
-          <table id="tabla_turnos" class="table-bordered dt-responsive nowrap dataTable stripe row-border order-column" style="width:100%"></table>
+          <table id="tabla_turnos" class="table table-bordered dt-responsive nowrap dataTable stripe row-border order-column" style="width:100%"></table>
         </div>
       </div>
     </div>
@@ -659,7 +659,7 @@
             <legend class="form-ing-border">Ingreso de turnos </legend>
               <div class="form-row">
 
-                <div class="col-lg-3">  
+                <div class="col-lg-4">  
                   <div class="form-group">
                     <select id="trabajador" name="trabajador" style="width:100%!important;">
                         <option value="">Seleccione Trabajador | Todos</option>
@@ -671,7 +671,7 @@
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
-                        <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha inicio<span></span> 
+                        <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i><span style="margin-left:5px;font-size:13px;">Fecha Inicio<span></span> 
                       </div>
                        <input type="date" placeholder="Fecha inicio" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha" id="fecha">
                     </div>
@@ -682,14 +682,14 @@
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
-                        <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha término<span></span> 
+                        <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha Término<span></span> 
                       </div>
                       <input type="date" placeholder="Fecha término" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha2" id="fecha2">
                     </div>
                   </div>
                 </div>
 
-                <div class="col-lg-3">               
+                <div class="col-lg-2">               
                   <div class="form-group">
                     <select id="turno" name="turno" class="custom-select custom-select-sm">
                     <option value="" selected>Justificación</option>
@@ -712,7 +712,7 @@
             <div class="col-xs-12 col-sm-12 col-lg-8 offset-lg-2 mt-0">
               <div class="form-row">
                 <div class="col-9 col-lg-4">
-                  <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_turnos">
+                  <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_turnos">
                    <i class="fa fa-save"></i> Guardar
                   </button>
                 </div>

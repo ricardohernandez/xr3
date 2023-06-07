@@ -43,17 +43,13 @@
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
 
       var tabla_rop = $('#tabla_rop').DataTable({
-         /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-         "iDisplayLength":-1, 
-         "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-         "bPaginate": false,
          "aaSorting" : [[22,"desc"]],
          "scrollY": "65vh",
+         "responsive":false,
          "scrollX": true,
          "sAjaxDataProp": "result",        
          "bDeferRender": true,
          "select" : true,
-          info:false,
           columnDefs: [
               { orderable: false, targets: 0 }
           ],
@@ -553,13 +549,12 @@
   });
 </script>
   
-
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-1 col-lg-2"> 
+	  <div class="col-lg-1"> 
 	      <div class="form-group">
-	         <button type="button" class="btn-block btn btn-sm btn-outline-primary btn_nuevo_rop btn_xr3">
+	         <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_rop btn_xr3">
 	         <i class="fa fa-plus-circle"></i>  Nuevo 
 	         </button>
 	      </div>

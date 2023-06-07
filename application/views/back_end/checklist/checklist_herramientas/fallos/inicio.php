@@ -1,14 +1,5 @@
 <style type="text/css">
-  .red{
-    background-color: #DC3545;
-    color: #fff;
-  }
-
-  .grey{
-    background-color: grey;
-    color: #fff;
-  }
-
+  
   @media(min-width: 768px){
     .borrar_FH{
       display: inline;
@@ -66,12 +57,8 @@
 
   /*****DATATABLE*****/   
     var listaFH = $('#listaFH').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":-1, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": false,
        "aaSorting" : [[15,"desc"]],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -338,7 +325,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
             </div>
               <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_fh" id="desde_fh">
               <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_fh" id="hasta_fh">
@@ -423,12 +410,12 @@
         <div class="col-xs-12 col-sm-12 col-lg-6 offset-lg-3 mt-0">
           <div class="form-row">
             <div class="col-9 col-lg-6">
-                <button type="submit" class="btn-block btn btn-sm btn-success btn_guardarFH">
+                <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardarFH">
                  <i class="fa fa-save"></i> Guardar
                 </button>
             </div>
             <div class="col-3 col-lg-6">
-              <button class="btn-block btn btn-sm btn-danger cierra_modalFH" data-dismiss="modal" aria-hidden="true">
+              <button class="btn-block btn btn-sm btn-secondary cierra_modalFH" data-dismiss="modal" aria-hidden="true">
              <!--   <i class="fa fa-window-close"></i>  -->Cerrar
               </button>
             </div>

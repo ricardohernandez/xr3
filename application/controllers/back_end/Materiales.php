@@ -164,6 +164,14 @@ class Materiales extends CI_Controller {
 			if (strtolower(end($chk_ext)) === "csv") {
 				$filename = $_FILES['userfile']['tmp_name'];
 				$handle = fopen($filename, "r");
+
+
+				$bom = fread($handle, 3);
+				if ($bom !== "\xEF\xBB\xBF") {
+					rewind($handle); // Retroceder al inicio del archivo si no se encontró el BOM
+				}
+
+				
 				$i = 0;
 				$z = 0;
 				$y = 0;

@@ -3,12 +3,10 @@
     background-color: #DC3545;
     color: #fff;
   }
-
   .grey{
     background-color: grey;
     color: #fff;
   }
-
 
   @media(min-width: 768px){
     .borrar_ots{
@@ -102,13 +100,9 @@
     const base = "<?php echo base_url() ?>";
 
   /*****DATATABLE*****/   
-    var listaOTS = $('#listaOTS').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":-1, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": false,
+    var listaOTS = $('#listaOTS').DataTable({ 
        "aaSorting" : [[8,"desc"]],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -721,7 +715,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
             </div>
               <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
               <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
@@ -797,12 +791,12 @@
             </div>
 
             <div class="col-4 col-lg-4">
-                <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_ots">
+                <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_ots">
                  <i class="fa fa-save"></i> Guardar
                 </button>
             </div>
             <div class="col-4 col-lg-4">
-              <button class="btn-block btn btn-sm btn-danger cierra_modal_ots" data-dismiss="modal" aria-hidden="true">
+              <button class="btn-block btn btn-sm btn-secondary cierra_modal_ots" data-dismiss="modal" aria-hidden="true">
                <i class="fa fa-window-close"></i> Cerrar
               </button>
             </div>
@@ -949,7 +943,7 @@
                   <input type="text" placeholder="Busqueda" id="buscador_detalle" class="buscador_detalle form-control form-control-sm">
                  </div>
                 </div> -->
-                <table id="tabla_detalle" width="100%" class="dataTable datatable_h table table-hover table-bordered table-condensed">
+                <table id="tabla_detalle" width="100%" class="dataTable table-striped  datatable_h table table-hover table-bordered table-condensed">
                 <thead>
                   <tr style="background-color:#F9F9F9">
                       <th class="table_head desktop tablet">Tipo</th>

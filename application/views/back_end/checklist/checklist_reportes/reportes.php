@@ -9,24 +9,11 @@
     margin-bottom:10px!important;
   }
 
-  .nav__holder {
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.0)!important; 
-  }
-
-  footer{
-    box-shadow: 0 0 2px 3px rgb(0 0 0 / 0%)!important; 
-  }
   .titulo{
       display: inline-block;
       font-size: 13px;
   }
-  .red2{
-    color: #F05252;
-  }
-  .green{
-    color: #0E9F6E;
-  }
+
   .card{
     border: none!important;
     padding: 0px!important;;
@@ -59,14 +46,10 @@
   }
 
   .card_dash{
-    /* background-color: #32477C!important;*/
-    /* color:#fff!important;*/
-    /* border-top: none!important;
-     border-bottom: none!important;*/
+  
      border: none!important;
      border-top: none!important;
      border-bottom: none!important
-   /*  background-color: #fff!important;*/
      color:#32477C!important;
      padding: 0.25rem 0.75rem!important;
      font-size: 14px;
@@ -90,31 +73,6 @@
     text-align: left;
     padding:0px 2px;
     margin-top: 5px;
-  }
-  .desc_seccion{
-    color: #32477C;
-    font-size: 12px; 
-    font-weight:bold;
-    text-align: left;
-    padding:7px 2px;
-  }
-
-  .dataTables_paginate .paginate_button {
-    margin-top: 3px!important;
-    padding: 2px 4px!important;
-    text-decoration: none;
-    font-size: 12px!important; 
-    color: #fff!important; 
-    background-color: #32477C!important; 
-    cursor: pointer;
-  }
-
-  .select2-container--default .select2-selection--single {
-      border: 1px solid #ced4da!important;
-  }
-
-  .select2-container--default .select2-selection--single .select2-selection__rendered {
-      font-size:1rem!important;
   }
 
   .body{
@@ -255,7 +213,7 @@
        "bPaginate": false,
        "info":false,
        "aaSorting" : [[0,"asc"]],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -327,12 +285,12 @@
 
 </script>
 
-<div class="content mt-2" style="padding: 2px 10px; background-color: #F9FAFB;">
+<div class="content mt-2" style="padding: 2px 10px;">
     <div class="form-row">
         <div class="col-12  col-md-6 col-lg-3">
             <nav aria-label="breadcrumb">
-            <ol class="breadcrumb" style="padding: 0.15rem 1rem!important;">
-                <li class="breadcrumb-item active" aria-current="page" style="padding: 0.15rem 1rem!important;"><a href="" style="color:#32477C;font-size: 1rem;font-weight: bold;">RCH - Reporte checklist</a></li>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page" ><a href="">RCH - Reporte checklist</a></li>
             </ol>
             </nav>
         </div>
@@ -384,7 +342,7 @@
 </div>       
 
 <center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
-    <div class="mt-2">
+    <div class="">
         <div class="form-row body no-gutters">
             <div class="col-12 col-lg-6">
                 <div class="card">

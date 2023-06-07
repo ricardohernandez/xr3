@@ -1,14 +1,5 @@
 <style type="text/css">
-  .red{
-    background-color: #DC3545;
-    color: #fff;
-  }
-
-  .grey{
-    background-color: grey;
-    color: #fff;
-  }
-
+  
   .contenedor_checklist{
     min-height: 600px;
   }
@@ -69,9 +60,7 @@
     .modal_ast{
       width: 94%!important;
     }
-    .table_head{
-      font-size: 11px!important;
-    }
+    
   }
   
 
@@ -88,20 +77,13 @@
 
   /*****DATATABLE*****/   
     var listaAst = $('#listaAst').DataTable({
-      dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
-       "iDisplayLength":50, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "aaSorting" : [[9,"desc"]],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
-       "paging":true,
-       "lengthChange": true,
        "pagingType": "simple", 
-       "bPaginate": true,
        "columnDefs" : [
           { orderable: false , targets: 0 }
        ],
@@ -598,7 +580,7 @@
         </div>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-lg-3">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -672,7 +654,7 @@
       <table id="listaAst" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
           <tr>    
-            <th class="centered" style="width: 50px;"></th>    
+            <th class="centered" style="width: 50px;">Acciones</th>    
             <th class="centered">Actividad</th>   
             <th class="centered">Técnico</th>   
             <th class="centered">Auditor</th>  
@@ -710,13 +692,13 @@
             </div>
 
             <div class="col-4 col-lg-4">
-                <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_ast">
+                <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_ast">
                  <i class="fa fa-save"></i> Guardar
                 </button>
             </div>
 
             <div class="col-4 col-lg-4">
-              <button class="btn-block btn btn-sm btn-danger cierra_modal_ast" data-dismiss="modal" aria-hidden="true">
+              <button class="btn-block btn btn-sm btn-secondary cierra_modal_ast" data-dismiss="modal" aria-hidden="true">
                <i class="fa fa-window-close"></i> Cerrar
               </button>
             </div>

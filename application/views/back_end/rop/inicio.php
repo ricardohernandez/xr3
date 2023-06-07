@@ -8,7 +8,6 @@
       paging:false,
       ordering:true,
       searching:true,
-      lengthChange: false,
       bSort: true,
       bFilter: true,
       bProcessing: true,
@@ -17,6 +16,14 @@
       sAjaxDataProp: "result",        
       bDeferRender: true,
       select : true,
+      dom: "<'row '<'col-sm-12'f>>" +
+            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+         "iDisplayLength":50, 
+         "paging":true,
+         "lengthChange": true,
+         "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
+         "bPaginate": true, 
+
      "oLanguage": { 
       "sProcessing":     "<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
       "sLengthMenu":     "Mostrar: _MENU_ ",

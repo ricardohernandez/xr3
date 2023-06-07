@@ -34,12 +34,9 @@
       const p = "<?php echo $this->session->userdata('id_perfil') ?>";
 
       var tb_datas = $('#tb_datas').DataTable({
-         /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-         "iDisplayLength":-1, 
-         "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-         "bPaginate": false,
+         
          "aaSorting" : [[5,"desc"]],
-         "scrollY": "60vh",
+         "scrollY": "65vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        
          "bDeferRender": true,
@@ -323,7 +320,7 @@
   <div class="form-row">
     <div class="col-6 col-lg-2"> 
       <div class="form-group">
-         <button type="button" class="btn-block btn btn-sm btn-outline-primary btn_nuevo_datas btn_xr3">
+         <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_datas btn_xr3">
          <i class="fa fa-plus-circle"></i>  Nuevo archivo Datas mandante
          </button>
       </div>

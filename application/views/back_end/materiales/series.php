@@ -14,10 +14,6 @@
 
   /*****DATATABLE*****/   
     var tabla_series_devolucion = $('#tabla_series_devolucion').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":100, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
        "aaSorting" : [[0,"asc"]],
        "scrollY": "65vh",
        "scrollX": true,
@@ -106,10 +102,6 @@
 
    /*****DATATABLE*****/   
     var tabla_series_operativos = $('#tabla_series_operativos').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":100, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
        "aaSorting" : [[0,"asc"]],
        "scrollY": "65vh",
        "scrollX": true,
@@ -280,14 +272,14 @@
 
         <div class="row">
           <div class="col-4">
-          <h6 class="text-center mt-2">Equipos para devolución (Retiro)</h6>
+          <h6 class="text-center mt-2 title_section">Equipos para devolución (Retiro)</h6>
         </div>
 
-        <div class="col-4">
+        <div class="col-6">
          <input type="text" placeholder="Busqueda" id="buscador_series_devolucion" class="buscador_series_devolucion form-control form-control-sm">
         </div>
 
-        <div class="col-4">
+        <div class="col-2">
           <button type="button"  class="btn-block btn btn-sm btn-primary excel_series_devolucion btn_xr3">
           <i class="fa fa-save"></i> Excel
           </button>
@@ -312,14 +304,14 @@
 
       <div class="row">
         <div class="col-4">
-          <h6  class="text-center mt-2">Equipos operativos</h6>
+          <h6  class="text-center mt-2 title_section">Equipos operativos</h6>
         </div>
 
-        <div class="col-4">
+        <div class="col-6">
          <input type="text" placeholder="Busqueda" id="buscador_series_operativos" class="buscador_series_operativos form-control form-control-sm">
         </div>
 
-        <div class="col-4">
+        <div class="col-2">
           <button type="button"  class="btn-block btn btn-sm btn-primary excel_series_operativos btn_xr3">
           <i class="fa fa-save"></i> Excel
           </button>

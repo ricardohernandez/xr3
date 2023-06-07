@@ -1,13 +1,4 @@
 <style type="text/css">
-  .red{
-    background-color: #DC3545;
-    color: #fff;
-  }
-
-  .grey{
-    background-color: grey;
-    color: #fff;
-  }
  
   @media(min-width: 768px){
     .borrar_ftth{
@@ -33,9 +24,7 @@
     .modal_ftth{
       width: 94%!important;
     }
-    .table_head{
-      font-size: 12px!important;
-    }
+   
   }
   @media(max-width: 768px){
     .borrar_ftth{
@@ -60,9 +49,7 @@
     .modal_ftth{
       width: 94%!important;
     }
-    .table_head{
-      font-size: 11px!important;
-    }
+  
   }
 
   .img_galeria{
@@ -83,18 +70,7 @@
     right: 0px;
     cursor: pointer;
   }
-  .dataTables_paginate .paginate_button {
-    margin-top: 20px!important;
-    padding: 5px 11px!important;
-    line-height: 1.42857143;
-    text-decoration: none;
-    font-size: 14px;
-    color: #ffffff;
-    background-color: #006fe6!important;
-    border: 1px solid transparent;
-    margin-left: -1px;
-    cursor: pointer;
-  }
+
 </style>
 
 <script type="text/javascript">
@@ -108,17 +84,12 @@
 
   /*****DATATABLE*****/   
     var listaChecklistFTTH = $('#listaChecklistFTTH').DataTable({
-      dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
-       "iDisplayLength":50, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "aaSorting" : [[11,"desc"]],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
-       "paging":true,
        "lengthChange": true,
        "pagingType": "simple", 
        "bPaginate": true,
@@ -730,7 +701,7 @@
          <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
          <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
       </div> -->
-      <div class="col-6 col-lg-2">  
+      <div class="col-6 col-lg-1">  
         <div class="form-group">
            <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ftth btn_xr3">
            <i class="fa fa-plus-circle"></i>  Crear
@@ -742,7 +713,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
             </div>
               <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
               <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
@@ -822,12 +793,12 @@
             </div>
 
             <div class="col-9 col-lg-4">
-                <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_ftth">
+                <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_ftth">
                  <i class="fa fa-save"></i> Guardar
                 </button>
             </div>
             <div class="col-3 col-lg-4">
-              <button class="btn-block btn btn-sm btn-danger cierra_modal_ftth" data-dismiss="modal" aria-hidden="true">
+              <button class="btn-block btn btn-sm btn-secondary cierra_modal_ftth" data-dismiss="modal" aria-hidden="true">
                <i class="fa fa-window-close"></i> Cerrar
               </button>
             </div>
@@ -1004,7 +975,7 @@
                  </div>
                 </div> -->
            
-                <table id="tabla_detalle" width="100%" class="dataTable  display responsive datatable_h table table-hover table-bordered table-condensed">
+                <table id="tabla_detalle" width="100%" class="dataTable  display responsive datatable_h table table-striped table-hover table-bordered table-condensed">
                 <thead>
                   <tr style="background-color:#F9F9F9">
                       <th class="table_head desktop tablet">Tipo</th>

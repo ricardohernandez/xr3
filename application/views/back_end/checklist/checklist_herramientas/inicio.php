@@ -1,56 +1,17 @@
-<style type="text/css">
-  html, body{
-    min-height: calc(100vh - 110px)
-  }
-
-  .disabled_sub{
-      pointer-events:none;
-      opacity:0.4;
-  }
-
-  ::selection {
-    background: #8AC007; 
-    color:#fff;
-  }
-
-  .contenedor_app{
-    border: 1px solid #dce4ec;
-    background-color: #F8F8F8;
-    padding: 10px 5px;
-    margin-bottom: 40px;
-    border-radius: 1px;
-    min-height: calc(100vh - 110px)
-
-  }
-  .btn-top{
-    margin-top: 1px;
-  }
-  .btn-xs {
-    padding: 0px 5px!important;
-    font-size: 12px;
-  }
-  hr{
-    margin-top: 9px!important;
-    margin-bottom: 3px!important;;
-  }
-  .loader{
-    margin-top:150px;
-    height:100px;
-    width:100px;
-  }
-   
-
-</style>
-
 <script type="text/javascript">
   $(function(){
 
         $.extend(true,$.fn.dataTable.defaults,{
+          dom: "<'row '<'col-sm-12'f>>" +
+              "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+          "iDisplayLength":50, 
+          "paging":true,
+          "lengthChange": true,
+          "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
           info:true,
-          paging:false,
+          paging:true,
           ordering:true,
           searching:true,
-          lengthChange: false,
           bSort: true,
           bFilter: true,
           bProcessing: true,
@@ -58,7 +19,6 @@
           bAutoWidth: true,
           sAjaxDataProp: "result",        
           bDeferRender: true,
-
          "oLanguage": { 
           "sProcessing":     "<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
           "sLengthMenu":     "Mostrar: _MENU_ ",

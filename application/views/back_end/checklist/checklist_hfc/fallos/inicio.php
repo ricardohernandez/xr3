@@ -1,14 +1,5 @@
 <style type="text/css">
-  .red{
-    background-color: #DC3545;
-    color: #fff;
-  }
-
-  .grey{
-    background-color: grey;
-    color: #fff;
-  }
-
+  
   @media(min-width: 768px){
     .borrar_FH{
       display: inline;
@@ -27,9 +18,7 @@
       width: 34%!important;
       height: 500px;
     }
-    .table_head{
-      font-size: 12px!important;
-    }
+    
 
   }
   @media(max-width: 768px){
@@ -49,22 +38,9 @@
       width: 94%!important;
       height:300px;
     }
-    .table_head{
-      font-size: 11px!important;
-    }
+     
   }
-  .dataTables_paginate .paginate_button {
-    margin-top: 20px!important;
-    padding: 5px 11px!important;
-    line-height: 1.42857143;
-    text-decoration: none;
-    font-size: 14px;
-    color: #ffffff;
-    background-color: #006fe6!important;
-    border: 1px solid transparent;
-    margin-left: -1px;
-    cursor: pointer;
-  }
+ 
 </style>
 
 <script type="text/javascript">
@@ -78,18 +54,13 @@
 
   /*****DATATABLE*****/   
     var listaFHFC = $('#listaFHFC').DataTable({
-      dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
-       "iDisplayLength":50, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "aaSorting" : [[9,"desc"]],
-       "scrollY": "60vh",
+      "aaSorting" : [[9,"desc"]],
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
-       "paging":true,
-       "lengthChange": true,
+        "lengthChange": true,
        "pagingType": "simple", 
        "bPaginate": true,
        "ajax": {
@@ -345,7 +316,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span>Fecha <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
             </div>
               <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_fhfc" id="desde_fhfc">
               <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_fhfc" id="hasta_fhfc">
