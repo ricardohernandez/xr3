@@ -6,10 +6,9 @@
     text-align: left;
     padding:10px 2px;
   }
-  
   .tfoot_totales{
-     background-color: #32477C;
-     color:#fff;
+     background-color: #1A56DB;
+     color:#ccc;
   }
   .tfoot_totales th{
     font-size: 13px!important;
@@ -17,10 +16,6 @@
   .actualizacion_calidad{
       display: inline-block;
       font-size: 11px;
-  }
-  div.dataTables_wrapper div.dataTables_info {
-    padding-top: 0.1em!important; 
-    white-space: nowrap;
   }
 </style>
 <script type="text/javascript">
@@ -56,13 +51,14 @@
             width: "100%",
             height: 260,
             is3D:true,
-            colors:["#32477C","#DC3912"],
+            colors:["#2f81f7","#DC3912"],
             fontName: 'Nunito',
             bar: {groupWidth: "25%"},
+            backgroundColor: { fill:'transparent' },
             annotations: {
                  textStyle: {
                   fontSize: 10,
-                  color: '#32477C',
+                  color: '#ccc',
                   auraColor: 'transparent'
                 },
                 alwaysOutside: false,  
@@ -80,9 +76,8 @@
              height:"100%",
             },
 
-            backgroundColor: '#fff',
             titleTextStyle: {
-             color: '#32477C',
+             color: '#ccc',
              fontSize: 13, 
              fontWidth: 'normal',
              bold:true
@@ -94,20 +89,20 @@
               textStyle: {
                 fontSize: 12,
                 bold:true,
-                color:'#32477C'
+                color:'#ccc'
               }
             }, 
 
             hAxis: {
               textStyle:{
-                color: '#32477C', 
+                color: '#ccc', 
                 fontSize: 10,
                 bold:true,
               },
             },
             vAxis: {
               textStyle:{
-                color: '#32477C',
+                color: '#ccc',
                 bold:true,
                 fontSize: 10
               },
@@ -118,8 +113,8 @@
             vAxes: {
            		0: 
 	           		{
-         		    textStyle:{color: '#32477C',bold:false,fontSize: 11},
-                  gridlines: {color:'#ccc', count:10},
+         		    textStyle:{color: '#ccc',bold:false,fontSize: 11},
+                  gridlines: {color:'#ccc', count:0},
 							    viewWindowMode:'explicit',
 		           		/*viewWindow: {
 						        min: 0,
@@ -128,8 +123,8 @@
 								},
 		  	  	    1: 
  			  	    	{
-         		   	  textStyle:{color: '#32477C',bold:false,fontSize: 11},
- 			  	        	gridlines: {color:'transparent', count:10},
+         		   	  textStyle:{color: '#ccc',bold:false,fontSize: 11},
+ 			  	        	gridlines: {color:'#ccc', count:0},
  			  	    	    /*viewWindow: {
 								        min: 0,
 								        max: 100
@@ -156,7 +151,7 @@
 				      },
 				      1: {
 				        type: 'bars',
-				        color: '#32477C',
+				        color: '#1A56DB',
 				        targetAxisIndex:1,
 				        annotations: {
 				        style: 'line',
@@ -225,13 +220,13 @@
             width: "100%",
             height: 260,
             is3D:true,
-            colors:["#32477C","#DC3912"],
+            colors:["#1A56DB","#DC3912"],
             fontName: 'Nunito',
             bar: {groupWidth: "25%"},
             annotations: {
                  textStyle: {
                   fontSize: 10,
-                  color: '#32477C',
+                  color: '#ccc',
                   auraColor: 'transparent'
                 },
                 alwaysOutside: false,  
@@ -249,9 +244,9 @@
              height:"100%",
             },
 
-            backgroundColor: '#fff',
+            backgroundColor: { fill:'transparent' },
             titleTextStyle: {
-             color: '#32477C',
+             color: '#ccc',
              fontSize: 13, 
              fontWidth: 'normal',
              bold:true
@@ -263,20 +258,20 @@
               textStyle: {
                 fontSize: 12,
                 bold:true,
-                color:'#32477C'
+                color:'#ccc'
               }
             }, 
 
             hAxis: {
               textStyle:{
-                color: '#32477C', 
+                color: '#ccc', 
                 fontSize: 10,
                 bold:true,
               },
             },
             vAxis: {
               textStyle:{
-                color: '#32477C',
+                color: '#ccc',
                 bold:true,
                 fontSize: 10
               },
@@ -287,8 +282,8 @@
             vAxes: {
            		0: 
 	           		{
-         		    textStyle:{color: '#32477C',bold:false,fontSize: 11},
-                  gridlines: {color:'#ccc', count:10},
+         		    textStyle:{color: '#ccc',bold:false,fontSize: 11},
+                  gridlines: {color:'#ccc', count:0},
 							    viewWindowMode:'explicit',
 		           		/*viewWindow: {
 						        min: 0,
@@ -297,8 +292,8 @@
 								},
 		  	  	    1: 
  			  	    	{
-         		   	  textStyle:{color: '#32477C',bold:false,fontSize: 11},
- 			  	        	gridlines: {color:'transparent', count:10},
+         		   	  textStyle:{color: '#ccc',bold:false,fontSize: 11},
+ 			  	        	gridlines: {color:'#ccc', count:0},
  			  	    	    /*viewWindow: {
 								        min: 0,
 								        max: 100
@@ -325,7 +320,7 @@
 				      },
 				      1: {
 				        type: 'bars',
-				        color: '#32477C',
+				        color: '#1A56DB',
 				        targetAxisIndex:1,
 				        annotations: {
 				        style: 'line',
@@ -607,7 +602,7 @@
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+            <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 10px;font-size:13px!important;"> Periodo <span></span> 
           </div>
             <select id="periodo" name="periodo" class="custom-select custom-select-sm">
               <option selected value="actual"><?php echo $mes_actual ?></option>
@@ -789,11 +784,11 @@
 
 	        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
             <div class="short-div">
-            		<h6 class="titulo_grafico">Calidad HFC Últimos 6 periodos</h6>
+            		<p class="section_titulo">Calidad HFC Últimos 6 periodos</p>
 	    					<div id="graficoHFC"></div>
 	          </div>
             <div class="short-div">
-            		<h6 class="titulo_grafico">Calidad FTTH Últimos 6 periodos</h6>
+            		<p class="section_titulo">Calidad FTTH Últimos 6 periodos</p>
     			  	<div id="graficoFTTH"></div>
             </div>
 	        </div>

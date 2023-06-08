@@ -28,11 +28,8 @@
     /*****DATATABLE*****/   
   
     var tb_responsables_fallos = $('#tb_responsables_fallos').DataTable({
-       "iDisplayLength":100, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
        "aaSorting" : [6 , "desc"],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -377,12 +374,12 @@
           <div class="col-xs-12 col-sm-12 col-lg-8 offset-lg-2 mt-0">
             <div class="form-row">
               <div class="col-9 col-lg-6">
-                  <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_responsable_fallos">
+                  <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_responsable_fallos">
                    <i class="fa fa-save"></i> Guardar
                   </button>
               </div>
               <div class="col-3 col-lg-6">
-                <button class="btn-block btn btn-sm btn-danger cierra_modal_responsable_fallos" data-dismiss="modal" aria-hidden="true">
+                <button class="btn-block btn btn-sm btn-secondary cierra_modal_responsable_fallos" data-dismiss="modal" aria-hidden="true">
                <!--   <i class="fa fa-window-close"></i>  -->Cerrar
                 </button>
               </div>

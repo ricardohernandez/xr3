@@ -1,13 +1,17 @@
 <style type="text/css">
+
+  @media (max-width: 768px){
+    .modal_area{
+      width: 95%!important;
+    }
+  }
+
+  @media (min-width: 768px){
     .modal_area{
       width: 35%!important;
     }
-
-    
-  .red{
-    background-color: #DC3545;
-    color: #fff;
   }
+
 </style>
 
 <script type="text/javascript">
@@ -15,12 +19,8 @@
 
   /*****DATATABLE*****/   
     var listaAreas = $('#listaAreas').DataTable({
-       "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
-       "iDisplayLength":-1, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": false,
        "aaSorting" : [[1,"asc"]],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -244,7 +244,7 @@
   
     <div class="form-row">
 
-        <div class="col-lg-2">  
+        <div class="col-lg-1">  
 	        <div class="form-group">
 	           <button type="button" class="btn btn-block btn-sm btn-primary btn_nueva_area btn_xr3">
 	           <i class="fa fa-plus-circle"></i>  Crear 
@@ -276,7 +276,7 @@
       <table id="listaAreas" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
           <tr>    
-            <th class="centered" style="width: 50px;"></th>    
+            <th class="centered" style="width: 50px;">Acciones</th>    
             <th class="centered">Área</th> 
              </tr>
         </thead>
@@ -296,12 +296,12 @@
           <div class="col-xs-12 col-sm-12 col-lg-8 offset-lg-2 mt-0">
             <div class="form-row">
               <div class="col-9 col-lg-6">
-                  <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_area">
+                  <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_area">
                    <i class="fa fa-save"></i> Guardar
                   </button>
               </div>
               <div class="col-3 col-lg-6">
-                <button class="btn-block btn btn-sm btn-danger cierra_modal_area" data-dismiss="modal" aria-hidden="true">
+                <button class="btn-block btn btn-sm btn-secondary cierra_modal_area" data-dismiss="modal" aria-hidden="true">
                  <i class="fa fa-window-close"></i> Cerrar
                 </button>
               </div>

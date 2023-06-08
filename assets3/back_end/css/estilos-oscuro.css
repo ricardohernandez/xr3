@@ -4,9 +4,10 @@
     :root {
         --border-color:1px solid #273553;
         --input-border-color:#515151;
-        --text-color:#ffffff96!important;
+        --text-color:#ccc!important;
         --modal-bg: #0F172A;
         --header-bg:#161B22;
+        --menu-bg:#161B22;
         --modal-width-lg: 90%!important;
         --modal-width-sm: 30%!important;
         --hover-bg: #334155;
@@ -19,6 +20,7 @@
         --table-td-text-size : 12.5px;
 
     }
+    
     
     .btn-primary {
         color: var(--button-text-color);
@@ -171,7 +173,6 @@
         font-size: 13px;
     }
 
-
     legend {
         margin-bottom:8px!important;
     }
@@ -231,11 +232,42 @@
         color:var(--text-color);
     }
 
+    .content{
+        margin:10px 10px!important;
+    }
     .card{
-        background-color:#1F2937;
-        box-shadow: 0 0 10px 0 rgb(183 192 206 / 5%);
+        background-color:var(--menu-bg);
+        box-shadow: 0 0 10px 0 rgb(255 255 255 / 1%);
     }
 
+    .alert-primary {
+        color: #ccc;
+        background-color: #283d53;
+      
+    }
+
+    .alert {
+	    position: relative;
+	    padding: 0.29rem 2.25rem!important; 
+	    margin-bottom: 0rem!important; 
+	    border: none!important;
+	    border-radius: 0.2rem;
+	}
+
+	.alert-primary2 {
+	    color: var(--button-text-color);
+	    background-color: var(--input-bg);
+	    border-color:1px solid red;
+	}
+
+	.alert-heading{
+		font-size: 1rem!important;
+		margin-bottom: 0.1rem!important;
+	}
+
+ 
+
+    
 /*******FORM*******/
 
     
@@ -837,7 +869,7 @@
     }
 
     #processingIconTable{
-        color:#191D23;
+        color:#ccc;
         opacity:.8;
     }
 

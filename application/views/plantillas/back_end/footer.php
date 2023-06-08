@@ -18,6 +18,7 @@
 <script src="<?php echo base_url();?>assets3/back_end/js/scripts1.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js" charset="UTF-8"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.bootstrap4.min.css">
 <link rel="stylesheet" href="hhttps://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/buttons.dataTables.min.css">

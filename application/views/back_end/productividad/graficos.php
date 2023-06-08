@@ -1,79 +1,43 @@
 <style type="text/css">
-	.titulo_grafico{
-	  color: #32477C;
-      font-size: 16px; 
-      font-weight:bold;
-      text-align: left;
-      padding:10px 2px;
-    }
-     #rankingTecnicos ,#puntosTipoOrden {
+    #rankingTecnicos ,#puntosTipoOrden {
        max-height: 400px;
 	   overflow-x: hidden;    
 	   overflow-y: scroll;    
 	}
-	.alert {
-	    position: relative;
-	    padding: 0.2rem 2.25rem!important; 
-	    margin-bottom: 0rem!important; 
-	    border: 1px solid transparent;
-	    border-radius: 0.25rem;
-	}
 
-	.alert-primary2 {
-	    color: #fff;
-	    background-color: #32477C;
-	    border-color: #b8daff;
-	}
-
-	.alert-heading{
-		font-size: 1rem!important;
-		margin-bottom: 0.1rem!important;
-	}
-
-	.select2-container .select2-selection--single {
-	    height: 32px!important;
-	}
-
-	.border-left-primary {
-	    border-left: 0.25rem solid #32477C!important;
-	}
 	.puntos_cont{
 		text-align: center;
 	}
-	.total_puntos, .titulo_grafico {
-    font-family: ubuntu!important;
-    src: url(Ubuntu-R.ttf) format("truetype");
-   /* margin-bottom: 30px;*/
-  }
-
-  .actualizacion_productividad{
-      display: inline-block;
-      font-size: 11px;
-  }
+	.actualizacion_productividad{
+		display: inline-block;
+		font-size: 11px;
+	}
 </style>
 <script type="text/javascript">
 	var base_url = "<?php echo base_url() ?>"
-  var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
+	var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
 
-  var desde_actual="<?php echo $desde_actual; ?>"
-  var hasta_actual="<?php echo $hasta_actual; ?>"
-  var desde_anterior="<?php echo $desde_anterior; ?>"
-  var hasta_anterior="<?php echo $hasta_anterior; ?>"
-  var periodo =$("#periodo").val()
+	var desde_actual="<?php echo $desde_actual; ?>"
+	var hasta_actual="<?php echo $hasta_actual; ?>"
+	var desde_anterior="<?php echo $desde_anterior; ?>"
+	var hasta_anterior="<?php echo $hasta_anterior; ?>"
+	var periodo =$("#periodo").val()
 
-  if(periodo=="actual"){
-    $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-  }else if(periodo=="anterior"){
-    $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
-  }
+	if(periodo=="actual"){
+		$("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+	}else if(periodo=="anterior"){
+		$("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+	}
 
-  dataGraficos()
+    dataGraficos()
+	
 	function dataGraficos(){
-		if(perfil==4){
-      var trabajador = $("#trabajador").val();
-    }else{
-      var trabajador = $("#trabajadores").val();
-    }
+	if(perfil==4){
+		var trabajador = $("#trabajador").val();
+	}else{
+		var trabajador = $("#trabajadores").val();
+	}
+
     var jefe = $("#jefe_graficos").val();
     var periodo = $("#periodo").val();
 
@@ -88,231 +52,261 @@
       dataType:"json",
       success: function (json) {
       	$("#fecha_f").val(`${json.desde.substring(0,5)} - ${json.hasta.substring(0,5)}`);
-     		$(".puntos_cont").html(`<span class="total_puntos">Total puntos : ${json.totalpuntos}</span>`)
-     		
-     		google.charts.setOnLoadCallback(rankingTecnicos);
-     		google.charts.setOnLoadCallback(puntosPorFechas);
-     		google.charts.setOnLoadCallback(puntosTipoOrden);
-     		google.charts.setOnLoadCallback(distribucionTipos);
-     		google.charts.setOnLoadCallback(distribucionOt);
-     		
-     		function rankingTecnicos(){
-     			var ranking = google.visualization.arrayToDataTable(json.ranking);
-       		ranking.sort([{column: 1, desc: true}])
+     	$(".puntos_cont").html(`<span class="total_puntos">Total puntos : ${json.totalpuntos}</span>`)
+		
+		google.charts.setOnLoadCallback(rankingTecnicos);
+		google.charts.setOnLoadCallback(puntosPorFechas);
+		google.charts.setOnLoadCallback(puntosTipoOrden);
+		google.charts.setOnLoadCallback(distribucionTipos);
+		google.charts.setOnLoadCallback(distribucionOt);
+		
+		function rankingTecnicos(){
+			var ranking = google.visualization.arrayToDataTable(json.ranking);
+			ranking.sort([{column: 1, desc: true}])
 
-       		if(trabajador!=""){
-       			var height = 400
-       		}else{
-       			if(jefe!=""){
-       				var height = 1800
-       			}else{
-       				var height = 3800
-       			}
-       			
-       		}
-
-        	var options = {
-        	 	// isStacked: true,
-        	 	fontName: 'Nunito',
-        	 	fontColor:'#32477C',
-        	 	fontSize: 12,
-		        colors: ['#32477C', 'green', 'red'],
-		        chartArea:{
-		             left:130,
-		             right:130,
-		             bottom:30,
-		             top:10,
-	            },
-		        height:height,
-		        hAxis: {
-		          title: '',
-		          minValue: 0,
-		            textStyle : {
-			            // fontSize: 12 
-			        }
-		        },
-		        vAxis: {
-		          title: '',
-		          textStyle: {
-		            // fontSize: 8,
-		            bold:true,
-		            color:'#32477C'
-	              }
-		        }
-			    };
-
-	        var chart = new google.visualization.BarChart(document.getElementById('rankingTecnicos'));
-					chart.draw(ranking, options);
-					$(".btn_filtro_graficos").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled" , false);
+			if(trabajador!=""){
+				var height = 400
+			}else{
+				if(jefe!=""){
+					var height = 1800
+				}else{
+					var height = 3800
 				}
+				
+			}
 
-				function puntosPorFechas(){
-					var puntosPorFechas = google.visualization.arrayToDataTable(json.puntosPorFechas);
-       		puntosPorFechas.sort([{column: 3, desc: false}])
-
-        	var options = {
-	            // isStacked: true,
-	            title: '',
-	            width: "100%",
-	            height: 220,
-	            is3D:true,
-	            colors:["#32477C"],
-	            fontName: 'Nunito',
-	            bar: {groupWidth: "25%"},
-	            annotations: {
-	                 textStyle: {
-	                  fontSize: 10,
-	                  color: '#32477C',
-	                  auraColor: 'transparent'
-	                },
-	                alwaysOutside: false,  
-	                  stem:{
-	                    color: 'transparent',
-	                    length: 8
-	                  },   
-	            },
-	            chartArea:{
-	             left:40,
-	             right:40,
-	             bottom:40,
-	             top:10,
-	             width:"100%",
-	             height:"100%",
-	            },
-
-	            backgroundColor: '#fff',
-	            titleTextStyle: {
-	             color: '#32477C',
-	             fontSize: 13, 
-	             fontWidth: 'normal',
-	             bold:true
-	            },
-
-	            legend: {
-	             'position':'none',
-	             'alignment':'center',
-	              textStyle: {
-	                fontSize: 12,
-	                bold:true,
-	                color:'#32477C'
-	              }
-	            }, 
-
-	            hAxis: {
-	              textStyle:{
-	                color: '#32477C', 
-	                fontSize: 10,
-	                bold:true,
-	              },
-
-	            },
-
-	            vAxis: {
-	              textStyle:{
-	                color: '#32477C',
-	                bold:true,
-	                fontSize: 10
-	              },
-	              
-	            },
-
-	            tooltip:{textStyle:{fontSize:15},isHtml: true},
-	        };
-          var chart = new google.visualization.ColumnChart(document.getElementById('puntosPorFechas'));
-       		chart.draw(puntosPorFechas, options);
+			var options = {
+				// isStacked: true,
+				fontName: 'Nunito',
+				fontColor:'#32477C',
+				fontSize: 12,
+				colors: ['#2f81f7','#F48432','#A5A5A5'],
+				chartArea:{
+					left:130,
+					right:50,
+					bottom:30,
+					top:50,
+				},
+				height:height,
+				backgroundColor: { fill:'transparent' },
+				hAxis: {
+					title: '',
+					minValue: 0,
+					gridlines: {
+						color: '#ccc',
+						count:0
+					},
+					textStyle : {
+						// fontSize: 8,
+						bold:true,
+						color:'#ccc'
+					}
+				},
+				vAxis: {
+				title: '',
+				textStyle: {
+					// fontSize: 8,
+					bold:true,
+					color:'#ccc'
 				}
+				},
+
+				legend : {  
+				position: 'top',
+				alignment: 'center',
+				textStyle: {
+					fontSize: 13,
+					bold: true,
+					color: '#ccc'
+				}
+				},
 			
-		  	function puntosTipoOrden() {
-			  	var puntosTipoOrden = google.visualization.arrayToDataTable(json.puntosTipoOrden);
-       		puntosTipoOrden.sort([{column: 0, desc: false}])		   
+			};
 
-       		var options = {
-       			showRowNumber: false,
-       			width: '100%', 
-       			height: 400
-       		}
-	        var table = new google.visualization.Table(document.getElementById('puntosTipoOrden'));
-	        table.draw(puntosTipoOrden, options);
-		    }
+			var chart = new google.visualization.BarChart(document.getElementById('rankingTecnicos'));
+			chart.draw(ranking, options);
+			$(".btn_filtro_graficos").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled" , false);
+		}
 
-		    function distribucionTipos(){
-				  var data = google.visualization.arrayToDataTable(json.distribucionTipos);
-	        var options = {
-		          fontName: 'Nunito',
-		          height:160,
-		     	  sliceVisibilityThreshold:0,
-		          format: 'short',
-		          isStacked: 'percent',
-		          pieSliceText: 'value',
-		          legend: {
-		            position: 'labeled',
-		            'alignment':'center',
-		            textStyle: {
-			            fontSize: 11,
-			            bold:true,
-			            color:'#32477C'
-		            }
-		          }, 
-		  		  titlePosition: 'none',
-		          titleTextStyle: {
+		function puntosPorFechas(){
+			var puntosPorFechas = google.visualization.arrayToDataTable(json.puntosPorFechas);
+			puntosPorFechas.sort([{column: 3, desc: false}])
 
-			        color: '#32477C',
-			        fontSize: '14', 
-			        fontWidth: 'normal',
-			        bold:true
-			      },
+			var options = {
+				// isStacked: true,
+				title: '',
+				width: "100%",
+				height: 220,
+				is3D:true,
+				colors:["#2f81f7"],
+				fontName: 'Nunito',
+				bar: {groupWidth: "25%"},
+				backgroundColor: { fill:'transparent' },
+				annotations: {
+					textStyle: {
+					fontSize: 10,
+					color: '#ccc',
+					auraColor: 'transparent'
+					},
+					alwaysOutside: false,  
+					stem:{
+						color: 'transparent',
+						length: 8
+					},   
+				},
+				chartArea:{
+					left:40,
+					right:40,
+					bottom:40,
+					top:10,
+					width:"100%",
+					height:"100%",
+				},
 
-		          colors: ['#32477C', 'green', 'red'],
-		          chartArea:{
-		             left:10,
-		             right:10,
-		             bottom:5,
-		             top:5,
-		          },
-	        };
-	        var chart = new google.visualization.PieChart(document.getElementById('distribucionTipos'));
-	        chart.draw(data, options);
-		  	}
+				titleTextStyle: {
+					color: '#ccc',
+					fontSize: 13, 
+					fontWidth: 'normal',
+					bold:true
+				},
 
-		    function distribucionOt(){
-					var data = google.visualization.arrayToDataTable(json.distribucionOt);
-	        var options = {
-		          fontName: 'Nunito',
-		          height:160,
-		     	  sliceVisibilityThreshold:0,
-		          format: 'short',
-		          isStacked: 'percent',
-		          pieSliceText: 'value',
-		          legend: {
-		            position: 'labeled',
-		            'alignment':'center',
-		            textStyle: {
-			            fontSize: 11,
-			            bold:true,
-			            color:'#32477C'
-		            }
-		          }, 
-		  		  titlePosition: 'none',
-		          titleTextStyle: {
+				legend: {
+					'position':'none',
+					'alignment':'center',
+					textStyle: {
+						fontSize: 12,
+						bold:true,
+						color:'#ccc'
+					}
+				}, 
 
-			        color: '#32477C',
-			        fontSize: '14', 
-			        fontWidth: 'normal',
-			        bold:true
-			      },
+				hAxis: {
+					textStyle:{
+						color: '#ccc', 
+						fontSize: 10,
+						bold:true,
+					},
 
-		          colors: ['green', 'red'],
-		          chartArea:{
-		             left:10,
-		             right:10,
-		             bottom:5,
-		             top:5,
-		          },
+					gridlines: {
+						color: '#ccc',
+						count:0
+					},
+				},
+
+				vAxis: {
+					textStyle:{
+						color: '#ccc',
+						bold:true,
+						fontSize: 10
+					},
+
+					gridlines: {
+						color: '#ccc',
+						count:0
+					},
+				},
+
+				tooltip:{textStyle:{fontSize:13},isHtml: true},
+			};
+
+         	var chart = new google.visualization.ColumnChart(document.getElementById('puntosPorFechas'));
+       	  	chart.draw(puntosPorFechas, options);
+		}
+			
+		function puntosTipoOrden() {
+			var puntosTipoOrden = google.visualization.arrayToDataTable(json.puntosTipoOrden);
+			puntosTipoOrden.sort([{column: 0, desc: false}])		   
+
+			var options = {
+				showRowNumber: false,
+				backgroundColor: { fill:'transparent' },
+
+				width: '100%', 
+				height: 400
+			}
+			var table = new google.visualization.Table(document.getElementById('puntosTipoOrden'));
+			table.draw(puntosTipoOrden, options);
+		}
+
+		function distribucionTipos(){
+			var data = google.visualization.arrayToDataTable(json.distribucionTipos);
+			var options = {
+				fontName: 'Nunito',
+				height:160,
+				sliceVisibilityThreshold:0,
+				format: 'short',
+				isStacked: 'percent',
+				pieSliceText: 'value',
+				backgroundColor: { fill:'transparent' },
+				legend: {
+				position: 'labeled',
+				'alignment':'center',
+				textStyle: {
+					fontSize: 11,
+					bold:true,
+					color:'#ccc'
+				}
+				}, 
+				titlePosition: 'none',
+				titleTextStyle: {
+
+				color: '#ccc',
+				fontSize: '14', 
+				fontWidth: 'normal',
+				bold:true
+				},
+
+				colors: ['#2f81f7','#F48432','#A5A5A5'],
+				chartArea:{
+					left:10,
+					right:10,
+					bottom:5,
+					top:5,
+				},
+			};
+			var chart = new google.visualization.PieChart(document.getElementById('distribucionTipos'));
+			chart.draw(data, options);
+		}
+
+		 function distribucionOt(){
+			var data = google.visualization.arrayToDataTable(json.distribucionOt);
+			var options = {
+				fontName: 'Nunito',
+				height:160,
+				sliceVisibilityThreshold:0,
+				format: 'short',
+				isStacked: 'percent',
+				pieSliceText: 'value',
+				backgroundColor: { fill:'transparent' },
+				legend: {
+				position: 'labeled',
+				'alignment':'center',
+				textStyle: {
+					fontSize: 11,
+					bold:true,
+					color:'#ccc'
+				}
+				}, 
+				titlePosition: 'none',
+				titleTextStyle: {
+
+				color: '#ccc',
+				fontSize: '14', 
+				fontWidth: 'normal',
+				bold:true
+				},
+
+				colors: ['green', 'red'],
+				chartArea:{
+					left:10,
+					right:10,
+					bottom:5,
+					top:5,
+				},
 	        };
 	        var chart = new google.visualization.PieChart(document.getElementById('distribucionOt'));
 	        chart.draw(data, options);
-				}
-		
+		}
       }
     })
 	}
@@ -425,8 +419,8 @@
     <div class="col-lg-3">
       <div class="form-group">
       	<div class="alert alert-primary2" role="alert">
-				  <h5 class="alert-heading puntos_cont"></h5>
-				</div>
+			<p class="alert-heading puntos_cont"></p>
+		</div>
       </div>
     </div>
 
@@ -434,7 +428,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;font-size:13px;"> Periodo <span></span> 
             </div>
               <select id="periodo" name="periodo" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
@@ -546,31 +540,32 @@
 <div class="row">
 	<div class="col mb-2">
 	    <div class="card border-left-primary shadow mb-2">
-	        <div class="card-body" style="padding: .4rem;">
+	        <div class="card-body card_productividad" style="padding: .4rem;">
+
 	            <div class="row">
-	              <div class="col-xs-12 col-lg-6">
-								<h6 class="titulo_grafico">Productividad de técnicos en periodo </h6>
-						    	<div id="rankingTecnicos"></div>
-							  </div>
+	              <div class="col-xs-12 col-lg-9">
+					<p class="title_section">Productividad de técnicos en periodo </p>
+					<div id="rankingTecnicos"></div>
+					</div>
 
-							  <div class="col-xs-12 col-lg-3">
-								<h6 class="titulo_grafico">Puntos por tipo órden</h6>
-						    	<div id="puntosTipoOrden"></div>
-							  </div>
+					<!-- <div class="col-xs-12 col-lg-3">
+					<h6 class="title_section">Puntos por tipo órden</h6>
+					<div id="puntosTipoOrden"></div>
+					</div> -->
 
-							  <div class="col-xs-12 col-lg-3">
-								<h6 class="titulo_grafico">Distribución por tipo</h6>
-						    	<div id="distribucionTipos"></div>
-						    	<h6 class="titulo_grafico">Estado OT</h6>
-						    	<div id="distribucionOt"></div>
-							  </div>
+					<div class="col-xs-12 col-lg-3">
+					<p class="title_section">Distribución por tipo</p>
+					<div id="distribucionTipos"></div>
+					<p class="title_section">Estado OT</p>
+					<div id="distribucionOt"></div>
+					</div>
 	            </div>
 
 	            <div class="row">
-	                <div class="col-lg-12">
-									<h6 class="titulo_grafico">Puntos por fecha  </h6>
-							    	<div id="puntosPorFechas"></div>
-								</div>
+	                <div class="col-lg-12 mt-3">
+						<p class="title_section">Puntos por fecha  </p>
+						<div id="puntosPorFechas"></div>
+					</div>
 	            </div>
 
 	        </div>

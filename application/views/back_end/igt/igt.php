@@ -13,14 +13,6 @@
     margin-bottom:10px!important;
   }
 
-  .nav__holder {
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.0)!important; 
-  }
-
-  footer{
-    box-shadow: 0 0 2px 3px rgb(0 0 0 / 0%)!important; 
-  }
   .titulo{
       display: inline-block;
       font-size: 13px;
@@ -31,12 +23,7 @@
   .green{
     color: #0E9F6E;
   }
-  .card{
-    border: none!important;
-    padding: 0px!important;;
-    -webkit-box-shadow: 0 0 10px 0 rgb(183 192 206 / 20%);
-    border-radius: 5px;
-  }
+  
   .s2{
     font-size:1rem!important;
   }
@@ -50,7 +37,7 @@
     font-weight: bold!important;
     color: red!important;
   }
-  .card-header{
+  /* .card-header{
     font-size: 14px; 
     color:#32477C!important;
     background-color: #E9ECEF!important;
@@ -60,7 +47,7 @@
     font-size: 14px; 
     color:#32477C!important;
     background-color: #E9ECEF!important;
-  }
+  } */
 
   .card_dash{
     /* background-color: #32477C!important;*/
@@ -76,6 +63,12 @@
      font-size: 14px;
      font-weight: bold;
   }
+
+  .card_dash.title_section{
+   /*  margin-top:10px!important; */
+    font-size:0.9rem;
+  }
+
   .card-body{
    /* background-color: #F7F7F7!important;*/
     padding: 0.15rem!important;
@@ -85,15 +78,6 @@
     margin-bottom: 1rem!important;
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  .titulo_seccion{
-    display: inline-block;
-    color: #32477C;
-    font-size: 14px; 
-    font-weight:bold;
-    text-align: left;
-    padding:0px 2px;
-    margin-top: 5px;
   }
   .desc_seccion{
     color: #32477C;
@@ -146,7 +130,7 @@
       if(perfil==4){
         $("#trabajadores").select2().val(r).trigger("change");
       }else{
-        $("#trabajadores").select2().val("173397666").trigger("change");
+        $("#trabajadores").select2().val("123053206").trigger("change");
         /*$("#trabajadores").select2().val("8352622K").trigger("change");*/
       }
 
@@ -235,7 +219,7 @@
 
               $(".prom_ftth").hide()
            
-              /* $("#grafico_prom_ftth").html("<span class='titulo_seccion'><span class='titulo_seccion'>No aplica</span></span>")
+              /* $("#grafico_prom_ftth").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
               $(".meta_prom_ftth_red").html("")
               $(".meta_prom_ftth_green ").html("")*/
             }
@@ -329,7 +313,7 @@
             }else{
               $(".prom_hfc").hide()
               
-             /* $("#grafico_prom_hfc").html("<span class='titulo_seccion'><span class='titulo_seccion'>No aplica</span></span>")
+             /* $("#grafico_prom_hfc").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
               $(".meta_prom_hfc_red").html("")
               $(".meta_prom_hfc_green ").html("")*/
             }
@@ -494,7 +478,7 @@
               
             }else{
               $(".calidad_hfc").hide()
-              /*$("#grafico_calidad_hfc").html("<span class='titulo_seccion'>No aplica</span>")
+              /*$("#grafico_calidad_hfc").html("<span class='title_section'>No aplica</span>")
               $(".meta_calidad_hfc_green").html("")
               $(".meta_calidad_hfc_red ").html("")*/
             }
@@ -548,7 +532,7 @@
             }else{
               $(".calidad_ftth").hide()
 
-              /*$("#grafico_calidad_ftth").html("<span class='titulo_seccion'>No aplica</span>")
+              /*$("#grafico_calidad_ftth").html("<span class='title_section'>No aplica</span>")
               $(".meta_calidad_ftth_green").html("")
               $(".meta_calidad_ftth_red ").html("")*/
             }
@@ -598,7 +582,7 @@
               
             }else{
               $(".declaracion_ot").hide()
-              /*$("#grafico_declaracion_ot").html("<span class='titulo_seccion'>No aplica</span>")
+              /*$("#grafico_declaracion_ot").html("<span class='title_section'>No aplica</span>")
               $(".meta_declaracion_ot_red").html("")
               $(".meta_declaracion_ot_green ").html("")*/
             }
@@ -606,7 +590,7 @@
 
           // AST
  
-          if(json.hasOwnProperty("data_ast") && json.data_ast.data!=false){
+            if(json.hasOwnProperty("data_ast") && json.data_ast.data!=false){
 
             $("#ast").text(json.data_ast.data.declaracion).show()
             $(".ast").show()
@@ -665,13 +649,13 @@
                 width: "100%",
                 height: 270,
                 is3D:true,
-                colors:["#32477C","#DC3912"],
+                colors:["#2f81f7","#DC3912"],
                 fontName: 'Nunito',
                 bar: {groupWidth: "25%"},
                 annotations: {
                      textStyle: {
                       fontSize: 10,
-                      color: '#32477C',
+                      color: '#ccc',
                       auraColor: 'transparent'
                     },
                     alwaysOutside: false,  
@@ -691,7 +675,7 @@
 
                 backgroundColor: 'transparent',
                 titleTextStyle: {
-                 color: '#32477C',
+                 color: '#ccc',
                  fontSize: 13, 
                  fontWidth: 'normal',
                  bold:true
@@ -703,20 +687,20 @@
                   textStyle: {
                     fontSize: 12,
                     bold:true,
-                    color:'#32477C'
+                    color:'#ccc'
                   }
                 }, 
 
                 hAxis: {
                   textStyle:{
-                    color: '#32477C', 
+                    color: '#ccc', 
                     fontSize: 10,
                     bold:true,
                   },
                 },
                 vAxis: {
                   textStyle:{
-                    color: '#32477C',
+                    color: '#ccc',
                     bold:true,
                     fontSize: 10
                   },
@@ -727,14 +711,14 @@
                 vAxes: {
                   0: 
                     {
-                    textStyle:{color: '#32477C',bold:false,fontSize: 11},
-                      gridlines: {color:'#ccc', count:5},
+                    textStyle:{color: '#ccc',bold:false,fontSize: 11},
+                      gridlines: {color:'#ccc', count:0},
                       viewWindowMode:'explicit',
                   
                     },
                     1: 
                     {
-                      textStyle:{color: '#32477C',bold:false,fontSize: 11},
+                      textStyle:{color: '#ccc',bold:false,fontSize: 11},
                         gridlines: {color:'transparent', count:0},
                      
                       }
@@ -759,7 +743,7 @@
                   },
                   1: {
                     type: 'bars',
-                    color: '#32477C',
+                    color: '#1A56DB',
                     targetAxisIndex:1,
                     annotations: {
                     style: 'line',
@@ -804,7 +788,7 @@
 
             }else{
               $(".graficoHFC").show()
-              $("#graficoHFC").html("<span class='titulo_seccion'>No aplica</span>").show()
+              $("#graficoHFC").html("<span class='title_section'>No aplica</span>").show()
             }
 
           // CALIDAD FTTH
@@ -822,13 +806,13 @@
                 width: "100%",
                 height: 270,
                 is3D:true,
-                colors:["#32477C","#DC3912"],
+                colors:["#1A56DB","#DC3912"],
                 fontName: 'Nunito',
                 bar: {groupWidth: "25%"},
                 annotations: {
                      textStyle: {
                       fontSize: 10,
-                      color: '#32477C',
+                      color: '#ccc',
                       auraColor: 'transparent'
                     },
                     alwaysOutside: false,  
@@ -848,7 +832,7 @@
 
                 backgroundColor: 'transparent',
                 titleTextStyle: {
-                 color: '#32477C',
+                 color: '#ccc',
                  fontSize: 13, 
                  fontWidth: 'normal',
                  bold:true
@@ -860,20 +844,20 @@
                   textStyle: {
                     fontSize: 12,
                     bold:true,
-                    color:'#32477C'
+                    color:'#ccc'
                   }
                 }, 
 
                 hAxis: {
                   textStyle:{
-                    color: '#32477C', 
+                    color: '#ccc', 
                     fontSize: 10,
                     bold:true,
                   },
                 },
                 vAxis: {
                   textStyle:{
-                    color: '#32477C',
+                    color: '#ccc',
                     bold:true,
                     fontSize: 10
                   },
@@ -884,14 +868,14 @@
                 vAxes: {
                   0: 
                     {
-                    textStyle:{color: '#32477C',bold:false,fontSize: 11},
-                      gridlines: {color:'#ccc', count:5},
+                    textStyle:{color: '#ccc',bold:false,fontSize: 11},
+                      gridlines: {color:'#ccc', count:0},
                       viewWindowMode:'explicit',
                
                     },
                     1: 
                     {
-                      textStyle:{color: '#32477C',bold:false,fontSize: 11},
+                      textStyle:{color: '#ccc',bold:false,fontSize: 11},
                         gridlines: {color:'transparent', count:0},
                       
                       }
@@ -916,7 +900,7 @@
                   },
                   1: {
                     type: 'bars',
-                    color: '#32477C',
+                    color: '#1A56DB',
                     targetAxisIndex:1,
                     annotations: {
                     style: 'line',
@@ -961,7 +945,7 @@
 
             }else{
               $(".graficoFTTH").show()
-              $("#graficoFTTH").html("<span class='titulo_seccion'>No aplica</span>").show()
+              $("#graficoFTTH").html("<span class='title_section'>No aplica</span>").show()
             }
 
           // PRODUCTIVIDAD DIARIO
@@ -978,14 +962,14 @@
                 width: "100%",
                 height: 300,
                 is3D:true,
-                colors:["#32477C"],
+                colors:["#1A56DB"],
                 fontName: 'Nunito',
                 bar: {groupWidth: "50%"},
 
                 annotations: {
                   textStyle: {
                     fontSize: 11,
-                    color: '#32477C',
+                    color: '#ccc',
                     auraColor: 'transparent'
                   },
                   alwaysOutside: false,  
@@ -1007,7 +991,7 @@
                 backgroundColor: 'transparent',
 
                 titleTextStyle: {
-                 color: '#32477C',
+                 color: '#ccc',
                  fontSize: 12, 
                  fontWidth: 'normal',
                  bold:true
@@ -1023,7 +1007,7 @@
                   slantedTextAngle: 90,
 
                   textStyle:{
-                    color: '#32477C', 
+                    color: '#ccc', 
                     fontSize: 10,
                     bold:true,
                   },
@@ -1036,12 +1020,12 @@
 
                 vAxis: {
                   textStyle:{
-                    color: '#32477C',
+                    color: '#ccc',
                     bold:true,
                     fontSize: 10
                   },
                   gridlines: {
-                   count:9,
+                   count:0,
                    color:"#ccc"
                  },
                   
@@ -1081,14 +1065,8 @@
 
     /*****CALIDAD*****/   
         var lista_detalle_calidad = $('#lista_detalle_calidad').DataTable({
-          dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
-            "iDisplayLength":25, 
-         "iDisplayLength":25, 
-         "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-         "bPaginate": true,
-         "info":true,
          "aaSorting" : [[4,"desc"]],
+         "responsive":false,
          "scrollY": "162",
          "scrollX": true,
          "sAjaxDataProp": "result",        
@@ -1210,13 +1188,8 @@
     /*****PRODUCTIVIDAD*****/   
 
       var lista_detalle_productividad = $('#lista_detalle_productividad').DataTable({
-        dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
-            "iDisplayLength":25, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
-       "info":true,
        "aaSorting" : [[1,"desc"]],
+       "responsive":false,
        "scrollY": "200",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -1333,12 +1306,7 @@
     /*****DETALLE OTS DRIVE*****/   
 
       var lista_detalle_ots_drive = $('#lista_detalle_ots_drive').DataTable({
-        dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
-       "iDisplayLength":100, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
-       "info":true,
+        "responsive":false,
        "aaSorting" : [[1,"desc"]],
        "scrollY": "168px",
        "scrollX": true,
@@ -1572,13 +1540,13 @@
   })  
 </script>
 
-<div class="content mt-2" style="padding: 2px 10px; background-color: #F9FAFB;">
+<div class="content mt-2">
 <div class="form-row">
 
   <div class="col-12 col-sm-6 col-md-6 col-lg-3">
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb" style="padding: 0.15rem 1rem!important;">
-        <li class="breadcrumb-item active" aria-current="page" style="padding: 0.15rem 1rem!important;"><a href="" style="color:#32477C;font-size: 1rem;font-weight: bold;">IGT - Indicadores de gestión del técnico</a></li>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page" ><a href=""">IGT - Indicadores de gestión del técnico</a></li>
       </ol>
     </nav>
   </div>
@@ -1616,7 +1584,7 @@
   <div class="col-4 col-lg-2">
     <div class="form-group">
       <div class="input-group">
-          <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f"  style="font-size: 1rem!important;height: calc(1.4em + 0.5rem + 2px)!important;">
+          <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
       </div>
     </div>
   </div>
@@ -1861,7 +1829,7 @@
           <div class="card-header card_dash">
             <div class="form-row">
               <div class="col-12 col-lg-4">
-                 <span class="titulo_seccion">Detalle calidad</span>
+                 <span class="title_section">Detalle calidad</span>
               </div>
 
               <div class="col-8 col-lg-6">  
@@ -1916,14 +1884,14 @@
             
             <div class="col-lg-6 graficoHFC">
               <div class="card-header card_dash">
-                <span class="titulo_seccion">Calidad HFC Últimos 6 periodos</span>
+                <span class="title_section">Calidad HFC Últimos 6 periodos</span>
               </div>
               <div id="graficoHFC"></div>
             </div>
 
             <div class="col-lg-6 graficoFTTH">
               <div class="card-header card_dash">
-                <span class="titulo_seccion">Calidad FTTH Últimos 6 periodos</span>
+                <span class="title_section">Calidad FTTH Últimos 6 periodos</span>
               </div>
               <div id="graficoFTTH"></div>
             </div>
@@ -1941,7 +1909,7 @@
           <div class="card-header card_dash">
             <div class="form-row">
               <div class="col-12 col-lg-4">
-                 <span class="titulo_seccion">Detalle productividad</span>
+                 <span class="title_section">Detalle productividad</span>
               </div>
 
               <div class="col-8 col-lg-6">  
@@ -1992,7 +1960,7 @@
           <div class="form-row">
             <div class="col-12">
               <div class="card-header card_dash">
-               <span class="titulo_seccion">Productividad diario</span>
+               <span class="title_section">Productividad diario</span>
               </div>
               <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
             </div>
@@ -2009,7 +1977,7 @@
           <div class="card-header card_dash">
             <div class="form-row">
               <div class="col-12 col-lg-4">
-                 <span class="titulo_seccion">Detalle OTS no detectadas en drive</span>
+                 <span class="title_section">Detalle OTS no detectadas en drive</span>
               </div>
 
               <div class="col-8 col-lg-6">  

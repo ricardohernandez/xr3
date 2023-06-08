@@ -1,48 +1,6 @@
 <style type="text/css">
-  .red{
-    background-color: #DC3545;
-    color: #fff;
-  }
-  .modal-header{
-    padding:0.1rem 0.1rem!important;
-    border-bottom: none!important;
-  }
-
-  .form-control-sm {
-    height: calc(1.9em + 0.5rem + 2px)!important;
-  }
-  .modal-body {
-    position: relative;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    padding:0.1rem 0.1rem!important;
-  }
-
-  .btn_xr3{
-    color: #fff!important;
-    background-color: #32477C!important;
-    border-color: #32477C!important;
-  }
-
   @media(min-width: 768px){
-    .custom-select-sm {
-     height: calc(1.90rem + 2px)!important; 
-    }
-
-    .input-xs {
-      height: 22px!important;
-      line-height: 1.5;
-      padding: 1px 6px!important;
-      font-size: 11px!important;
-    }
-    .form-group{
-      margin-bottom:5px!important;
-    }
-    .centered{
-      font-size: 11px;
-      text-align: left;
-      white-space:nowrap;
-    }
+   
     .borrar_herramienta{
       display: inline;
       font-size: 15px!important;
@@ -51,21 +9,6 @@
       text-decoration: none!important;
     }
 
-    table.dataTable tbody th, table.dataTable tbody td {
-      padding: 0px 7px!important;
-      font-size: 12px;
-    }
-
-    table td, .table th {
-      padding: 0.75rem;
-      vertical-align: middle!important;
-      border-top: 1px solid #dee2e6;
-    }
-
-    .btn_delete_linea:hover{
-      cursor: pointer;
-    }
-    
     .btn_modificar_ftth{
       display: block;
       text-align: center!important;
@@ -77,89 +20,11 @@
       width: 44%!important;
     }
 
-    fieldset {
-      padding: .15em .625em .15em!important;
-    }
-
-
-    .tabla_listado2 #tabla_listado2 > tbody > tr > td {
-        padding: 1px!important;
-    }
-    .table_text{
-      text-align: left!important;
-      font-size: 10.5px!important;
-      margin: 0px!important;
-      padding-left: 3px;
-      padding-right: 3px;
-     }
-    .observacion_chk:focus,.observacion_chk:active{
-      background-color: #fff!important;
-    }
-    .table_head{
-      font-size: 12px!important;
-      text-align: center!important;
-    }
-   
-    .full-w{
-      width: 90%!important;
-    }
-    .tabla_listado2 #tabla_listado2 .header th {
-       height: 22px;
-       font-size: 12.5px;
-    }
-
-    .tabla_listado2 #tabla_listado2 thead tr th{
-      font-size: 11px!important;
-    }
-    .tabla_listado2 #tabla_listado2 tbody tr td{
-      font-size: 10px!important;
-    }
-
-    .tabla_listado2 .dataTables_filter {
-     display: none;
-    }
-
-    .form-control {
-      font-size: 12px!important;
-      padding: .375rem .75rem!important;
-    }
-
-    .custom-select{
-      font-size: 12px!important;
-    }
 
   }
 
   @media(max-width: 768px){
-    .input-xs {
-      height: 32px!important;
-      line-height: 1.5;
-      padding: 1px 1px!important;
-      font-size: 11px!important;
-    }
-    .custom-select-sm {
-     height: calc(2.6rem + 2px)!important; 
-    }
-    table.dataTable tbody th, table.dataTable tbody td {
-      padding: 1px 3px!important;
-      font-size: 14px!important;
-    }
-
-    .form-group{
-      margin-bottom:5px!important;
-    }
-    .centered{
-      font-size: 13px;
-      text-align: left;
-      white-space:nowrap;
-    }
-    .custom-select{
-      font-size: 14px!important;
-    }
-    .form-control {
-        font-size: 14px!important;
-        padding: 0.575rem 0.75rem!important;
-    }
+   
 
     .borrar_herramienta{
       display: inline;
@@ -169,21 +34,6 @@
       text-decoration: none!important;
     }
 
-    table.dataTable tbody th, table.dataTable tbody td {
-      padding: 0px 7px!important;
-      font-size: 14px;
-    }
-
-    table td, .table th {
-      padding: 1.75rem;
-      vertical-align: middle!important;
-      border-top: 1px solid #dee2e6;
-    }
-
-    .btn_delete_linea:hover{
-      cursor: pointer;
-    }
-    
     .btn_modificar_ftth{
       display: block;
       text-align: center!important;
@@ -192,46 +42,6 @@
 
     .modal_ftth{
       width: 94%!important;
-    }
-
-    fieldset {
-      padding: .15em .625em .15em!important;
-    }
-
-    .tabla_listado2 #tabla_listado2 > tbody > tr > td {
-        padding: 2px!important;
-    }
-    .table_text{
-      font-size: 12px!important;
-      margin: 0px!important;
-      padding-left: 1px;
-      padding-right: 1px;
-     }
-    .observacion_chk:focus,.observacion_chk:active{
-      background-color: #fff!important;
-    }
-    .table_head{
-      font-size: 14px!important;
-      text-align: center!important;
-    }
-
-    .full-w{
-      width: 90%!important;
-    }
-    .tabla_listado2 #tabla_listado2 .header th {
-       height: 22px;
-       font-size: 12.5px;
-    }
-
-    .tabla_listado2 #tabla_listado2 thead tr th{
-      font-size: 13px!important;
-    }
-    .tabla_listado2 #tabla_listado2 tbody tr td{
-      font-size: 13px!important;
-    }
-
-    .tabla_listado2 .dataTables_filter {
-     display: none;
     }
 
   }
@@ -257,12 +67,8 @@
 
   /*****DATATABLE*****/   
     var tb_ftth = $('#tb_ftth').DataTable({
-       "sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',
-       "iDisplayLength":-1, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": false,
        "aaSorting" : [],
-       "scrollY": "60vh",
+       "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -540,13 +346,12 @@
 <!-- FILTROS -->
   
     <div class="form-row">
-
-    <!--   <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
+      <!--   <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
          <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
          <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
          <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
       </div> -->
-      <div class="col-6 col-lg-2">  
+      <div class="col-6 col-lg-1">  
         <div class="form-group">
            <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ftth btn_xr3">
            <i class="fa fa-plus-circle"></i>  Crear
@@ -627,12 +432,12 @@
           <div class="col-xs-12 col-sm-12 col-lg-8 offset-lg-2 mt-0">
 	          <div class="form-row">
 	            <div class="col-9 col-lg-6">
-	                <button type="submit" class="btn-block btn btn-sm btn-success btn_guardar_ftth">
+	                <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_ftth">
 	                 <i class="fa fa-save"></i> Guardar
 	                </button>
 	            </div>
 	            <div class="col-3 col-lg-6">
-	              <button class="btn-block btn btn-sm btn-danger cierra_modal_ftth" data-dismiss="modal" aria-hidden="true">
+	              <button class="btn-block btn btn-sm btn-secondary cierra_modal_ftth" data-dismiss="modal" aria-hidden="true">
 	             <!--   <i class="fa fa-window-close"></i>  -->Cerrar
 	              </button>
 	            </div>

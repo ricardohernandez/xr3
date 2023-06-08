@@ -29,16 +29,13 @@
 
   /*****DATATABLE*****/   
     var lista_detalle = $('#lista_detalle').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":100, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
        "aaSorting" : [[1,"desc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "responsive":false,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
           "url":"<?php echo base_url();?>listaDetalle",
@@ -515,7 +512,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;font-size:13px;"> Periodo <span></span> 
             </div>
               <select id="periodo" name="periodo" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
@@ -576,7 +573,7 @@
       <?php  
        if($this->session->userdata('id_perfil')<>4){
           ?>
-            <div class="col-lg-2">  
+            <div class="col-lg-3">  
               <div class="form-group">
                 <select id="trabajadores" name="trabajadores" style="width:100%!important;">
                     <option value="">Seleccione Trabajador | Todos</option>
@@ -586,7 +583,7 @@
           <?php
        }else{
         ?>
-           <div class="col-lg-2">  
+           <div class="col-lg-3">  
               <div class="form-group">
                 <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
                     <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>

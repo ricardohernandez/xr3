@@ -1,5 +1,4 @@
 <style type="text/css">
- 
   div.dataTables_info {
     padding-top: 0.05em!important;
   }
@@ -146,8 +145,9 @@
                 fontName: 'Nunito',
                 fontColor:'#32477C',
                 bar: { groupWidth: '75%' },
+                backgroundColor: { fill:'transparent' },
 
-                colors: ['#172969','#F48432','#A5A5A5'],
+                colors: ['#2f81f7','#F48432','#A5A5A5'],
                 chartArea:{
                     left:270,
                     right:50,
@@ -157,22 +157,31 @@
 
                 height:height,
                 hAxis: {
-                title: '',
-                minValue: 0,
-                textStyle: {
-                    fontSize: 12,
-                    bold:true,
-                    color:'#32477C'
-                }
+                  title: '',
+                  minValue: 0,
+                  textStyle: {
+                      fontSize: 12,
+                      bold:true,
+                      color:'#ccc'
+                  }, 
+
+                  gridlines: {
+                    color: '#ccc',
+                    count:0
+                  }
+                  
                 },
                 vAxis: {
-                title: '',
-                textStyle: {
-                    fontSize: 12,
-                    bold:true,
-                    color:'#32477C'
-                }
+                  title: '',
+                  textStyle: {
+                      fontSize: 12,
+                      bold:true,
+                      color:'#ccc'
+                  },
+
+ 
                 },
+ 
                 annotations: {
                     alwaysOutside: false,
                     textStyle: {
@@ -180,18 +189,18 @@
                         auraColor: 'none'
                     }
                 },
-                legend : {
+                legend : {  
                   position: 'bottom',
                   alignment: 'center',
                   textStyle: {
                       fontSize: 14,
                       bold: true,
-                      color: '#32477C'
+                      color: '#ccc'
                   }
                 },
                 tooltip: { 
                     textStyle: {  
-                        color:'#32477C', 
+                        color:'#ffffff96', 
                         fontSize: 13
                     }
                 },       

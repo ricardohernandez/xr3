@@ -29,11 +29,8 @@
 
   /*****DATATABLE*****/   
     var lista_detalle_calidad = $('#lista_detalle_calidad').DataTable({
-       /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-       "iDisplayLength":100, 
-       "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-       "bPaginate": true,
        "aaSorting" : [[4,"desc"]],
+       "iDisplayLength":50, 
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -463,7 +460,6 @@
 
           </div>
          
-
           <?php
         }
       ?>
@@ -472,7 +468,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 10px;font-size:13px!important;"> Periodo <span></span> 
             </div>
               <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
@@ -585,7 +581,7 @@
         <center><span class="titulo_fecha_actualizacion_dias">
           <div class="alert alert-primary actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
           </div>
-        </span> <i class="fa-solid fa-circle-info ejemplo_planilla_calidad" title="Ver ejemplo" ></i></center>
+        </span> <!-- <i class="fa-solid fa-circle-info ejemplo_planilla_calidad" title="Ver ejemplo" ></i> --></center>
     </div>
   </div>
 
