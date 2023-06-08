@@ -18,7 +18,8 @@
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,600,700%7CSource+Sans+Pro:400,600,700' rel='stylesheet'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/font-icons.css" />
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos_menu22.css" />
+<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos_menu_oscuro.css" /> -->
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos_menu_claro.css" />
 
 
 <!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/loader.css" > -->

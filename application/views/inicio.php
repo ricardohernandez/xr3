@@ -11,7 +11,7 @@
 <!-- Css -->
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/bootstrap.min.css" />
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/font-icons.css" />
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/stylez.css" />
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/estilo.css" />
 <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
 <link rel="shortcut icon" href="<?php echo base_url();?>assets3/front_end/img/favicon2.jpg">
 <link rel="apple-touch-icon" href="<?php echo base_url();?>assets3/front_end/img/apple-touch-icon.png">

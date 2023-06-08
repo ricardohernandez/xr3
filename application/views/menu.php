@@ -67,7 +67,7 @@
 <style type="text/css">
    @media (min-width: 1024px) {
    .modal_pass{
-   width:35%!important;
+   width:45%!important;
    }
    }
    @media (max-width: 1024px) {
@@ -418,28 +418,26 @@
 					<li class="nav__dropdown">
 
 
-					<a href="#"> 
-						<?php  
-							if($this->session->userdata('foto')!=""){
-							?>
-								<img style="width: 39px!important; height: 39px; margin: -8px 5px 0px 5px;border-radius: 50%;" class="" src="<?php echo base_url() ?>fotos_usuarios/<?php echo $this->session->userdata('foto')?>" alt="Foto">
-							<?php
-							}
-						?>
-						<?php echo $this->session->userdata("nombre_completo")?>
-					</a>
-
-
+                  <a href="#"> 
+                     <?php  
+                        if($this->session->userdata('foto')!=""){
+                        ?>
+                           <img style="width: 39px!important; height: 39px; margin: -8px 5px 0px 5px;border-radius: 50%;" class="" src="<?php echo base_url() ?>fotos_usuarios/<?php echo $this->session->userdata('foto')?>" alt="Foto">
+                        <?php
+                        }
+                     ?>
+                     <?php echo $this->session->userdata("nombre_completo")?>
+                  </a>
 
 					<ul class="nav__dropdown-menu">
 						<li class="nav__dropdown">
-							<a class="menu_list btn_modal_pass">Cambiar Contrase&ntilde;a</a>
+							<a class="menu_list btn_modal_pass" href="#!">Cambiar Contrase&ntilde;a</a>
 							<a class="menu_list" href="<?php echo base_url()?>unlogin">Cerrar Sesi&oacute;n</a>
 						</li>
 					</ul>
 
 					</li>
-				</ul>
+			   	</ul>
 
                </div>
             </div>
@@ -452,8 +450,8 @@
    <div class="modal-dialog modal_pass" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title">Cambiar contrase&ntilde;a</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <p class="title_section">Cambiar contrase&ntilde;a</p>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
             <span aria-hidden="true">&times;</span>
             </button>
          </div>

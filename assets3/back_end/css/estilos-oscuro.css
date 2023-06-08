@@ -229,7 +229,8 @@
     }
 
     .title_section{
-        color:var(--text-color);
+        color:var(--button-text-color);
+        font-size:1rem!important;
     }
 
     .content{
@@ -390,10 +391,7 @@
         .btn-group-sm>.btn, .btn-sm {
             padding: .25rem .5rem!important;
         }
-    
-        .modal_pass{
-            width: 50%!important;
-        }
+ 
     
         .btn-ref{
             color: var(--text-color);
@@ -520,9 +518,6 @@
             /* margin: 0.5rem!important; */
         }
 
-        .modal_pass{
-            width: 90%!important;
-        }
         .modal_usuario{
             width: 84%!important;
         }
