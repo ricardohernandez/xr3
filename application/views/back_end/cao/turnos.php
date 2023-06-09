@@ -640,7 +640,7 @@
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12">
-          <table id="tabla_turnos" class="table table-bordered dt-responsive nowrap dataTable  row-border order-column" style="width:100%"></table>
+          <table id="tabla_turnos" class="table table-bordered table-striped dt-responsive nowrap dataTable trow-border order-column" style="width:100%"></table>
         </div>
       </div>
     </div>
@@ -711,20 +711,21 @@
           <div class="modal-footer" style="border-top: none;">
             <div class="col-xs-12 col-sm-12 col-lg-8 offset-lg-2 mt-0">
               <div class="form-row">
-                <div class="col-9 col-lg-4">
+
+                <div class="col-3 col-lg-3">
                   <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_turnos">
                    <i class="fa fa-save"></i> Guardar
                   </button>
                 </div>
 
-                <div class="col-3 col-lg-4 eliminar_turnos_contenedor">
-                  <a class="btn-block btn btn-sm btn-danger eliminar_turnos" aria-hidden="true">
+                <div class="col-3 col-lg-3 eliminar_turnos_contenedor">
+                  <button class="btn-block btn btn-sm btn-danger eliminar_turnos">
                    <i class="fa fa-trash"></i> Eliminar
-                  </a>
+                  </button>
                 </div>
 
-                <div class="col-3 col-lg-4">
-                  <button class="btn-block btn btn-sm btn-secondary cierra_modal_turnos" data-dismiss="modal" aria-hidden="true">
+                <div class="col-3 col-lg-3">
+                  <button class="btn-block btn btn-sm btn-secondary cierra_modal_turnos" data-dismiss="modal">
                    <i class="fa fa-window-close"></i> Cerrar
                   </button>
                 </div>
