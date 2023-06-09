@@ -1,6 +1,7 @@
 <script type="text/javascript">
    $(function(){
-     
+      
+
    	$(".btn_modal_pass").click(function(event) {
    	    $("#modal_pass").modal('toggle'); 
    	    $(".cont_mensajes").html();
@@ -65,6 +66,11 @@
    })
 </script>
 <style type="text/css">
+
+   .modo_noche, .modo_dia{
+      cursor:pointer;
+   }
+
    @media (min-width: 1024px) {
    .modal_pass{
    width:45%!important;
@@ -216,10 +222,14 @@
          <?php
             }
          ?>
+
+         <li class="mt-3  mb-">
+            <a href="#" class="sidenav__menu-url modo_noche mb-3"><i class="fas fa-moon mb-3" title="Modo oscuro"></i></a>
+            <a href="#" class="sidenav__menu-url modo_dia mb-3"><i class="fas fa-sun mb-3" title="Modo claro"></i></a>
+         </li>
+
+
          <li>
-
-
-
             <a href="#" class="sidenav__menu-url"><?php echo $this->session->userdata("nombre_completo")?></a>
             <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
             <ul class="sidenav__menu-dropdown">
@@ -409,10 +419,21 @@
 							?>
 					</select>
 					</li>
+
+               <li class="">
+
+                 <i class="fas fa-moon mx-2 mt-1 modo_noche" title="Modo oscuro"></i>
+                 <i class="fas fa-sun mx-2 mt-1 modo_dia" title="Modo claro"></i>
+               </li>
+
 					<?php
 					}
 					?>
 				</ul>
+
+           
+
+
 
                 <ul class="nav__menu menu_derecho">
 					<li class="nav__dropdown">

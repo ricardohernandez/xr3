@@ -27,12 +27,10 @@
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap-datetimepicker.min2.css">
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/normalize.min.css" rel="stylesheet">
 
-
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap.min.css" >
-<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap-night.css" > -->
-
-<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos-oscuro.css">  -->
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos-claro.css"> 
+<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap.min.css" >
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/bootstrap-night.css" > 
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos-oscuro.css"> 
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos-claro.css">  -->
 
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/fontawesome-all.min.css">
 <script src="<?php echo base_url();?>assets3/back_end/js/dataTables.select.min.js"></script>
