@@ -1,11 +1,4 @@
-<style type="text/css">
-	.titulo_grafico{
-	  color: #32477C;
-      font-size: 16px; 
-      font-weight:bold;
-      text-align: center;
-    }
-</style>
+
 <script type="text/javascript">
 	base_url = "<?php echo base_url() ?>"
 	/* google.charts.setOnLoadCallback(graficoEstadosChecklistCH); */
@@ -74,8 +67,8 @@
 				data.sort([{column: 3, desc: false}])
 
 				var options = {
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
 
 					colors: ['#32477C'],
@@ -91,37 +84,43 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
 					}
 					},
 					vAxis: {
 					title: '',
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					annotations: {
 						alwaysOutside: false,
 						textStyle: {
 							fontSize: 12,
+							color:'#808080',
 							auraColor: 'none'
 						}
 					},
+					backgroundColor: { fill:'transparent' },
 					legend : {
 						position: 'none', alignment: 'center' ,
 						textStyle: {
 							fontSize: 13,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -172,11 +171,11 @@
 
 				var options = {
 					isStacked: true,
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
 
-					colors: ['green', 'red', 'grey'],
+					colors: ['#32477C', 'red', 'grey'],
 					chartArea:{
 						left:50,
 						right:50,
@@ -189,37 +188,47 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 					title: '',
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					annotations: {
 						alwaysOutside: false,
 						textStyle: {
 							fontSize: 12,
+							color:'#808080',
 							auraColor: 'none'
 						}
 					},
+					backgroundColor: { fill:'transparent' },
 					legend : {
 						position: 'top', alignment: 'center' ,
 						textStyle: {
 							fontSize: 13,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -269,8 +278,8 @@
 				data.sort([{column: 3, desc: false}])
 
 				var options = {
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
 
 					colors: ['#32477C'],
@@ -286,37 +295,47 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 						title: '',
 						textStyle: {
-							fontSize: 11,
-							bold:true,
-							color:'#32477C'
+							fontSize: 12,
+							bold:false,
+							color:'#808080'
+						},
+						gridlines: {
+							color: '#808080',
+							count:0
 						}
 					},
 					annotations: {
 						alwaysOutside: false,
 						textStyle: {
 							fontSize: 12,
+							color:'#808080',
 							auraColor: 'none'
 						}
 					},
+					backgroundColor: { fill:'transparent' },
 					legend : {
 						position: 'none', alignment: 'center' ,
 						textStyle: {
 							fontSize: 13,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -367,11 +386,11 @@
 
 				var options = {
 					isStacked: true,
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
 
-					colors: ['green', 'red', 'grey'],
+					colors: ['#32477C', 'red', 'grey'],
 					chartArea:{
 						left:50,
 						right:50,
@@ -384,37 +403,47 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 					title: '',
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					annotations: {
 						alwaysOutside: false,
 						textStyle: {
 							fontSize: 12,
+							color:'#808080',
 							auraColor: 'none'
 						}
 					},
+					backgroundColor: { fill:'transparent' },
 					legend : {
 						position: 'top', alignment: 'center' ,
 						textStyle: {
 							fontSize: 13,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -445,11 +474,11 @@
        		data.sort([{column: 1, desc: true}])
 
         	var options = {
-        	 	fontName: 'Nunito',
-        	 	fontColor:'#32477C',
+        	 	fontName: 'ubuntu',
+        	 	fontColor:'#808080',
         	 	bar: { groupWidth: '75%' },
 
-	            colors: ['32477C'],
+	            colors: ['#32477C'],
 		        chartArea:{
 		             left:280,
 		             right:50,
@@ -462,37 +491,47 @@
 		          title: '',
 		          minValue: 0,
 		          textStyle: {
-		            fontSize: 11,
-		            bold:true,
-		            color:'#32477C'
-	              }
+		            fontSize: 12,
+		            bold:false,
+		            color:'#808080'
+	              },
+					gridlines: {
+						color: '#808080',
+						count:0
+					}
 		        },
 		        vAxis: {
 		          title: '',
 		          textStyle: {
-		            fontSize: 11,
-		            bold:true,
-		            color:'#32477C'
-	              }
+		            fontSize: 12,
+		            bold:false,
+		            color:'#808080'
+	              },
+					gridlines: {
+						color: '#808080',
+						count:0
+					}
 		        },
 		        annotations: {
 			        alwaysOutside: true,
 			        textStyle: {
 			            fontSize: 12,
+						color:'#808080',
 			            auraColor: 'none'
 			        }
 			    },
+				backgroundColor: { fill:'transparent' },
 			    legend : {
 					position: 'none', alignment: 'center' ,
 			        textStyle: {
 			            fontSize: 14,
-			            bold:true,
-			            color:'#32477C'
+			            bold:false,
+			            color:'#808080'
 		            }
 	            },
 	            tooltip: { 
 	            	textStyle: {  
-	            		color:'#32477C', 
+	            		color:'#808080', 
 	            		fontSize: 13
 	            	}
 	            },       
@@ -516,8 +555,8 @@
        		data.sort([{column: 1, desc: true}])
 
         	var options = {
-        	 	fontName: 'Nunito',
-        	 	fontColor:'#32477C',
+        	 	fontName: 'ubuntu',
+        	 	fontColor:'#808080',
         	 	bar: { groupWidth: '75%' },
 
 	            colors: ['#32477C'],
@@ -533,37 +572,47 @@
 		          title: '',
 		          minValue: 0,
 		          textStyle: {
-		            fontSize: 11,
-		            bold:true,
-		            color:'#32477C'
-	              }
+		            fontSize: 12,
+		            bold:false,
+		            color:'#808080'
+	              },
+					gridlines: {
+						color: '#808080',
+						count:0
+					}
 		        },
 		        vAxis: {
 		          title: '',
 		          textStyle: {
-		            fontSize: 11,
-		            bold:true,
-		            color:'#32477C'
-	              }
+		            fontSize: 12,
+		            bold:false,
+		            color:'#808080'
+	              },
+					gridlines: {
+						color: '#808080',
+						count:0
+					}
 		        },
 		        annotations: {
 			        alwaysOutside: true,
 			        textStyle: {
 			            fontSize: 12,
+						color:'#808080',
 			            auraColor: 'none'
 			        }
 			    },
+				backgroundColor: { fill:'transparent' },
 			    legend : {
 					position: 'none', alignment: 'center' ,
 			        textStyle: {
 			            fontSize: 14,
-			            bold:true,
-			            color:'#32477C'
+			            bold:false,
+			            color:'#808080'
 		            }
 	            },
 	            tooltip: { 
 	            	textStyle: {  
-	            		color:'#32477C', 
+	            		color:'#808080', 
 	            		fontSize: 13
 	            	}
 	            },       
@@ -586,32 +635,32 @@
        		var data = google.visualization.arrayToDataTable(json);
 
         	var options = {
-	          fontName: 'Nunito',
+	          fontName: 'ubuntu',
 	          height:320,
 	     	  sliceVisibilityThreshold:0,
 	          format: 'short',
 	          isStacked: 'percent',
 	          pieSliceText: 'value',
-		  
+			  backgroundColor: { fill:'transparent' },
 	          legend: {
 	            position: 'labeled',
 	            'alignment':'center',
 	            textStyle: {
 		            fontSize: 13,
-		            bold:true,
-		            color:'#32477C'
+		            bold:false,
+		            color:'#808080'
 	            }
 	          }, 
 
 	  		  titlePosition: 'none',
 	          titleTextStyle: {
-		        color: '#32477C',
+		        color: '#808080',
 		        fontSize: '14', 
 		        fontWidth: 'normal',
-		        bold:true
+		        bold:false
 		      },
 
-	          colors: ['green', 'red', 'grey'],
+	          colors: ['#32477C', 'red', 'grey'],
 	          chartArea:{
 	             left:50,
 	             right:50,
@@ -629,7 +678,7 @@
 
 </script>
 
-	
+<div class="card p-2">
 <div class="row">
     <div class="col mb-2">
 		<div class="row">
@@ -687,12 +736,12 @@
 			
 			<div class="row">
 				<div class="col-6">
-					<h6 class="titulo_grafico mt-3">Auditorias por técnico mensuales cantidad</h6>
+					<h6 class="title_section mt-3">Auditorias por técnico mensuales cantidad</h6>
 					<div id="graficoAuditoriasTecnicosq"></div>
 				</div>
 
 				<div class="col-6">
-					<h6 class="titulo_grafico mt-3">Auditorias por técnico mensuales detalle</h6>
+					<h6 class="title_section mt-3">Auditorias por técnico mensuales detalle</h6>
 					<div id="graficoAuditoriasTecnicos"></div>
 				</div>
 			</div>
@@ -757,29 +806,30 @@
 		
 		<div class="row">
 			<div class="col-6">
-				<h6 class="titulo_grafico mt-3">Auditorias por auditor mensuales cantidad</h6>
+				<h6 class="title_section mt-3">Auditorias por auditor mensuales cantidad</h6>
 				<div id="graficoAuditoriasq"></div>
 			</div>
 
 			<div class="col-6">
-				<h6 class="titulo_grafico mt-3">Auditorias por auditor mensuales detalle</h6>
+				<h6 class="title_section mt-3">Auditorias por auditor mensuales detalle</h6>
 				<div id="graficoAuditorias"></div>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-6 mt-3">
-				<h6 class="titulo_grafico">Auditorias por técnico </h6>
+				<h6 class="title_section">Auditorias por técnico </h6>
 				<div id="graficoTecnicos"></div>
 			</div>
 
 			<div class="col-6 mt-3">
-				<h6 class="titulo_grafico">Auditorias por auditor </h6>
+				<h6 class="title_section">Auditorias por auditor </h6>
 				<div id="graficoAuditores"></div>
-				<!-- <h6 class="titulo_grafico">Estados checklist</h6>
+				<!-- <h6 class="title_section">Estados checklist</h6>
 				<div id="graficoEstadosChecklist"></div> -->
 			</div>
 		</div>
     </div>
 </div>
 
+</div>

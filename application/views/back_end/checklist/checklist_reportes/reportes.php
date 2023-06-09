@@ -1,22 +1,13 @@
 <style type="text/css">
-  div.dataTables_info {
-    padding-top: 0.05em!important;
-  }
-
-  div.dataTables_paginate {
-    margin-top:1px!important;
-    margin-bottom:10px!important;
-  }
 
   .titulo{
       display: inline-block;
       font-size: 13px;
   }
-
   .card{
     border: none!important;
     padding: 0px!important;;
-    -webkit-box-shadow: 0 0 10px 0 rgb(183 192 206 / 20%);
+    -webkit-box-shadow: 0 0 1px 0 rgb(183 192 206 / 20%);
     border-radius: 5px;
   }
   .s2{
@@ -32,56 +23,14 @@
     font-weight: bold!important;
     color: red!important;
   }
-  .card-header{
-    font-size: 14px; 
-    color:#32477C!important;
-    background-color: #E9ECEF!important;
-  }
 
-  .card-footer{
-    font-size: 14px; 
-    color:#32477C!important;
-    background-color: #E9ECEF!important;
-  }
-
-  .card_dash{
-  
-     border: none!important;
-     border-top: none!important;
-     border-bottom: none!important
-     color:#32477C!important;
-     padding: 0.25rem 0.75rem!important;
-     font-size: 14px;
-     font-weight: bold;
-  }
-  .card-body{
-   /* background-color: #F7F7F7!important;*/
-    padding: 0.15rem!important;
-  }
-  hr {
-    margin-top: 1rem!important;
-    margin-bottom: 1rem!important;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  .titulo_seccion{
-    display: inline-block;
-    color: #32477C;
-    font-size: 14px; 
-    font-weight:bold;
-    text-align: left;
-    padding:0px 2px;
-    margin-top: 5px;
-  }
-
-  .body{
-    display: none;
-  }
 </style>
 
 <script type="text/javascript">
 
   $(function(){
+
+
     const perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const r = "<?php echo $this->session->userdata('rut'); ?>";
     const base_url = "<?php echo base_url() ?>";
@@ -114,7 +63,6 @@
 
     });
 
-
     function graficoReporteChecklist(){
 
       var periodo = $("#periodo").val();
@@ -135,14 +83,14 @@
             $(".body").fadeIn(500)
 
             let size = Object.keys(json).length
-            let height = 500
+            let height = 600
 
             var data = google.visualization.arrayToDataTable(json);
             data.sort([{column: 0, desc: false}])
 
             var options = {
                 isStacked : true,
-                fontName: 'Nunito',
+                fontName: 'ubuntu',
                 fontColor:'#32477C',
                 bar: { groupWidth: '75%' },
                 backgroundColor: { fill:'transparent' },
@@ -160,13 +108,13 @@
                   title: '',
                   minValue: 0,
                   textStyle: {
-                      fontSize: 12,
-                      bold:true,
-                      color:'#ccc'
+                      fontSize: 13,
+                      bold:false,
+                      color:'#808080'
                   }, 
 
                   gridlines: {
-                    color: '#ccc',
+                    color: '#808080',
                     count:0
                   }
                   
@@ -174,9 +122,9 @@
                 vAxis: {
                   title: '',
                   textStyle: {
-                      fontSize: 12,
-                      bold:true,
-                      color:'#ccc'
+                      fontSize: 13,
+                      bold:false,
+                      color:'#808080'
                   },
 
  
@@ -195,7 +143,7 @@
                   textStyle: {
                       fontSize: 14,
                       bold: true,
-                      color: '#ccc'
+                      color: '#808080'
                   }
                 },
                 tooltip: { 
@@ -222,7 +170,7 @@
        "bPaginate": false,
        "info":false,
        "aaSorting" : [[0,"asc"]],
-       "scrollY": "65vh",
+       "scrollY": "60vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -294,118 +242,93 @@
 
 </script>
 
-<div class="content mt-2" style="padding: 2px 10px;">
-    <div class="form-row">
-        <div class="col-12  col-md-6 col-lg-3">
-            <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page" ><a href="">RCH - Reporte checklist</a></li>
-            </ol>
-            </nav>
-        </div>
-        <div class="col-8 col-lg-3">
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                    <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
-                    </div>
-                    <select id="periodo" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
-                    <option value="actual" selected><?php echo $mes_actual ?></option>
-                    <option value="anterior"><?php echo $mes_anterior ?></option>
-                    <option value="anterior2"><?php echo $mes_anterior2 ?></option>
-                    </select>
+<div class="content" style="padding: 0px 10px;">
+  <div class="form-row">
+    <div class="col-12  col-md-6 col-lg-3">
+        <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page" ><a href="">RCH - Reporte checklist</a></li>
+        </ol>
+        </nav>
+    </div>
+
+    <div class="col-8 col-lg-3">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
                 </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="form-group">
-                <select id="supervisor" name="supervisor" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
-                <option value="">Supervisor | Todos</option>
-                <?php  
-                    foreach($supervisores as $s){
-                    ?>
-                        <option  value="<?php echo $s["id"]?>" ><?php echo $s["nombre_completo"]?> </option>
-                    <?php
-                    }
-                ?>
+                <select id="periodo" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+                <option value="actual" selected><?php echo $mes_actual ?></option>
+                <option value="anterior"><?php echo $mes_anterior ?></option>
+                <option value="anterior2"><?php echo $mes_anterior2 ?></option>
                 </select>
-            </div>
-        </div>
-
-        <div class="col-6 col-lg-3">
-            <div class="form-group">
-                <select id="zona" name="zona" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
-                <option value="">Zona | Todos</option>
-                <?php  
-                    foreach($areas as $a){
-                    ?>
-                        <option  value="<?php echo $a["id"]?>" ><?php echo $a["area"]?> </option>
-                    <?php
-                    }
-                ?>
-                </select>
-            </div>
-        </div>
-
-    </div>       
-</div>       
-
-<center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
-    <div class="">
-        <div class="form-row body no-gutters">
-            <div class="col-12 col-lg-6">
-                <div class="card">
-               <!--  <div class="card-header card_dash">
-                    <div class="form-row">
-                        <div class="col-12 col-lg-3">
-                            <span class="titulo_seccion"></span>
-                        </div>
-
-                        <div class="col-8 col-lg-6">  
-                            <input type="text" placeholder="Busqueda" id="buscador" class="buscador form-control form-control-sm">
-                        </div>
-
-                        <div class="col-4 col-lg-3">  
-                            <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
-                            <i class="fa fa-save"></i> Excel
-                            </button>
-                        </div>
-                    </div>
-                </div> -->
-
-                <div class="form-row">
-                
-                    <div class="col-lg-12 px-3">
-                    <table id="tabla_checklistreporte" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead>
-                        <tr>    
-                            <th class="centered">Lider</th> 
-                            <th class="centered">Suma CLH</th> 
-                            <th class="centered">Suma HFC</th> 
-                            <th class="centered">Suma FTTH</th> 
-                        </tr>
-                        </thead>
-                    </table>
-                    </div>
-                </div>
-                </div>
-            </div>   
-
-            <div class="col-12 col-lg-6 pl-lg-2">
-                <div class="card">
-                <div class="form-row">
-                    
-                    <div class="col-lg-12 graficoChecklistReporte">
-                   <!--  <div class="card-header card_dash">
-                        <span class="titulo_seccion"></span>
-                    </div> -->
-                    <div id="graficoChecklistReporte"></div>
-                    </div>
-
-                </div>
-                </div>
             </div>
         </div>
     </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="form-group">
+            <select id="supervisor" name="supervisor" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+            <option value="">Supervisor | Todos</option>
+            <?php  
+                foreach($supervisores as $s){
+                ?>
+                    <option  value="<?php echo $s["id"]?>" ><?php echo $s["nombre_completo"]?> </option>
+                <?php
+                }
+            ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="form-group">
+            <select id="zona" name="zona" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+            <option value="">Zona | Todos</option>
+            <?php  
+                foreach($areas as $a){
+                ?>
+                    <option  value="<?php echo $a["id"]?>" ><?php echo $a["area"]?> </option>
+                <?php
+                }
+            ?>
+            </select>
+        </div>
+     </div>
+    </div>       
+
+<div class="row p-2">
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="form-row">
+        <div class="col-lg-12 p-2">
+          <table id="tabla_checklistreporte" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+            <thead>
+              <tr>    
+                <th class="centered">Lider</th> 
+                <th class="centered">Suma CLH</th> 
+                <th class="centered">Suma HFC</th> 
+                <th class="centered">Suma FTTH</th> 
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>   
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="form-row">
+        <div class="col-12 graficoChecklistReporte">
+          <div id="graficoChecklistReporte"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
-<br><br><br><br><br>
+
+<br><br><br><br>

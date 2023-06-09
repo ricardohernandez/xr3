@@ -138,7 +138,7 @@
             ?>
               <li id="menu_graficos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos </a></li>   
               <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
-              <li id="menu_graficos_fallos_ftth" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
+             <!--  <li id="menu_graficos_fallos_ftth" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>    -->
             <?php
           }
         ?>

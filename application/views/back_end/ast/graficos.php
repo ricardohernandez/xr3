@@ -1,11 +1,4 @@
-<style type="text/css">
-	.titulo_grafico{
-	  color: #32477C;
-      font-size: 16px; 
-      font-weight:bold;
-      text-align: center;
-    }
-</style>
+
 <script type="text/javascript">
 	const base_url = "<?php echo base_url() ?>"
 	const desde="<?php echo $desde; ?>";
@@ -83,11 +76,11 @@
 				data.sort([{column: 3, desc: false}])
 
 				var options = {
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
-
-					colors: ['#32477C'],
+					backgroundColor: { fill:'transparent' },
+					colors: ['#1A56DB'],
 					chartArea:{
 						left:50,
 						right:50,
@@ -100,23 +93,32 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 						title: '',
 						textStyle: {
-							fontSize: 11,
-							bold:true,
-							color:'#32477C'
+							fontSize: 12,
+							bold:false,
+							color:'#808080'
+						},
+						gridlines: {
+							color: '#808080',
+							count:0
 						}
 					},
 					annotations: {
 						alwaysOutside: false,
 						textStyle: {
 							fontSize: 12,
+							color: '#808080',
 							auraColor: 'none'
 						}
 					},
@@ -124,13 +126,13 @@
 						position: 'none', alignment: 'center' ,
 						textStyle: {
 							fontSize: 13,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -181,11 +183,11 @@
 
 				var options = {
 					isStacked: true,
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
-
-					colors: ['green', 'red', 'grey'],
+					backgroundColor: { fill:'transparent' },
+					colors: ['1A56DB', 'red', 'grey'],
 					chartArea:{
 						left:50,
 						right:50,
@@ -198,23 +200,32 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 					title: '',
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					annotations: {
 						alwaysOutside: false,
 						textStyle: {
 							fontSize: 12,
+							color: '#808080',
 							auraColor: 'none'
 						}
 					},
@@ -222,13 +233,13 @@
 						position: 'top', alignment: 'center' ,
 						textStyle: {
 							fontSize: 13,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -287,11 +298,11 @@
 				data.sort([{column: 1, desc: true}])
 			
 				var options = {
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
-
-					colors: ['32477C'],
+					backgroundColor: { fill:'transparent' },
+					colors: ['1A56DB'],
 					chartArea:{
 						left:280,
 						right:50,
@@ -305,23 +316,32 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 					title: '',
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					annotations: {
 						alwaysOutside: true,
 						textStyle: {
 							fontSize: 12,
+							color: '#808080',
 							auraColor: 'none'
 						}
 					},
@@ -329,13 +349,13 @@
 						position: 'none', alignment: 'center' ,
 						textStyle: {
 							fontSize: 14,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -381,11 +401,11 @@
 				data.sort([{column: 3, desc: true}])
 
 				var options = {
-					fontName: 'Nunito',
-					fontColor:'#32477C',
+					fontName: 'ubuntu',
+					fontColor:'#808080',
 					bar: { groupWidth: '75%' },
-
-					colors: ['32477C','red'],
+					backgroundColor: { fill:'transparent' },
+					colors: ['1A56DB','red'],
 					chartArea:{
 						left:480,
 						right:50,
@@ -398,23 +418,32 @@
 					title: '',
 					minValue: 0,
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					vAxis: {
 					title: '',
 					textStyle: {
-						fontSize: 11,
-						bold:true,
-						color:'#32477C'
+						fontSize: 12,
+						bold:false,
+						color:'#808080'
+					},
+					gridlines: {
+						color: '#808080',
+						count:0
 					}
 					},
 					annotations: {
 						alwaysOutside: true,
 						textStyle: {
 							fontSize: 12,
+							color: '#808080',
 							auraColor: 'none'
 						}
 					},
@@ -422,13 +451,13 @@
 						position: 'none', alignment: 'center' ,
 						textStyle: {
 							fontSize: 14,
-							bold:true,
-							color:'#32477C'
+							bold:false,
+							color:'#808080'
 						}
 					},
 					tooltip: { 
 						textStyle: {  
-							color:'#32477C', 
+							color:'#808080', 
 							fontSize: 13
 						}
 					},       
@@ -479,7 +508,7 @@
 
 	
 </script>
-
+<div class="card p-2">
 <div class="row">
     <div class="col mb-2">
 		<div class="row">
@@ -535,12 +564,12 @@
 
 				<div class="row">
 					<div class="col-6">
-						<h6 class="titulo_grafico mt-3">AST por técnico mensuales cantidad</h6>
+						<p class="title_section mt-3">AST por técnico mensuales cantidad</p>
 						<div id="graficoAstTecnico"></div>
 					</div>
 
 					<div class="col-6">
-						<h6 class="titulo_grafico mt-3">AST por técnico mensuales detalle</h6>
+						<p class="title_section mt-3">AST por técnico mensuales detalle</p>
 						<div id="graficoAstDetalleTecnico"></div>
 					</div>
 				</div>
@@ -550,7 +579,7 @@
 
 		<div class="row">
 			<div class="col-6 mt-3">
-				<h6 class="titulo_grafico">AST Totales por técnico </h6>
+				<p class="title_section">AST Totales por técnico </p>
 
 				<div class="form-row">
 					<div class="col-md-8 offset-md-2">
@@ -582,7 +611,7 @@
 			</div>
 
 			<div class="col-6 mt-3">
-				<h6 class="titulo_grafico">Estados por item </h6>
+				<p class="title_section">Estados por item </p>
 
 				<div class="form-row">
 					<div class="col-md-8 offset-md-2">

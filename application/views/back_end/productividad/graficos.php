@@ -77,13 +77,13 @@
 
 			var options = {
 				// isStacked: true,
-				fontName: 'Nunito',
+				fontName: 'ubuntu',
 				fontColor:'#32477C',
-				fontSize: 12,
+				fontSize: 13,
 				colors: ['#2f81f7','#F48432','#A5A5A5'],
 				chartArea:{
-					left:130,
-					right:50,
+					left:160,
+					right:80,
 					bottom:30,
 					top:50,
 				},
@@ -93,21 +93,21 @@
 					title: '',
 					minValue: 0,
 					gridlines: {
-						color: '#ccc',
+						color: '#808080',
 						count:0
 					},
 					textStyle : {
-						// fontSize: 8,
-						bold:true,
-						color:'#ccc'
+						  fontSize: 12,
+						bold:false,
+						color:'#808080'
 					}
 				},
 				vAxis: {
 				title: '',
 				textStyle: {
-					// fontSize: 8,
-					bold:true,
-					color:'#ccc'
+					fontSize: 12,
+					bold:false,
+					color:'#808080'
 				}
 				},
 
@@ -116,8 +116,8 @@
 				alignment: 'center',
 				textStyle: {
 					fontSize: 13,
-					bold: true,
-					color: '#ccc'
+					bold: false,
+					color: '#808080'
 				}
 				},
 			
@@ -139,13 +139,13 @@
 				height: 220,
 				is3D:true,
 				colors:["#2f81f7"],
-				fontName: 'Nunito',
+				fontName: 'ubuntu',
 				bar: {groupWidth: "25%"},
 				backgroundColor: { fill:'transparent' },
 				annotations: {
 					textStyle: {
-					fontSize: 10,
-					color: '#ccc',
+					fontSize: 12,
+					color: '#808080',
 					auraColor: 'transparent'
 					},
 					alwaysOutside: false,  
@@ -155,7 +155,7 @@
 					},   
 				},
 				chartArea:{
-					left:40,
+					left:60,
 					right:40,
 					bottom:40,
 					top:10,
@@ -164,10 +164,10 @@
 				},
 
 				titleTextStyle: {
-					color: '#ccc',
+					color: '#808080',
 					fontSize: 13, 
 					fontWidth: 'normal',
-					bold:true
+					bold:false
 				},
 
 				legend: {
@@ -175,33 +175,33 @@
 					'alignment':'center',
 					textStyle: {
 						fontSize: 12,
-						bold:true,
-						color:'#ccc'
+						bold:false,
+						color:'#808080'
 					}
 				}, 
 
 				hAxis: {
 					textStyle:{
-						color: '#ccc', 
-						fontSize: 10,
-						bold:true,
+						color: '#808080', 
+						fontSize: 12,
+						bold:false,
 					},
 
 					gridlines: {
-						color: '#ccc',
+						color: '#808080',
 						count:0
 					},
 				},
 
 				vAxis: {
 					textStyle:{
-						color: '#ccc',
-						bold:true,
-						fontSize: 10
+						color: '#808080',
+						bold:false,
+						fontSize: 12
 					},
 
 					gridlines: {
-						color: '#ccc',
+						color: '#808080',
 						count:0
 					},
 				},
@@ -231,7 +231,7 @@
 		function distribucionTipos(){
 			var data = google.visualization.arrayToDataTable(json.distribucionTipos);
 			var options = {
-				fontName: 'Nunito',
+				fontName: 'ubuntu',
 				height:160,
 				sliceVisibilityThreshold:0,
 				format: 'short',
@@ -242,18 +242,18 @@
 				position: 'labeled',
 				'alignment':'center',
 				textStyle: {
-					fontSize: 11,
-					bold:true,
-					color:'#ccc'
+					fontSize: 12,
+					bold:false,
+					color:'#808080'
 				}
 				}, 
 				titlePosition: 'none',
 				titleTextStyle: {
 
-				color: '#ccc',
+				color: '#808080',
 				fontSize: '14', 
 				fontWidth: 'normal',
-				bold:true
+				bold:false
 				},
 
 				colors: ['#2f81f7','#F48432','#A5A5A5'],
@@ -271,7 +271,7 @@
 		 function distribucionOt(){
 			var data = google.visualization.arrayToDataTable(json.distribucionOt);
 			var options = {
-				fontName: 'Nunito',
+				fontName: 'ubuntu',
 				height:160,
 				sliceVisibilityThreshold:0,
 				format: 'short',
@@ -283,17 +283,17 @@
 				'alignment':'center',
 				textStyle: {
 					fontSize: 11,
-					bold:true,
-					color:'#ccc'
+					bold:false,
+					color:'#808080'
 				}
 				}, 
 				titlePosition: 'none',
 				titleTextStyle: {
 
-				color: '#ccc',
+				color: '#808080',
 				fontSize: '14', 
 				fontWidth: 'normal',
-				bold:true
+				bold:false
 				},
 
 				colors: ['green', 'red'],

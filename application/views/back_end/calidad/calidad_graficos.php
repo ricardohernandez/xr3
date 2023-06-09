@@ -7,8 +7,8 @@
     padding:10px 2px;
   }
   .tfoot_totales{
-     background-color: #1A56DB;
-     color:#ccc;
+     /* background-color: #1A56DB; */
+     color:#808080;
   }
   .tfoot_totales th{
     font-size: 13px!important;
@@ -52,13 +52,13 @@
             height: 260,
             is3D:true,
             colors:["#2f81f7","#DC3912"],
-            fontName: 'Nunito',
+            fontName: 'ubuntu',
             bar: {groupWidth: "25%"},
             backgroundColor: { fill:'transparent' },
             annotations: {
                  textStyle: {
                   fontSize: 10,
-                  color: '#ccc',
+                  color: '#808080',
                   auraColor: 'transparent'
                 },
                 alwaysOutside: false,  
@@ -77,10 +77,10 @@
             },
 
             titleTextStyle: {
-             color: '#ccc',
+             color: '#808080',
              fontSize: 13, 
              fontWidth: 'normal',
-             bold:true
+             bold:false
             },
 
             legend: {
@@ -88,23 +88,23 @@
              'alignment':'center',
               textStyle: {
                 fontSize: 12,
-                bold:true,
-                color:'#ccc'
+                bold:false,
+                color:'#808080'
               }
             }, 
 
             hAxis: {
               textStyle:{
-                color: '#ccc', 
-                fontSize: 10,
-                bold:true,
+                color: '#808080', 
+                fontSize: 12,
+                bold:false,
               },
             },
             vAxis: {
               textStyle:{
-                color: '#ccc',
-                bold:true,
-                fontSize: 10
+                color: '#808080',
+                bold:false,
+                fontSize: 12
               },
             },
 
@@ -113,8 +113,8 @@
             vAxes: {
            		0: 
 	           		{
-         		    textStyle:{color: '#ccc',bold:false,fontSize: 11},
-                  gridlines: {color:'#ccc', count:0},
+         		    textStyle:{color: '#808080',bold:false,fontSize: 12},
+                  gridlines: {color:'#808080', count:0},
 							    viewWindowMode:'explicit',
 		           		/*viewWindow: {
 						        min: 0,
@@ -123,8 +123,8 @@
 								},
 		  	  	    1: 
  			  	    	{
-         		   	  textStyle:{color: '#ccc',bold:false,fontSize: 11},
- 			  	        	gridlines: {color:'#ccc', count:0},
+         		   	  textStyle:{color: '#808080',bold:false,fontSize: 12},
+ 			  	        	gridlines: {color:'#808080', count:0},
  			  	    	    /*viewWindow: {
 								        min: 0,
 								        max: 100
@@ -156,7 +156,7 @@
 				        annotations: {
 				        style: 'line',
 						    textStyle: {
-	                fontSize: 10,
+	                fontSize: 12,
 	                color: 'black',
 	                strokeSize: 1,
 	                auraColor: 'transparent'
@@ -175,7 +175,7 @@
 				        annotations: {
 				        style: 'line',
 						    textStyle: {
-	                fontSize: 10,
+	                fontSize: 12,
 	                color: 'black',
 	                strokeSize: 1,
 	                auraColor: 'transparent'
@@ -221,12 +221,12 @@
             height: 260,
             is3D:true,
             colors:["#1A56DB","#DC3912"],
-            fontName: 'Nunito',
+            fontName: 'ubuntu',
             bar: {groupWidth: "25%"},
             annotations: {
                  textStyle: {
-                  fontSize: 10,
-                  color: '#ccc',
+                  fontSize: 12,
+                  color: '#808080',
                   auraColor: 'transparent'
                 },
                 alwaysOutside: false,  
@@ -246,10 +246,10 @@
 
             backgroundColor: { fill:'transparent' },
             titleTextStyle: {
-             color: '#ccc',
+             color: '#808080',
              fontSize: 13, 
              fontWidth: 'normal',
-             bold:true
+             bold:false
             },
 
             legend: {
@@ -257,23 +257,23 @@
              'alignment':'center',
               textStyle: {
                 fontSize: 12,
-                bold:true,
-                color:'#ccc'
+                bold:false,
+                color:'#808080'
               }
             }, 
 
             hAxis: {
               textStyle:{
-                color: '#ccc', 
-                fontSize: 10,
-                bold:true,
+                color: '#808080', 
+                fontSize: 12,
+                bold:false,
               },
             },
             vAxis: {
               textStyle:{
-                color: '#ccc',
-                bold:true,
-                fontSize: 10
+                color: '#808080',
+                bold:false,
+                fontSize: 12
               },
             },
 
@@ -282,8 +282,8 @@
             vAxes: {
            		0: 
 	           		{
-         		    textStyle:{color: '#ccc',bold:false,fontSize: 11},
-                  gridlines: {color:'#ccc', count:0},
+         		    textStyle:{color: '#808080',bold:false,fontSize: 12},
+                  gridlines: {color:'#808080', count:0},
 							    viewWindowMode:'explicit',
 		           		/*viewWindow: {
 						        min: 0,
@@ -292,8 +292,8 @@
 								},
 		  	  	    1: 
  			  	    	{
-         		   	  textStyle:{color: '#ccc',bold:false,fontSize: 11},
- 			  	        	gridlines: {color:'#ccc', count:0},
+         		   	  textStyle:{color: '#808080',bold:false,fontSize: 12},
+ 			  	        	gridlines: {color:'#808080', count:0},
  			  	    	    /*viewWindow: {
 								        min: 0,
 								        max: 100
@@ -325,7 +325,7 @@
 				        annotations: {
 				        style: 'line',
 						    textStyle: {
-	                fontSize: 10,
+	                fontSize: 12,
 	                color: 'black',
 	                strokeSize: 1,
 	                auraColor: 'transparent'
@@ -344,7 +344,7 @@
 				        annotations: {
 				        style: 'line',
 						    textStyle: {
-	                fontSize: 10,
+	                fontSize: 12,
 	                color: 'black',
 	                strokeSize: 1,
 	                auraColor: 'transparent'
@@ -732,7 +732,7 @@
 
 <div class="row">
 	<div class="col">
-	  <div class="card border-left-primary shadow">
+	  <div class="card  shadow">
 	    <div class="card-body" style="padding: .4rem;">
 	      <div class="row">
       	  <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">

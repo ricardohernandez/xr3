@@ -79,13 +79,6 @@
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
-  .desc_seccion{
-    color: #32477C;
-    font-size: 12px; 
-    font-weight:bold;
-    text-align: left;
-    padding:7px 2px;
-  }
 
   .dataTables_paginate .paginate_button {
     margin-top: 3px!important;
@@ -97,14 +90,7 @@
     cursor: pointer;
   }
 
-  .select2-container--default .select2-selection--single {
-      border: 1px solid #ced4da!important;
-  }
-
-  .select2-container--default .select2-selection--single .select2-selection__rendered {
-      font-size:1rem!important;
-  }
-
+ 
   .body{
     display: none;
   }
@@ -647,15 +633,15 @@
               var options = {
                 isStacked: true,
                 width: "100%",
-                height: 270,
+                height: 280,
                 is3D:true,
                 colors:["#2f81f7","#DC3912"],
-                fontName: 'Nunito',
+                fontName: 'ubuntu',
                 bar: {groupWidth: "25%"},
                 annotations: {
                      textStyle: {
-                      fontSize: 10,
-                      color: '#ccc',
+                      fontSize: 12,
+                      color: '#808080',
                       auraColor: 'transparent'
                     },
                     alwaysOutside: false,  
@@ -675,7 +661,7 @@
 
                 backgroundColor: 'transparent',
                 titleTextStyle: {
-                 color: '#ccc',
+                 color: '#808080',
                  fontSize: 13, 
                  fontWidth: 'normal',
                  bold:true
@@ -687,22 +673,22 @@
                   textStyle: {
                     fontSize: 12,
                     bold:true,
-                    color:'#ccc'
+                    color:'#808080'
                   }
                 }, 
 
                 hAxis: {
                   textStyle:{
-                    color: '#ccc', 
-                    fontSize: 10,
-                    bold:true,
+                    color: '#808080', 
+                    fontSize: 12,
+                    bold:false,
                   },
                 },
                 vAxis: {
                   textStyle:{
-                    color: '#ccc',
-                    bold:true,
-                    fontSize: 10
+                    color: '#808080',
+                    bold:false,
+                    fontSize: 12
                   },
                 },
 
@@ -711,14 +697,14 @@
                 vAxes: {
                   0: 
                     {
-                    textStyle:{color: '#ccc',bold:false,fontSize: 11},
-                      gridlines: {color:'#ccc', count:0},
+                    textStyle:{color: '#808080',bold:false,fontSize: 12},
+                      gridlines: {color:'#808080', count:0},
                       viewWindowMode:'explicit',
                   
                     },
                     1: 
                     {
-                      textStyle:{color: '#ccc',bold:false,fontSize: 11},
+                      textStyle:{color: '#808080',bold:false,fontSize: 12},
                         gridlines: {color:'transparent', count:0},
                      
                       }
@@ -748,7 +734,7 @@
                     annotations: {
                     style: 'line',
                     textStyle: {
-                      fontSize: 10,
+                      fontSize: 12,
                       color: 'black',
                       strokeSize: 1,
                       auraColor: 'transparent'
@@ -767,7 +753,7 @@
                     annotations: {
                     style: 'line',
                     textStyle: {
-                      fontSize: 10,
+                      fontSize: 12,
                       color: 'black',
                       strokeSize: 1,
                       auraColor: 'transparent'
@@ -807,12 +793,12 @@
                 height: 270,
                 is3D:true,
                 colors:["#1A56DB","#DC3912"],
-                fontName: 'Nunito',
+                fontName: 'ubuntu',
                 bar: {groupWidth: "25%"},
                 annotations: {
                      textStyle: {
-                      fontSize: 10,
-                      color: '#ccc',
+                      fontSize: 12,
+                      color: '#808080',
                       auraColor: 'transparent'
                     },
                     alwaysOutside: false,  
@@ -832,10 +818,10 @@
 
                 backgroundColor: 'transparent',
                 titleTextStyle: {
-                 color: '#ccc',
+                 color: '#808080',
                  fontSize: 13, 
                  fontWidth: 'normal',
-                 bold:true
+                 bold:false
                 },
 
                 legend: {
@@ -843,23 +829,23 @@
                  'alignment':'center',
                   textStyle: {
                     fontSize: 12,
-                    bold:true,
-                    color:'#ccc'
+                    bold:false,
+                    color:'#808080'
                   }
                 }, 
 
                 hAxis: {
                   textStyle:{
-                    color: '#ccc', 
-                    fontSize: 10,
-                    bold:true,
+                    color: '#808080', 
+                    fontSize: 12,
+                    bold:false,
                   },
                 },
                 vAxis: {
                   textStyle:{
-                    color: '#ccc',
-                    bold:true,
-                    fontSize: 10
+                    color: '#808080',
+                    bold:false,
+                    fontSize: 12
                   },
                 },
 
@@ -868,14 +854,14 @@
                 vAxes: {
                   0: 
                     {
-                    textStyle:{color: '#ccc',bold:false,fontSize: 11},
-                      gridlines: {color:'#ccc', count:0},
+                    textStyle:{color: '#808080',bold:false,fontSize: 12},
+                      gridlines: {color:'#808080', count:0},
                       viewWindowMode:'explicit',
                
                     },
                     1: 
                     {
-                      textStyle:{color: '#ccc',bold:false,fontSize: 11},
+                      textStyle:{color: '#808080',bold:false,fontSize: 12},
                         gridlines: {color:'transparent', count:0},
                       
                       }
@@ -905,7 +891,7 @@
                     annotations: {
                     style: 'line',
                     textStyle: {
-                      fontSize: 10,
+                      fontSize: 12,
                       color: 'black',
                       strokeSize: 1,
                       auraColor: 'transparent'
@@ -924,7 +910,7 @@
                     annotations: {
                     style: 'line',
                     textStyle: {
-                      fontSize: 10,
+                      fontSize: 12,
                       color: 'black',
                       strokeSize: 1,
                       auraColor: 'transparent'
@@ -960,16 +946,16 @@
               var options = {
                 title: '',
                 width: "100%",
-                height: 300,
+                height: 310,
                 is3D:true,
                 colors:["#1A56DB"],
-                fontName: 'Nunito',
+                fontName: 'ubuntu',
                 bar: {groupWidth: "50%"},
 
                 annotations: {
                   textStyle: {
-                    fontSize: 11,
-                    color: '#ccc',
+                    fontSize: 12,
+                    color: '#808080',
                     auraColor: 'transparent'
                   },
                   alwaysOutside: false,  
@@ -991,10 +977,10 @@
                 backgroundColor: 'transparent',
 
                 titleTextStyle: {
-                 color: '#ccc',
+                 color: '#808080',
                  fontSize: 12, 
                  fontWidth: 'normal',
-                 bold:true
+                 bold:false
                 },
 
                 legend: {
@@ -1003,13 +989,13 @@
 
                 hAxis: {
                   direction: -1, 
-                  slantedText: true, 
+                  slantedText: false, 
                   slantedTextAngle: 90,
 
                   textStyle:{
-                    color: '#ccc', 
-                    fontSize: 10,
-                    bold:true,
+                    color: '#808080', 
+                    fontSize: 12,
+                    bold:false,
                   },
 
                   gridlines: {
@@ -1020,13 +1006,13 @@
 
                 vAxis: {
                   textStyle:{
-                    color: '#ccc',
-                    bold:true,
-                    fontSize: 10
+                    color: '#808080',
+                    bold:false,
+                    fontSize: 12
                   },
                   gridlines: {
                    count:0,
-                   color:"#ccc"
+                   color:"#808080"
                  },
                   
                 },
@@ -1540,118 +1526,120 @@
   })  
 </script>
 
-<div class="content mt-2">
-<div class="form-row">
+<div class="content" style="padding: 0px 10px;">
 
-  <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page" ><a href=""">IGT - Indicadores de gestión del técnico</a></li>
-      </ol>
-    </nav>
-  </div>
+  <div class="form-row">
 
-  <?php
-      if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
-      ?>
-      <div class=" col-xs-6 col-sm-6  col-md-6  col-lg-2 d-none d-sm-block">  
-        <div class="form-group">
-           <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
-           <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
-           <i class="fa fa-file-import"></i> Cargar base IGT
-          </div>
-      </div>
-      <!-- <i class="fa-solid fa-circle-info ejemplo_planilla" title="Ver ejemplo" ></i> -->
-      <?php
-    }
- ?>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page" ><a href=""">IGT - Indicadores de gestión del técnico</a></li>
+        </ol>
+      </nav>
+    </div>
 
-
-  <div class="col-8 col-lg-2">
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
+    <?php
+        if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+        ?>
+        <div class=" col-xs-6 col-sm-6  col-md-6  col-lg-2 d-none d-sm-block">  
+          <div class="form-group">
+            <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
+            <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
+            <i class="fa fa-file-import"></i> Cargar base IGT
+            </div>
         </div>
-        <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
-          <option value="actual" selected><?php echo $mes_actual ?></option>
-          <option value="anterior"><?php echo $mes_anterior ?></option>
-        </select>
-      </div>
-    </div>
-  </div>
+        <!-- <i class="fa-solid fa-circle-info ejemplo_planilla" title="Ver ejemplo" ></i> -->
+        <?php
+      }
+    ?>
 
-  <div class="col-4 col-lg-2">
-    <div class="form-group">
-      <div class="input-group">
-          <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
-      </div>
-    </div>
-  </div>
 
-  <?php  
-    if($this->session->userdata('id_perfil')<3){
-  ?>
-    <!-- 
-    <div class="col-6  col-lg-2">
+    <div class="col-8 col-lg-2">
       <div class="form-group">
-        <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
-          <option value="" selected>Seleccione Jefe | Todos</option>
-          <?php  
-            foreach($jefes as $j){
-              ?>
-                <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
-              <?php
-            }
-          ?>
-        </select>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
+          </div>
+          <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+            <option value="actual" selected><?php echo $mes_actual ?></option>
+            <option value="anterior"><?php echo $mes_anterior ?></option>
+          </select>
+        </div>
       </div>
-    </div> -->
+    </div>
 
-  <?php
-    }elseif($this->session->userdata('id_perfil')==3){
-      ?>
-     <!--  <div class="col-6 col-lg-2">
+    <div class="col-4 col-lg-2">
+      <div class="form-group">
+        <div class="input-group">
+            <input type="text" disabled placeholder="" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
+        </div>
+      </div>
+    </div>
+
+    <?php  
+      if($this->session->userdata('id_perfil')<3){
+    ?>
+      <!-- 
+      <div class="col-6  col-lg-2">
         <div class="form-group">
           <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+            <option value="" selected>Seleccione Jefe | Todos</option>
             <?php  
               foreach($jefes as $j){
                 ?>
-                  <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                  <option value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
                 <?php
               }
             ?>
           </select>
         </div>
       </div> -->
-      <?php
-    }
-  ?>
 
-  <?php  
-   if($this->session->userdata('id_perfil')<=3){
+    <?php
+      }elseif($this->session->userdata('id_perfil')==3){
+        ?>
+      <!--  <div class="col-6 col-lg-2">
+          <div class="form-group">
+            <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
+              <?php  
+                foreach($jefes as $j){
+                  ?>
+                    <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                  <?php
+                }
+              ?>
+            </select>
+          </div>
+        </div> -->
+        <?php
+      }
+    ?>
+
+    <?php  
+    if($this->session->userdata('id_perfil')<=3){
+        ?>
+        <div class="col-12 col-lg-3">  
+          <div class="form-group fooSelect">
+            <select id="trabajadores" name="trabajadores"  style="width:100%!important;">
+              <!--   <option value="">Seleccione Trabajador | Todos</option> -->
+            </select>
+          </div>
+        </div>
+        <?php
+    }else{
       ?>
       <div class="col-12 col-lg-3">  
-        <div class="form-group fooSelect">
-          <select id="trabajadores" name="trabajadores"  style="width:100%!important;">
-            <!--   <option value="">Seleccione Trabajador | Todos</option> -->
-          </select>
+          <div class="form-group">
+            <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
+                <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+            </select>
+          </div>
         </div>
-      </div>
       <?php
-   }else{
+    }
     ?>
-     <div class="col-12 col-lg-3">  
-        <div class="form-group">
-          <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
-              <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
-          </select>
-        </div>
-      </div>
-    <?php
-   }
-  ?>
-</div>       
+
+  </div>       
 
 <center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
   <!-- body style="display: none;" -->
@@ -1820,10 +1808,9 @@
         </div>
       </div> -->
     </div>
-  </div>
+ 
 
-  <div class="mt-2">
-    <div class="form-row body no-gutters">
+    <div class="row p-1">
       <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-header card_dash">
@@ -1847,7 +1834,7 @@
           <div class="form-row">
             <div class="col-12 text-center d-none d-sm-block">
                <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary desc_seccion actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                <div class="alert alert-primary  actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>
             </div>
 
@@ -1878,7 +1865,7 @@
         </div>
       </div>   
 
-      <div class="col-12 col-lg-6 pl-lg-2">
+      <div class="col-12 col-lg-6">
         <div class="card">
           <div class="form-row">
             
@@ -1900,12 +1887,11 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="mt-2">
-    <div class="form-row body no-gutters">
+    <div class="row p-1">
+
       <div class="col-12 col-lg-6">
-        <div class="card mt-2">
+        <div class="card">
           <div class="card-header card_dash">
             <div class="form-row">
               <div class="col-12 col-lg-4">
@@ -1927,7 +1913,7 @@
           <div class="form-row">
             <div class="col-12 text-center d-none d-sm-block">
                <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>
             </div>
 
@@ -1953,9 +1939,11 @@
               </table>
             </div>
           </div>
+
         </div>
       </div>   
-      <div class="col-12 col-lg-6 mt-2">
+      
+      <div class="col-12 col-lg-6">
         <div class="card">
           <div class="form-row">
             <div class="col-12">
@@ -1967,12 +1955,11 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="my-2">
-    <div class="form-row body no-gutters">
-      <div class="col-12 mt-1">
+    </div>
+
+    <div class="row p-1">
+      <div class="col-12 col-lg-12">
         <div class="card">
           <div class="card-header card_dash">
             <div class="form-row">
@@ -1996,7 +1983,7 @@
 
             <div class="col-12 text-center d-none d-sm-block">
                <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary desc_seccion actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
               </span>
             </div>
 
@@ -2019,7 +2006,6 @@
               </table>
             </div>
           </div>
-        </div>
       </div>   
     </div>
   </div>

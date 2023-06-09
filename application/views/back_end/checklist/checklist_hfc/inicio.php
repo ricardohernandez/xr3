@@ -134,7 +134,7 @@
             ?>
               <li id="menu_graficos_hfc" class="active"><a> <i class="fa fa-chart-line"></i> Graficos </a></li>   
               <li id="menu_fallos_hfc" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
-              <li id="menu_graficos_fallos_hfc" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
+             <!--  <li id="menu_graficos_fallos_hfc" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>    -->
             <?php
           }
         ?>

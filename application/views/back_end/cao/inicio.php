@@ -12,7 +12,6 @@
       paging:true,
       ordering:true,
       searching:true,
-      lengthChange: true,
       bSort: true,
       bFilter: true,
       bProcessing: true,

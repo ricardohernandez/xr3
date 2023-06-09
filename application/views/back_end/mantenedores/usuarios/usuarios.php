@@ -5,14 +5,14 @@
   }
 
   @media (max-width: 768px){
-    .modal_ingreso_licencias{
+    .modal_usuario{
       width: 95%!important;
     }
   }
 
   @media (min-width: 768px){
-    .modal_ingreso_licencias{
-      width: 35%!important;
+    .modal_usuario{
+      width: 85%!important;
     }
   }
 

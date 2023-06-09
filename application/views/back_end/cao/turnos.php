@@ -167,7 +167,7 @@
                 info:false, 
                 destroy: true,
                 processing: true,  
-                iDisplayLength:-1, 
+                iDisplayLength:25, 
                 aaSorting : [[0,"asc"]],
                 scrollY: "65vh",
                 scrollX: true,
@@ -640,7 +640,7 @@
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12">
-          <table id="tabla_turnos" class="table table-bordered dt-responsive nowrap dataTable stripe row-border order-column" style="width:100%"></table>
+          <table id="tabla_turnos" class="table table-bordered dt-responsive nowrap dataTable  row-border order-column" style="width:100%"></table>
         </div>
       </div>
     </div>

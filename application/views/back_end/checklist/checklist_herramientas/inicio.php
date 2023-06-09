@@ -192,7 +192,7 @@
         <li id="menu_checklist" class="active"><a> <i class="fa fa-th-list"></i> Checklist Herramientas</a></li>   
         <li id="menu_graficos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Herramientas </a></li>   
         <li id="menu_fallos" class="active"><a> <i class="fa fa-th-list"></i> Fallos </a></li>   
-        <li id="menu_graficos_fallos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>   
+       <!--  <li id="menu_graficos_fallos" class="active"><a> <i class="fa fa-chart-line"></i> Graficos Fallos </a></li>    -->
        <!--  <li id="menu_responsables_fallos" class="active"><a> <i class="fa fa-th-list"></i> Mant.  Responsables fallos</a></li>  
         <li id="menu_herramientas" class="active"><a> <i class="fa fa-th-list"></i> Mant. Herramientas</a></li>    -->
       </ul>  
