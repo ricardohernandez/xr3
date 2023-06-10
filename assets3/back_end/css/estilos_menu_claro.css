@@ -18,7 +18,8 @@
 /* General
 /*-------------------------------------------------------*/
 .clearfix {
-  *zoom: 1; }
+  zoom: 1;
+ }
 
 .clearfix:before, .clearfix:after {
   display: table;
@@ -1143,9 +1144,15 @@ input.nav__search-mobile-input:-ms-input-placeholder {
   }
 
   .nav-icon-toggle{
-    margin-top: 15px;
+    margin-top: 25px;
   }
 
+}
+
+@media (min-width: 768) {
+  .nav-icon-toggle{
+    margin-top: 25px;
+  }
 }
 
 @media (min-width: 1024px) {

@@ -33,6 +33,7 @@
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
+       "responsive" :false,
        "select" :true,
        columnDefs: [
           { orderable: false, targets: 0 }

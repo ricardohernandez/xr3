@@ -4,6 +4,11 @@
   	const base_url = "<?php echo base_url() ?>"
 
     $.extend(true,$.fn.dataTable.defaults,{
+      dom: "<'row'<'col-12 'f>>" + // Filtro
+            "<'row'<'col-12 '<'table-responsive't>>>" + 
+            "<'row d-none d-sm-flex '<'col-sm-4'l><'col-sm-4 text-center'i><'col-sm-4'p>>" + 
+            "<'row d-sm-none '<'col-12 text-center'p>>", 
+            
       info:true,
       paging:false,
       ordering:true,

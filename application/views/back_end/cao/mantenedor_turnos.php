@@ -49,6 +49,7 @@
       var tb_mantenedor_turnos = $('#tb_mantenedor_turnos').DataTable({
          "aaSorting" : [[1,"asc"]],
          "scrollY": "65vh",
+         "responsive": false,      
          "scrollX": true,
          "sAjaxDataProp": "result",        
          "bDeferRender": true,
@@ -328,7 +329,7 @@
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-1 col-lg-1"> 
+	  <div class="col-6 col-lg-1"> 
 	      <div class="form-group">
 	         <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_mantenedor_turnos btn_xr3">
 	         <i class="fa fa-plus-circle"></i>  Nuevo 
@@ -336,13 +337,13 @@
 	      </div>
 	    </div>
 
-	    <div class="col-2 col-lg-4">  
+	    <div class="col-6 col-lg-4">  
 	      <div class="form-group">
 	      <input type="text" placeholder="Ingrese su busqueda..." id="buscador_vacaciones" class="buscador_vacaciones form-control form-control-sm">
 	      </div>
 	    </div>
 
-	    <div class="col-2 col-lg-1">
+	    <div class="col-6 col-lg-1">
 	       <div class="form-group">
 	          <button type="button" class="btn-block btn btn-sm btn-outline-primary btn-primary btn_filtro_mantenedor_turnos btn_xr3">
 	            <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar

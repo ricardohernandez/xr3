@@ -168,6 +168,7 @@
                 destroy: true,
                 processing: true,  
                 iDisplayLength:25, 
+                responsive:false,
                 aaSorting : [[0,"asc"]],
                 scrollY: "65vh",
                 scrollX: true,
@@ -179,9 +180,13 @@
                 oLanguage: { 
                   sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
-                fixedColumns:   {
-                   leftColumns: 4,
-                   heightMatch: 'none'
+                initComplete: function () {
+                  if (window.innerWidth > 768) {
+                    new $.fn.dataTable.FixedColumns(this, {
+                      leftColumns: 3,
+                      heightMatch: 'none'
+                    });
+                  }
                 },
                 columnDefs: [
                       { width: "5%", targets: 0 },
@@ -519,7 +524,7 @@
       if($this->session->userdata('id_perfil')<=3){
     ?>
 
-      <div class="col-6 col-lg-1">  
+      <div class="col-12 col-lg-1">  
         <div class="form-group">
            <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_turnos btn_xr3">
            <i class="fa fa-plus-circle"></i>  Crear
@@ -531,7 +536,7 @@
       }
     ?>
 
-    <div class="col-lg-3">
+    <div class="col-12 col-lg-3">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
@@ -546,7 +551,7 @@
     <?php  
        if($this->session->userdata('id_perfil')<>4){
           ?>
-          <div class="col-lg-3">  
+          <div class="col-6 col-lg-3">  
             <div class="form-group">
               <select id="trabajadores_t" name="trabajadores_t" style="width:100%!important;">
                   <option value="">Seleccione Trabajador | Todos</option>
@@ -556,7 +561,7 @@
           <?php
        }else{
         ?>
-          <div class="col-lg-2">  
+          <div class="col-6 col-lg-2">  
             <div class="form-group">
               <select id="trabajador_t" name="trabajador_t" class="custom-select custom-select-sm" >
                   <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -570,7 +575,7 @@
     <?php  
       if($this->session->userdata('id_perfil')<3){
     ?>
-      <div class="col-lg-2">
+      <div class="col-6 col-lg-2">
         <div class="form-group">
           <select id="jefe_t" name="jefe_t" class="custom-select custom-select-sm">
             <option value="" selected>Seleccione Jefe | Todos</option>
@@ -587,7 +592,7 @@
     <?php
       }elseif($this->session->userdata('id_perfil')==3){
         ?>
-        <div class="col-lg-2">
+        <div class="col-6 col-lg-2">
           <div class="form-group">
             <select id="jefe_t" name="jefe_t" class="custom-select custom-select-sm">
               <?php  
@@ -604,7 +609,7 @@
       }
     ?>
 
-    <div class="col-lg-2">
+    <div class="col-6 col-lg-2">
       <div class="form-group">
         <select id="nivel_tecnico" name="nivel_tecnico" class="custom-select custom-select-sm">
           <option value="" selected>Seleccione Segmento técnico | Todos</option>
@@ -640,7 +645,7 @@
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12">
-          <table id="tabla_turnos" class="table table-bordered table-striped dt-responsive nowrap dataTable trow-border order-column" style="width:100%"></table>
+          <table id="tabla_turnos" class="table tabla_fixed table-bordered table-striped dt-responsive nowrap dataTable trow-border order-column" style="width:100%"></table>
         </div>
       </div>
     </div>
@@ -659,7 +664,7 @@
             <legend class="form-ing-border">Ingreso de turnos </legend>
               <div class="form-row">
 
-                <div class="col-lg-4">  
+                <div class="col-12 col-lg-4">  
                   <div class="form-group">
                     <select id="trabajador" name="trabajador" style="width:100%!important;">
                         <option value="">Seleccione Trabajador | Todos</option>
@@ -667,7 +672,7 @@
                   </div>
                 </div>
                 
-                <div class="col-lg-3">
+                <div class="col-12 col-lg-3">
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -678,7 +683,7 @@
                   </div>
                 </div>
 
-                 <div class="col-lg-3 fecha2_cont">
+                 <div class="col-12 col-lg-3 fecha2_cont">
                   <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -689,7 +694,7 @@
                   </div>
                 </div>
 
-                <div class="col-lg-2">               
+                <div class="col-12 col-lg-2">               
                   <div class="form-group">
                     <select id="turno" name="turno" class="custom-select custom-select-sm">
                     <option value="" selected>Justificación</option>
@@ -712,19 +717,19 @@
             <div class="col-xs-12 col-sm-12 col-lg-8 offset-lg-2 mt-0">
               <div class="form-row">
 
-                <div class="col-3 col-lg-3">
+                <div class="col-4 col-lg-3">
                   <button type="submit" class="btn-block btn btn-sm btn-primary btn_guardar_turnos">
                    <i class="fa fa-save"></i> Guardar
                   </button>
                 </div>
 
-                <div class="col-3 col-lg-3 eliminar_turnos_contenedor">
+                <div class="col-4 col-lg-3 eliminar_turnos_contenedor">
                   <button class="btn-block btn btn-sm btn-danger eliminar_turnos">
                    <i class="fa fa-trash"></i> Eliminar
                   </button>
                 </div>
 
-                <div class="col-3 col-lg-3">
+                <div class="col-4 col-lg-3">
                   <button class="btn-block btn btn-sm btn-secondary cierra_modal_turnos" data-dismiss="modal">
                    <i class="fa fa-window-close"></i> Cerrar
                   </button>

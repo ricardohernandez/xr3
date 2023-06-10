@@ -416,7 +416,7 @@
 
 <div class="form-row cont_graficos">
 
-    <div class="col-lg-3">
+    <div class="col-12 col-lg-3">
       <div class="form-group">
       	<div class="alert alert-primary2" role="alert">
 			<p class="alert-heading puntos_cont"></p>
@@ -424,7 +424,7 @@
       </div>
     </div>
 
-    <div class="col-lg-2">
+    <div class="col-6  col-lg-2">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -438,7 +438,7 @@
         </div>
     </div>
 
-    <div class="col-lg-1">
+    <div class="col-6 col-lg-1">
       <div class="form-group">
         <div class="input-group">
             <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
@@ -450,7 +450,7 @@
       if($this->session->userdata('id_perfil')<3){
     ?>
 
-      <div class="col-lg-2">
+      <div class="col-6 col-lg-2">
         <div class="form-group">
           <select id="jefe_graficos" name="jefe_graficos" class="custom-select custom-select-sm">
             <option value="" selected>Seleccione Jefe | Todos</option>
@@ -468,7 +468,7 @@
     <?php
       }elseif($this->session->userdata('id_perfil')==3){
         ?>
-        <div class="col-lg-2">
+        <div class="col-6 col-lg-2">
           <div class="form-group">
             <select id="jefe_graficos" name="jefe_graficos" class="custom-select custom-select-sm">
               <?php  
@@ -489,7 +489,7 @@
 	   if($this->session->userdata('id_perfil')<>4){
 	      ?>
 
-        <div class="col-lg-2">  
+        <div class="col-6 col-lg-2">  
           <div class="form-group">
             <select id="trabajadores" name="trabajadores" style="width:100%!important;">
                 <option value="">Seleccione Trabajador | Todos</option>
@@ -500,7 +500,7 @@
 	    <?php
 	    	}else{
 	    ?>
-	        <div class="col-lg-2">  
+	        <div class="col-6 col-lg-2">  
 	          <div class="form-group">
 	            <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
 	                <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -540,7 +540,7 @@
 <div class="row">
 	<div class="col mb-2">
 	    <div class="card border-left-primary shadow mb-2">
-	        <div class="card-body card_productividad" style="padding: .4rem;">
+	        <div class="card-body card_productividad" >
 
 	            <div class="row">
 	              <div class="col-xs-12 col-lg-9">

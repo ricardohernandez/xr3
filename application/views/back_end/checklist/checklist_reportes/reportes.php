@@ -173,6 +173,7 @@
        "scrollY": "60vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
+       "responsive":false,
        "bDeferRender": true,
        "select" : true,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
@@ -252,11 +253,11 @@
         </nav>
     </div>
 
-    <div class="col-8 col-lg-3">
+    <div class="col-12 col-lg-3">
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;font-size: 1rem!important"> Periodo </span> </span> 
+                <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 10px;font-size: 14px!important"> Periodo </span> </span> 
                 </div>
                 <select id="periodo" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
                 <option value="actual" selected><?php echo $mes_actual ?></option>

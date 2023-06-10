@@ -2,6 +2,9 @@
   .separador{
     background-color: #7C7C7C;
   }
+  #tabla_checklist_ast{
+    font-size:13px!important;
+  }
 </style>
 <script type="text/javascript">
    var tabla_checklist_ast = $('#tabla_checklist_ast').DataTable({
@@ -9,6 +12,7 @@
      "iDisplayLength":-1, 
      "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
      "bPaginate": false,
+     "responsive":false,
      "aaSorting" : [],
      "select" : true,
       "columnDefs" : [
@@ -55,9 +59,10 @@
      </div>
   </div>
   
-  <table id="tabla_checklist_ast" width="100%" class="dataTable datatable_h table table-hover table-bordered table-condensed">
+  <div class="table-responsive">
+  <table id="tabla_checklist_ast" lass="dataTable datatable_h table table-hover table-bordered table-striped table-condensed">
   <thead>
-    <tr style="background-color:#F9F9F9">
+    <tr>
         <th class="table_head desktop tablet">Tipo</th>
         <th class="table_head all">Descripci&oacute;n</th>
         <th class="table_head all">Resultado</th>
@@ -170,3 +175,4 @@
     </tr>
   </tfoot>
   </table>
+  </div>

@@ -34,7 +34,7 @@
       const p = "<?php echo $this->session->userdata('id_perfil') ?>";
 
       var tb_reportes = $('#tb_reportes').DataTable({
-        
+         "responsive" :false,
          "aaSorting" : [[5,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,

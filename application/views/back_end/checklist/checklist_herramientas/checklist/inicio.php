@@ -107,6 +107,7 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "responsive":false,
        "columnDefs" : [
           { orderable: false , targets: 0 }
        ],

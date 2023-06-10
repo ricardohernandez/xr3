@@ -66,43 +66,46 @@
    })
 </script>
 <style type="text/css">
-
    .modo_noche, .modo_dia{
       cursor:pointer;
    }
 
    @media (min-width: 1024px) {
-   .modal_pass{
-   width:45%!important;
+      .modal_pass{
+         width:45%!important;
+      }
    }
-   }
+
    @media (max-width: 1024px) {
-   .modal_pass{
-   width:95%!important;
+      .modal_pass{
+         width:95%!important;
+      }
    }
-   }
+
    @media (max-width: 768px){
-   .logo_pto {
-   margin-top: 5px;
-   width: 60px;
-   margin-right:4px;
-   margin-left:6px;
+      .logo_pto {
+         margin-top: 5px;
+         width: 60px;
+         margin-right:4px;
+         margin-left:6px;
+      }
+      .logo_empresa{
+         width: 70px;
+      }
    }
-   .logo_empresa{
-   width: 60px;
-   }
-   }
+
    @media (min-width: 768px){
-   .logo_pto {
-   width: 60px;
-   margin-right:20px;
-   margin-top: -2px;
+      .logo_pto {
+         width: 60px;
+         margin-right:20px;
+         margin-top: -2px;
+      }
+
+     .logo_empresa{
+         width: 70px;
+      }
    }
-   .logo_empresa{
-   width: 70px;
-   /*margin-top: -10px!important;*/
-   }
-   }
+
 </style>
 <!-- SIDENAV -->    
 <header class="sidenav" id="sidenav">

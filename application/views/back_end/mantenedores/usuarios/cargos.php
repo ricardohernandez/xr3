@@ -25,6 +25,7 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "responsive" :false,
        "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
           "url":"<?php echo base_url();?>listaCargos",
@@ -246,7 +247,7 @@
   
     <div class="form-row">
 
-        <div class="col-lg-1">  
+        <div class="col-6  col-lg-1">  
 	        <div class="form-group">
 	           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_cargo btn_xr3">
 	           <i class="fa fa-plus-circle"></i>  Crear 
@@ -254,7 +255,7 @@
 	        </div>
 		</div>
 
-	    <div class="col-12 col-lg-4">  
+	    <div class="col-6  col-lg-4">  
 	       <div class="form-group">
 	        <input type="text" placeholder="Busqueda" id="buscador_cargo" class="buscador_cargo form-control form-control-sm">
 	       </div>

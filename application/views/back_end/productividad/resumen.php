@@ -45,7 +45,7 @@
 
   @media (min-width: 768px){
 	#tabla_resumen tbody td {
-	    font-size: 12px!important;
+	    font-size: 13px!important;
 	}
   }
 
@@ -132,15 +132,20 @@
                 scrollY: "65vh",
                 scrollX: true,
                 select:true,
+                responsive:false,
                 bSort: true,
                 scrollCollapse: true,
                 paging:false,
                 oLanguage: { 
                   sProcessing:"<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
-                fixedColumns:   {
-                   leftColumns: 4,
-                   heightMatch: 'none'
+                initComplete: function () {
+                  if (window.innerWidth > 768) {
+                    new $.fn.dataTable.FixedColumns(this, {
+                      leftColumns: 3,
+                      heightMatch: 'none'
+                    });
+                  }
                 },
                 columnDefs: [
                       { width: "2%", targets: 0 },
@@ -235,11 +240,11 @@
   
     <div class="form-row">
      
-      <div class="col-lg-2">
+      <div class="col-6 col-lg-2">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 5px;margin-top: 2px;"> Periodo <span></span> 
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left: 10px;font-size:13px;"> Periodo <span></span> 
             </div>
               <select id="periodo_resumen" name="periodo_resumen" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
@@ -250,7 +255,7 @@
         </div>
       </div>
 
-      <div class="col-lg-1">
+      <div class="col-6 col-lg-1">
         <div class="form-group">
           <div class="input-group">
             <input type="text" disabled placeholder="Periodo" class="fecha_normal form-control form-control-sm fecha_f"  name="fecha_f" id="fecha_f">
@@ -262,7 +267,7 @@
         if($this->session->userdata('id_perfil')<3){
       ?>
 
-        <div class="col-lg-2">
+        <div class="col-6 col-lg-2">
           <div class="form-group">
             <select id="jefe_res" name="jefe_det" class="custom-select custom-select-sm">
               <option value="" selected>Seleccione Jefe | Todos</option>
@@ -289,7 +294,7 @@
       <?php
         }elseif($this->session->userdata('id_perfil')==3){
           ?>
-          <div class="col-lg-2">
+          <div class="col-6 col-lg-2">
             <div class="form-group">
               <select id="jefe_res" name="jefe_det" class="custom-select custom-select-sm">
                 <?php  
@@ -309,7 +314,7 @@
       <?php  
        if($this->session->userdata('id_perfil')<>4){
           ?>
-          <div class="col-lg-2">  
+          <div class="col-6 col-lg-2">  
             <div class="form-group">
               <select id="trabajadores_resumen" name="trabajadores_resumen" style="width:100%!important;">
                   <option value="">Seleccione Trabajador | Todos</option>
@@ -319,7 +324,7 @@
           <?php
        }else{
         ?>
-          <div class="col-lg-2">  
+          <div class="col-6 col-lg-2">  
             <div class="form-group">
               <select id="trabajador_resumen" name="trabajador_resumen" class="custom-select custom-select-sm" >
                   <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>

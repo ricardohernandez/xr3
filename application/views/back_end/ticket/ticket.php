@@ -36,17 +36,14 @@
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
 
       var tb_ticket = $('#tb_ticket').DataTable({
-         /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
-         "iDisplayLength":-1, 
-         "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
-         "bPaginate": false,
          "aaSorting" : [[8,"desc"]],
          "scrollY": "60vh",
          "scrollX": true,
-         "sAjaxDataProp": "result",        
+         "responsive":true,
+         "sAjaxDataProp": "result",   
+         "responsive":false,     
          "bDeferRender": true,
          "select" : true,
-          info:false,
          columnDefs: [
             { orderable: false, targets: 0 }
          ],
@@ -393,7 +390,7 @@
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-1 col-lg-2"> 
+	  <div class="col-6 col-lg-2"> 
 	      <div class="form-group">
 	         <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_usuario btn_xr3">
 	         <i class="fa fa-plus-circle"></i>  Nuevo 
@@ -401,7 +398,7 @@
 	      </div>
 	    </div>
 
-      <div class="col-lg-2">  
+      <div class="col-6 col-lg-2">  
         <div class="form-group">
           <select id="estado_f" name="estado_f" class="custom-select custom-select-sm">
                <option value="" selected>Estado | Todos</option>
@@ -413,7 +410,7 @@
         </div>
       </div>
 
-	    <div class="col-2 col-lg-4">  
+	    <div class="col-12 6-lg-4">  
 	      <div class="form-group">
 	      <input type="text" placeholder="Ingrese su busqueda..." id="buscador" class="buscador form-control form-control-sm">
 	      </div>

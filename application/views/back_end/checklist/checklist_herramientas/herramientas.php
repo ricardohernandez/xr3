@@ -262,6 +262,7 @@
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
        "aaSorting" : [],
+       "responsive":false,
        "scrollY": "60vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -554,25 +555,25 @@
         </div>
       </div>
 
-       <div class="col-lg-2">               
-	    <div class="form-group">
-	     <div class="input-group mb-3">
-	        <select id="tipo_f" name="tipo_f" class="custom-select custom-select-sm">
-	        <option value="" selected>Seleccione | Todos</option>
-	            <?php 
-	            foreach($tipos as $t){
-	              ?>
-	                <option value="<?php echo $t["id"]; ?>"><?php echo $t["tipo"]; ?></option>
-	              <?php
-	            }
-	          ?>
-	        </select>
-	      </div>
-	    </div>
-	  </div>
+      <div class="col-6 col-lg-2">               
+        <div class="form-group">
+        <div class="input-group mb-3">
+            <select id="tipo_f" name="tipo_f" class="custom-select custom-select-sm">
+            <option value="" selected>Seleccione | Todos</option>
+                <?php 
+                foreach($tipos as $t){
+                  ?>
+                    <option value="<?php echo $t["id"]; ?>"><?php echo $t["tipo"]; ?></option>
+                  <?php
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+  	  </div>
 
 
-      <div class="col-12 col-lg-4">  
+      <div class="col-6 col-lg-4">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_herr" class="buscador_herr form-control form-control-sm">
        </div>

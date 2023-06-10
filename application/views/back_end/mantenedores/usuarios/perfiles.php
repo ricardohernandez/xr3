@@ -19,6 +19,7 @@
     var listaPerfiles = $('#listaPerfiles').DataTable({
        "aaSorting" : [[1,"asc"]],
        "scrollY": "65vh",
+       "responsive" :false,
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -242,7 +243,7 @@
   
     <div class="form-row">
 
-        <div class="col-lg-1">  
+        <div class="col-6 col-lg-1">  
 	        <div class="form-group">
 	           <button type="button" class="btn btn-block btn-sm btn-primary btn_nueva_perfil btn_xr3">
 	           <i class="fa fa-plus-circle"></i>  Crear 
@@ -250,7 +251,7 @@
 	        </div>
 		</div>
 
-	    <div class="col-12 col-lg-4">  
+	    <div class="col-6  col-lg-4">  
 	       <div class="form-group">
 	        <input type="text" placeholder="Busqueda" id="buscador_perfil" class="buscador_perfil form-control form-control-sm">
 	       </div>

@@ -686,7 +686,7 @@
 				<div class="form-row">
 					<div class="col-md-6 offset-md-3">
 						<div class="form-row">
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 								<select id="tecnico_gmt" name="tecnico_gmt" class="custom-select custom-select-sm">
 									<option value="" selected>Seleccione Técnico | Todos </option>
@@ -701,7 +701,7 @@
 								</div>
 							</div>
 
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 								<select id="zona_gmt" name="zona_gmt" class="custom-select custom-select-sm">
 									<option value="" selected>Seleccione Zona | Todos </option>
@@ -716,7 +716,7 @@
 								</div>
 							</div>
 
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 								<select id="comuna_gmt" name="comuna_gmt" class="custom-select custom-select-sm">
 									<option value="" selected>Seleccione Comuna | Todos </option>
@@ -735,12 +735,12 @@
 			</div>  
 			
 			<div class="row">
-				<div class="col-6">
+				<div class="col-12 col-lg-6">
 					<h6 class="title_section mt-3">Auditorias por técnico mensuales cantidad</h6>
 					<div id="graficoAuditoriasTecnicosq"></div>
 				</div>
 
-				<div class="col-6">
+				<div class="col-12 col-lg-6">
 					<h6 class="title_section mt-3">Auditorias por técnico mensuales detalle</h6>
 					<div id="graficoAuditoriasTecnicos"></div>
 				</div>
@@ -754,7 +754,7 @@
 				<div class="form-row">
 					<div class="col-md-6 offset-md-3">
 						<div class="form-row">
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 								<select id="auditor_gm" name="auditor_gm" class="custom-select custom-select-sm">
 									<option value="" selected>Seleccione Auditor | Todos </option>
@@ -769,7 +769,7 @@
 								</div>
 							</div>
 
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 								<select id="zona_gm" name="zona_gm" class="custom-select custom-select-sm">
 									<option value="" selected>Seleccione Zona | Todos </option>
@@ -784,7 +784,7 @@
 								</div>
 							</div>
 
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 								<select id="comuna_gm" name="comuna_gm" class="custom-select custom-select-sm">
 									<option value="" selected>Seleccione Comuna | Todos </option>
@@ -805,24 +805,24 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-6">
+			<div class="col-12 col-lg-6">
 				<h6 class="title_section mt-3">Auditorias por auditor mensuales cantidad</h6>
 				<div id="graficoAuditoriasq"></div>
 			</div>
 
-			<div class="col-6">
+			<div class="col-12 col-lg-6">
 				<h6 class="title_section mt-3">Auditorias por auditor mensuales detalle</h6>
 				<div id="graficoAuditorias"></div>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-6 mt-3">
+			<div class="col-12 col-lg-6 mt-3">
 				<h6 class="title_section">Auditorias por técnico </h6>
 				<div id="graficoTecnicos"></div>
 			</div>
 
-			<div class="col-6 mt-3">
+			<div class="col-12 col-lg-6 mt-3">
 				<h6 class="title_section">Auditorias por auditor </h6>
 				<div id="graficoAuditores"></div>
 				<!-- <h6 class="title_section">Estados checklist</h6>

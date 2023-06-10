@@ -18,7 +18,8 @@
 /* General
 /*-------------------------------------------------------*/
   .clearfix {
-    *zoom: 1; }
+    zoom: 1; 
+  }
 
   .clearfix:before, .clearfix:after {
     display: table;
@@ -1113,7 +1114,12 @@
         margin-left: 1px;
     }
   }
-
+  @media (min-width: 768) {
+    .nav-icon-toggle{
+      margin-top: 25px;
+    }
+  }
+  
 
   @media (max-width: 1024px) {
     .container, .container-lg, .container-md, .container-sm {
@@ -1143,7 +1149,7 @@
     }
 
     .nav-icon-toggle{
-      margin-top: 15px;
+      margin-top: 25px;
     }
 
   }

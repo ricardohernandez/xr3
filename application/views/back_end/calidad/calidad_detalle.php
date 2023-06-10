@@ -35,6 +35,7 @@
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
+       "responsive":false,
        "select" : true,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
@@ -453,7 +454,7 @@
       <?php
         if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
           ?>
-          <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">  
+          <div class="col-6 col-lg-1">  
              <input type="file" id="userfile_calidad" name="userfile" class="file_cs" style="display:none;" />
              <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile_calidad').click();">
              <i class="fa fa-file-import"></i> Cargar base
@@ -464,7 +465,7 @@
         }
       ?>
       
-      <div class="col-lg-2">
+      <div class="col-6 col-lg-2">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -478,7 +479,7 @@
         </div>
       </div>
 
-      <div class="col-lg-1">
+      <div class="col-6  col-lg-1">
         <div class="form-group">
           <div class="input-group">
               <input type="text" disabled placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="fecha_f" id="fecha_f">
@@ -491,7 +492,7 @@
         if($this->session->userdata('id_perfil')<3){
       ?>
 
-        <div class="col-lg-2">
+        <div class="col-6  col-lg-2">
           <div class="form-group">
             <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
               <option value="" selected>Seleccione Jefe | Todos</option>
@@ -509,7 +510,7 @@
       <?php
         }elseif($this->session->userdata('id_perfil')==3){
           ?>
-          <div class="col-lg-2">
+          <div class="col-6 col-lg-2">
             <div class="form-group">
               <select id="jefe_det" name="jefe_det" class="custom-select custom-select-sm">
                 <?php  
@@ -529,7 +530,7 @@
       <?php  
        if($this->session->userdata('id_perfil')<=3){
           ?>
-            <div class="col-lg-2">  
+            <div class="col-6  col-lg-2">  
               <div class="form-group">
                 <select id="trabajadores" name="trabajadores" style="width:100%!important;">
                     <option value="">Seleccione Trabajador | Todos</option>
@@ -539,7 +540,7 @@
           <?php
        }else{
         ?>
-           <div class="col-lg-2">  
+           <div class="col-6  col-lg-2">  
               <div class="form-group">
                 <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
                     <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -551,7 +552,7 @@
       ?>
 
 
-      <div class="col-12 col-lg-2">  
+      <div class="col-6 col-lg-2">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
        </div>

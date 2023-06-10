@@ -84,6 +84,7 @@
        "bDeferRender": true,
        "select" : true,
        "pagingType": "simple", 
+       "responsive":false,
        "columnDefs" : [
           { orderable: false , targets: 0 }
        ],
@@ -580,19 +581,8 @@
         </div>
       </div>
 
-      <div class="col-lg-3">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:12px;"> Fecha <span></span> 
-            </div>
-              <input type="date" placeholder="Desde" class="form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="date" placeholder="Hasta" class="form-control form-control-sm"  name="hasta_f" id="hasta_f">
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-2">
+      
+      <div class="col-6 col-lg-2">
         <div class="form-group">
          <select id="tecnico_f" name="tecnico_f" class="custom-select custom-select-sm">
             <option value="" selected>Seleccione...</option>
@@ -623,7 +613,20 @@
         </div>
       </div>
 
-      <div class="col-12 col-lg-3">  
+      <div class="col-lg-3">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:12px;"> Fecha <span></span> 
+            </div>
+              <input type="date" placeholder="Desde" class="form-control form-control-sm"  name="desde_f" id="desde_f">
+              <input type="date" placeholder="Hasta" class="form-control form-control-sm"  name="hasta_f" id="hasta_f">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-6 col-lg-3">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_ast" class="buscador_ast form-control form-control-sm">
        </div>

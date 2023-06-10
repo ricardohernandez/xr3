@@ -436,7 +436,7 @@ class Ast extends CI_Controller {
 		}
 
 		public function enviaCorreoIngreso($data){
-			/*return TRUE;*/
+			return TRUE;
 			$prueba = FALSE;
 			foreach($data as $key){
 				$titulo = "Registro de ast en para técnico : ".$key["tecnico"]." - ".$key["fecha"];
@@ -504,6 +504,7 @@ class Ast extends CI_Controller {
 		}
 
 		public function enviaCorreoFallo($hash,$item){
+			return TRUE;
 			$data = $this->Astmodel->getDataItemChecklist($hash,$item);
 			$prueba = FALSE;
 			foreach($data as $key){

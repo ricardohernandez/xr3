@@ -4,8 +4,10 @@
 
         $.extend(true,$.fn.dataTable.defaults,{
 
-          dom: "<'row '<'col-sm-12'f>>" +
-          "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+          dom: "<'row'<'col-12 'f>>" + // Filtro
+            "<'row'<'col-12 '<'table-responsive't>>>" + 
+            "<'row d-none d-sm-flex '<'col-sm-4'l><'col-sm-4 text-center'i><'col-sm-4'p>>" + 
+            "<'row d-sm-none '<'col-12 text-center'p>>", 
           "iDisplayLength":50, 
           "paging":true,
           "lengthChange": true,
@@ -129,7 +131,9 @@
 <article class="content">
 
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-12">
+      <div class="scrollable-menu">
+
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_checklist_ftth" class="active"><a> <i class="fa fa-th-list"></i> Checklist FTTH</a></li>   
 
@@ -144,6 +148,7 @@
         ?>
    
       </ul>  
+      </div> 
     </div> 
   </div>
 

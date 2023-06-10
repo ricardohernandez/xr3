@@ -49,6 +49,7 @@
          "aaSorting" : [[10,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
+         "responsive":false,
          "sAjaxDataProp": "result",        
          "bDeferRender": true,
          "select" : true,
@@ -371,7 +372,7 @@
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-lg-1"> 
+	  <div class="col-6 col-lg-1"> 
       <div class="form-group">
           <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_mant_req btn_xr3">
           <i class="fa fa-plus-circle"></i>  Nuevo 
@@ -379,7 +380,7 @@
       </div>
     </div>
 
-    <div class="col-lg-1">  
+    <div class="col-6 col-lg-1">  
       <div class="form-group">
         <select id="estado_fm" name="estado_fm" class="custom-select custom-select-sm">
           <option value="" >Estado | Todos</option>
@@ -389,7 +390,7 @@
       </div>
     </div>
  
-    <div class="col-3">  
+    <div class="col-6 col-lg-3">  
       <div class="form-group">
       <input type="text" placeholder="Ingrese su busqueda..." id="buscador_mant_req" class="buscador_mant_req form-control form-control-sm">
       </div>

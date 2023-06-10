@@ -59,6 +59,7 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "responsive" : false,
        "lengthChange": true,
        "pagingType": "simple", 
        "bPaginate": true,
@@ -319,7 +320,7 @@
         </div>
       </div>
 
-      <div class="col-lg-2">               
+      <div class="col-6 col-lg-2">               
         <div class="form-group">
          <div class="input-group mb-3">
             <select id="solucion_estado_fftth" name="solucion_estado_fftth" class="custom-select custom-select-sm">
@@ -331,13 +332,13 @@
         </div>
       </div>
 
-      <div class="col-12 col-lg-4">  
+      <div class="col-6  col-lg-4">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_fftth" class="buscador_fftth form-control form-control-sm">
        </div>
       </div>
 
-      <div class="col-6 col-lg-1">
+      <div class="col-12 col-lg-1">
         <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_FFTTH btn_xr3">
          <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar

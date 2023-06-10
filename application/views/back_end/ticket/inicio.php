@@ -4,11 +4,18 @@
   	const base_url = "<?php echo base_url() ?>"
 
     $.extend(true,$.fn.dataTable.defaults,{
+      dom: "<'row'<'col-12 'f>>" + // Filtro
+            "<'row'<'col-12 '<'table-responsive't>>>" + 
+            "<'row d-none d-sm-flex '<'col-sm-4'l><'col-sm-4 text-center'i><'col-sm-4'p>>" + 
+            "<'row d-sm-none '<'col-12 text-center'p>>", 
+      "iDisplayLength":50, 
+      "paging":true,
+      "lengthChange": true,
+      "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
       info:true,
-      paging:false,
+      ordering:true,
       ordering:true,
       searching:true,
-      lengthChange: false,
       bSort: true,
       bFilter: true,
       bProcessing: true,
@@ -82,11 +89,14 @@
 <article class="content">
 
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-12">
+      <div class="scrollable-menu">
+
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_ticket" class="active"><a> <i class="fa fa-list-alt"></i> Listado Ticket</a></li>   
       </ul>  
-    </div> 
+      </div> 
+      </div> 
   </div>
 
   <div class="row">

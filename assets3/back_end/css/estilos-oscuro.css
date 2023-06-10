@@ -46,7 +46,7 @@
      display: none;
     }
     
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
         #sidenav {
             display: block;
         }
@@ -504,24 +504,45 @@
             max-width: none;
             /* margin: 0.5rem!important; */
         }
+
+        .modal-content {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            width: 100%;
+            pointer-events: auto;
+            background-color: var(--modal-bg)!important;
+            background-clip: padding-box;
+            border:  var(--border-color);
+            border-radius: 0.3rem;
+            outline: 0;
+            padding: 15px!important;
+    
+        }
+
     }
 
-    .modal-content {
-        position: relative;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        width: 100%;
-        pointer-events: auto;
-        background-color: var(--modal-bg)!important;
-        background-clip: padding-box;
-        border:  var(--border-color);
-        border-radius: 0.3rem;
-        outline: 0;
-        padding: 15px!important;
-
+    @media (max-width: 768px){
+        .modal-content {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            width: 100%;
+            pointer-events: auto;
+            background-color: var(--modal-bg)!important;
+            background-clip: padding-box;
+            border:  var(--border-color);
+            border-radius: 0.3rem;
+            outline: 0;
+            padding: 1px!important;
+        }
     }
+
+   
 
 /*********NAV*******/
     .disabled_sub{
@@ -547,14 +568,43 @@
         }
     }
 
+    @media (min-width: 1000px) and (max-width: 1200px) {
+        .logo_empresa{
+            width: 70px;
+            margin-top: -15px!important;
+        }
+    }
+
+    @media (min-width: 1000px) and (max-width: 1330px) {
+        .nav__menu > li > a {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0 6px;
+        }
+        .nav__menu > li{
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0px 6px;
+        }
+
+        
+    }
+
+    @media (min-width: 768px) and (max-width: 1240px) {
+        .logo_empresa{
+            width: 70px;
+            margin-top:15px!important;
+        }
+    }
+
     @media (max-width: 768px){
 
-        .nav-tabs-int li{
+        /*  .nav-tabs-int li{
             width:40%;
-        }
+        } */
         .nav-tabs-int>li>a {
             font-size: 13px!important;
-            padding: 6px 11px!important;
+            padding: 10px 5px!important;
         }
 
         .navbar-toggle {
@@ -572,10 +622,24 @@
              margin-top: 2px;
              opacity: .9;
              font-size: 13px;
-         }
+        }
+
+        .scrollable-menu {
+            overflow-x: auto;
+        }
+        .nav {
+            display: inline;
+        }
+
+        .scrollable-menu {
+            overflow-x: scroll;
+            white-space: nowrap;
+        }
+    
 
     }
 
+    
     .nav a{
         text-decoration: none!important;
     }
@@ -688,7 +752,6 @@
         padding: 10px!important;
         color:var(--text-color)!important;
         /* background-color: #141C2F!important; */
-        opacity: 1!important;
         z-index: 9999999;
     }
 
@@ -756,7 +819,19 @@
         background-color: var(--table-td-hover);
     }
 
+    div.dataTables_wrapper div.dataTables_paginate{
+        margin: 0;
+     }
+     
+     div.dataTables_wrapper div.dataTables_info{
+       margin-top:5px!important;
+     }
+     
+     .dataTables_length,.dataTables_paginate{
+       margin-top:10px!important;
+     }
 
+     
     @media (min-width: 768px){
      
         .tb_icon{
@@ -785,28 +860,37 @@
             border-radius:5px;
         }
     
-        table td{
+        .tabla_fixed td{
             vertical-align: middle!important;
             border-top: none!important;
         }
 
-        .table  > tbody > tr > td {
+        .tabla_fixed   > tbody > tr > td {
             padding: 4px!important;
             color:var(--text-color);
             background:var(--body-color);
         }
         
-        table.DTFC_Cloned tr {
+        .tabla_fixed .DTFC_Cloned tr {
             background-color: var(--body-color)!important;
             margin-bottom: 0;
         }
-      
+        
+        .table th, .table td {
+           /*  padding: 0.35rem!important; */
+            vertical-align: middle;
+            /* border-top: 1px solid #495057; */
+        }
+
+        .table td{
+            padding: 0.25rem!important;
+        }
+        
 
         .table #table .header th {
             height: 28px;
         }
     
-      
 
         .table .dataTables_filter {
             display: none;
@@ -823,24 +907,18 @@
         div.dataTables_wrapper div.dataTables_paginate {
             /* margin-top: -25px!important;*/
         }
-        div.dataTables_wrapper div.dataTables_paginate {
-                text-align: center;
-                margin: 10px auto!important;
-        }
-         table.dataTable tbody th, table.dataTable tbody td {
-            padding: 1px 3px!important;
+     
+        table.dataTable tbody td {
+            padding: 10px 5px!important;
             font-size: 14px!important;
         }
-         table.dataTable tbody th, table.dataTable tbody td {
-            padding: 0px 7px!important;
-            font-size: 14px;
-        }
+
         .table  thead tr th{
             font-size: 13px!important;
         }
         .table  tbody tr td{
-            padding: 0px 4px!important;
-            font-size: 11px!important;
+            padding: 10px 5px!important;
+            font-size: 13px!important;
         }
     
        .table_head{
@@ -848,23 +926,39 @@
             text-align: center!important;
         }
         .table .header th {
-            height: 22px;
+            height: 32px;
             font-size: 12.5px;
         }
-    
         
         .dataTables_filter {
             display: none;
         }
         
-        table td, .table th {
-            padding: 0.5rem;
+        table td{
+            padding: 1rem;
             vertical-align: middle!important;
             border-top: 1px solid var(--table-border-top);
         }
+
+        .fa-edit{
+            font-size: 18px;
+        }
+
+        .fa-trash{
+            font-size: 18px;
+        }
+
+        .dataTables_info{
+            display: none;
+        }
+
+        .div.dataTables_wrapper div.dataTables_paginate{
+            margin-top: 0px !important;
+        }
+        
     }
 
-    
+ 
     #processingIcon{
         color:var(--table-loader-color);
         opacity:.3;
@@ -877,7 +971,7 @@
     }
 
        
-
+    
 
 /*********SELECT2*******/
 

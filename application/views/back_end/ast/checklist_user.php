@@ -10,6 +10,7 @@
      "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
      "bPaginate": false,
      "aaSorting" : [],
+     "responsive":false,
      "select" : true,
      "columnDefs" : [
         { orderable: false , targets: 0 ,width:"25%"},
@@ -55,10 +56,10 @@
     <input type="text" placeholder="Busqueda" id="buscador_user_checklist" class="buscador_user_checklist form-control form-control-sm">
    </div>
   </div>
-  
-  <table id="tabla_user_checklist" width="100%" class="dataTable datatable_h table table-hover table-bordered table-condensed">
+  <div class="table-responsive">
+  <table id="tabla_user_checklist"  class="dataTable datatable_h table table-hover table-bordered table-striped table-condensed">
   <thead>
-    <tr style="background-color:#F9F9F9">
+    <tr>
         <th class="table_head desktop tablet">Tipo</th>
         <th class="table_head all">Descripci&oacute;n</th>
         <th class="table_head all">Resultado</th>
@@ -157,5 +158,6 @@
     </tr>
   </tfoot>
   </table>
+  </div>
 
    

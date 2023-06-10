@@ -516,7 +516,7 @@
 				<div class="form-row">
 					<div class="col-md-6 offset-md-3">
 						<div class="form-row">
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 									<select id="tecnico_gmt" name="tecnico_gmt" class="custom-select custom-select-sm">
 										<option value="" selected>Seleccione Técnico | Todos </option>
@@ -530,7 +530,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 									<select id="zona_gmt" name="zona_gmt" class="custom-select custom-select-sm">
 										<option value="" selected>Seleccione Zona | Todos </option>
@@ -544,7 +544,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col">
+							<div class="col-12 col-lg-4">
 								<div class="form-group">
 									<select id="comuna_gmt" name="comuna_gmt" class="custom-select custom-select-sm">
 										<option value="" selected>Seleccione Comuna | Todos </option>
@@ -563,12 +563,12 @@
 				</div>  
 
 				<div class="row">
-					<div class="col-6">
+					<div class="col-12 col-lg-6">
 						<p class="title_section mt-3">AST por técnico mensuales cantidad</p>
 						<div id="graficoAstTecnico"></div>
 					</div>
 
-					<div class="col-6">
+					<div class="col-12 col-lg-6">
 						<p class="title_section mt-3">AST por técnico mensuales detalle</p>
 						<div id="graficoAstDetalleTecnico"></div>
 					</div>
@@ -578,13 +578,13 @@
 		</div>
 
 		<div class="row">
-			<div class="col-6 mt-3">
+			<div class="col-12 col-lg-6 mt-3">
 				<p class="title_section">AST Totales por técnico </p>
 
 				<div class="form-row">
 					<div class="col-md-8 offset-md-2">
 						<div class="form-row">
-							<div class="col-10">
+						<div class="col-12 col-lg-10">
 								<div class="form-group">
 									<div class="input-group">
 										<div class="input-group-prepend">
@@ -596,7 +596,7 @@
 								</div>
 							</div>
 
-							<div class="col-2">  
+							<div class="col-12 col-lg-2">
 								<div class="form-group">
 									<button type="button"  class="btn-block btn btn-sm btn-primary excel_ast_totales btn_xr3">
 									<i class="fa fa-save"></i>  Excel
@@ -610,13 +610,13 @@
 				<div id="graficoTotalTecnicos"></div>
 			</div>
 
-			<div class="col-6 mt-3">
+			<div class="col-12 col-lg-6 mt-3">
 				<p class="title_section">Estados por item </p>
 
 				<div class="form-row">
 					<div class="col-md-8 offset-md-2">
 						<div class="form-row">
-							<div class="col">
+							<div class="col-12 col-lg-10">
 								<div class="form-group">
 									<select id="item_gmt" name="item_gmt" class="custom-select custom-select-sm">
 										<option value="" selected>Seleccione Item | Todos </option>
@@ -630,7 +630,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-2">  
+							<div class="col-12 col-lg-2">
 								<div class="form-group">
 									<button type="button"  class="btn-block btn btn-sm btn-primary excel_items btn_xr3">
 									<i class="fa fa-save"></i>  Excel

@@ -375,6 +375,7 @@
        "iDisplayLength":200, 
        "lengthMenu": [[5, 15, 50, -1], [5, 15, 50, "Todos"]],
        "bPaginate": false,
+       "responsive": false,
        /*"aaSorting" : [[0,"asc"]],*/
        "scrollY": "55vh",
        "scrollX": true,
@@ -598,7 +599,7 @@
 </script>
 
 <div class="form-row cont_graficos">
-  <div class="col-lg-2">
+  <div class="col-6 col-lg-2">
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
@@ -626,7 +627,7 @@
     if($this->session->userdata('id_perfil')<3){
   ?>
 
-  <div class="col-lg-2">
+  <div class="col-6 col-lg-2">
     <div class="form-group">
       <select id="jefe" name="jefe" class="custom-select custom-select-sm">
         <option value="" selected>Seleccione Jefe | Todos </option>
@@ -644,7 +645,7 @@
    <?php
     }elseif($this->session->userdata('id_perfil')==3){
       ?>
-      <div class="col-lg-2">
+      <div class="col-6 col-lg-2">
         <div class="form-group">
           <select id="jefe" name="jefe" class="custom-select custom-select-sm">
             <?php  
@@ -665,7 +666,7 @@
     if($this->session->userdata('id_perfil')<=3){
   ?>
 
-    <div class="col-lg-2">  
+    <div class="col-6 col-lg-2">  
       <div class="form-group">
         <select id="trabajadores" name="trabajadores" style="width:100%!important;">
             <option value="">Seleccione Trabajador | Todos</option>
@@ -677,7 +678,7 @@
     }else{
   ?>
 
-    <div class="col-lg-2">  
+    <div class="col-6 col-lg-2">  
       <div class="form-group">
         <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
             <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -689,7 +690,7 @@
     }
   ?>
 
-  <div class="col-lg-2">
+  <div class="col-6 col-lg-2">
     <div class="form-group">
       <select id="proyecto" name="proyecto" class="custom-select custom-select-sm">
         <option value="" selected>Seleccione proyecto | Todos </option>
@@ -704,7 +705,7 @@
     </div>
   </div>
 
-  <div class="col-lg-2">
+  <div class="col-6 col-lg-2">
     <div class="form-group">
       <select id="tipo_red" name="tipo_red" class="custom-select custom-select-sm">
         <option value="" selected>Segmento técnico </option>

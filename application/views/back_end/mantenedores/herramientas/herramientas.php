@@ -56,7 +56,7 @@
 
   /*****DATATABLE*****/   
     var tablaHerramientas = $('#tablaHerramientas').DataTable({
-    
+       "responsive" :false,
        "aaSorting" : [],
        "scrollY": "65vh",
        "scrollX": true,

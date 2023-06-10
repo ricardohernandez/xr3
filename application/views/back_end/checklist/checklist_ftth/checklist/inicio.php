@@ -91,6 +91,7 @@
        "bDeferRender": true,
        "select" : true,
        "lengthChange": true,
+       "responsive":false,
        "pagingType": "simple", 
        "bPaginate": true,
        "columnDefs" : [
@@ -695,55 +696,55 @@
 
 <!-- FILTROS -->
   
-    <div class="form-row">
-      <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
-         <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
-         <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
-         <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
-      </div> -->
-      <div class="col-6 col-lg-1">  
-        <div class="form-group">
-           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ftth btn_xr3">
-           <i class="fa fa-plus-circle"></i>  Crear
-           </button>
-        </div>
+  <div class="form-row">
+    <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  
+        <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
+        <button type="button" class="allwidth btn btn-danger btn-sm btn_file_cs" value="" onclick="document.getElementById('userfile').click();">
+        <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
+    </div> -->
+    <div class="col-6 col-lg-1">  
+      <div class="form-group">
+          <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ftth btn_xr3">
+          <i class="fa fa-plus-circle"></i>  Crear
+          </button>
       </div>
+    </div>
 
-      <div class="col-lg-3">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
-            </div>
-              <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
-              <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="margin-left:5px;font-size:13px;">Fecha <span></span> 
           </div>
+            <input type="text" placeholder="Desde" class="fecha_normal form-control form-control-sm"  name="desde_f" id="desde_f">
+            <input type="text" placeholder="Hasta" class="fecha_normal form-control form-control-sm"  name="hasta_f" id="hasta_f">
         </div>
       </div>
+    </div>
 
-      <div class="col-12 col-lg-4">  
-       <div class="form-group">
-        <input type="text" placeholder="Busqueda" id="buscador_ftth" class="buscador_ftth form-control form-control-sm">
-       </div>
+    <div class="col-12 col-lg-4">  
+      <div class="form-group">
+      <input type="text" placeholder="Busqueda" id="buscador_ftth" class="buscador_ftth form-control form-control-sm">
       </div>
+    </div>
 
-      <div class="col-6 col-lg-1">
-        <div class="form-group">
-         <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_ftth btn_xr3">
-         <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
-         </button>
-       </div>
+    <div class="col-6 col-lg-1">
+      <div class="form-group">
+        <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_ftth btn_xr3">
+        <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
+        </button>
       </div>
+    </div>
 
-      <div class="col-6 col-lg-1">  
-        <div class="form-group">
-         <button type="button"  class="btn-block btn btn-sm btn-primary btn_excel btn_xr3">
-         <i class="fa fa-save"></i>  Excel
-         </button>
-        </div>
+    <div class="col-6 col-lg-1">  
+      <div class="form-group">
+        <button type="button"  class="btn-block btn btn-sm btn-primary btn_excel btn_xr3">
+        <i class="fa fa-save"></i>  Excel
+        </button>
       </div>
-      
-      </div>            
+    </div>
+    
+  </div>            
 
 <!-- LISTADO -->
 

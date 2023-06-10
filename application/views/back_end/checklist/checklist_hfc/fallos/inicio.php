@@ -61,6 +61,7 @@
        "bDeferRender": true,
        "select" : true,
         "lengthChange": true,
+        "responsive":false,
        "pagingType": "simple", 
        "bPaginate": true,
        "ajax": {
@@ -324,7 +325,7 @@
         </div>
       </div>
 
-      <div class="col-lg-2">               
+      <div class="col-6 col-lg-2">               
         <div class="form-group">
          <div class="input-group mb-3">
             <select id="solucion_estado_fhfc" name="solucion_estado_fhfc" class="custom-select custom-select-sm">
@@ -336,7 +337,7 @@
         </div>
       </div>
 
-      <div class="col-12 col-lg-4">  
+      <div class="col-6 col-lg-4">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_fhfc" class="buscador_fhfc form-control form-control-sm">
        </div>

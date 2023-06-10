@@ -16,6 +16,7 @@
     var tabla_series_devolucion = $('#tabla_series_devolucion').DataTable({
        "aaSorting" : [[0,"asc"]],
        "scrollY": "65vh",
+       "responsive":false,
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -105,6 +106,7 @@
        "aaSorting" : [[0,"asc"]],
        "scrollY": "65vh",
        "scrollX": true,
+       "responsive":false,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
@@ -241,7 +243,7 @@
     <?php  
       if($this->session->userdata('id_perfil')<>4){
         ?>
-          <div class="col-lg-6">  
+          <div class="col-12 col-lg-6">  
           
             <div class="form-group">
               <select id="trabajadores" name="trabajadores" style="width:100%!important;">
@@ -252,7 +254,7 @@
         <?php
       }else{
       ?>
-          <div class="col-lg-6">  
+          <div class="col-12 col-lg-6">  
             <div class="form-group">
               <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
                   <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -271,15 +273,15 @@
       <div class="col-12">
 
         <div class="row">
-          <div class="col-4">
+          <div class="col-12 col-lg-4">
           <h6 class="text-center mt-2 title_section">Equipos para devolución (Retiro)</h6>
         </div>
 
-        <div class="col-6">
+        <div class="col-6  col-lg-4">
          <input type="text" placeholder="Busqueda" id="buscador_series_devolucion" class="buscador_series_devolucion form-control form-control-sm">
         </div>
 
-        <div class="col-2">
+        <div class="col-6  col-lg-4">
           <button type="button"  class="btn-block btn btn-sm btn-primary excel_series_devolucion btn_xr3">
           <i class="fa fa-save"></i> Excel
           </button>
@@ -303,15 +305,15 @@
     <div class="col-lg-6">
 
       <div class="row">
-        <div class="col-4">
+      <div class="col-12 col-lg-4">
           <h6  class="text-center mt-2 title_section">Equipos operativos</h6>
         </div>
 
-        <div class="col-6">
+        <div class="col-6  col-lg-4">
          <input type="text" placeholder="Busqueda" id="buscador_series_operativos" class="buscador_series_operativos form-control form-control-sm">
         </div>
 
-        <div class="col-2">
+        <div class="col-6  col-lg-4">
           <button type="button"  class="btn-block btn btn-sm btn-primary excel_series_operativos btn_xr3">
           <i class="fa fa-save"></i> Excel
           </button>

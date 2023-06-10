@@ -4,8 +4,10 @@
     const perfil = "<?php echo $this->session->userdata('id_perfil'); ?>"
 
     $.extend(true,$.fn.dataTable.defaults,{
-      dom: "<'row '<'col-sm-12'f>>" +
-            "<'row'<'col-sm-12'tr>> <'bottom' <'row  mt-3' <'col-4' l><'col-4 text-center' i>  <'col-4' p>> >",
+      dom: "<'row'<'col-12 'f>>" + // Filtro
+            "<'row'<'col-12 '<'table-responsive't>>>" + 
+            "<'row d-none d-sm-flex '<'col-sm-4'l><'col-sm-4 text-center'i><'col-sm-4'p>>" + 
+            "<'row d-sm-none '<'col-12 text-center'p>>", 
       "iDisplayLength":50, 
       "paging":true,
       "lengthChange": true,
@@ -136,14 +138,17 @@
 <article class="content">
 
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-12">
+    <div class="scrollable-menu">
+
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
        <li id="menu_materiales" class="active"><a> <i class="fa fa-list-alt"></i> Detalle Materiales </a></li>   
        <!-- <li id="menu_tecnico" class="active"><a> <i class="fa fa-list-alt"></i> Por técnico </a></li>   
        <li id="menu_material" class="active"><a> <i class="fa fa-list-alt"></i> Por material </a></li>    -->
        <li id="menu_series" class="active"><a> <i class="fa fa-list-alt"></i> Series por técnico </a></li>   
       </ul>  
-    </div> 
+      </div> 
+      </div> 
   </div>
 
   <div class="row">

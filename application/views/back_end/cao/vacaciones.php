@@ -37,7 +37,8 @@
          "aaSorting" : [[9,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
-         "sAjaxDataProp": "result",        
+         "sAjaxDataProp": "result",  
+         "responsive": false,      
          "bDeferRender": true,
          "select" : true,
          columnDefs: [
@@ -357,7 +358,7 @@
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-1 col-lg-1"> 
+	  <div class="col-6 col-lg-1"> 
 	      <div class="form-group">
 	         <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_vacaciones btn_xr3">
 	         <i class="fa fa-plus-circle"></i>  Nuevo 
@@ -366,20 +367,20 @@
 	    </div>
 
 
-	    <div class="col-2 col-lg-4">  
+	    <div class="col-6 col-lg-4">  
 	      <div class="form-group">
 	      <input type="text" placeholder="Ingrese su busqueda..." id="vacaciones" class="vacaciones form-control form-control-sm">
 	      </div>
 	    </div>
 
-      <div class="col-md-2">
+      <div class="col-6 col-md-2">
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="checkinactivos" name="checkinactivos">
                 <label class="form-check-label" for="checkinactivos">Incluir inactivos</label>
             </div>
       </div>
 
-	    <div class="col-2 col-lg-1">
+	    <div class="col-6 col-lg-1">
 	       <div class="form-group">
 	          <button type="button" class="btn-block btn btn-sm btn-outline-primary btn-primary btn_filtro_vacaciones btn_xr3">
 	       <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar

@@ -70,6 +70,7 @@
        "aaSorting" : [],
        "scrollY": "65vh",
        "scrollX": true,
+       "responsive" :false,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" :true,

@@ -34,8 +34,8 @@
       const p = "<?php echo $this->session->userdata('id_perfil') ?>";
 
       var tb_capacitacion = $('#tb_capacitacion').DataTable({
-        
-          "aaSorting" : [[5,"desc"]],
+         "responsive" :false,
+         "aaSorting" : [[5,"desc"]],
          "scrollY": "65vh",
          "scrollX": true,
          "sAjaxDataProp": "result",        

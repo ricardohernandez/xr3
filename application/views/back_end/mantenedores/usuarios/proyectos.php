@@ -19,6 +19,7 @@
   /*****DATATABLE*****/   
     var listaProyectos = $('#listaProyectos').DataTable({
        "aaSorting" : [[1,"asc"]],
+       "responsive" :false,
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -243,7 +244,7 @@
   
     <div class="form-row">
 
-        <div class="col-lg-1">  
+        <div class="col-6 col-lg-1">  
 	        <div class="form-group">
 	           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_proyecto btn_xr3">
 	           <i class="fa fa-plus-circle"></i>  Crear 
@@ -251,7 +252,7 @@
 	        </div>
 		</div>
 
-	    <div class="col-12 col-lg-4">  
+	    <div class="col-6  col-lg-4">  
 	       <div class="form-group">
 	        <input type="text" placeholder="Busqueda" id="buscador_proyecto" class="buscador_proyecto form-control form-control-sm">
 	       </div>

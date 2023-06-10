@@ -33,6 +33,7 @@
        "bPaginate": true,
        "aaSorting" : [6 , "desc"],
        "scrollY": "60vh",
+       "responsive" : false,
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
@@ -304,7 +305,7 @@
 	    </div> -->
 
 
-        <div class="col-lg-2">               
+        <div class="col-6 -bottom-1col-lg-2">               
 		    <div class="form-group">
 		     <div class="input-group mb-3">
 		        <select id="proyecto_fallos_f" name="proyecto_fallos_f" class="custom-select custom-select-sm">
@@ -321,7 +322,7 @@
 		    </div>
 	    </div>
 
-	    <div class="col-12 col-lg-4">  
+	    <div class="col-6 col-lg-4">  
 	       <div class="form-group">
 	        <input type="text" placeholder="Busqueda" id="buscador_herr" class="buscador_herr form-control form-control-sm">
 	       </div>

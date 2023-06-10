@@ -487,7 +487,7 @@
        <span class="glyphicon glyphicon-folder-open" style="margin-right:5px!important;"></span> CSV</button>
     </div> -->
 
-    <div class="col-lg-1">  
+    <div class="col-6 col-lg-1">  
       <div class="form-group">
          <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_ots btn_xr3">
          <i class="fa fa-plus-circle"></i>  Crear 
@@ -495,7 +495,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-lg-3">  
+    <div class="col-6 col-lg-3">  
      <div class="form-group">
       <input type="text" placeholder="Busqueda" id="buscador_ots" class="buscador_ots form-control form-control-sm">
      </div>

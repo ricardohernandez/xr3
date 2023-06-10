@@ -35,6 +35,7 @@
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
        "select" : true,
+       "responsive":false,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
           "url":"<?php echo base_url();?>listaDetalleMateriales",
@@ -223,7 +224,7 @@
       <?php
         if($this->session->userdata('id_perfil')<=2){
           ?>
-          <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1">  
+          <div class="col-6 col-lg-1">  
              <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
              <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
              <i class="fa fa-file-import"></i> Cargar base  
@@ -236,7 +237,7 @@
       <?php  
        if($this->session->userdata('id_perfil')<>4){
           ?>
-            <div class="col-lg-3">  
+            <div class="col-6 col-lg-3">  
               <div class="form-group">
                 <select id="trabajadores" name="trabajadores" style="width:100%!important;">
                     <option value="">Seleccione Trabajador | Todos</option>
@@ -246,7 +247,7 @@
           <?php
        }else{
         ?>
-           <div class="col-lg-2">  
+           <div class="col-6 col-lg-2">  
               <div class="form-group">
                 <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
                     <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -257,7 +258,7 @@
        }
       ?>
 
-      <div class="col-12 col-lg-2">  
+      <div class="col-6 col-lg-2">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_detalle" class="buscador_detalle form-control form-control-sm">
        </div>

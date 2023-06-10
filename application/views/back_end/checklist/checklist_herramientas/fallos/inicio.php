@@ -62,6 +62,7 @@
        "scrollX": true,
        "sAjaxDataProp": "result",        
        "bDeferRender": true,
+       "responsive":false,
        "select" : true,
        "ajax": {
           "url":"<?php echo base_url();?>listaFH",
@@ -321,7 +322,7 @@
   
     <div class="form-row">
 
-      <div class="col-lg-3">
+      <div class="col-12 col-lg-3">
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
@@ -333,7 +334,7 @@
         </div>
       </div>
 
-      <div class="col-lg-2">               
+      <div class="col-6 col-lg-2">               
         <div class="form-group">
          <div class="input-group mb-3">
             <select id="solucion_estado_f" name="solucion_estado_f" class="custom-select custom-select-sm">
@@ -345,13 +346,13 @@
         </div>
       </div>
 
-      <div class="col-12 col-lg-4">  
+      <div class="col-6 col-lg-4">  
        <div class="form-group">
         <input type="text" placeholder="Busqueda" id="buscador_fh" class="buscador_fh form-control form-control-sm">
        </div>
       </div>
 
-      <div class="col-6 col-lg-1">
+      <div class="col-12 col-lg-1">
         <div class="form-group">
          <button type="button" class="btn-block btn btn-sm btn-primary btn_filtro_FH btn_xr3">
          <i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar
