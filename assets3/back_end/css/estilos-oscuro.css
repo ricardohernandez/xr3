@@ -230,7 +230,7 @@
  
     button.close {
         position: absolute;
-        margin-left: 94%!important;
+        margin-left: 91%!important;
     }
     
     .input-group-text {
@@ -309,7 +309,7 @@
         button.close {
             position: absolute;
             top: 5px;
-            margin-left: 94%!important;
+            margin-left: 91%!important;
         }
         
         .btn-group-sm>.btn, .btn-sm {
@@ -470,7 +470,7 @@
 
     .close {
         float: right;
-        font-size: 1.2rem;
+        font-size: 1.8rem;
         font-weight: 700;
         line-height: 1;
         color: var(--text-color);
@@ -564,7 +564,7 @@
 
         .logo_empresa{
             width: 70px;
-            margin-top: -15px!important;
+       /*      margin-top: -15px!important; */
         }
     }
 
@@ -1279,5 +1279,11 @@
       }
       table.dataTable.table-striped.DTFC_Cloned tbody {
         background-color: var(--header-bg);
+      }
+      
+
+      ul {
+        margin-top: 0;
+        margin-bottom: 0!important;
       }
       

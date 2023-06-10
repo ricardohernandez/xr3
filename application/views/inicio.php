@@ -11,7 +11,6 @@
 <!-- Css -->
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/bootstrap.min.css" />
 <link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/font-icons.css" />
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/estilo.css" />
 <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
 <link rel="shortcut icon" href="<?php echo base_url();?>assets3/front_end/img/favicon2.jpg">
 <link rel="apple-touch-icon" href="<?php echo base_url();?>assets3/front_end/img/apple-touch-icon.png">
@@ -20,32 +19,105 @@
 <script src="<?php echo base_url();?>assets3/front_end/js/jquery.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/lazysizes.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/loader.js" charset="UTF-8"></script>
+<style>
+	.modo_noche, .modo_dia{
+      cursor:pointer;
+    }
 
+</style>
 <script>
-      // Obtener el valor del token CSRF desde la cookie
-      function getCsrfToken() {
-        var name = 'csrf_cookie=';
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var cookieArray = decodedCookie.split(';');
-        for (var i = 0; i < cookieArray.length; i++) {
-          var cookie = cookieArray[i];
-          while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-          }
-          if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-          }
-        }
-        return '';
-      }
 
-      // Agregar el token CSRF a todas las solicitudes AJAX
-      $.ajaxSetup({
-        data: {
-          csrf_token: getCsrfToken()
-        }
-      });
-    </script>
+$(document).ready(function() {
+  const url = "<?php echo base_url();?>";
+  let modoActual = localStorage.getItem('modo');
+  
+  if (!modoActual) {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      modoActual = 'modo_noche';
+    } else {
+      modoActual = 'modo_dia';
+    }
+  }
+  
+  aplicarModo(modoActual);
+  
+  $('.modo_noche').click(function() {
+    aplicarModo('modo_noche');
+    localStorage.setItem('modo', 'modo_noche');
+  });
+  
+  $('.modo_dia').click(function() {
+    aplicarModo('modo_dia');
+    localStorage.setItem('modo', 'modo_dia');
+  });
+  
+  function aplicarModo(modo) {
+    const modoNocheElements = document.querySelectorAll('.modo_noche');
+    const modoDiaElements = document.querySelectorAll('.modo_dia');
+    
+    if (modo === 'modo_noche') {
+      modoNocheElements.forEach(element => element.style.display = 'none');
+      modoDiaElements.forEach(element => element.style.display = 'inline');
+      
+      loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+     /*  loadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
+      unloadCSS(url + 'assets3/front_end/css/bootstrap.min.css'); */
+      unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+
+    } else if (modo === 'modo_dia') {
+      modoNocheElements.forEach(element => element.style.display = 'inline');
+      modoDiaElements.forEach(element => element.style.display = 'none');
+      
+      loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+   /*    loadCSS(url + 'assets3/front_end/css/bootstrap.min.css');
+      unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css'); */
+      unloadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
+    }
+  }
+  
+  function loadCSS(url) {
+    const link = document.createElement('link');
+    link.href = url;
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }
+  
+  function unloadCSS(url) {
+    const links = document.head.getElementsByTagName('link');
+    for (let i = 0; i < links.length; i++) {
+      if (links[i].href === url) {
+        document.head.removeChild(links[i]);
+        return;
+      }
+    }
+  }
+});
+
+
+// Obtener el valor del token CSRF desde la cookie
+	function getCsrfToken() {
+	var name = 'csrf_cookie=';
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var cookieArray = decodedCookie.split(';');
+	for (var i = 0; i < cookieArray.length; i++) {
+		var cookie = cookieArray[i];
+		while (cookie.charAt(0) === ' ') {
+		cookie = cookie.substring(1);
+		}
+		if (cookie.indexOf(name) === 0) {
+		return cookie.substring(name.length, cookie.length);
+		}
+	}
+	return '';
+	}
+
+	// Agregar el token CSRF a todas las solicitudes AJAX
+	$.ajaxSetup({
+	data: {
+		csrf_token: getCsrfToken()
+	}
+	});
+</script>
 
 	
 <script type="text/javascript">
@@ -229,10 +301,10 @@
 <link href="<?php echo base_url();?>assets3/front_end/css/featherlight.gallery.min.css" rel="stylesheet">
 <link href="<?php echo base_url();?>assets3/front_end/css/themes/default/default.css" rel="stylesheet">
 <link href="<?php echo base_url();?>assets3/front_end/css/nivo-lightbox.min.css" rel="stylesheet">
+<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/select2.min.css">
 <script src="<?php echo base_url();?>assets3/front_end/js/featherlight.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/featherlight.gallery.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/nivo-lightbox.min.js"></script>
-<link rel="stylesheet" href="<?php echo base_url();?>assets3/front_end/css/select2.min.css">
 <script src="<?php echo base_url();?>assets3/front_end/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/easing.min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/owl-carousel.min.js"></script>

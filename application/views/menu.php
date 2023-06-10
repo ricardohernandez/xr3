@@ -81,7 +81,7 @@
          width:95%!important;
       }
    }
-
+/* 
    @media (max-width: 768px){
       .logo_pto {
          margin-top: 5px;
@@ -104,7 +104,7 @@
      .logo_empresa{
          width: 70px;
       }
-   }
+   } */
 
 </style>
 <!-- SIDENAV -->    
@@ -247,7 +247,7 @@
 <!-- MAIN -->  
 <main class="main oh" id="main">
 <header class="nav">
-   <div class="nav__holder nav--sticky">
+   <div class="nav__holder" style="width:100%;">
       <div class="container-fluid relative">
          <div class="flex-parent">
             <!-- BOTON MENU  -->
@@ -400,7 +400,7 @@
 					<?php  
 					if($this->session->userdata('rut')=="169868220" || $this->session->userdata('rut')=="119752949"){
 					?>
-					<li class="" style="margin-left: 40px;margin-right: 10px">
+					<li class="ver_como" style="margin-left: 40px;margin-right: 10px">
 					Ver como
 					</li>
 					<li class="">
@@ -475,7 +475,7 @@
       <div class="modal-content">
          <div class="modal-header">
             <p class="title_section">Cambiar contrase&ntilde;a</p>
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
