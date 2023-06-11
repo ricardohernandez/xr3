@@ -828,7 +828,7 @@ input.nav__search-mobile-input:-ms-input-placeholder {
   .nav-icon-toggle__inner {
     display: block;
     top: 50%;
-    margin-top: -5px;
+    /* margin-top: -5px; */
     margin-left: 13px;
     width: 15px; }
   .nav-icon-toggle__inner, .nav-icon-toggle__inner:before, .nav-icon-toggle__inner:after {

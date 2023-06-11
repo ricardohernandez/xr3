@@ -11,26 +11,29 @@
   }
 
   .item_activo_cumple{
-    background: #F48634;
-    border-radius: 15px;
+   /*  background: #F48634; */
+   /*  border-radius: 15px; */
     color: #fff!important;
   }
 
   .enlace_activo_cumple{
     display:block;
-    color:#fff!important;
+    color:#F38733!important;
+    font-size: 14px;
+    font-weight:bold;
   }
 
   .enlace_activo_cumple:hover{
-    color:#fff!important;
+    /* color:#fff!important; */
   }
 
   .txt_activo_cumple{
     display: inline;
     margin: -18px 20px;
+    font-weight:bold;
     float: right;
-    font-size: 14px;
-    color: #fff;
+    font-size: 15px;
+    color: #F38733;
   }
 
 </style>

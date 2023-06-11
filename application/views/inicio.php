@@ -23,99 +23,122 @@
 	.modo_noche, .modo_dia{
       cursor:pointer;
     }
-
 </style>
 <script>
 
-$(document).ready(function() {
-  const url = "<?php echo base_url();?>";
-  let modoActual = localStorage.getItem('modo');
-  
-  if (!modoActual) {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      modoActual = 'modo_noche';
-    } else {
-      modoActual = 'modo_dia';
-    }
-  }
-  
-  aplicarModo(modoActual);
-  
-  $('.modo_noche').click(function() {
-    aplicarModo('modo_noche');
-    localStorage.setItem('modo', 'modo_noche');
-  });
-  
-  $('.modo_dia').click(function() {
-    aplicarModo('modo_dia');
-    localStorage.setItem('modo', 'modo_dia');
-  });
-  
-  function aplicarModo(modo) {
-    const modoNocheElements = document.querySelectorAll('.modo_noche');
-    const modoDiaElements = document.querySelectorAll('.modo_dia');
-    
-    if (modo === 'modo_noche') {
-      modoNocheElements.forEach(element => element.style.display = 'none');
-      modoDiaElements.forEach(element => element.style.display = 'inline');
-      
-      loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
-     /*  loadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
-      unloadCSS(url + 'assets3/front_end/css/bootstrap.min.css'); */
-      unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+	$(".loader").fadeIn('fast'); 
+	$('.loader-mask').fadeIn('fast');
 
-    } else if (modo === 'modo_dia') {
-      modoNocheElements.forEach(element => element.style.display = 'inline');
-      modoDiaElements.forEach(element => element.style.display = 'none');
-      
-      loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
-   /*    loadCSS(url + 'assets3/front_end/css/bootstrap.min.css');
-      unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css'); */
-      unloadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
-    }
-  }
-  
-  function loadCSS(url) {
-    const link = document.createElement('link');
-    link.href = url;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
-  
-  function unloadCSS(url) {
-    const links = document.head.getElementsByTagName('link');
-    for (let i = 0; i < links.length; i++) {
-      if (links[i].href === url) {
-        document.head.removeChild(links[i]);
-        return;
-      }
-    }
-  }
-});
+	$(function(){
+		const url = "<?php echo base_url();?>";
+		let modoActual = localStorage.getItem('modo');
 
+		if (!modoActual) {
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				modoActual = 'modo_noche';
+			} else {
+				modoActual = 'modo_dia';
+			}
+		}
 
-// Obtener el valor del token CSRF desde la cookie
+		aplicarModo(modoActual);
+
+		$('.modo_noche').click(function() {
+			mostrarLoader();
+			setTimeout(function() {
+				aplicarModo('modo_noche');
+				localStorage.setItem('modo', 'modo_noche');
+				ocultarLoader();
+			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		});
+
+		$('.modo_dia').click(function() {
+			mostrarLoader();
+			setTimeout(function() {
+				aplicarModo('modo_dia');
+				localStorage.setItem('modo', 'modo_dia');
+				ocultarLoader();
+			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		});
+
+		mostrarLoader();
+		setTimeout(function() {
+			aplicarModo(modoActual);
+			ocultarLoader();
+		}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+
+		function aplicarModo(modo) {
+			const modoNocheElements = document.querySelectorAll('.modo_noche');
+			const modoDiaElements = document.querySelectorAll('.modo_dia');
+
+			if (modo === 'modo_noche') {
+				modoNocheElements.forEach(element => element.style.display = 'none');
+				modoDiaElements.forEach(element => element.style.display = 'inline');
+
+				loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+				/*  loadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
+				unloadCSS(url + 'assets3/front_end/css/bootstrap.min.css'); */
+				unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+			} else if (modo === 'modo_dia') {
+				modoNocheElements.forEach(element => element.style.display = 'inline');
+				modoDiaElements.forEach(element => element.style.display = 'none');
+
+				loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+				/*    loadCSS(url + 'assets3/front_end/css/bootstrap.min.css');
+				unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css'); */
+				unloadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
+			}
+		}
+
+		function loadCSS(url) {
+			const link = document.createElement('link');
+			link.href = url;
+			link.rel = 'stylesheet';
+			document.head.appendChild(link);
+		}
+
+		function unloadCSS(url) {
+			const links = document.head.getElementsByTagName('link');
+			for (let i = 0; i < links.length; i++) {
+				if (links[i].href === url) {
+					document.head.removeChild(links[i]);
+					return;
+				}
+			}
+		}
+
+		function mostrarLoader() {
+			$(".loader").fadeIn('fast'); // Mostrar el elemento con clase "loader"
+			$('.loader-mask').fadeIn('fast'); // Mostrar el elemento con clase "loader-mask"
+		}
+
+		function ocultarLoader() {
+			$(".loader").fadeOut(); // Ocultar el elemento con clase "loader"
+			$('.loader-mask').fadeOut('fast'); // Ocultar el elemento con clase "loader-mask"
+		}
+	});
+
 	function getCsrfToken() {
-	var name = 'csrf_cookie=';
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var cookieArray = decodedCookie.split(';');
-	for (var i = 0; i < cookieArray.length; i++) {
-		var cookie = cookieArray[i];
-		while (cookie.charAt(0) === ' ') {
-		cookie = cookie.substring(1);
+		var name = 'csrf_cookie=';
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var cookieArray = decodedCookie.split(';');
+		for (var i = 0; i < cookieArray.length; i++) {
+			var cookie = cookieArray[i];
+			while (cookie.charAt(0) === ' ') {
+			cookie = cookie.substring(1);
+			}
+			if (cookie.indexOf(name) === 0) {
+			return cookie.substring(name.length, cookie.length);
+			}
 		}
-		if (cookie.indexOf(name) === 0) {
-		return cookie.substring(name.length, cookie.length);
-		}
-	}
-	return '';
+		return '';
 	}
 
 	// Agregar el token CSRF a todas las solicitudes AJAX
 	$.ajaxSetup({
-	data: {
-		csrf_token: getCsrfToken()
-	}
+		data: {
+			csrf_token: getCsrfToken()
+		}
 	});
 </script>
 
@@ -312,7 +335,7 @@ $(document).ready(function() {
 <script src="<?php echo base_url();?>assets3/front_end/js/twitterFetcher_min.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/jquery.newsTicker.min.js"></script>  
 <script src="<?php echo base_url();?>assets3/front_end/js/modernizr.min.js"></script>
-<script src="<?php echo base_url();?>assets3/front_end/js/scripts1.js"></script>
+<script src="<?php echo base_url();?>assets3/front_end/js/scripts2.js"></script>
 <script src="<?php echo base_url();?>assets3/front_end/js/select2.min.js" charset="UTF-8"></script>
 
 </body>

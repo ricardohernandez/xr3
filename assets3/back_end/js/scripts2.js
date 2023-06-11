@@ -8,8 +8,8 @@
   });
 
   // Preloader
-    setTimeout(function(){$(".loader").fadeOut();  },1);
-  $('.loader-mask').delay(1).fadeOut('slow');
+   /*  setTimeout(function(){$(".loader").fadeOut();  },1);
+  $('.loader-mask').delay(1).fadeOut('slow'); */
 
 
   // Init

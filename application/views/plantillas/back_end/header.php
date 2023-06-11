@@ -35,83 +35,103 @@
 </head>
 
 <script>
-  
-$(document).ready(function() {
-  const url = "<?php echo base_url();?>";
-  let modoActual = localStorage.getItem('modo');
-  
-  if (!modoActual) {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      modoActual = 'modo_noche';
-    } else {
-      modoActual = 'modo_dia';
-    }
-  }
-  
-  aplicarModo(modoActual);
-  
-  $('.modo_noche').click(function() {
-    aplicarModo('modo_noche');
-    localStorage.setItem('modo', 'modo_noche');
-  });
-  
-  $('.modo_dia').click(function() {
-    aplicarModo('modo_dia');
-    localStorage.setItem('modo', 'modo_dia');
-  });
-  
-  function aplicarModo(modo) {
-    const modoNocheElements = document.querySelectorAll('.modo_noche');
-    const modoDiaElements = document.querySelectorAll('.modo_dia');
-    
-    if (modo === 'modo_noche') {
-      modoNocheElements.forEach(element => element.style.display = 'none');
-      modoDiaElements.forEach(element => element.style.display = 'inline');
-      
-      loadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro.css');
-      loadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
-      loadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
-      
-      unloadCSS(url + 'assets3/back_end/css/estilos_menu_claro.css');
-      unloadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
-      unloadCSS(url + 'assets3/back_end/css/estilos-claro.css');
-    } else if (modo === 'modo_dia') {
-      modoNocheElements.forEach(element => element.style.display = 'inline');
-      modoDiaElements.forEach(element => element.style.display = 'none');
-      
-      loadCSS(url + 'assets3/back_end/css/estilos_menu_claro.css');
-      loadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
-      loadCSS(url + 'assets3/back_end/css/estilos-claro.css');
-      
-      unloadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro.css');
-      unloadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
-      unloadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
-    }
-  }
-  
-  function loadCSS(url) {
-    const link = document.createElement('link');
-    link.href = url;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
-  
-  function unloadCSS(url) {
-    const links = document.head.getElementsByTagName('link');
-    for (let i = 0; i < links.length; i++) {
-      if (links[i].href === url) {
-        document.head.removeChild(links[i]);
-        return;
+  $(".loader").fadeIn('fast'); 
+	$('.loader-mask').fadeIn('fast');
+
+	$(function(){
+		const url = "<?php echo base_url();?>";
+		let modoActual = localStorage.getItem('modo');
+
+		if (!modoActual) {
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				modoActual = 'modo_noche';
+			} else {
+				modoActual = 'modo_dia';
+			}
+		}
+
+		aplicarModo(modoActual);
+
+		$('.modo_noche').click(function() {
+			mostrarLoader();
+			setTimeout(function() {
+				aplicarModo('modo_noche');
+				localStorage.setItem('modo', 'modo_noche');
+				ocultarLoader();
+			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		});
+
+		$('.modo_dia').click(function() {
+			mostrarLoader();
+			setTimeout(function() {
+				aplicarModo('modo_dia');
+				localStorage.setItem('modo', 'modo_dia');
+				ocultarLoader();
+			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		});
+
+		mostrarLoader();
+		setTimeout(function() {
+			aplicarModo(modoActual);
+			ocultarLoader();
+		}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+
+		function aplicarModo(modo) {
+			const modoNocheElements = document.querySelectorAll('.modo_noche');
+			const modoDiaElements = document.querySelectorAll('.modo_dia');
+
+      if (modo === 'modo_noche') {
+        modoNocheElements.forEach(element => element.style.display = 'none');
+        modoDiaElements.forEach(element => element.style.display = 'inline');
+        
+        loadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro.css');
+        loadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
+        loadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
+        
+        unloadCSS(url + 'assets3/back_end/css/estilos_menu_claro.css');
+        unloadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
+        unloadCSS(url + 'assets3/back_end/css/estilos-claro.css');
+      } else if (modo === 'modo_dia') {
+        modoNocheElements.forEach(element => element.style.display = 'inline');
+        modoDiaElements.forEach(element => element.style.display = 'none');
+        
+        loadCSS(url + 'assets3/back_end/css/estilos_menu_claro.css');
+        loadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
+        loadCSS(url + 'assets3/back_end/css/estilos-claro.css');
+        
+        unloadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro.css');
+        unloadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
+        unloadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
       }
-    }
-  }
-});
+		}
 
+		function loadCSS(url) {
+			const link = document.createElement('link');
+			link.href = url;
+			link.rel = 'stylesheet';
+			document.head.appendChild(link);
+		}
 
+		function unloadCSS(url) {
+			const links = document.head.getElementsByTagName('link');
+			for (let i = 0; i < links.length; i++) {
+				if (links[i].href === url) {
+					document.head.removeChild(links[i]);
+					return;
+				}
+			}
+		}
 
+		function mostrarLoader() {
+			$(".loader").fadeIn('fast'); // Mostrar el elemento con clase "loader"
+			$('.loader-mask').fadeIn('fast'); // Mostrar el elemento con clase "loader-mask"
+		}
 
-
-
+		function ocultarLoader() {
+			$(".loader").fadeOut(); // Ocultar el elemento con clase "loader"
+			$('.loader-mask').fadeOut('fast'); // Ocultar el elemento con clase "loader-mask"
+		}
+	});
 
   function getCsrfToken() {
     var name = 'csrf_cookie=';
