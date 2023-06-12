@@ -390,7 +390,7 @@
 <!--FILTROS-->
 
   <div class="form-row">
-	  <div class="col-6 col-lg-2"> 
+	  <div class="col-6 col-lg-1"> 
 	      <div class="form-group">
 	         <button type="button" class="btn-block btn btn-sm btn-primary btn_nuevo_usuario btn_xr3">
 	         <i class="fa fa-plus-circle"></i>  Nuevo 
@@ -410,7 +410,7 @@
         </div>
       </div>
 
-	    <div class="col-12 6-lg-4">  
+	    <div class="col-12 col-lg-4">  
 	      <div class="form-group">
 	      <input type="text" placeholder="Ingrese su busqueda..." id="buscador" class="buscador form-control form-control-sm">
 	      </div>

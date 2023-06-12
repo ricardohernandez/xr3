@@ -33,7 +33,13 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-
+<style>
+	.modo_noche, .modo_dia{
+    cursor:pointer;
+    font-size:22px;
+    margin-top:5px;
+   }
+</style>
 <script>
   $(".loader").fadeIn('fast'); 
 	$('.loader-mask').fadeIn('fast');
@@ -58,7 +64,7 @@
 				aplicarModo('modo_noche');
 				localStorage.setItem('modo', 'modo_noche');
 				ocultarLoader();
-			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+			}, 300); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 		});
 
 		$('.modo_dia').click(function() {
@@ -67,7 +73,7 @@
 				aplicarModo('modo_dia');
 				localStorage.setItem('modo', 'modo_dia');
 				ocultarLoader();
-			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+			}, 300); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 		});
 
 		mostrarLoader();
@@ -77,6 +83,7 @@
 		}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 
 		function aplicarModo(modo) {
+      restablecerEstilos();
 			const modoNocheElements = document.querySelectorAll('.modo_noche');
 			const modoDiaElements = document.querySelectorAll('.modo_dia');
 
@@ -91,6 +98,9 @@
         unloadCSS(url + 'assets3/back_end/css/estilos_menu_claro.css');
         unloadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-claro.css');
+        $("body").css("display", "");
+
+
       } else if (modo === 'modo_dia') {
         modoNocheElements.forEach(element => element.style.display = 'inline');
         modoDiaElements.forEach(element => element.style.display = 'none');
@@ -102,6 +112,9 @@
         unloadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro.css');
         unloadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
+        $("body").css("display", "");
+
+
       }
 		}
 
@@ -131,7 +144,25 @@
 			$(".loader").fadeOut(); // Ocultar el elemento con clase "loader"
 			$('.loader-mask').fadeOut('fast'); // Ocultar el elemento con clase "loader-mask"
 		}
+
+    function restablecerEstilos() {
+      const selectors = [
+        '::-webkit-scrollbar', // Scrollbar del navegador
+        'select', // Selectores
+        'input[type="file"]' // Inputs de tipo file
+      ];
+
+      selectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+          // Elimina cualquier estilo específico aplicado a los elementos
+          element.removeAttribute('style');
+        });
+      });
+    }
 	});
+
+
 
   function getCsrfToken() {
     var name = 'csrf_cookie=';
@@ -157,7 +188,7 @@
   });
 </script>
 
-<body><!-- class="bg-light style-default style-rounded" -->
+<body style="display:none;">
 
   <div class="loader-mask">
       <div class="loader">

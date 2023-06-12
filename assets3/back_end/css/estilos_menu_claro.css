@@ -940,6 +940,7 @@ input.nav__search-mobile-input:-ms-input-placeholder {
     .sidenav__close-button:hover {
       color: #2D95E3; }
   .sidenav__close-icon {
+    color:#000;
     font-size: 22px;
     line-height: 24px; }
 

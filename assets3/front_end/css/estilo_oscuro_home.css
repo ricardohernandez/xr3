@@ -18,7 +18,7 @@
 /* General
 /*-------------------------------------------------------*/
 .clearfix {
-	*zoom: 1; }
+	zoom: 1; }
 
 .clearfix:before, .clearfix:after {
 	display: table;
@@ -3830,7 +3830,7 @@ input.nav__search-mobile-input:-ms-input-placeholder {
 		padding: 0;
 		background: transparent;
 		border: 0;
-		color: #171821;
+		color: #fff;
 		width: 24px;
 		height: 24px; }
 		.sidenav__close-button:hover {
@@ -6213,7 +6213,7 @@ a:hover{
       padding: 0;
       background: transparent;
       border: 0;
-      color: #171821;
+      color: #fff;
       width: 24px;
       height: 24px; }
       .sidenav__close-button:hover {

@@ -226,9 +226,9 @@
             }
          ?>
 
-         <li class="mt-3  mb-">
-            <a href="#" class="sidenav__menu-url modo_noche mb-3"><i class="fas fa-moon mb-3" title="Modo oscuro"></i></a>
-            <a href="#" class="sidenav__menu-url modo_dia mb-3"><i class="fas fa-sun mb-3" title="Modo claro"></i></a>
+         <li class="">
+            <a href="#" class="sidenav__menu-url modo_noche"><i class="fas fa-moon p-3" title="Modo oscuro" style="font-size:1rem;"></i></a>
+            <a href="#" class="sidenav__menu-url modo_dia"><i class="fas fa-sun p-3" title="Modo claro"  style="font-size:1rem;"></i></a>
          </li>
 
 
@@ -423,10 +423,10 @@
 					</select>
 					</li>
 
-               <li class="">
+               <li class="mt-3">
 
-                 <i class="fas fa-moon mx-2 mt-1 modo_noche" title="Modo oscuro"></i>
-                 <i class="fas fa-sun mx-2 mt-1 modo_dia" title="Modo claro"></i>
+                 <i class="fas fa-moon mx-2 mt-3 p-3 modo_noche" title="Modo oscuro"></i>
+                 <i class="fas fa-sun mx-2 mt-3 p-3 modo_dia" title="Modo claro"  ></i>
                </li>
 
 					<?php

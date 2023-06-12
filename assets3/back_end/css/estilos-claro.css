@@ -2,6 +2,7 @@
 /********GENERAL****/
 
   :root {
+   /*  color-scheme: light; */
     --border-color:1px solid #E2E3E4;
     --input-border-color:#515151;
     --input-border-color2:#ced4da;
@@ -559,8 +560,8 @@
 
   @media (min-width: 768px){
     .nav-tabs-int>li>a {
-        font-size: 13px!important;
-        padding: 9px 15px!important;
+        font-size: 14px!important;
+        padding: 12px 15px!important;
     }
 
     .navbar-toggle {
@@ -611,7 +612,7 @@
   
     .nav-tabs-int>li>a {
         font-size: 13px!important;
-        padding: 10px 5px!important;
+        padding: 12px 5px!important;
     }
 
     .navbar-toggle {

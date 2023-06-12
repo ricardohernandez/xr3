@@ -21,102 +21,105 @@
 <script src="<?php echo base_url();?>assets3/front_end/js/loader.js" charset="UTF-8"></script>
 <style>
 	.modo_noche, .modo_dia{
-      cursor:pointer;
-    }
+		cursor:pointer;
+		font-size:22px!important;
+	}
 </style>
 <script>
 
-	$(".loader").fadeIn('fast'); 
-	$('.loader-mask').fadeIn('fast');
+$(".loader").fadeIn('fast');
+$('.loader-mask').fadeIn('fast');
 
-	$(function(){
-		const url = "<?php echo base_url();?>";
-		let modoActual = localStorage.getItem('modo');
+$(function(){
+    const url = "<?php echo base_url();?>";
+    let modoActual = localStorage.getItem('modo');
 
-		if (!modoActual) {
-			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				modoActual = 'modo_noche';
-			} else {
-				modoActual = 'modo_dia';
-			}
-		}
+    if (!modoActual) {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            modoActual = 'modo_noche';
+        } else {
+            modoActual = 'modo_dia';
+        }
+    }
 
-		aplicarModo(modoActual);
+    aplicarModo(modoActual);
 
-		$('.modo_noche').click(function() {
-			mostrarLoader();
-			setTimeout(function() {
-				aplicarModo('modo_noche');
-				localStorage.setItem('modo', 'modo_noche');
-				ocultarLoader();
-			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
-		});
+    $('.modo_noche').click(function() {
+        mostrarLoader();
+        setTimeout(function() {
+            aplicarModo('modo_noche');
+            localStorage.setItem('modo', 'modo_noche');
+            ocultarLoader();
+        }, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+    });
 
-		$('.modo_dia').click(function() {
-			mostrarLoader();
-			setTimeout(function() {
-				aplicarModo('modo_dia');
-				localStorage.setItem('modo', 'modo_dia');
-				ocultarLoader();
-			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
-		});
+    $('.modo_dia').click(function() {
+        mostrarLoader();
+        setTimeout(function() {
+            aplicarModo('modo_dia');
+            localStorage.setItem('modo', 'modo_dia');
+            ocultarLoader();
+        }, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+    });
 
-		mostrarLoader();
-		setTimeout(function() {
-			aplicarModo(modoActual);
-			ocultarLoader();
-		}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+    mostrarLoader();
+    setTimeout(function() {
+        aplicarModo(modoActual);
+        ocultarLoader();
+    }, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 
-		function aplicarModo(modo) {
-			const modoNocheElements = document.querySelectorAll('.modo_noche');
-			const modoDiaElements = document.querySelectorAll('.modo_dia');
+    function aplicarModo(modo) {
+        const modoNocheElements = document.querySelectorAll('.modo_noche');
+        const modoDiaElements = document.querySelectorAll('.modo_dia');
 
-			if (modo === 'modo_noche') {
-				modoNocheElements.forEach(element => element.style.display = 'none');
-				modoDiaElements.forEach(element => element.style.display = 'inline');
+        if (modo === 'modo_noche') {
+            modoNocheElements.forEach(element => element.style.display = 'none');
+            modoDiaElements.forEach(element => element.style.display = 'inline');
 
-				loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
-				/*  loadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
-				unloadCSS(url + 'assets3/front_end/css/bootstrap.min.css'); */
-				unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
-			} else if (modo === 'modo_dia') {
-				modoNocheElements.forEach(element => element.style.display = 'inline');
-				modoDiaElements.forEach(element => element.style.display = 'none');
+            loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+			$("body").removeClass("d-none");
 
-				loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
-				/*    loadCSS(url + 'assets3/front_end/css/bootstrap.min.css');
-				unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css'); */
-				unloadCSS(url + 'assets3/front_end/css/bootstrap-night.css');
-			}
-		}
+            unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+        } else if (modo === 'modo_dia') {
+            modoNocheElements.forEach(element => element.style.display = 'inline');
+            modoDiaElements.forEach(element => element.style.display = 'none');
 
-		function loadCSS(url) {
-			const link = document.createElement('link');
-			link.href = url;
-			link.rel = 'stylesheet';
-			document.head.appendChild(link);
-		}
+            loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+			$("body").removeClass("d-none");
 
-		function unloadCSS(url) {
-			const links = document.head.getElementsByTagName('link');
-			for (let i = 0; i < links.length; i++) {
-				if (links[i].href === url) {
-					document.head.removeChild(links[i]);
-					return;
-				}
-			}
-		}
+            unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+        }
+    }
 
-		function mostrarLoader() {
-			$(".loader").fadeIn('fast'); // Mostrar el elemento con clase "loader"
-			$('.loader-mask').fadeIn('fast'); // Mostrar el elemento con clase "loader-mask"
-		}
+    function loadCSS(url) {
+        const link = document.createElement('link');
+        link.href = url;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }
 
-		function ocultarLoader() {
-			$(".loader").fadeOut(); // Ocultar el elemento con clase "loader"
-			$('.loader-mask').fadeOut('fast'); // Ocultar el elemento con clase "loader-mask"
-		}
-	});
+    function unloadCSS(url) {
+        const links = document.head.getElementsByTagName('link');
+        for (let i = 0; i < links.length; i++) {
+            if (links[i].href === url) {
+                document.head.removeChild(links[i]);
+                return;
+            }
+        }
+    }
+
+    function mostrarLoader() {
+        $(".loader").fadeIn('fast');
+        $('.loader-mask').fadeIn('fast');
+    }
+
+    function ocultarLoader() {
+        $(".loader").fadeOut();
+        $('.loader-mask').fadeOut('fast');
+        $('.container').removeAttr('style');
+    }
+});
+
 
 	function getCsrfToken() {
 		var name = 'csrf_cookie=';
@@ -178,7 +181,7 @@
 
 </script>
 
-<body class="bg-light style-default style-rounded">
+<body class="bg-light style-default style-rounded d-none">
 
 	<!-- PRELOADER -->
 		<div class="loader-mask">
