@@ -562,7 +562,7 @@ class Productividadmodel extends CI_Model {
 			$cabeceras[] = "Zona";
 			$cabeceras[] = "Trabajador";
 			$cabeceras[] = "Días";
-		/* 	$cabeceras[] = "Promedio"; */
+			/* 	$cabeceras[] = "Promedio"; */
 
 			foreach($array_fechas as $fecha){
 				$cabeceras[] = $this->fecha_to_str($fecha);
@@ -628,9 +628,6 @@ class Productividadmodel extends CI_Model {
 
 			$res = $this->db->get();
 			return $res->result_array();
-
-			/*$res = $this->db->query('SELECT * FROM productividad_periodo_anterior');
-			return $res->result_array();*/
 		}
 
 		public function detalleDiarioProductividad($desde,$hasta,$trabajador,$jefe){

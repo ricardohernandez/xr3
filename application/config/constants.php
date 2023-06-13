@@ -118,4 +118,6 @@ if (substr($base_uri,-1,1) !='/') {
 define('BASE_URL',$base_url);
 define('BASE_URI',$base_uri);
 define('APPPATH_URI',BASE_URI . APPPATH);
+define('ENVIAR_CORREO',TRUE);
+
 unset($base_uri,$base_url);

@@ -61,3 +61,14 @@ $config['compress_output'] = FALSE;
 $config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
+
+
+$config['mailtype'] = getenv('SMTP_MAILTYPE') ?: 'html';
+$config['charset'] = getenv('SMTP_CHARSET') ?: 'utf-8';
+$config['priority'] = getenv('SMTP_PRIORITY') ?: '1';
+$config['wordwrap'] = getenv('SMTP_WORDWRAP') ?: TRUE;
+$config['protocol'] = getenv('SMTP_PROTOCOL') ?: 'smtp';
+$config['smtp_port'] = getenv('SMTP_PORT') ?: 587;
+$config['smtp_host'] = getenv('smtp_host') ?: 'mail.xr3t.cl';
+$config['smtp_user'] = getenv('SMTP_USER') ?: 'syr@xr3t.cl';
+$config['smtp_pass'] = getenv('SMTP_PASS') ?: 'ZBg;EVwGcIY1';

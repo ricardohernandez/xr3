@@ -649,7 +649,11 @@ class Productividad extends CI_Controller {
 
 		public function getCabeceras(){
 			$data=json_decode(file_get_contents('php://input'),1);
-			$periodo=$data["periodo"];
+			$periodo=@$data["periodo"];
+
+			$periodo = "actual";
+			/* echo "<pre>";
+			print_r($this->Productividadmodel->cabecerasResumen(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"]));exit; */
 		 	echo json_encode(array("data" =>$this->Productividadmodel->cabecerasResumen(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"])));
 		}
 
@@ -661,9 +665,16 @@ class Productividad extends CI_Controller {
 			$data = $this->Productividadmodel->dataResumenProductividad(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,$jefe);
 			$array = array();
 
-			/*echo "<pre>";
-			print_r($data);exit;*/
 
+			
+			
+		 /* 	$periodo = "actual";
+			$data2 = $this->Productividadmodel->dataResumenProductividad(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],"","");
+			echo "<pre>";
+			print_r($data2);exit;*/
+ 
+		
+ 
 			$puntajes = array();
 			foreach($data as $dato){
 				$temp = array();
@@ -674,27 +685,16 @@ class Productividad extends CI_Controller {
 				$temp["Días"] = $dato["dias"];
 				$dias = $this->Productividadmodel->detalleDiarioProductividad(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$dato["rut_tecnico"],$jefe);
 
-				/*$promedio =*/
-				foreach($dias as $dia){
+ 				foreach($dias as $dia){
 					$temp[fecha_to_str($dia["fecha"])] = $dia["puntos"];
 					
 					if($dia["puntos"]!=0){
 						$puntajes[] = $dia["puntos"];
 					}
 
-					/*$puntaje = $puntaje+$dia["puntos"];*/
-				}
-
-				/* $a = array_filter($puntajes);
-				if(count($a)) {
-				    $temp["Promedio"] = round(array_sum($a)/count($a),2);
-				}else{
-					$temp["Promedio"] = 0;
-				} */
-
+ 				} 
 				$array[] = $temp;
-
-				$puntajes = [];
+ 				$puntajes = [];
 			}
 
 			echo json_encode(array(

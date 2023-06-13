@@ -130,7 +130,7 @@
 
             {
               "class":"centered margen-td","data": function(row,type,val,meta){
-                var color = row.vigencia === "vencido" && (row.id_estado === "0" || row.id_estado === "1") ? "red" : "#000";
+                var color = row.vigencia === "vencido" && (row.id_estado === "0" || row.id_estado === "1") ? "red" : "inerit";
                 html =`<span  style="color:${color};font-size:12px!important;">${row.horas_pendientes}</span>`;
                 return html;
               }

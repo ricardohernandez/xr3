@@ -254,20 +254,20 @@ class Rop extends CI_Controller {
 			$this->load->library('email');
 			$data = $this->Ropmodel->getDataRop($hash);
 			$prueba = TRUE;
-
 			foreach($data as $key){
 				
-				$config = array (
+				$config = array(
 					'mailtype' => 'html',
-					'charset'  => 'utf-8',
+					'charset' => 'UTF-8',
 					'priority' => '1',
-					'wordwrap' => TRUE,
-					'protocol' => "smtp",
+					'wordwrap' =>TRUE,
+					'protocol' =>  'smtp',
 					'smtp_port' => 587,
-					'smtp_host' => 'mail.xr3t.cl',
-					'smtp_user' => 'syr@xr3t.cl',
-					'smtp_pass' => 'ZBg;EVwGcIY1'
+					'smtp_host' => $this->config->item('smtp_host'),
+					'smtp_user' => $this->config->item('smtp_user'),
+					'smtp_pass' => $this->config->item('smtp_pass')
 				);
+
 
 				$this->email->initialize($config);
 			 
@@ -346,14 +346,12 @@ class Rop extends CI_Controller {
 				}
 
 				if($prueba){
-					$para = array("ricardo.hernandez@splice.cl","roberto.segovia@xr3.cl","german.cortes@km-telecomunicaciones.cl");
+					$para = array("ricardo.hernandez@splice.cl");
 					$copias = array("ricardo.hernandez@km-t.cl");
 				}
 
 				$datos = array("dato"=>$key,"asunto"=>$asunto,"cuerpo"=>$cuerpo,"cuerpo2"=>$cuerpo2);
 				$html = $this->load->view('back_end/rop/correo',$datos,TRUE);
-
-				/* echo $html;exit; */
 
 				$this->email->to($para);
 				$this->email->cc($copias);
@@ -365,13 +363,13 @@ class Rop extends CI_Controller {
 				if($key["adjunto_respuesta_1"]!="") {$this->email->attach(base_url()."archivos/rop/".$key["adjunto_respuesta_1"]);}
 				if($key["adjunto_requerimiento_2"]!="") {$this->email->attach(base_url()."archivos/rop/".$key["adjunto_requerimiento_2"]);}
 
-				$resp=$this->email->send();
-
-				if ($resp) {
+				if(ENVIAR_CORREO){
+					$resp=$this->email->send();
 					return TRUE;
 				}else{
 					return FALSE;
 				}
+				
 			}
 		}
 
@@ -394,6 +392,7 @@ class Rop extends CI_Controller {
 						'smtp_user' => 'syr@xr3t.cl',
 						'smtp_pass' => 'ZBg;EVwGcIY1'
 					);
+					
 
 					$this->email->initialize($config);
 
