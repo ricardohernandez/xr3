@@ -64,6 +64,9 @@
           { "data": "material" ,"class":"margen-td centered"},
           { "data": "serie" ,"class":"margen-td centered"},
           { "data": "tipo" ,"class":"margen-td centered"},
+          { "data": "fecha" ,"class":"margen-td centered"},
+          { "data": "dias" ,"class":"margen-td centered"},
+          { "data": "estado" ,"class":"margen-td centered"},
         ]
       }); 
 
@@ -290,6 +293,9 @@
             <th class="centered">Descripción</th> 
             <th class="centered">Serie</th> 
             <th class="centered">Tipo </th> 
+            <th class="centered">Fecha </th> 
+            <th class="centered">Días </th> 
+            <th class="centered">Estado </th> 
           </tr>
         </thead>
       </table>

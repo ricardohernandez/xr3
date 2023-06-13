@@ -65,7 +65,7 @@
               fecha=json.usuario[datos].fecha_nacimiento;
               $(".modal_datos_nombre").html(json.usuario[datos].nombre_corto);
               $(".text_cumple").html("<span class='texto_modal_datos'>Cumpleaños  </span>"+fecha);
-              $(".text_area").html("<span class='texto_modal_datos'>Area  </span>"+json.usuario[datos].area);
+              $(".text_area").html("<span class='texto_modal_datos'>Zona  </span>"+json.usuario[datos].area);
               $(".text_cargo").html("<span class='texto_modal_datos'>Cargo  </span>"+json.usuario[datos].cargo);
               $(".text_proyecto").html("<span class='texto_modal_datos'>Proyecto  </span>"+json.usuario[datos].proyecto);
               $(".text_jefatura").html("<span class='texto_modal_datos'>Jefatura  </span>"+json.usuario[datos].jefe);

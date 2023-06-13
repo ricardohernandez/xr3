@@ -62,78 +62,7 @@ class Materiales extends CI_Controller {
 			}
 		}
 
-		public function cargaPlanillaMateriales2(){
-
-			if (!function_exists('str_contains')) {
-			    function str_contains(string $haystack, string $needle): bool
-			    {
-			        return '' === $needle || false !== strpos($haystack, $needle);
-			    }
-			}
-
-			if($_FILES['userfile']['name']==""){
-			    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
-			}
-			$fname = $_FILES['userfile']['name'];
-			if (strpos($fname, ".") == false) {
-		        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
-	        }
-	        $chk_ext = explode(".",$fname);
-
-	        if($chk_ext[1]!="csv"){
-	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
-	        }
-
-	        $fname = $_FILES['userfile']['name'];
-	        $chk_ext = explode(".",$fname);
-
-	        if(strtolower(end($chk_ext)) == "csv")  {
-	            $filename = $_FILES['userfile']['tmp_name'];
-	            $handle = fopen($filename, "r");
-	            $i=0;$z=0;$y=0;     
-	         	
-	       	   /* $this->Materialesmodel->eliminarPeriodoActual($desde,$hasta); */
-
-			   	$this->Materialesmodel->truncateMateriales();
-
-	            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
-				    $ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
-
-	            	if(count($data)!=4){
-	            		echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido, 4 columnas esperadas,".count($data)." obtenidas."));exit;
-	            	}
-
-					$id_tecnico = $this->Materialesmodel->getIdTecnicoPorRut(str_replace(array('-', '.'), '', $data[0]));
-
-					if(!empty($id_tecnico)){
-
-						$arr=array("id_tecnico"=>$id_tecnico,
-							"material"=>utf8_encode($data[1]),
-							"serie"=>utf8_encode($data[2]),
-							"tipo"=>utf8_encode($data[3]),
-							"ultima_actualizacion"=>$ultima_actualizacion,
-							
-						);	
-						$i++;
-						$this->Materialesmodel->formMateriales($arr);
-						$arr=array();
-					}
-
-	            }
-
-	            if($i==0){
-	            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
-	            }
-
-	            fclose($handle); 
-	           	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
-	        }else{
-	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
-	        }   
-		}
-		
-		public function cargaPlanillaMateriales()
-		{
+		public function cargaPlanillaMateriales(){
 			if (!function_exists('str_contains')) {
 				function str_contains(string $haystack, string $needle): bool
 				{
@@ -170,8 +99,7 @@ class Materiales extends CI_Controller {
 				if ($bom !== "\xEF\xBB\xBF") {
 					rewind($handle); // Retroceder al inicio del archivo si no se encontró el BOM
 				}
-
-				
+ 
 				$i = 0;
 				$z = 0;
 				$y = 0;
@@ -185,8 +113,8 @@ class Materiales extends CI_Controller {
 				while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
 					$ultima_actualizacion = date("Y-m-d G:i:s") . " | " . $this->session->userdata("nombre_completo");
 
-					if (count($data) != 4) {
-						echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Archivo CSV inválido, se esperan 4 columnas, pero se obtuvieron ' . count($data) . '.'));
+					if (count($data) != 7) {
+						echo json_encode(array('res' => 'error', 'tipo' => 'error', 'msg' => 'Archivo CSV inválido, se esperan 7 columnas, pero se obtuvieron ' . count($data) . '.'));
 						exit;
 					}
 
@@ -196,24 +124,29 @@ class Materiales extends CI_Controller {
 						$rutNoExistentes[$data[0]] = true; // Agregar RUT no existente al array asociativo
 						$id_tecnico = $data[0];
 					}
-				
-					/* if (!empty($id_tecnico)) { */
-						$arr = array(
-							'id_tecnico' => $id_tecnico,
-							'material' => utf8_encode($data[1]),
-							'serie' => utf8_encode($data[2]),
-							'tipo' => utf8_encode($data[3]),
-							'ultima_actualizacion' => $ultima_actualizacion,
-						);
-						$dataArr[] = $arr;
-						$i++;
 
-						if ($i % 500 === 0) {
-							// Insertar en lotes de 500 filas
-							$this->Materialesmodel->formMaterialesBatch($dataArr);
-							$dataArr = array(); // Reiniciar el array para el próximo lote
-						}
-					/* } */
+					$fecha = strtotime($data[4]);
+					$fechaf = ($fecha !== false) ? date('Y-m-d', $fecha) : null;				
+			
+					$arr = array(
+						'id_tecnico' => $id_tecnico,
+						'material' => utf8_encode($data[1]),
+						'serie' => utf8_encode($data[2]),
+						'tipo' => utf8_encode($data[3]),
+						"fecha"=>$fechaf,
+						"dias"=>utf8_encode($data[5]),
+						"estado"=>utf8_encode($data[6]),
+						'ultima_actualizacion' => $ultima_actualizacion,
+					);
+
+					$dataArr[] = $arr;
+					$i++;
+
+					if ($i % 500 === 0) {
+						// Insertar en lotes de 500 filas
+						$this->Materialesmodel->formMaterialesBatch($dataArr);
+						$dataArr = array(); // Reiniciar el array para el próximo lote
+					}
 				}
 
 				if (!empty($dataArr)) {
@@ -294,6 +227,9 @@ class Materiales extends CI_Controller {
 							<th class="head">Descripci&oacute;n</th> 
 				            <th class="head">Serie</th> 
 				            <th class="head">Tipo</th> 
+				            <th class="head">Fecha</th> 
+				            <th class="head">Días</th> 
+				            <th class="head">Estado</th> 
 				        </tr>
 				        </thead>	
 						<tbody>
@@ -306,6 +242,9 @@ class Materiales extends CI_Controller {
 									<td><?php echo utf8_decode($d["material"]); ?></td>
 									<td><?php echo utf8_decode($d["serie"]); ?></td>
 									<td><?php echo utf8_decode($d["tipo"]); ?></td>
+									<td><?php echo utf8_decode($d["fecha"]); ?></td>
+									<td><?php echo utf8_decode($d["dias"]); ?></td>
+									<td><?php echo utf8_decode($d["estado"]); ?></td>
 								 </tr>
 				      			<?php
 				      			}

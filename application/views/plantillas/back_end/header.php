@@ -64,7 +64,7 @@
 				aplicarModo('modo_noche');
 				localStorage.setItem('modo', 'modo_noche');
 				ocultarLoader();
-			}, 300); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+			}, 600); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 		});
 
 		$('.modo_dia').click(function() {
@@ -73,7 +73,7 @@
 				aplicarModo('modo_dia');
 				localStorage.setItem('modo', 'modo_dia');
 				ocultarLoader();
-			}, 300); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+			}, 600); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 		});
 
 		mostrarLoader();
