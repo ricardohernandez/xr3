@@ -134,7 +134,11 @@
           {
            "class":"centered center margen-td","data": function(row,type,val,meta){
               btn='<center><a data-toggle="modal" href="#modal_usuario" data-hash_usuario="'+row.hash_usuario+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar_usuario"></a>';
-              btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_usuario" data-hash_usuario="'+row.hash_usuario+'"></a></center>';
+              
+              if(perfil<=1){
+                btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_usuario" data-hash_usuario="'+row.hash_usuario+'"></a></center>';
+              }
+              
               return btn;
             }
           },
@@ -157,6 +161,7 @@
           { "data": "estado_civil" ,"class":"margen-td centered"},
           { "data": "cargo" ,"class":"margen-td centered"},
           { "data": "area" ,"class":"margen-td centered"},
+          { "data": "plaza" ,"class":"margen-td centered"},
           { "data": "proyecto" ,"class":"margen-td centered"},
           { "data": "jefe" ,"class":"margen-td centered"},
           { "data": "tipo_contrato" ,"class":"margen-td centered"},
@@ -369,6 +374,7 @@
               $("#nivel_tecnico  option[value='"+data.datos[dato].id_nivel_tecnico+"'").prop("selected", true);
               $("#cargo  option[value='"+data.datos[dato].id_cargo+"'").prop("selected", true);
               $("#area  option[value='"+data.datos[dato].id_area+"'").prop("selected", true);
+              $("#plaza  option[value='"+data.datos[dato].id_plaza+"'").prop("selected", true);
               $("#proyecto  option[value='"+data.datos[dato].id_proyecto+"'").prop("selected", true);
               $("#jefe  option[value='"+data.datos[dato].id_jefe+"'").prop("selected", true);
               $("#estado  option[value='"+data.datos[dato].estado+"'").prop("selected", true);
@@ -544,13 +550,14 @@
             <th class="centered">Estado civil</th> 
             <th class="centered">Cargo</th> 
             <th class="centered">Zona</th> 
+            <th class="centered">Plaza</th> 
             <th class="centered">Proyecto</th> 
             <th class="centered">Jefe</th> 
             <th class="centered">Tipo contrato</th> 
             <th class="centered">Código</th> 
             <th class="centered">Nivel Técnico</th> 
             <th class="centered">Domicilio</th> 
-            <th class="centered">Plaza operacional</th> 
+            <th class="centered">Comuna</th> 
             <th class="centered">Cuidad</th> 
             <th class="centered">Sucursal</th> 
             <th class="centered">Celular empresa</th> 
@@ -706,6 +713,22 @@
 
               <div class="col-lg-3">               
                 <div class="form-group">
+                  <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Plaza</label>
+                  <select id="plaza" name="plaza" class="custom-select custom-select-sm">
+                  <option value="" selected>Seleccione </option>
+                      <?php 
+                      foreach($plazas as $pl){
+                        ?>
+                          <option value="<?php echo $pl["id"]; ?>"><?php echo $pl["plaza"]; ?></option>
+                        <?php
+                      }
+                    ?>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-lg-3">               
+                <div class="form-group">
                   <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Proyecto </label>
                   <select id="proyecto" name="proyecto" class="custom-select custom-select-sm">
                   <option value="" selected>Seleccione </option>
@@ -782,11 +805,12 @@
                 <input placeholder="Domicilio"  type="text" name="domicilio"  id="domicilio" class="form-control form-control-sm" autocomplete="off" />
                 </div>
               </div>
+              
 
               <div class="col-lg-3">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Plaza operacional </label>
-                <input placeholder="Plaza operacional"  type="text" name="comuna"  id="comuna" class="form-control form-control-sm" autocomplete="off" />
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Comuna  </label>
+                <input placeholder="Comuna"  type="text" name="comuna"  id="comuna" class="form-control form-control-sm" autocomplete="off" />
                 </div>
               </div>
 

@@ -111,16 +111,59 @@ $config = array(
                      'rules'   => 'trim|required'
                     ),
                array(
+                  'field'   => 'apellidos',
+                  'label'   => 'Apellidos',
+                  'rules'   => 'trim|required'
+                  ),
+               array(
                    'field'   => 'perfil',
                    'label'   => 'Perfil',
                    'rules'   => 'trim|required'
                   ),
 
-               array(
-                   'field'   => 'rut',
-                   'label'   => 'Rut',
-                   'rules'   => 'trim|required'
+                  array(
+                        'field'   => 'rut',
+                        'label'   => 'Rut',
+                        'rules'   => 'trim|required'
                   ),
+                  array(
+                        'field'   => 'jefe',
+                        'label'   => 'Jefe',
+                        'rules'   => 'trim|required'
+                        ),
+                  array(
+                        'field'   => 'nacionalidad',
+                        'label'   => 'Nacionalidad',
+                        'rules'   => 'trim|required'
+                        ),
+                  array(
+                        'field'   => 'area',
+                        'label'   => 'Zona',
+                        'rules'   => 'trim|required'
+                        ),
+                  array(
+                        'field'   => 'fecha_ingreso',
+                        'label'   => 'Fecha ingreso',
+                        'rules'   => 'trim|required'
+                        ),
+                  array(
+                        'field'   => 'cargo',
+                        'label'   => 'Cargo',
+                        'rules'   => 'trim|required'
+                        ),
+                  array(
+                        'field'   => 'plaza',
+                        'label'   => 'Plaza',
+                        'rules'   => 'trim|required'
+                        ),
+                  array(
+                        'field'   => 'domicilio',
+                        'label'   => 'Domicilio',
+                        'rules'   => 'trim|required'
+                        ),
+      
+
+                  
             ),
 
             'formCargos' => array(
@@ -145,6 +188,14 @@ $config = array(
                      'label'   => 'Zona',
                      'rules'   => 'trim|required'
                     )
+            ),
+
+            'formPlazas' => array(
+                  array(
+                        'field'   => 'plaza',
+                        'label'   => 'Plaza',
+                        'rules'   => 'trim|required'
+                       )
             ),
 
             'formPerfiles' => array(

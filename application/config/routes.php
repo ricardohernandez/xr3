@@ -380,6 +380,13 @@
 	$route['formAreas'] = "back_end/mantenedores/usuarios/formAreas";
 	$route['eliminaAreas'] = "back_end/mantenedores/usuarios/eliminaAreas";
 
+
+	$route['vistaPlazas'] = "back_end/mantenedores/usuarios/vistaPlazas";
+	$route['listaPlazas'] = "back_end/mantenedores/usuarios/listaPlazas";
+	$route['getDataPlazas'] = "back_end/mantenedores/usuarios/getDataPlazas";
+	$route['formPlazas'] = "back_end/mantenedores/usuarios/formPlazas";
+	$route['eliminaPlazas'] = "back_end/mantenedores/usuarios/eliminaPlazas";
+
 	$route['vistaJefes'] = "back_end/mantenedores/usuarios/vistaJefes";
 	$route['listaJefes'] = "back_end/mantenedores/usuarios/listaJefes";
 	$route['getDataJefes'] = "back_end/mantenedores/usuarios/getDataJefes";

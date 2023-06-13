@@ -25,6 +25,7 @@ class Usuariosmodel extends CI_Model {
 				CONCAT(SUBSTRING_INDEX(u2.nombres, ' ', 1), ' ', SUBSTRING_INDEX(u2.apellidos, ' ', 1)) AS jefe ,
 				uc.cargo as cargo,
 				ua.area as area,
+				upl.plaza as plaza,
 			    if(u.fecha_nacimiento!='1970-01-01' and u.fecha_nacimiento!='0000-00-00',DATE_FORMAT(u.fecha_nacimiento,'%Y-%m-%d'),'') as 'fecha_nacimiento',
 				if(u.fecha_ingreso!='1970-01-01' and u.fecha_ingreso!='0000-00-00',DATE_FORMAT(u.fecha_ingreso,'%Y-%m-%d'),'') as 'fecha_ingreso',
 				if(u.fecha_salida!='1970-01-01' and u.fecha_salida!='0000-00-00',DATE_FORMAT(u.fecha_salida,'%Y-%m-%d'),'') as 'fecha_salida',
@@ -45,6 +46,7 @@ class Usuariosmodel extends CI_Model {
 
 			$this->db->join('usuarios_cargos uc', 'uc.id = u.id_cargo', 'left');
 			$this->db->join('usuarios_areas ua', 'ua.id = u.id_area', 'left');
+			$this->db->join('usuarios_plazas upl', 'upl.id = u.id_plaza', 'left');
 			$this->db->join('usuarios_tecnicos_niveles utn', 'utn.id = u.id_nivel_tecnico', 'left');
 			$this->db->join('usuarios_tipos_contrato utc', 'utc.id = u.id_tipo_contrato', 'left');
 
@@ -133,6 +135,15 @@ class Usuariosmodel extends CI_Model {
 		public function getAreas(){
 			$this->db->order_by('area', 'asc');
 			$res=$this->db->get('usuarios_areas');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function getPlazas(){
+			$this->db->order_by('plaza', 'asc');
+			$res=$this->db->get('usuarios_plazas');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -466,6 +477,69 @@ class Usuariosmodel extends CI_Model {
 			$this->db->where('area', $area);
 			$this->db->where('sha1(id)<>', $id);
 			$res=$this->db->get('usuarios_areas');
+			if($res->num_rows()>0){
+				return TRUE;
+			}
+			return FALSE;
+		}
+	
+	//PLAZA
+
+		public function listaPlazas(){
+			$this->db->select('sha1(id) as hash_plaza,plaza');
+			$this->db->order_by('plaza', 'asc');
+			$res=$this->db->get('usuarios_plazas');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function getDataPlazas($hash){
+			$this->db->where('sha1(id)', $hash);
+			$res=$this->db->get('usuarios_plazas');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function formPlazas($data){
+			if($this->db->insert('usuarios_plazas', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		}
+
+		public function actualizarPlazas($hash,$data){
+			$this->db->where('sha1(id)', $hash);
+			if($this->db->update('usuarios_plazas', $data)){
+				return TRUE;
+			}
+			return FALSE;
+		}
+		
+		public function eliminaPlazas($hash){
+			$this->db->where('sha1(id)', $hash);
+		    if($this ->db->delete('usuarios_plazas')){
+		    	return TRUE;
+		    }
+		    return FALSE;
+		}
+
+		public function existePlaza($plaza){
+			$this->db->where('plaza', $plaza);
+			$res=$this->db->get('usuarios_plazas');
+			if($res->num_rows()>0){
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function existePlazaMod($plaza,$id){
+			$this->db->where('plaza', $plaza);
+			$this->db->where('sha1(id)<>', $id);
+			$res=$this->db->get('usuarios_plazas');
 			if($res->num_rows()>0){
 				return TRUE;
 			}

@@ -124,6 +124,7 @@ class Usuarios extends CI_Controller {
 			        'perfiles' => $this->Usuariosmodel->getPerfiles(),
 			        'cargos' => $this->Usuariosmodel->getCargos(),
 			        'areas' => $this->Usuariosmodel->getAreas(),
+			        'plazas' => $this->Usuariosmodel->getPlazas(),
 			        'proyectos' => $this->Usuariosmodel->getProyectos(),
 			        'jefes' => $this->Usuariosmodel->getJefes(),
 					'tipos_contrato' => $this->Usuariosmodel->listaTiposContratos(),
@@ -155,6 +156,7 @@ class Usuarios extends CI_Controller {
 				$nivel_tecnico=$this->security->xss_clean(strip_tags($this->input->post("nivel_tecnico")));
 				$cargo=$this->security->xss_clean(strip_tags($this->input->post("cargo")));
 				$area=$this->security->xss_clean(strip_tags($this->input->post("area")));
+				$plaza=$this->security->xss_clean(strip_tags($this->input->post("plaza")));
 				$proyecto=$this->security->xss_clean(strip_tags($this->input->post("proyecto")));
 				$tipo_contrato=$this->security->xss_clean(strip_tags($this->input->post("tipo_contrato")));
 				$jefe=$this->security->xss_clean(strip_tags($this->input->post("jefe")));
@@ -192,6 +194,7 @@ class Usuarios extends CI_Controller {
 						"id_perfil"=>$perfil,
 						"id_jefe"=>$jefe,
 						"id_tipo_contrato"=>$tipo_contrato,
+						"id_plaza" => $plaza,
 						"nombres"=>$nombres,
 						"apellidos"=>$apellidos,
 						"rut"=>$rutf,
@@ -676,6 +679,92 @@ class Usuarios extends CI_Controller {
 		    }else{
 		      echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 		    }
+		}
+
+	//PLAZAS
+
+		public function vistaPlazas(){
+			if($this->input->is_ajax_request()){
+				$fecha_anio_atras=date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
+				$fecha_hoy=date('d-m-Y');
+				$datos=array(	
+					'fecha_anio_atras' => $fecha_anio_atras,
+					'fecha_hoy' => $fecha_hoy
+				);
+				$this->load->view('back_end/mantenedores/usuarios/plazas',$datos);
+			}
+		}
+
+		public function listaPlazas(){
+			echo json_encode($this->Usuariosmodel->listaPlazas());
+		}
+
+		public function formPlazas(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();
+				$hash_plaza=$this->security->xss_clean(strip_tags($this->input->post("hash_plaza")));
+				$plaza=$this->security->xss_clean(strip_tags($this->input->post("plaza")));
+				$ultima_actualizacion=date("Y-m-d G:i:s");
+
+				if ($this->form_validation->run("formPlazas") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
+				}else{	
+
+					$data=array("plaza"=>$plaza);	
+
+					if($hash_plaza==""){
+
+						if($this->Usuariosmodel->existePlaza($plaza)){
+							echo json_encode(array('res'=>"error", 'msg' => "Ya existe una plaza con este nombre."));exit;
+						}
+
+						$id=$this->Usuariosmodel->formPlazas($data);
+						if($id!=FALSE){
+							echo json_encode(array('res'=>"ok", 'msg' => MOD_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"ok", 'msg' => MOD_MSG));exit;
+						}
+						
+					}else{
+
+						if($this->Usuariosmodel->existePlazaMod($plaza,$hash_plaza)){
+							echo json_encode(array('res'=>"error", 'msg' => "Ya existe una plaza con este nombre."));exit;
+						}
+
+						if($this->Usuariosmodel->actualizarPlazas($hash_plaza,$data)){
+							echo json_encode(array('res'=>"ok", 'msg' => MOD_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
+						}
+					}
+				}	
+			}
+		}
+
+		public function getDataPlazas(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();
+				$hash_plaza=$this->security->xss_clean(strip_tags($this->input->post("hash_plaza")));
+				$data=$this->Usuariosmodel->getDataPlazas($hash_plaza);
+			
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}else{
+					echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+				}	
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+
+		public function eliminaPlazas(){
+			$hash_plaza=$this->security->xss_clean(strip_tags($this->input->post("hash_plaza")));
+			if($this->Usuariosmodel->eliminaPlazas($hash_plaza)){
+			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{
+			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+			}
 		}
 		
 	//JEFES

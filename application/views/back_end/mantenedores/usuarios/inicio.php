@@ -152,6 +152,19 @@
       });
     });
 
+    $(document).off('click', '#menu_plazas').on('click', '#menu_plazas',function(event) {
+      event.preventDefault();
+      $("#menu_plazas").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_plazas").addClass('menuActivo');  
+
+      $.get("vistaPlazas", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_plazas").removeClass('disabled_sub');
+      });
+    });
+
 
     $(document).off('click', '#menu_herramientas').on('click', '#menu_herramientas',function(event) {
       event.preventDefault();
@@ -187,6 +200,7 @@
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_usuarios" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Usuarios </a></li>   
         <li id="menu_cargos" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Cargos </a></li>   
+        <li id="menu_plazas" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Plazas </a></li>   
         <li id="menu_proyectos" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Proyectos </a></li>   
         <li id="menu_areas" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Zonas </a></li>   
 
