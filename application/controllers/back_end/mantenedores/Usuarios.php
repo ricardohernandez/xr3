@@ -336,12 +336,12 @@ class Usuarios extends CI_Controller {
 						    <th class="head">Nacionalidad</th> 
 						    <th class="head">Estado civil</th> 
 						    <th class="head">Cargo</th> 
-						    <th class="head">&Aacute;rea</th> 
+						    <th class="head">Zona</th> 
 						    <th class="head">Proyecto</th> 
 						    <th class="head">Jefe</th> 
 						    <th class="head">Tipo contrato</th> 
 						    <th class="head">C&oacute;digo</th> 
-						    <th class="head">Nivel técnico</th> 
+						    <th class="head">Nivel t&eacute;cnico</th> 
 						    <th class="head">Domicilio</th> 
 						    <th class="head">Comuna</th> 
 						    <th class="head">Ciudad</th> 

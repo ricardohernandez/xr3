@@ -543,7 +543,7 @@
             <th class="centered">Nacionalidad</th> 
             <th class="centered">Estado civil</th> 
             <th class="centered">Cargo</th> 
-            <th class="centered">Área</th> 
+            <th class="centered">Zona</th> 
             <th class="centered">Proyecto</th> 
             <th class="centered">Jefe</th> 
             <th class="centered">Tipo contrato</th> 
@@ -690,7 +690,7 @@
 
               <div class="col-lg-3">               
                 <div class="form-group">
-                  <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Área </label>
+                  <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Zona </label>
                   <select id="area" name="area" class="custom-select custom-select-sm">
                   <option value="" selected>Seleccione </option>
                       <?php 

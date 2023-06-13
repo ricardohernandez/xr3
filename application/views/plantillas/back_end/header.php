@@ -99,8 +99,9 @@
         unloadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-claro.css');
         $("body").css("display", "");
-
-
+        $(".logo_oscuro").show();
+        $(".logo_claro").hide();
+        
       } else if (modo === 'modo_dia') {
         modoNocheElements.forEach(element => element.style.display = 'inline');
         modoDiaElements.forEach(element => element.style.display = 'none');
@@ -113,7 +114,8 @@
         unloadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
         $("body").css("display", "");
-
+        $(".logo_claro").show();
+        $(".logo_oscuro").hide();
 
       }
 		}

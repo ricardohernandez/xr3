@@ -14,13 +14,25 @@
           </a>
         </div>
       <?php
-      }
       ?> 
+
+      <?php
+      }else{
+        ?>
+        <div class="thumb-container thumb-100">
+          <a href="#!">
+          <i class="fas fa-user-circle img_cumple nofoto lazyload"></i>
+          </a>
+        </div>
+      <?php
+      }
+    ?>
+
     </div>
     <div class="post-list-small__body">
       <h5 class="post-list-extrasmall__entry-title">
-        <a href="#!"><?php echo $u["nombre_corto"]?> - <?php echo date_to_str($u["fecha"])?></a>
-        <span class="fecha_cumple"><?php echo mb_strimwidth($u["proyecto"], 0, 28, '.')?></span>
+        <a href="#!"><?php echo $u["nombre_corto"]?> - <?php echo ($u["comuna"])?></a>
+        <span class="fecha_cumple"><?php  echo date_to_str($u["fecha"])?></span>
       </h5>
     </div>                  
   </article>

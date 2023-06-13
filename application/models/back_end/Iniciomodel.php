@@ -199,6 +199,7 @@ class InicioModel extends CI_Model {
 				SUBSTRING(u.fecha_nacimiento,6,10) as dia_actual,
 		   	    u.fecha_ingreso as fecha,
 				u.foto as foto,
+				u.comuna as comuna,
 				u.fecha_nacimiento as fecha_nacimiento,
 				pr.proyecto as proyecto
 				FROM usuarios as u
@@ -215,6 +216,7 @@ class InicioModel extends CI_Model {
 		public function cargaIngresos(){
 			$this->db->select("sha1(u.id) as hash,
 				u.rut as rut,
+				u.comuna as comuna,
 			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
 				u.fecha_ingreso as fecha,
 				u.foto as foto,

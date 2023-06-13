@@ -105,6 +105,14 @@
 	          </a>
 	        </div>
         <?php
+          }else{
+            ?>
+            <div class="thumb-container thumb-100">
+              <a href="#!">
+              <i class="fas fa-user-circle img_cumple nofoto lazyload"></i>
+              </a>
+            </div>
+          <?php
           }
         ?>
 	    </div>
@@ -115,12 +123,12 @@
 	          $dia_actual=date("m-d");
 	          if($c["dia_actual"] == $dia_actual){
 	            ?>
-	              <a href="#!" class="enlace_activo_cumple"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...'); ?></a>
+	              <a href="#!" class="enlace_activo_cumple"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...')." - ".$c["comuna"]; ?></a>
 	              <span class="txt_activo_cumple"> Hoy</span><!-- <img data-src="http://intranet.km-t.cl/assets/imagenes/torta.png" src="http://intranet.km-t.cl/assets/imagenes/torta.png" alt=""  class="img_torta lazyload"> -->
 	            <?php
 	          }else{
 	            ?>
-	              <a href="#!"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...'); ?></a>
+	              <a href="#!"><?php echo $c["nombre_corto"]?> - <?php echo mb_strimwidth($c["proyecto"], 0, 30, '...')." - ".$c["comuna"]; ?></a>
 	              <span class="fecha_cumple"><?php echo date_to_str_full($c["fecha_nacimiento"])?></span>
 	            <?php
 	          }

@@ -38,6 +38,7 @@
     $("#desde_f").val(desde);
     $("#hasta_f").val(hasta);
 
+    
     /*****DATATABLE*****/  
       const base = "<?php echo base_url() ?>";
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
@@ -383,7 +384,7 @@
                       $("#requerimiento").select2({
                         placeholder: 'Seleccione requerimiento',
                         data: response,
-                        width: 'resolve',
+                        width: '100%',
                         allowClear:true,
                       });
 
@@ -470,7 +471,7 @@
             $("#requerimiento").select2({
               placeholder: 'Seleccione requerimiento',
               data: response,
-              width: 'resolve',
+              width: '100%',
               allowClear:true,
             });
           }else{
@@ -488,7 +489,7 @@
 		    $("#requerimiento").select2({
           placeholder: 'Seleccione requerimiento',
 		       data: response,
-		       width: 'resolve',
+		       width: '100%',
 	         allowClear:true,
 		    });
 	  });
@@ -499,7 +500,7 @@
 		    $("#usuario_asignado").select2({
           placeholder: 'Seleccione persona',
 		       data: response,
-		       width: 'resolve',
+		       width: '100%',
 	         allowClear:true,
 		    });
 	  });
@@ -510,7 +511,7 @@
 		    $("#responsable_f").select2({
           placeholder: 'Seleccione responsable',
 		       data: response,
-		       width: 'resolve',
+		       width: '100%',
 	         allowClear:true,
 		    });
 	  });
@@ -857,7 +858,7 @@
                   </div>
 
  
-                  <div class="col-lg-2 guardar_cont">
+                  <div class="col-6 col-lg-2 guardar_cont">
                     <div class="form-group">
                       <button type="submit" class="btn-block btn btn-sm btn-primary btn_ingreso_rop">
                         <i class="fa fa-save"></i> Guardar
@@ -865,7 +866,7 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-2">
+                  <div class="col-6 col-lg-2">
                     <button class="btn-block btn btn-sm btn-dark cierra_modal_rop" data-dismiss="modal" aria-hidden="true">
                       <i class="fa fa-window-close"></i> Cerrar
                     </button>

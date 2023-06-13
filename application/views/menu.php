@@ -259,7 +259,8 @@
             <!-- LOGO -->
             <a href="<?php echo base_url() ?>" class="logo">
                <!-- <img class="logo_pto" src="<?php echo base_url();?>assets3/imagenes/pto.jpg" alt="logo"> -->
-               <img class="logo_empresa" src="<?php echo base_url();?>assets3/imagenes/logo.png" alt="logo">
+               <img class="logo_empresa logo_claro" src="<?php echo base_url();?>assets3/imagenes/logo_claro.png" alt="logo">
+               <img class="logo_empresa logo_oscuro " src="<?php echo base_url();?>assets3/imagenes/logo_blanco.png" alt="logo">
             </a>
             <!-- MENU IZQUIERDA -->
             <nav class="flex-child nav__wrap d-none d-lg-block">

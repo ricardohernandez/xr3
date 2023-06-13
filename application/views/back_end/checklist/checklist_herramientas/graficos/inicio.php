@@ -736,12 +736,12 @@
 			
 			<div class="row">
 				<div class="col-12 col-lg-6">
-					<h6 class="title_section mt-3">Auditorias por técnico mensuales cantidad</h6>
+					<p class="title_section mt-3">Auditorias por técnico mensuales cantidad</p>
 					<div id="graficoAuditoriasTecnicosq"></div>
 				</div>
 
 				<div class="col-12 col-lg-6">
-					<h6 class="title_section mt-3">Auditorias por técnico mensuales detalle</h6>
+					<p class="title_section mt-3">Auditorias por técnico mensuales detalle</p>
 					<div id="graficoAuditoriasTecnicos"></div>
 				</div>
 			</div>
@@ -806,26 +806,26 @@
 		
 		<div class="row">
 			<div class="col-12 col-lg-6">
-				<h6 class="title_section mt-3">Auditorias por auditor mensuales cantidad</h6>
+				<p class="title_section mt-3">Auditorias por auditor mensuales cantidad</p>
 				<div id="graficoAuditoriasq"></div>
 			</div>
 
 			<div class="col-12 col-lg-6">
-				<h6 class="title_section mt-3">Auditorias por auditor mensuales detalle</h6>
+				<p class="title_section mt-3">Auditorias por auditor mensuales detalle</p>
 				<div id="graficoAuditorias"></div>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-12 col-lg-6 mt-3">
-				<h6 class="title_section">Auditorias por técnico </h6>
+				<p class="title_section">Auditorias por técnico </p>
 				<div id="graficoTecnicos"></div>
 			</div>
 
 			<div class="col-12 col-lg-6 mt-3">
-				<h6 class="title_section">Auditorias por auditor </h6>
+				<p class="title_section">Auditorias por auditor </p>
 				<div id="graficoAuditores"></div>
-				<!-- <h6 class="title_section">Estados checklist</h6>
+				<!-- <p class="title_section">Estados checklist</p>
 				<div id="graficoEstadosChecklist"></div> -->
 			</div>
 		</div>

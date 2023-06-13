@@ -18,7 +18,7 @@
 /* General
 /*-------------------------------------------------------*/
 .clearfix {
-	*zoom: 1; }
+	 zoom: 1; }
 
 .clearfix:before, .clearfix:after {
 	display: table;
@@ -5483,4 +5483,9 @@ a:hover{
 	
 		.cont_visitas{
 			padding: 5px 20px;
+		}
+
+		.nofoto{
+			font-size: 22px;
+			margin: 9px 3px!important;
 		}

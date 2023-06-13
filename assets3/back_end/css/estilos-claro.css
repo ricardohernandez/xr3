@@ -2,7 +2,7 @@
 /********GENERAL****/
 
   :root {
-   /*  color-scheme: light; */
+    color-scheme: light;
     --border-color:1px solid #E2E3E4;
     --input-border-color:#515151;
     --input-border-color2:#ced4da;
@@ -418,10 +418,10 @@
       white-space:nowrap;
   }
   .custom-select{
-      font-size: 14px!important;
+      font-size: 13px!important;
   }
   .form-control {
-      font-size: 14px!important;
+      font-size: 13px!important;
       padding: 0.575rem 0.75rem!important;
   }
 
@@ -470,7 +470,7 @@
 
   .close {
     float: right;
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 700;
     line-height: 1;
     color: var(--text-color);
@@ -612,7 +612,7 @@
   
     .nav-tabs-int>li>a {
         font-size: 13px!important;
-        padding: 12px 5px!important;
+        padding: 15px 5px!important;
     }
 
     .navbar-toggle {

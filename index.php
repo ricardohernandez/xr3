@@ -4,13 +4,11 @@ date_default_timezone_set("America/Santiago");
 
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
-switch (ENVIRONMENT)
-{
+switch (ENVIRONMENT){
 	case 'development':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;
-
 	case 'testing':
 	case 'production':
 		ini_set('display_errors', 0);

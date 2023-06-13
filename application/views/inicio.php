@@ -27,98 +27,102 @@
 </style>
 <script>
 
-$(".loader").fadeIn('fast');
-$('.loader-mask').fadeIn('fast');
+	$(".loader").fadeIn('fast');
+	$('.loader-mask').fadeIn('fast');
 
-$(function(){
-    const url = "<?php echo base_url();?>";
-    let modoActual = localStorage.getItem('modo');
+	$(function(){
+		const url = "<?php echo base_url();?>";
+		let modoActual = localStorage.getItem('modo');
 
-    if (!modoActual) {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            modoActual = 'modo_noche';
-        } else {
-            modoActual = 'modo_dia';
-        }
-    }
+		if (!modoActual) {
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				modoActual = 'modo_noche';
+			} else {
+				modoActual = 'modo_dia';
+			}
+		}
 
-    aplicarModo(modoActual);
+		aplicarModo(modoActual);
 
-    $('.modo_noche').click(function() {
-        mostrarLoader();
-        setTimeout(function() {
-            aplicarModo('modo_noche');
-            localStorage.setItem('modo', 'modo_noche');
-            ocultarLoader();
-        }, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
-    });
+		$('.modo_noche').click(function() {
+			mostrarLoader();
+			setTimeout(function() {
+				aplicarModo('modo_noche');
+				localStorage.setItem('modo', 'modo_noche');
+				ocultarLoader();
+			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		});
 
-    $('.modo_dia').click(function() {
-        mostrarLoader();
-        setTimeout(function() {
-            aplicarModo('modo_dia');
-            localStorage.setItem('modo', 'modo_dia');
-            ocultarLoader();
-        }, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
-    });
+		$('.modo_dia').click(function() {
+			mostrarLoader();
+			setTimeout(function() {
+				aplicarModo('modo_dia');
+				localStorage.setItem('modo', 'modo_dia');
+				ocultarLoader();
+			}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		});
 
-    mostrarLoader();
-    setTimeout(function() {
-        aplicarModo(modoActual);
-        ocultarLoader();
-    }, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
+		mostrarLoader();
+		setTimeout(function() {
+			aplicarModo(modoActual);
+			ocultarLoader();
+		}, 1000); // Tiempo de espera antes de aplicar el modo y ocultar el loader (2 segundos)
 
-    function aplicarModo(modo) {
-        const modoNocheElements = document.querySelectorAll('.modo_noche');
-        const modoDiaElements = document.querySelectorAll('.modo_dia');
+		function aplicarModo(modo) {
+			const modoNocheElements = document.querySelectorAll('.modo_noche');
+			const modoDiaElements = document.querySelectorAll('.modo_dia');
 
-        if (modo === 'modo_noche') {
-            modoNocheElements.forEach(element => element.style.display = 'none');
-            modoDiaElements.forEach(element => element.style.display = 'inline');
+			if (modo === 'modo_noche') {
+				modoNocheElements.forEach(element => element.style.display = 'none');
+				modoDiaElements.forEach(element => element.style.display = 'inline');
 
-            loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
-			$("body").removeClass("d-none");
+				loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+				$("body").removeClass("d-none");
+				$(".logo_oscuro").show();
+       			$(".logo_claro").hide();
 
-            unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
-        } else if (modo === 'modo_dia') {
-            modoNocheElements.forEach(element => element.style.display = 'inline');
-            modoDiaElements.forEach(element => element.style.display = 'none');
+				unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+			} else if (modo === 'modo_dia') {
+				modoNocheElements.forEach(element => element.style.display = 'inline');
+				modoDiaElements.forEach(element => element.style.display = 'none');
 
-            loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
-			$("body").removeClass("d-none");
+				loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+				$("body").removeClass("d-none");
+				$(".logo_claro").show();
+      		    $(".logo_oscuro").hide();
+				unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+			}
+		}
 
-            unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
-        }
-    }
 
-    function loadCSS(url) {
-        const link = document.createElement('link');
-        link.href = url;
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-    }
+		function loadCSS(url) {
+			const link = document.createElement('link');
+			link.href = url;
+			link.rel = 'stylesheet';
+			document.head.appendChild(link);
+		}
 
-    function unloadCSS(url) {
-        const links = document.head.getElementsByTagName('link');
-        for (let i = 0; i < links.length; i++) {
-            if (links[i].href === url) {
-                document.head.removeChild(links[i]);
-                return;
-            }
-        }
-    }
+		function unloadCSS(url) {
+			const links = document.head.getElementsByTagName('link');
+			for (let i = 0; i < links.length; i++) {
+				if (links[i].href === url) {
+					document.head.removeChild(links[i]);
+					return;
+				}
+			}
+		}
 
-    function mostrarLoader() {
-        $(".loader").fadeIn('fast');
-        $('.loader-mask').fadeIn('fast');
-    }
+		function mostrarLoader() {
+			$(".loader").fadeIn('fast');
+			$('.loader-mask').fadeIn('fast');
+		}
 
-    function ocultarLoader() {
-        $(".loader").fadeOut();
-        $('.loader-mask').fadeOut('fast');
-        $('.container').removeAttr('style');
-    }
-});
+		function ocultarLoader() {
+			$(".loader").fadeOut();
+			$('.loader-mask').fadeOut('fast');
+			$('.container').removeAttr('style');
+		}
+	});
 
 
 	function getCsrfToken() {
@@ -145,7 +149,6 @@ $(function(){
 	});
 </script>
 
-	
 <script type="text/javascript">
   $(function(){
    url="<?php echo base_url(); ?>";
@@ -241,19 +244,29 @@ $(function(){
 	              </div> 
 	            </div>
 
-
 	            <aside class="col-lg-4 sidebar sidebar--right">
 
-	         			<aside class="widget widget-popular-posts"> 
-	                <h4 class="widget-title">Cumpleaños</h4>
+	         		<aside class="widget widget-popular-posts"> 
+						<h4 class="widget-title">Cumpleaños</h4>
+						<hr class="separador_titulo">
+						<ul class="post-list-small post-list-small--1">
+						<li class="post-list-small__item cont_cumpleanios">
+						</li>
+						</ul>
+               	    </aside> 
+
+		           
+
+                <aside class="widget widget-popular-posts"> 
+	                <h4 class="widget-title">&Uacute;ltimos ingresos</h4>
 	                <hr class="separador_titulo">
 	                <ul class="post-list-small post-list-small--1">
-	                  <li class="post-list-small__item cont_cumpleanios">
+	                  <li class="post-list-small__item cont_ingresos">
 	                  </li>
 	                </ul>
                 </aside> 
 
-		            <?php 
+				<?php 
 		            if($this->session->userdata('id_perfil')<3){
 		                ?>
 
@@ -269,15 +282,7 @@ $(function(){
 		            }
 		            ?>
 		          
-
-                <aside class="widget widget-popular-posts"> 
-	                <h4 class="widget-title">&Uacute;ltimos ingresos</h4>
-	                <hr class="separador_titulo">
-	                <ul class="post-list-small post-list-small--1">
-	                  <li class="post-list-small__item cont_ingresos">
-	                  </li>
-	                </ul>
-                </aside> 
+				  
                
 	            </aside>
 		    </div>
@@ -305,23 +310,23 @@ $(function(){
 	  <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
 	</div>
 
-	</main> <!-- end main-wrapper -->
-
+ </main> <!-- end main-wrapper -->
 
 <style type="text/css">
 	@media (max-width: 768px){
     .logo_pto {
-    	 margin-top: 5px;
-       width: 60px;
-       margin-right:4px;
-       margin-left:6px;
+    	margin-top: 5px;
+        width: 60px;
+        margin-right:4px;
+        margin-left:6px;
     }
     .logo_empresa{
-    	 margin-top: 14px;
-    	 width: 90px;
+    	margin-top: 14px;
+    	width: 90px;
     }
   }
 </style>
+
 <!-- jQuery Scripts -->
 <link href="<?php echo base_url();?>assets3/front_end/css/featherlight.min.css" rel="stylesheet">
 <link href="<?php echo base_url();?>assets3/front_end/css/featherlight.gallery.min.css" rel="stylesheet">

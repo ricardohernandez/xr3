@@ -3,7 +3,9 @@
       display: inline-block;
       font-size: 13px;
   }
-
+  .file_cs{
+    display: none;
+  }
   div.dataTables_info {
     padding-top: 0.05em!important;
   }
@@ -1543,7 +1545,7 @@
         ?>
         <div class=" col-xs-6 col-sm-6  col-md-6  col-lg-2 d-none d-sm-block">  
           <div class="form-group">
-            <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
+            <input type="file" id="userfile" name="userfile" class="file_cs" />
             <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
             <i class="fa fa-file-import"></i> Cargar base IGT
             </div>

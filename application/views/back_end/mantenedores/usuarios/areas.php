@@ -278,7 +278,7 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
-            <th class="centered">Área</th> 
+            <th class="centered">Zona</th> 
              </tr>
         </thead>
       </table>
@@ -314,14 +314,14 @@
          <!--  <button type="button" title="Cerrar Ventana" class="close" data-dismiss="modal" aria-hidden="true">X</button> -->
           <input type="hidden" name="hash_area" id="hash_area">
           <fieldset class="form-ing-cont">
-          <legend class="form-ing-border">Registro Área </legend>
+          <legend class="form-ing-border">Registro Zona </legend>
 
             <div class="form-row">
               
               <div class="col-lg-12">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Área </label>
-                <input placeholder="Área"  type="text" name="area"  id="area" class="form-control form-control-sm" autocomplete="off" />
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Zona </label>
+                <input placeholder="Zona"  type="text" name="area"  id="area" class="form-control form-control-sm" autocomplete="off" />
                 </div>
               </div>
 

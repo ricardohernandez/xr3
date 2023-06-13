@@ -142,7 +142,7 @@ $config = array(
             'formAreas' => array(
                array(
                      'field'   => 'area',
-                     'label'   => 'Áreas',
+                     'label'   => 'Zona',
                      'rules'   => 'trim|required'
                     )
             ),

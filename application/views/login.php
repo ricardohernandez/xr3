@@ -375,7 +375,7 @@
 
                     </div>
                     <div class="form-top-right llave">
-                      <img class="logo_empresa" src="<?php echo base_url();?>assets3/imagenes/logo.png" alt="logo">
+                      <img class="logo_empresa" src="<?php echo base_url();?>assets3/imagenes/logo_claro.png" alt="logo">
                      <!--  <i class="fa fa-key"></i> -->
                     </div>
                   </div>

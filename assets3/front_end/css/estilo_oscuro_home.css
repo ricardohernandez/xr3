@@ -3964,7 +3964,7 @@ input.nav__search-mobile-input:-ms-input-placeholder {
 	.footer--white {
 		background-color: #fff; }
 	.footer--dark {
-		background-color: #171821; }
+		background-color: #161B22; }
 		.footer--dark a,
 		.footer--dark .widget-title,
 		.footer--dark .social {
@@ -5348,16 +5348,16 @@ a:hover{
     letter-spacing: 0; }
 
   ::-moz-selection {
-    color: #333;
-    background: #fbedc4; }
+    color: #fff;
+    background: #1A56DB; }
 
   ::-webkit-selection {
-    color: #333;
-    background: #fbedc4; }
+    color: #fff;
+    background: #1A56DB; }
 
   ::selection {
-    color: #333;
-    background: #fbedc4; }
+    color: #fff;
+    background: #1A56DB; }
 
   html {
     overflow-x: hidden; }
@@ -6713,4 +6713,9 @@ a:hover{
 	
 		.cont_visitas{
 			padding: 5px 20px;
+		}
+
+		.nofoto{
+			font-size: 22px;
+			margin: 9px 3px!important;
 		}

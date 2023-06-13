@@ -188,7 +188,7 @@
         <li id="menu_usuarios" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Usuarios </a></li>   
         <li id="menu_cargos" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Cargos </a></li>   
         <li id="menu_proyectos" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Proyectos </a></li>   
-        <li id="menu_areas" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Áreas </a></li>   
+        <li id="menu_areas" class="active"><a> <i class="fa fa-list-alt"></i> Mant. Zonas </a></li>   
 
         <?php  
           if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){

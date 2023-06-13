@@ -2,7 +2,7 @@
 /********GENERAL****/
 
     :root {
-       /*  color-scheme: dark; */
+        color-scheme: dark;
         --border-color:1px solid #273553;
         --input-border-color:#515151;
         --input-disabled-bg:#202124;
@@ -198,6 +198,7 @@
         font-weight: 700;
         padding: 10px;
     }
+    
     .footer {
         /*position: absolute;*/
         bottom: 0;
@@ -419,10 +420,10 @@
             white-space:nowrap;
         }
         .custom-select{
-            font-size: 14px!important;
+            font-size: 13px!important;
         }
         .form-control {
-            font-size: 14px!important;
+            font-size: 13px!important;
             padding: 0.575rem 0.75rem!important;
         }
     
@@ -463,6 +464,14 @@
 
     }
 
+    .form-control:focus{
+        background-color:#0D1117;
+        color:#fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
 /*******MODAL*******/
     
     .modal-title{
@@ -471,7 +480,7 @@
 
     .close {
         float: right;
-        font-size: 1.8rem;
+        font-size: 1.2rem;
         font-weight: 700;
         line-height: 1;
         color: var(--text-color);
@@ -605,7 +614,7 @@
         } */
         .nav-tabs-int>li>a {
             font-size: 13px!important;
-            padding: 12px 5px!important;
+            padding: 15px 5px!important;
         }
 
         .navbar-toggle {
