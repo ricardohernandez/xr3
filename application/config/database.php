@@ -1,28 +1,30 @@
-
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $active_group = 'default';
 $query_builder = TRUE;
 
-if ($_SERVER["HTTP_HOST"] == "localhost") {
+/*  if ($_SERVER["HTTP_HOST"] == "localhost") {
     $hostname = 'localhost';
     $username = 'root';
     $password = '';
     $database = 'xr3';
 } elseif ($_SERVER["HTTP_HOST"] == "qa.xr3t.cl") {
     $hostname = 'localhost';
-    $username = 'ceningen_qaxr3';
-    $password = 'tT@llPrxLs$?';
-    $database = 'ceningen_qaxr3'; 
+    $username = 'ceningen_qa_xr3';
+    $password = 'nLQC;Sz48=4$';
+    $database = 'ceningen_qa_xr3'; 
 } else {
-    $hostname = 'localhost';
-    $username = 'ceningen_xr3';
-    $password = '~EN)R4tlEIS6';
-    $database = 'ceningen_xr3'; 
-}
-
-
+	$hostname = 'localhost';
+	$username = 'ceningen_xr3';
+	$password = 'sW0}~%HKSiUn';
+	$database = 'ceningen_xr3'; 
+}  
+ */
+$hostname = 'localhost';
+$username = 'ceningen_xr3';
+$password = 'sW0}~%HKSiUn';
+$database = 'ceningen_xr3'; 
 
 $db['default'] = array(
 	'dsn'	=> '',
