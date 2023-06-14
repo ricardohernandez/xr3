@@ -14,6 +14,7 @@ $query_builder = TRUE;
     $username = 'ceningen_qa_xr3';
     $password = 'nLQC;Sz48=4$';
     $database = 'ceningen_qa_xr3'; 
+
 } else {
 	$hostname = 'localhost';
 	$username = 'ceningen_xr3';

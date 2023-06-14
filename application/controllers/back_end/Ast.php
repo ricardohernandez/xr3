@@ -219,6 +219,8 @@ class Ast extends CI_Controller {
 								if($this->insertaChecklist($checklist,$hash)){
 									$item = $this->input->post("item");
 
+									$hayEstadoNo = FALSE;
+									
 									foreach($item as $h){
 										$item = $h;
 										$estado = $this->input->post("estado_".$item)[0];
@@ -231,9 +233,21 @@ class Ast extends CI_Controller {
 										$id = $this->Astmodel->getIdPorHash($hash);
 										$id_detalle = $this->Astmodel->getIddetalle($id,$item);
 										$this->Astmodel->actualizaDetalleAst($id_detalle,$data_actualizar);
+
+										$tipo_item = $this->Astmodel->getTipoItem($item);
+
+										if ($estado == "no" && ($tipo_item == 2 || $tipo_item == 3)) {
+											$hayEstadoNo = TRUE;
+										}
+
 									}	
 
-									if($this->Astmodel->getFallosChecklist($hash)){
+									$data_fallos = array();
+									$data_fallos["riesgos_o_controles_norealizados"] = ($hayEstadoNo) ? "si" : "no";
+									$data_fallos["id_estado"] = ($hayEstadoNo) ? "3" : "2";
+									$this->Astmodel->actualizarAst($hash, $data_fallos);
+
+									/* if($this->Astmodel->getFallosChecklist($hash)){
 										$data_fallos["riesgos_o_controles_norealizados"] = "si";
 										$data_fallos["id_estado"] = "3";
 										$this->Astmodel->actualizarAst($hash,$data_fallos);
@@ -241,14 +255,17 @@ class Ast extends CI_Controller {
 										$data_fallos["riesgos_o_controles_norealizados"] = "no";
 										$data_fallos["id_estado"] = "2";
 										$this->Astmodel->actualizarAst($hash,$data_fallos);
-									}
+									} */
+
 
 								}else{
 									echo json_encode(array('res'=>"error", 'msg' => "Error ingresando el detalle del checklist, intente nuevamente."));exit;
 								}
 
 							}else{
+								
 								$item = $this->input->post("item");
+								$hayEstadoNo = FALSE;
 
 								foreach($item as $h){
 									$item = $h;
@@ -265,7 +282,20 @@ class Ast extends CI_Controller {
 
 									$id_detalle = $this->Astmodel->getIddetalle($id,$item);
 									$this->Astmodel->actualizaDetalleAst($id_detalle,$data_actualizar);
+
+									$tipo_item = $this->Astmodel->getTipoItem($item);
+
+									if ($estado == "no" && ($tipo_item == 2 || $tipo_item == 3)) {
+										$hayEstadoNo = TRUE;
+									}
+
 								}
+
+								$data_fallos = array();
+								$data_fallos["riesgos_o_controles_norealizados"] = ($hayEstadoNo) ? "si" : "no";
+								$data_fallos["id_estado"] = ($hayEstadoNo) ? "3" : "2";
+								$this->Astmodel->actualizarAst($hash, $data_fallos);
+
 							}
 
 
@@ -313,12 +343,35 @@ class Ast extends CI_Controller {
 
 						$item = $this->input->post("item");
 
-						foreach($item as $h){
+						$hayEstadoNo = FALSE;
+
+						foreach ($item as $h) {
 							$item_id = $h;
 							$item = $this->Astmodel->getItemPorIdDetalle($item_id);
-							$estado = $this->input->post("estado_".$item_id)[0];
-							/*$observacion = $this->input->post("observacion_".$item_id)[0];*/
-							$data_actualizar = array("estado" =>  $estado,/*"observacion" =>  $observacion,*/ "ultima_actualizacion"=>$ultima_actualizacion);
+							$estado = $this->input->post("estado_" . $item_id)[0];
+						
+							$data_actualizar = array("estado" => $estado, "ultima_actualizacion" => $ultima_actualizacion);
+							$id_detalle = $this->Astmodel->getIddetalle($id, $item);
+							$this->Astmodel->actualizaDetalleAst($id_detalle, $data_actualizar);
+
+							$tipo_item = $this->Astmodel->getTipoItem($item);
+
+							if ($estado == "no" && ($tipo_item == 2 || $tipo_item == 3)) {
+								$hayEstadoNo = TRUE;
+							}
+						}
+
+						$data_fallos = array();
+						$data_fallos["riesgos_o_controles_norealizados"] = ($hayEstadoNo) ? "si" : "no";
+						$data_fallos["id_estado"] = ($hayEstadoNo) ? "3" : "2";
+						$this->Astmodel->actualizarAst($hash, $data_fallos);
+
+
+						/* foreach($item as $h){
+							$item_id = $h;
+							$item = $this->Astmodel->getItemPorIdDetalle($item_id);
+							$estado = $this->input->post("estado_".$item_id)[0]; 
+							$data_actualizar = array("estado" =>  $estado, "ultima_actualizacion"=>$ultima_actualizacion);
 							$id_detalle = $this->Astmodel->getIddetalle($id,$item);
 							$this->Astmodel->actualizaDetalleAst($id_detalle,$data_actualizar);
 
@@ -340,7 +393,7 @@ class Ast extends CI_Controller {
 							$data_fallos["riesgos_o_controles_norealizados"] = "no";
 							$data_fallos["id_estado"] = "2";
 							$this->Astmodel->actualizarAst($hash,$data_fallos);
-						}
+						} */
 
 
 					    $data_correo=$this->Astmodel->getDataAstCabecera($hash);
@@ -396,6 +449,7 @@ class Ast extends CI_Controller {
 
 
 		public function generaPdfAst($data){
+			return TRUE;
 			foreach($data as $key){
 				$detalle = $this->Astmodel->getDataAst($key["hash"]);
 				$titulo = "Registro de ast en terreno para técnico : ".$key["tecnico"]."";
@@ -413,6 +467,7 @@ class Ast extends CI_Controller {
 		}
 
 		public function generaPdfAstURL(){
+			
 			$hash = $this->security->xss_clean(strip_tags($this->input->post("hash")));
 			$data = $this->Astmodel->getDataAstCabecera($hash);
 			foreach($data as $key){
