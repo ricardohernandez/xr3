@@ -18,6 +18,8 @@ class Materialesmodel extends CI_Model {
 		public function listaDetalle($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(m.id) as hash,
 				m.*,
+				if(m.fecha!='1970-01-01' and m.fecha!='0000-00-00',DATE_FORMAT(m.fecha,'%Y-%m-%d'),'') as 'fecha',
+				if(m.dias!='0',m.dias,'') as 'dias',
 				CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico'
 				");
 

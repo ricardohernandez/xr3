@@ -340,6 +340,7 @@ class Usuarios extends CI_Controller {
 						    <th class="head">Estado civil</th> 
 						    <th class="head">Cargo</th> 
 						    <th class="head">Zona</th> 
+						    <th class="head">Plaza</th> 
 						    <th class="head">Proyecto</th> 
 						    <th class="head">Jefe</th> 
 						    <th class="head">Tipo contrato</th> 
@@ -348,7 +349,6 @@ class Usuarios extends CI_Controller {
 						    <th class="head">Domicilio</th> 
 						    <th class="head">Comuna</th> 
 						    <th class="head">Ciudad</th> 
-						    <th class="head">Sucursal</th> 
 						    <th class="head">Celular empresa</th> 
 						    <th class="head">Celular personal</th> 
 						    <th class="head">Correo empresa</th> 
@@ -380,6 +380,7 @@ class Usuarios extends CI_Controller {
 									 <td><?php echo utf8_decode($d["estado_civil"]); ?></td>
 									 <td><?php echo utf8_decode($d["cargo"]); ?></td>
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
+									 <td><?php echo utf8_decode($d["plaza"]); ?></td>
 									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									 <td><?php echo utf8_decode($d["jefe"]); ?></td>
 									 <td><?php echo utf8_decode($d["tipo_contrato"]); ?></td>
@@ -388,7 +389,6 @@ class Usuarios extends CI_Controller {
 									 <td><?php echo utf8_decode($d["domicilio"]); ?></td>
 									 <td><?php echo utf8_decode($d["comuna"]); ?></td>
 									 <td><?php echo utf8_decode($d["ciudad"]); ?></td>
-									 <td><?php echo utf8_decode($d["sucursal"]); ?></td>
 									 <td><?php echo utf8_decode($d["celular_empresa"]); ?></td>
 									 <td><?php echo utf8_decode($d["celular_personal"]); ?></td>
 									 <td><?php echo utf8_decode($d["correo_empresa"]); ?></td>

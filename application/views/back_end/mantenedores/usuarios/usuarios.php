@@ -170,7 +170,7 @@
           { "data": "domicilio" ,"class":"margen-td centered"},
           { "data": "comuna" ,"class":"margen-td centered"},
           { "data": "ciudad" ,"class":"margen-td centered"},
-          { "data": "sucursal" ,"class":"margen-td centered"},
+        /*   { "data": "sucursal" ,"class":"margen-td centered"}, */
           { "data": "celular_empresa","class":"margen-td centered"},
           { "data": "celular_personal","class":"margen-td centered"},
           { "data": "correo_empresa" ,"class":"margen-td centered"},
@@ -360,7 +360,7 @@
               $("#domicilio").val(data.datos[dato].domicilio);
               $("#comuna").val(data.datos[dato].comuna);
               $("#ciudad").val(data.datos[dato].ciudad);
-              $("#sucursal").val(data.datos[dato].sucursal);
+              /*    $("#sucursal").val(data.datos[dato].sucursal); */
               $("#celular_empresa").val(data.datos[dato].celular_empresa);
               $("#celular_personal").val(data.datos[dato].celular_personal);
               $("#correo_empresa").val(data.datos[dato].correo_empresa);
@@ -559,7 +559,7 @@
             <th class="centered">Domicilio</th> 
             <th class="centered">Comuna</th> 
             <th class="centered">Cuidad</th> 
-            <th class="centered">Sucursal</th> 
+            <!-- <th class="centered">Sucursal</th>  -->
             <th class="centered">Celular empresa</th> 
             <th class="centered">Celular personal</th> 
             <th class="centered">Correo empresa</th> 
@@ -821,12 +821,12 @@
                 </div>
               </div>
 
-              <div class="col-lg-3">  
+              <!-- <div class="col-lg-3">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Sucursal  </label>
                 <input placeholder="Sucursal"  type="text" name="sucursal"  id="sucursal" class="form-control form-control-sm" autocomplete="off" />
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-lg-3">  
                 <div class="form-group">

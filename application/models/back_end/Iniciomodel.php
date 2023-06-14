@@ -201,10 +201,11 @@ class InicioModel extends CI_Model {
 				u.foto as foto,
 				u.comuna as comuna,
 				u.fecha_nacimiento as fecha_nacimiento,
-				pr.proyecto as proyecto
+				pr.proyecto as proyecto,
+				up.plaza as plaza
 				FROM usuarios as u
-				left join usuarios_cargos
-				 as mc ON u.id_cargo = mc.id	
+				left join usuarios_cargos as mc ON u.id_cargo = mc.id	
+				left join usuarios_plazas as up ON u.id_plaza = up.id	
 				left join usuarios_proyectos as pr ON u.id_proyecto = pr.id	
 				where estado='1'
 				and SUBSTRING(u.fecha_nacimiento,6,10) between '".$start."' and '".$end."'
@@ -220,10 +221,12 @@ class InicioModel extends CI_Model {
 			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
 				u.fecha_ingreso as fecha,
 				u.foto as foto,
+				up.plaza as plaza,
 				pr.proyecto as proyecto");		
 			$this->db->from('usuarios as u');
 			$this->db->join('usuarios_proyectos as pr', 'u.id_proyecto = pr.id', 'left');
 			$this->db->join('usuarios_cargos as c', 'c.id = u.id_cargo', 'left');
+			$this->db->join('usuarios_plazas as up', 'up.id = u.id_plaza', 'left');
 			$this->db->where("u.estado","1");
 			$this->db->where("u.fecha_ingreso !=","NULL");
 			$this->db->where("u.fecha_ingreso !=","0000-00-00");
