@@ -25,6 +25,11 @@ application/logs/*
 /noticias/
 /planilla_ejemplo/
 application/config/database.php
+.htaccess
 xr3.code-workspace
 composer.lock
 composer.json
+user.ini
+index.php
+phpinfo.php
+README.md
