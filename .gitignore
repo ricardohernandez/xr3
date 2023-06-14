@@ -15,4 +15,16 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
-/vendor/
+
+/system/
+/archivos/
+/archivos_documentacion/
+/archivos_licencias/
+/archivos_vacaciones/
+/fotos_usuarios/
+/noticias/
+/planilla_ejemplo/
+application/config/database.php
+xr3.code-workspace
+composer.lock
+composer.json

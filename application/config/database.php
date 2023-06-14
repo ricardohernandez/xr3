@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-/*  if ($_SERVER["HTTP_HOST"] == "localhost") {
+ if ($_SERVER["HTTP_HOST"] == "localhost") {
     $hostname = 'localhost';
     $username = 'root';
     $password = '';
@@ -20,11 +20,6 @@ $query_builder = TRUE;
 	$password = 'sW0}~%HKSiUn';
 	$database = 'ceningen_xr3'; 
 }  
- */
-$hostname = 'localhost';
-$username = 'ceningen_xr3';
-$password = 'sW0}~%HKSiUn';
-$database = 'ceningen_xr3'; 
 
 $db['default'] = array(
 	'dsn'	=> '',

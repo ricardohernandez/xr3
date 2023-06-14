@@ -1,1 +1,0 @@
-[04-Dec-2022 15:41:46 America/Santiago] PHP Fatal error:  Cannot redeclare fecha_to_str_noticias() (previously declared in /home1/ceningen/xr3t.cl/application/helpers/fechas_helper.php:203) in /home1/ceningen/xr3t.cl/application/helpers/fechas_helper.php on line 212
