@@ -130,6 +130,11 @@ class Ticket extends CI_Controller {
 						$data_mod['fecha_respuesta'] = date("Y-m-d");	
 					}
 					
+					if($adjunto!=""){
+						$nombre=$this->procesaArchivo($_FILES["userfile"],$id_usuario."_".date("ymdHis"),1);
+						$data_mod["adjunto"]=$nombre;
+					}
+					
 					if($this->Ticketmodel->formActualizar($hash,$data_mod)){
 						if($checkcorreo=="on"){
 							$this->EnviaCorreo($hash,"1");
