@@ -21,13 +21,14 @@ application/logs/*
 /archivos_documentacion/
 /archivos_licencias/
 /archivos_vacaciones/
+/fotos_herramientas/
 /fotos_usuarios/
 /noticias/
 /planilla_ejemplo/
 application/config/database.php
 .htaccess
 xr3.code-workspace
-composer.lock
+composer.lockel
 composer.json
 user.ini
 index.php
