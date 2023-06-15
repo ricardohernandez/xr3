@@ -253,7 +253,7 @@ class Rop extends CI_Controller {
 		public function enviaCorreo($hash,$tipo){
 			$this->load->library('email');
 			$data = $this->Ropmodel->getDataRop($hash);
-			$prueba = TRUE;
+			$prueba = FALSE;
 			foreach($data as $key){
 				
 				$config = array(
@@ -375,7 +375,7 @@ class Rop extends CI_Controller {
 
 		public function solicitudesVencidas(){
 			$data = $this->Ropmodel->getRopListVencidas();
-			$prueba = TRUE;
+			$prueba = FALSE;
 
 			if ($data != FALSE) {
 				foreach ($data as $key) {
