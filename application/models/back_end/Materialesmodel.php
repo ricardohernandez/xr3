@@ -35,14 +35,7 @@ class Materialesmodel extends CI_Model {
 			}
 			return FALSE;
 		}
-
-		public function formProductividad($data){
-			if($this->db->insert('productividad', $data)){
-				return TRUE;
-			}
-			return FALSE;
-		}
-
+ 
 		public function formMateriales($data){
 			if($this->db->insert('materiales', $data)){
 				return TRUE;
@@ -190,6 +183,13 @@ class Materialesmodel extends CI_Model {
 
 			return TRUE;
 		}
-	
+		
+		public function actualizacionMateriales(){
+		    $this->db->select('ultima_actualizacion');
+		    $this->db->order_by('id', 'desc');
+		    $res=$this->db->get('materiales',1);
+		    $row = $res->row_array();
+		    return $row["ultima_actualizacion"];
+		}
 
 }

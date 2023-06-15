@@ -282,7 +282,9 @@
 	$route['excel_series_devolucion/(:any)/(:any)'] = "back_end/materiales/excel_series_devolucion/$1/$2";
 	$route['excel_series_operativos/(:any)/(:any)'] = "back_end/materiales/excel_series_operativos/$1/$2";
  
+	$route['actualizacionMateriales'] = "back_end/materiales/actualizacionMateriales";
 
+	
 /******************TICKET*************************/
 
 	$route['ticket'] = "back_end/ticket/index";

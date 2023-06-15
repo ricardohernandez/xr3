@@ -1,6 +1,5 @@
 <style type="text/css">
-
-  .actualizacion_productividad{
+  .actualizacion_materiales{
       display: inline-block;
       font-size: 11px;
   }
@@ -193,7 +192,52 @@
 
     });
 
+    actualizacionMateriales()
 
+    function actualizacionMateriales(){
+      $.ajax({
+          url: "actualizacionMateriales"+"?"+$.now(),  
+          type: 'POST',
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          dataType:"json",
+          beforeSend:function(){
+          },
+          success: function (data) {
+            if(data.res=="ok"){
+              $(".actualizacion_materiales").html("<b>Última actualización planilla : "+data.datos+"</b>");
+            }
+          },
+          error : function(xhr, textStatus, errorThrown ) {
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    $.notify("Reintentando...", {
+                      className:'info',
+                      globalPosition: 'top right'
+                    });
+                    $.ajax(this);
+                    return;
+                } else{
+                    $.notify("Problemas en el servidor, intente nuevamente.", {
+                      className:'warn',
+                      globalPosition: 'top right'
+                    });     
+                }    
+                return;
+            }
+
+            if (xhr.status == 500) {
+                $.notify("Problemas en el servidor, intente más tarde.", {
+                  className:'warn',
+                  globalPosition: 'top right'
+                });
+            }
+          },timeout:5000
+      }); 
+    }
+    
     
     $(document).off('click', '.excel_series_operativos"').on('click', '.excel_series_operativos',function(event) {
        event.preventDefault();
@@ -264,11 +308,21 @@
       <?php
       }
     ?>
+
+      <div class="col-12 col-lg-6">
+        <center><span class="titulo_fecha_actualizacion_dias">
+          <div class="alert alert-primary actualizacion_materiales" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;">
+          </div>
+        </span></center>
+      </div>
+
   </div>            
 
 <!-- LISTADO -->
 
-  <div class="row">
+
+
+  <div class="row mt-2">
     <div class="col-lg-6">
       <div class="col-12">
 

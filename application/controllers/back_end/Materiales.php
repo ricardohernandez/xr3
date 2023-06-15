@@ -258,7 +258,20 @@ class Materiales extends CI_Controller {
 		}
 
 
-	
+		public function actualizacionMateriales(){
+		    if($this->input->is_ajax_request()){
+		      $data=$this->Materialesmodel->actualizacionMateriales();
+		      if($data){
+		        echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+		      }else{
+		        echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+		      } 
+		    }else{
+		      exit('No direct script access allowed');
+		    }
+		}
+
+
 	/********* POR TECNICO************/
 		
 		public function vistaMaterialesPorTecnico(){

@@ -449,7 +449,7 @@ class Ast extends CI_Controller {
 
 
 		public function generaPdfAst($data){
-			return TRUE;
+			/* return TRUE; */
 			foreach($data as $key){
 				$detalle = $this->Astmodel->getDataAst($key["hash"]);
 				$titulo = "Registro de ast en terreno para técnico : ".$key["tecnico"]."";
@@ -508,7 +508,6 @@ class Ast extends CI_Controller {
 			      'smtp_user' => 'reportes@xr3t.cl',
 			      'smtp_pass' => 'ec+-kDo9bBO1'
 		        );
-
 
 			    /* $config = array (
 		       	  'mailtype' => 'html',
