@@ -17,15 +17,11 @@ application/logs/*
 !application/logs/.htaccess
 
 /system/
-/archivos/
-/archivos_documentacion/
-/archivos_licencias/
-/archivos_vacaciones/
-/fotos_herramientas/
-/fotos_usuarios/
-/noticias/
-/planilla_ejemplo/
+
+application/config/database.php
 xr3.code-workspace
+composer.lock
+composer.json
 user.ini
 index.php
 phpinfo.php
