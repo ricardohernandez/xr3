@@ -25,11 +25,7 @@ application/logs/*
 /fotos_usuarios/
 /noticias/
 /planilla_ejemplo/
-application/config/database.php
-.htaccess
 xr3.code-workspace
-composer.lockel
-composer.json
 user.ini
 index.php
 phpinfo.php
