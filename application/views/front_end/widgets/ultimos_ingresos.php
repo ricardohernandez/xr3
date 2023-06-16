@@ -31,7 +31,7 @@
     </div>
     <div class="post-list-small__body">
       <h5 class="post-list-extrasmall__entry-title">
-        <a href="#!"><?php echo $u["nombre_corto"]?> - <?php echo ($u["plaza"])?></a>
+        <a href="#!"><?php echo $u["nombre_corto"]?> - <?php echo $u["plaza"]." - ".$u["subzona"]?></a>
         <span class="fecha_cumple"><?php  echo date_to_str_full($u["fecha"])?></span>
       </h5>
     </div>                  

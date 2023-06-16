@@ -165,7 +165,7 @@ class Usuarios extends CI_Controller {
 				$domicilio=$this->security->xss_clean(strip_tags($this->input->post("domicilio")));
 				$comuna=$this->security->xss_clean(strip_tags($this->input->post("comuna")));
 				$ciudad=$this->security->xss_clean(strip_tags($this->input->post("ciudad")));
-				$sucursal=$this->security->xss_clean(strip_tags($this->input->post("sucursal")));
+				$subzona=$this->security->xss_clean(strip_tags($this->input->post("subzona")));
 				$celular_empresa=$this->security->xss_clean(strip_tags($this->input->post("celular_empresa")));
 				$celular_personal=$this->security->xss_clean(strip_tags($this->input->post("celular_personal")));
 				$correo_empresa=$this->security->xss_clean(strip_tags($this->input->post("correo_empresa")));
@@ -207,7 +207,7 @@ class Usuarios extends CI_Controller {
 						"estado_civil"=>$estado_civil,
 						"domicilio"=>$domicilio,
 						"ciudad"=>$ciudad,
-						"sucursal"=>$sucursal,
+						"subzona"=>$subzona,
 						"celular_empresa"=>$celular_empresa,
 						"celular_personal"=>$celular_personal,
 						"correo_empresa"=>$correo_empresa,
@@ -340,6 +340,7 @@ class Usuarios extends CI_Controller {
 						    <th class="head">Estado civil</th> 
 						    <th class="head">Cargo</th> 
 						    <th class="head">Zona</th> 
+						    <th class="head">Subzona</th> 
 						    <th class="head">Plaza</th> 
 						    <th class="head">Proyecto</th> 
 						    <th class="head">Jefe</th> 
@@ -380,6 +381,7 @@ class Usuarios extends CI_Controller {
 									 <td><?php echo utf8_decode($d["estado_civil"]); ?></td>
 									 <td><?php echo utf8_decode($d["cargo"]); ?></td>
 									 <td><?php echo utf8_decode($d["area"]); ?></td>
+									 <td><?php echo utf8_decode($d["subzona"]); ?></td>
 									 <td><?php echo utf8_decode($d["plaza"]); ?></td>
 									 <td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									 <td><?php echo utf8_decode($d["jefe"]); ?></td>

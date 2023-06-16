@@ -199,6 +199,7 @@ class InicioModel extends CI_Model {
 				SUBSTRING(u.fecha_nacimiento,6,10) as dia_actual,
 		   	    u.fecha_ingreso as fecha,
 				u.foto as foto,
+				u.subzona as subzona,
 				u.comuna as comuna,
 				u.fecha_nacimiento as fecha_nacimiento,
 				pr.proyecto as proyecto,
@@ -221,6 +222,7 @@ class InicioModel extends CI_Model {
 			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
 				u.fecha_ingreso as fecha,
 				u.foto as foto,
+				u.subzona as subzona,
 				up.plaza as plaza,
 				pr.proyecto as proyecto");		
 			$this->db->from('usuarios as u');

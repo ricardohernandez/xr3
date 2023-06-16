@@ -113,6 +113,18 @@ class Ropmodel extends CI_Model {
 			return $res->result_array();
 		}
 		
+		public function esJefe($id){
+			$this->db->where('id_jefe', $id);
+			$res = $this->db->get('usuarios_jefes');
+
+			if($res->num_rows()>0){
+				return TRUE;
+			}
+
+			return FALSE;
+			
+		}
+
 		public function getDataRop($hash){
 			$this->db->select('r.*,
 			sha1(r.id) as hash,

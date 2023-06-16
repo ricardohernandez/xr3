@@ -254,8 +254,11 @@ class Rop extends CI_Controller {
 			$this->load->library('email');
 			$data = $this->Ropmodel->getDataRop($hash);
 			$prueba = FALSE;
+
 			foreach($data as $key){
 				
+				$solicitanteEsJefe = $this->Ropmodel->esJefe($key["id_solicitante"]);
+
 				$config = array(
 					'mailtype' => 'html',
 					'charset' => 'UTF-8',
@@ -268,9 +271,8 @@ class Rop extends CI_Controller {
 					'smtp_pass' => $this->config->item('smtp_pass')
 				);
 
-
 				$this->email->initialize($config);
-			 
+
 				if($tipo==0){ //NUEVO
 					$asunto = "Solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
 					$cuerpo = "Le informamos que se ha ingresado la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
@@ -280,9 +282,6 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
 					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
-					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
-
-					$copias[] = "roberto.segovia@xr3.cl";
 
 				}
 
@@ -296,9 +295,6 @@ class Rop extends CI_Controller {
 					$para = !empty($key["correo_asignado"]) ? [$key["correo_asignado"]] : [];
 					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? array_merge($copias, [$key["correo_responsable1"]]) : $copias;
-					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
-
-					$copias[] = "roberto.segovia@xr3.cl";
 
 				}
 
@@ -311,9 +307,6 @@ class Rop extends CI_Controller {
 					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
 					$copias = !empty($key["correo_responsable2"]) ? array_merge($copias, [$key["correo_responsable2"]]) : $copias;
-					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
-
-					$copias[] = "roberto.segovia@xr3.cl";
 
 				}
 
@@ -326,9 +319,7 @@ class Rop extends CI_Controller {
 					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
 					$copias = !empty($key["correo_responsable2"]) ? array_merge($copias, [$key["correo_responsable2"]]) : $copias;
-					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
 
-					$copias[] = "roberto.segovia@xr3.cl";
 				}
 
 				if($tipo==4){//VALIDAR
@@ -339,12 +330,19 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
-					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
-
-					$copias[] = "roberto.segovia@xr3.cl";
 
 				}
 
+				//si el solicitante no es jefe, se agrega como copia al jefe directo
+				if(!$solicitanteEsJefe){
+					$copias = !empty($key["correo_jefe"]) ? array_merge($copias, [$key["correo_jefe"]]) : $copias;
+				}
+
+				//si en los correos no esta segovia, se agrega a copia
+				if (!in_array("roberto.segovia@xr3.cl", $key)) {
+					$copias[] = "roberto.segovia@xr3.cl";
+				}
+				
 				if($prueba){
 					$para = array("ricardo.hernandez@splice.cl");
 					$copias = array("ricardo.hernandez@km-t.cl");
@@ -355,7 +353,8 @@ class Rop extends CI_Controller {
 
 				$this->email->to($para);
 				$this->email->cc($copias);
-				/* $this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl")); */
+
+				$this->email->bcc(array("ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl"));
 				$this->email->subject($asunto); 
 				$this->email->message($html); 
 
