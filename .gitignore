@@ -17,6 +17,7 @@ application/logs/*
 !application/logs/.htaccess
 
 application/config/database.php
+application/config/config.php
 xr3.code-workspace
 composer.lock
 composer.json
