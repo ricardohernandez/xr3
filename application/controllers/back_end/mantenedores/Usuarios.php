@@ -1191,7 +1191,7 @@ class Usuarios extends CI_Controller {
 		}
 
 		public function correoDatosFaltantes(){
-			$prueba = TRUE;
+			$prueba = FALSE;
 			$datos = $this->Usuariosmodel->correoDatosFaltantes();
 			$usuarios = $datos['usuarios'];
 			$campos_vacios = $datos['campos_vacios'];
@@ -1216,7 +1216,7 @@ class Usuarios extends CI_Controller {
 
 			$this->email->initialize($config);
 			$html=$this->load->view('back_end/mantenedores/usuarios/correo_datos_faltantes',["campos_vacios" => $campos_vacios, "titulo" =>$asunto,"total_vacios" => $total_vacios],TRUE);
-			echo $html;exit;
+			/* echo $html;exit; */
 			$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 
 			if($prueba){
@@ -1226,7 +1226,7 @@ class Usuarios extends CI_Controller {
 			}
 			
 			$this->email->to($to);
-			//$this->email->bcc(array('ricardo.hernandez@splice.cl','german.cortes@km-telecomunicaciones.cl'));  
+			$this->email->bcc(array('ricardo.hernandez@splice.cl','german.cortes@km-telecomunicaciones.cl'));  
 			$this->email->subject($asunto);
 			$this->email->message($html); 
 			$resp = $this->email->send();

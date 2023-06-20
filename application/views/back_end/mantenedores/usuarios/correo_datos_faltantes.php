@@ -18,34 +18,32 @@
     </tbody>
   </table>
 
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+      <tbody>
+          <?php
+          foreach ($campos_vacios as $campo => $cantidad) {
+              // Modificar el nombre del campo
+              $nombre_campo = str_replace('_', ' ', $campo); // Reemplazar guiones bajos por espacios
 
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
-        <tbody>
-            <?php
-            foreach ($campos_vacios as $campo => $cantidad) {
-                // Modificar el nombre del campo
-                $nombre_campo = str_replace('_', ' ', $campo); // Reemplazar guiones bajos por espacios
- 
-                // Eliminar la palabra "id" al comienzo del nombre del campo
-                if (stripos($nombre_campo, 'id') === 0) {
-                    $nombre_campo = substr($nombre_campo, 2); // Eliminar los primeros dos caracteres ("id")
-                }
-                
-                ?>
-                <tr>
-                    <td style="padding:10px;border-bottom:1px solid #e0e0e0;">
-                        <span style="font-size:16px;font-weight:bold;color:#333333;"><?php echo ucfirst(trim($nombre_campo)); ?></span>
-                    </td>
-                    <td style="padding:10px;border-bottom:1px solid #e0e0e0;">
-                        <span style="font-size:16px;color:#333333;"><?php echo $cantidad; ?></span>
-                    </td>
-                </tr>
-                <?php
-            }
-            ?>
-        </tbody>
-    </table>
-
+              // Eliminar la palabra "id" al comienzo del nombre del campo
+              if (stripos($nombre_campo, 'id') === 0) {
+                  $nombre_campo = substr($nombre_campo, 2); // Eliminar los primeros dos caracteres ("id")
+              }
+              
+              ?>
+              <tr>
+                  <td style="padding:10px;border-bottom:1px solid #e0e0e0;">
+                      <span style="font-size:16px;font-weight:bold;color:#333333;"><?php echo ucfirst(trim($nombre_campo)); ?></span>
+                  </td>
+                  <td style="padding:10px;border-bottom:1px solid #e0e0e0;">
+                      <span style="font-size:16px;color:#333333;"><?php echo $cantidad; ?></span>
+                  </td>
+              </tr>
+              <?php
+          }
+          ?>
+      </tbody>
+  </table>
 
 </div>
 </body>

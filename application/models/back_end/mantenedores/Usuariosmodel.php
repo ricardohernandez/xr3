@@ -297,7 +297,7 @@ class Usuariosmodel extends CI_Model {
 		public function correoDatosFaltantes() {
 				$campos_vacios = array(
 					'nombres', 'apellidos', 'rut', 'correo_empresa',
-					'id_jefe', 'id_plaza', 'zona', 'subzona',
+					'id_jefe', 'id_plaza',
 					'celular_empresa', 'nacionalidad',
 					'subzona', 'fecha_ingreso', 'fecha_nacimiento',
 					'domicilio'
