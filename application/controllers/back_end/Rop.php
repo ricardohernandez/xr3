@@ -266,9 +266,9 @@ class Rop extends CI_Controller {
 					'wordwrap' =>TRUE,
 					'protocol' =>  'smtp',
 					'smtp_port' => 587,
-					'smtp_host' => $this->config->item('smtp_host'),
-					'smtp_user' => $this->config->item('smtp_user'),
-					'smtp_pass' => $this->config->item('smtp_pass')
+					'smtp_host' => $this->config->item('syr_smtp_host'),
+					'smtp_user' => $this->config->item('syr_smtp_user'),
+					'smtp_pass' => $this->config->item('syr_smtp_pass')
 				);
 
 				$this->email->initialize($config);
@@ -387,9 +387,9 @@ class Rop extends CI_Controller {
 						'wordwrap' => TRUE,
 						'protocol' => "smtp",
 						'smtp_port' => 587,
-						'smtp_host' => 'mail.xr3t.cl',
-						'smtp_user' => 'syr@xr3t.cl',
-						'smtp_pass' => 'ZBg;EVwGcIY1'
+						'smtp_host' => $this->config->item('syr_smtp_host'),
+						'smtp_user' => $this->config->item('syr_smtp_user'),
+						'smtp_pass' => $this->config->item('syr_smtp_pass')
 					);
 					
 

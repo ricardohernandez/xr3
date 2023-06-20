@@ -363,6 +363,7 @@
 	$route['excelUsuarios/(:any)'] = "back_end/mantenedores/usuarios/excelUsuarios/$1";
 	$route['formCargaMasivaUsuarios'] = "back_end/mantenedores/usuarios/formCargaMasivaUsuarios";
 	$route['eliminaUsuario'] = "back_end/mantenedores/usuarios/eliminaUsuario";
+	$route['correoDatosFaltantes'] = "back_end/mantenedores/usuarios/correoDatosFaltantes";
 	
 	$route['vistaCargos'] = "back_end/mantenedores/usuarios/vistaCargos";
 	$route['listaCargos'] = "back_end/mantenedores/usuarios/listaCargos";

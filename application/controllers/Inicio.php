@@ -216,17 +216,17 @@ class Inicio extends CI_Controller {
 					
 					$this->load->library('email');
 
-					 $config = array (
-			       	  'mailtype' => 'html',
-			          'charset'  => 'utf-8',
-			          'priority' => '1',
-			          'wordwrap' => TRUE,
-			          'protocol' => "smtp",//sendmail
-			          'smtp_port' => 587,//587
-			          'smtp_host' => 'mail.xr3t.cl',
-				      'smtp_user' => 'reportes@xr3t.cl',
-				      'smtp_pass' => 'ec+-kDo9bBO1'
-			        );
+					$config = array (
+						'mailtype' => 'html',
+						'charset'  => 'utf-8',
+						'priority' => '1',
+						'wordwrap' => TRUE,
+						'protocol' => "smtp",//sendmail
+						'smtp_port' => 587,//587
+						'smtp_host' => $this->config->item('rep_smtp_host'),
+						'smtp_user' => $this->config->item('rep_smtp_user'),
+						'smtp_pass' => $this->config->item('rep_smtp_pass')
+				 	);
 
 					$this->email->initialize($config);
 					$asunto ="Recuperación de contraseña XR3-PTO : " . $nombre;
@@ -390,22 +390,22 @@ class Inicio extends CI_Controller {
 
 			if($data!=FALSE){
 			   	foreach($data as $key){
-		   			 $config = array (
-			       	  'mailtype' => 'html',
-			          'charset'  => 'utf-8',
-			          'priority' => '1',
-			          'wordwrap' => TRUE,
-			          'protocol' => "smtp",//sendmail
-			          'smtp_port' => 587,//587
-			          'smtp_host' => 'mail.xr3t.cl',
-				      'smtp_user' => 'reportes@xr3t.cl',
-				      'smtp_pass' => 'ec+-kDo9bBO1'
-			        );
+					$config = array (
+						'mailtype' => 'html',
+						'charset'  => 'utf-8',
+						'priority' => '1',
+						'wordwrap' => TRUE,
+						'protocol' => "smtp",//sendmail
+						'smtp_port' => 587,//587
+						'smtp_host' => $this->config->item('rep_smtp_host'),
+						'smtp_user' => $this->config->item('rep_smtp_user'),
+						'smtp_pass' => $this->config->item('rep_smtp_pass')
+					);
 
 					$this->email->initialize($config);
 					$datos=array("data"=>$data);
-				     $html=$this->load->view('back_end/cron/cumpleanios',$datos,TRUE);
-				  /*  echo $html;exit;*/
+				    $html=$this->load->view('back_end/cron/cumpleanios',$datos,TRUE);
+				    /*  echo $html;exit;*/
 
 					$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
 

@@ -354,36 +354,36 @@ class Admin extends CI_Controller {
 				if($prueba){
 
 			        $asunto="Aviso noticia : ".$key["titulo"];
-					$formcorreo="ricardo.hernandez.esp@gmail.com";
-					$formnombre="KM";
+					$formcorreo="reportes@xr3t.cl";
+					$formnombre="xr3";
 				
 					$config = array (
-			          'mailtype' => 'html',
-			          'charset'  => 'utf-8',
-			          'priority' => '1',
-			          'wordwrap' => TRUE,
-			          'protocol' => "mail",
-			          'smtp_port' => 587,
-			          'smtp_host' => 'smtp.gmail.com',
-				      'smtp_user' => 'ricardo.hernandez.esp@gmail.com',
-				      'smtp_pass' => 'asdf12121212..'
-			        );
+						'mailtype' => 'html',
+						'charset'  => 'utf-8',
+						'priority' => '1',
+						'wordwrap' => TRUE,
+						'protocol' => "smtp",//sendmail
+						'smtp_port' => 587,//587
+						'smtp_host' => $this->config->item('rep_smtp_host'),
+						'smtp_user' => $this->config->item('rep_smtp_user'),
+						'smtp_pass' => $this->config->item('rep_smtp_pass')
+					  );
 
 				}else{
 					$config = array (
-			          'mailtype' => 'html',
-			          'charset'  => 'utf-8',
-			          'priority' => '1',
-			          'wordwrap' => TRUE,
-			          'protocol' => "mail",
-			          'smtp_port' => 587,
-			          'smtp_host' => 'mail.km-t.cl',
-				      'smtp_user' => 'reporte@km-t.cl',
-				      'smtp_pass' => 'R624enQp80O_'
-			        );
+						'mailtype' => 'html',
+						'charset'  => 'utf-8',
+						'priority' => '1',
+						'wordwrap' => TRUE,
+						'protocol' => "smtp",//sendmail
+						'smtp_port' => 587,//587
+						'smtp_host' => $this->config->item('rep_smtp_host'),
+						'smtp_user' => $this->config->item('rep_smtp_user'),
+						'smtp_pass' => $this->config->item('rep_smtp_pass')
+					);
 
 					$asunto="Aviso noticia : ".$key["titulo"];
-					$formcorreo="reporte@km-t.cl";
+					$formcorreo="reportes@xr3t.cl";
 					$formnombre="";
 				}
 				
@@ -404,19 +404,19 @@ class Admin extends CI_Controller {
 
 				if($prueba){
 					$config = array (
-			          'mailtype' => 'html',
-			          'charset'  => 'utf-8',
-			          'priority' => '1',
-			          'wordwrap' => TRUE,
-			          'protocol' => "mail",
-			          'smtp_port' => 587,
-			          'smtp_host' => 'smtp.gmail.com',
-				      'smtp_user' => 'ricardo.hernandez.esp@gmail.com',
-				      'smtp_pass' => 'asdf12121212..'
-			        );
+						'mailtype' => 'html',
+						'charset'  => 'utf-8',
+						'priority' => '1',
+						'wordwrap' => TRUE,
+						'protocol' => "smtp",//sendmail
+						'smtp_port' => 587,//587
+						'smtp_host' => $this->config->item('rep_smtp_host'),
+						'smtp_user' => $this->config->item('rep_smtp_user'),
+						'smtp_pass' => $this->config->item('rep_smtp_pass')
+					  );
 
 					$asunto="Nueva noticia Intranet: ".$key["titulo"];
-					$formcorreo="ricardo.hernandez.esp@gmail.com";
+					$formcorreo="reportes@xr3t.cl";
 					$formnombre="Intranet";
 					
 
@@ -425,40 +425,39 @@ class Admin extends CI_Controller {
 					if($key["empresa_usuario"]=="km"){
 
 						$config = array (
-				          'mailtype' => 'html',
-				          'charset'  => 'utf-8',
-				          'priority' => '1',
-				          'wordwrap' => TRUE,
-				          'protocol' => "mail",
-				          'smtp_port' => 587,
-				          'smtp_host' => 'mail.km-t.cl',
-					      'smtp_user' => 'reporte@km-t.cl',
-					      'smtp_pass' => 'R624enQp80O_'
-				        );
+							'mailtype' => 'html',
+							'charset'  => 'utf-8',
+							'priority' => '1',
+							'wordwrap' => TRUE,
+							'protocol' => "smtp",//sendmail
+							'smtp_port' => 587,//587
+							'smtp_host' => $this->config->item('rep_smtp_host'),
+							'smtp_user' => $this->config->item('rep_smtp_user'),
+							'smtp_pass' => $this->config->item('rep_smtp_pass')
+						  );
 
-				        $asunto="Nueva noticia KM : ".$key["titulo"];
-						$formcorreo="reporte@km-t.cl";
-						$formnombre="KM-Telecomunicaciones";
+				        $asunto="Nueva noticia  : ".$key["titulo"];
+						$formcorreo="reportes@xr3t.cl";
+						$formnombre="xr3";
 						
 
 					}else if ($key["empresa_usuario"]=="splice") {
 
 						$config = array (
-				       	  'mailtype' => 'html',
-				          'charset'  => 'utf-8',
-				          'priority' => '1',
-				          'wordwrap' => TRUE,
-				          'protocol' => "smtp",
-				          'smtp_port' => 587,
-				          'smtp_host' => 'mail.splice.cl',
-					      'smtp_user' => 'reporte@splice.cl',
-					      'smtp_pass' => 'IY3bH8iGUeJ?'
-					      
-				        );
+							'mailtype' => 'html',
+							'charset'  => 'utf-8',
+							'priority' => '1',
+							'wordwrap' => TRUE,
+							'protocol' => "smtp",//sendmail
+							'smtp_port' => 587,//587
+							'smtp_host' => $this->config->item('rep_smtp_host'),
+							'smtp_user' => $this->config->item('rep_smtp_user'),
+							'smtp_pass' => $this->config->item('rep_smtp_pass')
+						);
 
-				        $asunto="Nueva noticia SPLICE : ".$key["titulo"];
-						$formcorreo="reporte@splice.cl";
-						$formnombre="Splice";
+				        $asunto="Nueva noticia : ".$key["titulo"];
+						$formcorreo="reportes@xr3t.cl";
+						$formnombre="xr3";
 
 					}
 

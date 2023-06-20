@@ -520,17 +520,17 @@ class checklistHFC extends CI_Controller {
 				$titulo = "Registro de auditoria en terreno para técnico : ".$key["tecnico"]." - ".$key["fecha"];
 				$this->load->library('email');
 
-			    $config = array (
-		       	  'mailtype' => 'html',
-		          'charset'  => 'utf-8',
-		          'priority' => '1',
-		          'wordwrap' => TRUE,
-		          'protocol' => "sendmail",//sendmail
-		          'smtp_port' => 587,//587
-		          'smtp_host' => 'mail.xr3t.cl',
-			      'smtp_user' => 'reportes@xr3t.cl',
-			      'smtp_pass' => 'ec+-kDo9bBO1'
-		        );
+				$config = array (
+					'mailtype' => 'html',
+					'charset'  => 'utf-8',
+					'priority' => '1',
+					'wordwrap' => TRUE,
+					'protocol' => "smtp",//sendmail
+					'smtp_port' => 587,//587
+					'smtp_host' => $this->config->item('rep_smtp_host'),
+					'smtp_user' => $this->config->item('rep_smtp_user'),
+					'smtp_pass' => $this->config->item('rep_smtp_pass')
+				);
 
 			    $this->email->initialize($config);
 			

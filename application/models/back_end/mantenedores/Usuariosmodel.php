@@ -294,6 +294,89 @@ class Usuariosmodel extends CI_Model {
 			return FALSE;
 		}
 
+		public function correoDatosFaltantes() {
+				$campos_vacios = array(
+					'nombres', 'apellidos', 'rut', 'correo_empresa',
+					'id_jefe', 'id_plaza', 'zona', 'subzona',
+					'celular_empresa', 'nacionalidad',
+					'subzona', 'fecha_ingreso', 'fecha_nacimiento',
+					'domicilio'
+				);
+			
+				$this->db->where('estado', 1);
+				$usuarios = $this->db->get('usuarios')->result();
+			
+				$usuarios_campos_vacios = array();
+				$campos_vacios_totales = array();
+				$total_vacios = 0;
+			
+				foreach ($campos_vacios as $campo) {
+					$campos_vacios_totales[$campo] = 0;
+				}
+			
+				foreach ($usuarios as $usuario) {
+					$campos_vacios_usuario = array();
+			
+					foreach ($campos_vacios as $campo) {
+						if (empty($usuario->$campo)) {
+							$campos_vacios_usuario[] = $campo;
+							$campos_vacios_totales[$campo]++;
+							$total_vacios++;
+						}
+					}
+			
+					if (!empty($campos_vacios_usuario)) {
+						$usuario->campos_vacios = $campos_vacios_usuario;
+						$usuarios_campos_vacios[] = $usuario;
+					}
+				}
+			
+				return array(
+					'usuarios' => $usuarios_campos_vacios,
+					'campos_vacios' => $campos_vacios_totales,
+					'total_vacios' => $total_vacios
+				);
+		}
+
+		/* public function listaDatosFaltantes($dato,$empresa){
+			$this->db->select("
+				CONCAT(primer_nombre, ' ',segundo_nombre, ' ',apellido_paterno, ' ',apellido_materno) as 'nombre',
+				empresa,
+				adjuntar_foto,
+				nacionalidad,
+				Direccion_domicilio,
+				estado_civil,
+				correo_personal,
+				fono_celular,
+				id_cargo,
+				banco_num_cuenta,
+				datos_emergencia,
+				fecha_vac_covid,
+				fecha_vac_covid2");
+
+			if($dato=="foto"){$this->db->where('adjuntar_foto = ""');}
+			if($dato=="nacionalidad"){$this->db->where('nacionalidad = ""');}
+			if($dato=="Direccion_domicilio"){$this->db->where('Direccion_domicilio = ""');}
+			if($dato=="estado_civil"){$this->db->where('estado_civil = ""');}
+			if($dato=="correo_personal"){$this->db->where('correo_personal = ""');}
+			if($dato=="fono_celular"){$this->db->where('fono_celular = ""');}
+			if($dato=="id_cargo"){$this->db->where('id_cargo = "0"');}
+			if($dato=="banco_num_cuenta"){$this->db->where('banco_num_cuenta = ""');}
+			if($dato=="datos_emergencia"){$this->db->where('datos_emergencia = ""');}
+			if($dato=="fecha_vac_covid"){$this->db->where('fecha_vac_covid = "0000-00-00"');}
+			if($dato=="fecha_vac_covid2"){$this->db->where('fecha_vac_covid2 = "0000-00-00"');}
+
+			$this->db->order_by('primer_nombre', 'asc');
+			$this->db->where('estado', "Activo");
+			$this->db->where('rut<>', "769142606");
+			$this->db->where('id_tipo_contrato<>', "7");
+			$this->db->where('no_vacuna<>', "1");
+			$this->db->where('empresa', $empresa);
+			$res=$this->db->get('usuario');
+			return $res->result_array();
+		} */
+
+
 	//CARGOS
 
 		public function listaCargos(){

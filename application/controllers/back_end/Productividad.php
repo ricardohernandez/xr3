@@ -325,28 +325,6 @@ class Productividad extends CI_Controller {
 		}
 
 
-		public function enviaCorreo(){
-			$this->load->library('email');
-		    $config = array (
-	       	  'mailtype' => 'html',
-	          'charset'  => 'utf-8',
-	          'priority' => '1',
-	          'wordwrap' => TRUE,
-	          'protocol' => "smtp",
-	          'smtp_port' => 587,
-	          'smtp_host' => 'mail.xr3t.cl',
-		      'smtp_user' => 'soporteplataforma@xr3t.cl',
-		      'smtp_pass' => '9mWj.RUhL&3)'
-	        );
-
-		    $this->email->initialize($config);
-			$asunto ="Ingreso planilla productividad";
-			$para=array("ricardo.hernandez@splice.cl");
-			$this->email->to($para);
-			$this->email->subject($asunto);
-			$this->email->message("Ingreso planilla productividad <a href='https://xr3t.cl/cargaPlanillaProductividad'>Ingresar</a>"); 
-			$resp=$this->email->send();
-		}
 
 		public function cargaPlanillaProductividad(){
 

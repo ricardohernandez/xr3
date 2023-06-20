@@ -159,16 +159,16 @@ class Ticket extends CI_Controller {
 
 		foreach($data as $key){
 		    $config = array (
-	       	  'mailtype' => 'html',
-	          'charset'  => 'utf-8',
-	          'priority' => '1',
-	          'wordwrap' => TRUE,
-	          'protocol' => "smtp",
-	          'smtp_port' => 587,
-	          'smtp_host' => 'mail.xr3t.cl',
-		      'smtp_user' => 'soporteplataforma@xr3t.cl',
-		      'smtp_pass' => '9mWj.RUhL&3)'
-	        );
+				'mailtype' => 'html',
+				'charset'  => 'utf-8',
+				'priority' => '1',
+				'wordwrap' => TRUE,
+				'protocol' => "smtp",//sendmail
+				'smtp_port' => 587,//587
+				'smtp_host' => $this->config->item('sop_smtp_host'),
+				'smtp_user' => $this->config->item('sop_smtp_user'),
+				'smtp_pass' => $this->config->item('sop_smtp_pass')
+			);
 
 		    $this->email->initialize($config);
 			$asunto ="Ticket plataforma XR3 (".$key["estado"].") : ".$key["titulo"]." | ".date('d-m-Y', strtotime($key["fecha_ingreso"]));

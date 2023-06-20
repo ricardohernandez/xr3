@@ -1190,8 +1190,53 @@ class Usuarios extends CI_Controller {
 			}
 		}
 
+		public function correoDatosFaltantes(){
+			$prueba = TRUE;
+			$datos = $this->Usuariosmodel->correoDatosFaltantes();
+			$usuarios = $datos['usuarios'];
+			$campos_vacios = $datos['campos_vacios'];
+			$total_vacios = $datos['total_vacios'];
+			/* 	echo "<pre>";
+			print_r($campos_vacios);exit; */
+			/* echo $total_vacios;exit; */
 
-		public function reporteDatosCriticos(){
-			//funcion
+			$this->load->library('email');
+			$asunto ="Reporte  de usuarios plataforma PTO XR3 con datos faltantes de usuarios .(".$total_vacios.")";
+			$config = array (
+				'mailtype' => 'html',
+				'charset'  => 'utf-8',
+				'priority' => '1',
+				'wordwrap' => TRUE,
+				'protocol' => "smtp",
+				'smtp_port' => 587,
+				'smtp_host' => $this->config->item('rep_smtp_host'),
+				'smtp_user' => $this->config->item('rep_smtp_user'),
+				'smtp_pass' => $this->config->item('rep_smtp_pass')
+			);
+
+			$this->email->initialize($config);
+			$html=$this->load->view('back_end/mantenedores/usuarios/correo_datos_faltantes',["campos_vacios" => $campos_vacios, "titulo" =>$asunto,"total_vacios" => $total_vacios],TRUE);
+			echo $html;exit;
+			$this->email->from("reportes@xr3t.cl","Reporte plataforma XR3");
+
+			if($prueba){
+				$to = array('ricardo.hernandez@km-telecomunicaciones.cl');
+			}else{
+				$to = array('roberto.segovia@xr3.cl');
+			}
+			
+			$this->email->to($to);
+			//$this->email->bcc(array('ricardo.hernandez@splice.cl','german.cortes@km-telecomunicaciones.cl'));  
+			$this->email->subject($asunto);
+			$this->email->message($html); 
+			$resp = $this->email->send();
+
+			if ($resp) {
+				echo json_encode(array('res'=>"ok", "msg"=>"Correo enviado correctamente."));exit;
+			}else{
+				echo json_encode(array('res'=>"error", "msg"=>"Problemas enviando el correo, intente más tarde."));exit;
+			}
+		
 		}
+	
 }
