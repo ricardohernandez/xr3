@@ -233,7 +233,7 @@
 	$route['actualizacionProductividad'] = "back_end/productividad/actualizacionProductividad";
 	$route['vistaGraficosProd'] = "back_end/productividad/vistaGraficosProd";
 	$route['dataGraficos'] = "back_end/productividad/dataGraficos";
-	$route['listaTrabajadores'] = "back_end/productividad/listaTrabajadores";
+	$route['listaTrabajadoresProd'] = "back_end/productividad/listaTrabajadoresProd";
 	
 	$route['vistaResumen'] = "back_end/productividad/vistaResumen";
 	$route['getCabeceras'] = "back_end/productividad/getCabeceras";

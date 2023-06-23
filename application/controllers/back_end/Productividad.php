@@ -501,9 +501,9 @@ class Productividad extends CI_Controller {
 			));
 		}
 
-		public function listaTrabajadores(){
+		public function listaTrabajadoresProd(){
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-     	    echo $this->Productividadmodel->listaTrabajadores($jefe);exit;
+     	    echo $this->Productividadmodel->listaTrabajadoresProd($jefe);exit;
 		}
 
 		public function excel_detalle(){
@@ -636,6 +636,35 @@ class Productividad extends CI_Controller {
 		}
 
 		public function listaResumen(){
+			$periodo = $this->input->get_post("periodo");
+			$trabajador = $this->input->get_post("trabajador");
+			$jefe = $this->input->get_post("jefe");
+			
+			$fechasPeriodo = getFechasPeriodo($periodo);
+			$res = $this->Productividadmodel->getResumen($fechasPeriodo["desde_prod"], $fechasPeriodo["hasta_prod"], $jefe, $trabajador);
+			
+			$data = array_map(function($row) {
+
+				$detalleArray = array_map(fn($item) => [fecha_to_str(explode(':', $item)[0]) => explode(':', $item)[1]], explode(',', $row['Detalle']));
+
+				return [
+					'Zona' => $row['Zona'],
+					'Trabajador' => $row['Trabajador'],
+					'Total' => $row['Total'],
+					'Días' => $row['Días'],
+				] + array_merge(...$detalleArray);
+
+			}, $res);
+			
+			echo json_encode([
+				'data' => $data,
+				'periodo' => periodoFechas($fechasPeriodo['desde_prod'], $fechasPeriodo['hasta_prod']),
+				'actualizacion' => $this->Productividadmodel->actualizacionProductividad()
+			]);exit;
+			
+		}
+
+		public function listaResumenOld(){
 			$periodo=$this->input->get_post("periodo");
 			$trabajador=$this->input->get_post("trabajador");
 			$jefe=$this->input->get_post("jefe");

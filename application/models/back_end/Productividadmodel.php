@@ -80,7 +80,7 @@ class Productividadmodel extends CI_Model {
 			return $row["id"];
 		}
 
-		public function listaTrabajadores($jefe){
+		public function listaTrabajadoresProd($jefe){
 			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				empresa,id,rut,
 			    CONCAT(nombres,' ', apellidos) as 'nombre_completo',
@@ -572,6 +572,52 @@ class Productividadmodel extends CI_Model {
 			return $cabeceras;
 		}
 		
+		public function getResumen($desde, $hasta, $jefe, $trabajador) {
+			$query = "
+				SELECT
+					a.area AS Zona,
+					CONCAT(u.nombres, ' ', u.apellidos) AS Trabajador,
+					ROUND(SUM(p.puntaje), 2) AS Total,
+					COUNT(DISTINCT p.fecha) AS Días,
+					GROUP_CONCAT(DISTINCT CONCAT(cal.fecha, ':', IFNULL(pr.total, 0)) SEPARATOR ',') AS Detalle
+				FROM
+					(
+						SELECT
+							fecha
+						FROM
+							productividad_calendario
+						WHERE
+							fecha BETWEEN '$desde' AND '$hasta'
+					) AS cal
+					LEFT JOIN usuarios u ON 1=1
+					LEFT JOIN usuarios_areas a ON a.id = u.id_area
+					LEFT JOIN (
+						SELECT
+							DATE(p.fecha) AS fecha,
+							p.rut_tecnico AS rut_tecnico,
+							ROUND(SUM(p.puntaje),2) AS total
+						FROM
+							productividad p
+						WHERE
+							p.fecha BETWEEN '$desde' AND '$hasta'
+						GROUP BY
+							fecha, rut_tecnico
+					) AS pr ON pr.fecha = cal.fecha AND pr.rut_tecnico = u.rut
+					LEFT JOIN productividad p ON p.fecha = cal.fecha AND p.rut_tecnico = u.rut
+				WHERE
+					(u.id_nivel_tecnico <> '' AND u.id_nivel_tecnico <> '5')
+					AND (u.id_jefe = '$jefe' OR '$jefe' = '')
+					AND (u.rut = '$trabajador' OR '$trabajador' = '')
+				GROUP BY
+					u.rut, a.area, u.nombres, u.apellidos
+				HAVING
+					Días > 0
+				ORDER BY
+					u.nombres ASC
+			";
+			
+			return $this->db->query($query)->result_array();
+		}
 
 		public function dataResumenProductividad($desde,$hasta,$trabajador,$jefe){
 

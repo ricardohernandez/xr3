@@ -1,31 +1,21 @@
 <style type="text/css">
-   .DTFC_LeftBodyLiner {
-    overflow-x: hidden;
-   }
-
-  .azul{
-    background-color: #233294;
-    color:white;
-   }
-
-
-   .centered2{
-      text-align: center!important;
-   }
+  .DTFC_LeftBodyLiner {
+      overflow-x: hidden;
+  }
 
   .finde_resumen{
-    /*background-color: #EAEDED;*/
-    color:#FF0000!important;
-   /* z-index: 1!important;*/
+     color:#FF0000!important;
+  }
+  
+  table thead th {
+   /*  font-size: 14px!important;  */
+   /*  font-size: 14px!important; */
+   /*  border:1px solid red!important; */
+    /* text-align:center!important; */
   }
 
-  table thead th, table tfoot , table tbody {
-    font-size: 14px!important;
-  }
-
-  .table thead th ,.table tbody td , .table tfoot th  {
-    padding-left: 1rem!important;
-    padding-right: 1rem!important;
+  #tabla_resumen tbody tr td{
+    font-size: 13px!important;
   }
 
   table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
@@ -34,7 +24,7 @@
   }
 
   table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
-    padding-right: 5px!important;
+    /* padding-right: 10px!important; */
   }
   
   .dataTables_wrapper {
@@ -43,15 +33,33 @@
       position: relative;
   }
 
-  @media (min-width: 768px){
-	#tabla_resumen tbody td {
-	    font-size: 13px!important;
-	}
+  div.DTFC_LeftBodyWrapper table thead tr th, div.DTFC_LeftBodyWrapper table thead tr th, div.DTFC_RightBodyWrapper table thead tr th, div.DTFC_RightBodyWrapper table thead tr th {
+      border-top: none;
+     /*  padding:5px 5px!important; */
+    /*   border:1px solid red!important; */
+  }
+  
+  #tabla_resumen thead th {
+     /*  font-size: 14px!important; */
+     /*  padding:5px 5px!important; */
+  }
+
+  div.DTFC_LeftBodyWrapper table tbody tr th, div.DTFC_LeftBodyWrapper table tbody tr td, div.DTFC_RightBodyWrapper table tbody tr th, div.DTFC_RightBodyWrapper table tbody tr td {
+      border-top: none;
+    
+      font-size: 13px!important;
+    /*   padding:5px 5px!important; */
+    /*   border:1px solid red!important; */
+  }
+
+  #tabla_resumen tbody td {
+      /* font-size: 14px!important; */
+     /*  padding:5px 5px!important; */
   }
 
   .actualizacion_productividad{
       display: inline-block;
-      font-size: 11px;
+      font-size: 12px;
   }
 
 </style>
@@ -197,7 +205,7 @@
 
     procesaDatatable(false)
 
-    $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_res").val() } , function(data) {
+    $.getJSON(base + "listaTrabajadoresProd", { jefe : $("#jefe_res").val() } , function(data) {
       response = data;
     }).done(function() {
         $("#trabajadores_resumen").select2({
@@ -368,7 +376,7 @@
       <div class="col-lg-12">
         <div class="row">
           <div class="col-lg-12">
-            <table id="tabla_resumen" class="table-bordered dt-responsive nowrap dataTable stripe row-border order-column" style="width:100%"></table>
+            <table id="tabla_resumen" class="table-bordered dt-responsive nowrap dataTable table-striped row-border order-column" style="width:100%"></table>
           </div>
         </div>
       </div>
