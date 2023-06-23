@@ -197,7 +197,6 @@
 
     procesaDatatable(false)
 
-
     $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_res").val() } , function(data) {
       response = data;
     }).done(function() {
