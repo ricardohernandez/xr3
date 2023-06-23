@@ -8,14 +8,15 @@
   }
   
   table thead th {
-   /*  font-size: 14px!important;  */
-   /*  font-size: 14px!important; */
+    font-size: 15px!important;
    /*  border:1px solid red!important; */
-    /* text-align:center!important; */
+    text-align:center!important;
+    padding:10px 0px;
   }
 
   #tabla_resumen tbody tr td{
-    font-size: 13px!important;
+    padding:5px 5px;
+    font-size: 14px!important;
   }
 
   table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
@@ -24,7 +25,7 @@
   }
 
   table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
-    /* padding-right: 10px!important; */
+    padding-right: 5px!important; 
   }
   
   .dataTables_wrapper {
@@ -35,26 +36,25 @@
 
   div.DTFC_LeftBodyWrapper table thead tr th, div.DTFC_LeftBodyWrapper table thead tr th, div.DTFC_RightBodyWrapper table thead tr th, div.DTFC_RightBodyWrapper table thead tr th {
       border-top: none;
-     /*  padding:5px 5px!important; */
+      padding:0px 5px!important;
+      text-align:center!important;
     /*   border:1px solid red!important; */
   }
   
   #tabla_resumen thead th {
-     /*  font-size: 14px!important; */
-     /*  padding:5px 5px!important; */
+    font-size: 14px!important;
+    padding:0px 5px!important;
   }
 
   div.DTFC_LeftBodyWrapper table tbody tr th, div.DTFC_LeftBodyWrapper table tbody tr td, div.DTFC_RightBodyWrapper table tbody tr th, div.DTFC_RightBodyWrapper table tbody tr td {
-      border-top: none;
-    
-      font-size: 13px!important;
-    /*   padding:5px 5px!important; */
-    /*   border:1px solid red!important; */
+    border-top: none;
+    font-size: 14px!important;
+    padding:5px 5px!important;
+     
   }
 
   #tabla_resumen tbody td {
-      /* font-size: 14px!important; */
-     /*  padding:5px 5px!important; */
+    font-size: 14px!important;
   }
 
   .actualizacion_productividad{
@@ -65,145 +65,65 @@
 </style>
 <script type="text/javascript">
   $(function(){
-    var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
-    const base = "<?php echo base_url() ?>";
+   
+      const perfil = "<?php echo $this->session->userdata('id_perfil'); ?>";
+      const base = "<?php echo base_url() ?>";
 
-  /*****DATATABLE*****/   
-   const procesaDatatable = (reload) => {
-      var periodo_resumen = $("#periodo_resumen").val();
+      const procesaDatatable = async (reload) => {
+      const periodo_resumen = $("#periodo_resumen").val();
+      const trabajador_resumen = perfil === "4" ? $("#trabajador_resumen").val() : $("#trabajadores_resumen").val();
+      const response = await fetch(`${base}getCabeceras?${$.now()}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ periodo: periodo_resumen, trabajador: trabajador_resumen }) });
+      const data = await response.json();
 
-      if(perfil==4){
-        trabajador_resumen = $("#trabajador_resumen").val();
-      }else{
-        trabajador_resumen = $("#trabajadores_resumen").val();
-      }
+      $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled", false);
 
-      async function enviaDatos(url = '', data = {}) {
-          const response = await fetch(url, {
-            method: 'POST', 
-            mode: 'cors', 
-            cache: 'no-cache',
-            credentials: 'same-origin', 
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'strict-origin-when-cross-origin',
-            body: JSON.stringify(data)
-          });
+      if (data.data.length !== 0) {
+      if (reload) { $('#tabla_resumen').DataTable().clear().destroy(); $("#tabla_resumen").html(""); }
 
-          return response.json(); 
-      }
+      const columns = data.data.map(column => ({ data: column, class: column[0] === "D" && column !== "Días" ? "finde_resumen" : "", title: column.charAt(0).toUpperCase() + column.slice(1) }));
 
-      enviaDatos(base+"getCabeceras"+"?"+$.now(), {periodo:periodo_resumen,trabajador:trabajador_resumen})
-        .then(data => {
-          $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled",false);
-          if(data.data.length!=0){
+      $("#tabla_resumen").append('<tfoot><tr class="tfoot_table"></tr></tfoot>');
 
-             if(reload){
-                $('#tabla_resumen').html("");
-                $('#tabla_resumen').DataTable().clear().destroy();
-                $("#tabla_resumen tbody").html("");
-                $("#tabla_resumen thead").html("");
-                $("#tabla_resumen tfoot").html("");
-                $("#tabla_resumen tfoot").html('<tr class="tfoot_table"></tr>')
-              }else{
-                $("#tabla_resumen").append('<tfoot><tr class="tfoot_table"></tr></tfoot>')
-              }
-              
-              columns = [];
-              columnNames = (data.data);
+      columns.forEach(() => $(".tfoot_table").append('<th class="tfoot"></th>'));
 
-              for (var i in columnNames) {
-                let str = columnNames[i];
-                if(str[0]=="D" && columnNames[i]!="Días"){
-                  clase = "finde_resumen"
-                }else{
-                  clase = ""
-                }
-
-                $(".tfoot_table").append('<th class="tfoot"></th>')
-                columns.push({
-                    data: columnNames[i],
-                    class : clase,
-                    title: capitalizeFirstLetter(columnNames[i])
-                })
-              }
-
-             var tabla_resumen = $('#tabla_resumen').DataTable({
-                columns: columns,
-                info:false, 
-                destroy: true,
-                processing: true,  
-                iDisplayLength:-1, 
-                aaSorting : [[1,"asc"]],
-                scrollY: "65vh",
-                scrollX: true,
-                select:true,
-                responsive:false,
-                bSort: true,
-                scrollCollapse: true,
-                paging:false,
-                oLanguage: { 
-                  sProcessing:"<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
-                },
-                initComplete: function () {
-                  if (window.innerWidth > 768) {
-                    new $.fn.dataTable.FixedColumns(this, {
-                      leftColumns: 3,
-                      heightMatch: 'none'
-                    });
-                  }
-                },
-                columnDefs: [
-                      { width: "2%", targets: 0 },
-                      { width: "10%", targets: 1 },
-                      // { visible: false, targets: -1},
-                ],
-              
-                "ajax": {
-                  "url":"<?php echo base_url();?>listaResumen",
-
-                  "dataSrc": function (json) {
-                    $("#fecha_f").val(json.periodo);
-                    $(".actualizacion_productividad").html("<b>Última actualización planilla : "+json.actualizacion+"</b>");
-                    return json.data;
-                  },   
-
-                  data: function(param){
-
-                    var periodo =$("#periodo_resumen").val()
-                    var jefe =$("#jefe_res").val()
-                  
-                    param.periodo = periodo;
-                    param.jefe = jefe;
-
-  			            if(perfil==4){
-  			              param.trabajador = $("#trabajador_resumen").val();
-  			            }else{
-  			              param.trabajador = $("#trabajadores_resumen").val();
-  			            }
-                 }
-              },    
-            });
-
-          }else{
-            $("#tabla_resumen").DataTable().clear().draw()
-            $(".tfoot_table").html("");
-            // $("#tabla_resumen tfoot").html('')
+      const tabla_resumen = $('#tabla_resumen').DataTable({
+        columns,
+        info: false,
+        destroy: true,
+        processing: true,
+        iDisplayLength: -1,
+        aaSorting: [[1, "asc"]],
+        scrollY: "65vh",
+        scrollX: true,
+        select: true,
+        responsive: false,
+        bSort: true,
+        scrollCollapse: true,
+        paging: false,
+        oLanguage: { sProcessing: "<i id='processingIconTable' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>" },
+        initComplete: function () {
+          if (window.innerWidth > 768) {
+            new $.fn.dataTable.FixedColumns(tabla_resumen, { leftColumns: 3, heightMatch: 'none' });
           }
-        
-        $(".btn_filtro_calidad").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled",false);
+        },
+
+        columnDefs: [{ width: "2%", targets: 0 }, { width: "10%", targets: 1 }],
+        ajax: {
+          url: "<?php echo base_url();?>listaResumen",
+          data: { periodo: periodo_resumen, jefe: $("#jefe_res").val(), trabajador: trabajador_resumen },
+          dataSrc: json => { $("#fecha_f").val(json.periodo); $(".actualizacion_productividad").html(`<b>Última actualización planilla : ${json.actualizacion}</b>`); return json.data; }
+        }
       });
-        
-    }
+      
+      } else {
+        $("#tabla_resumen").DataTable().clear().draw();
+        $(".tfoot_table").html("");
+      }
 
+      $(".btn_filtro_calidad").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled", false);
+    };
 
-    function capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
-    procesaDatatable(false)
+    procesaDatatable(false);
 
     $.getJSON(base + "listaTrabajadoresProd", { jefe : $("#jefe_res").val() } , function(data) {
       response = data;
