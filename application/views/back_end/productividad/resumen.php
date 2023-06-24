@@ -6,57 +6,7 @@
   .finde_resumen{
      color:#FF0000!important;
   }
-  
-  table thead th {
-    font-size: 15px!important;
-   /*  border:1px solid red!important; */
-    text-align:center!important;
-    padding:10px 0px;
-  }
-
-  #tabla_resumen tbody tr td{
-    padding:5px 5px;
-    font-size: 14px!important;
-  }
-
-  table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
-    bottom: 2px;
-    display: none!important;
-  }
-
-  table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
-    padding-right: 5px!important; 
-  }
-  
-  .dataTables_wrapper {
-      clear: both;
-      min-height: 302px;
-      position: relative;
-  }
-
-  div.DTFC_LeftBodyWrapper table thead tr th, div.DTFC_LeftBodyWrapper table thead tr th, div.DTFC_RightBodyWrapper table thead tr th, div.DTFC_RightBodyWrapper table thead tr th {
-      border-top: none;
-      padding:0px 5px!important;
-      text-align:center!important;
-    /*   border:1px solid red!important; */
-  }
-  
-  #tabla_resumen thead th {
-    font-size: 14px!important;
-    padding:0px 5px!important;
-  }
-
-  div.DTFC_LeftBodyWrapper table tbody tr th, div.DTFC_LeftBodyWrapper table tbody tr td, div.DTFC_RightBodyWrapper table tbody tr th, div.DTFC_RightBodyWrapper table tbody tr td {
-    border-top: none;
-    font-size: 14px!important;
-    padding:5px 5px!important;
-     
-  }
-
-  #tabla_resumen tbody td {
-    font-size: 14px!important;
-  }
-
+   
   .actualizacion_productividad{
       display: inline-block;
       font-size: 12px;
@@ -70,9 +20,21 @@
       const base = "<?php echo base_url() ?>";
 
       const procesaDatatable = async (reload) => {
+
       const periodo_resumen = $("#periodo_resumen").val();
       const trabajador_resumen = perfil === "4" ? $("#trabajador_resumen").val() : $("#trabajadores_resumen").val();
-      const response = await fetch(`${base}getCabeceras?${$.now()}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ periodo: periodo_resumen, trabajador: trabajador_resumen }) });
+
+      const response = await fetch(`${base}getCabeceras?${$.now()}`, { 
+        method: 'POST',
+        headers: {
+           'Content-Type': 'application/json' 
+        }, 
+        body: JSON.stringify({
+          periodo: periodo_resumen,
+          trabajador: trabajador_resumen 
+        }) 
+      });
+
       const data = await response.json();
 
       $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled", false);
@@ -106,7 +68,6 @@
             new $.fn.dataTable.FixedColumns(tabla_resumen, { leftColumns: 3, heightMatch: 'none' });
           }
         },
-
         columnDefs: [{ width: "2%", targets: 0 }, { width: "10%", targets: 1 }],
         ajax: {
           url: "<?php echo base_url();?>listaResumen",
@@ -114,7 +75,7 @@
           dataSrc: json => { $("#fecha_f").val(json.periodo); $(".actualizacion_productividad").html(`<b>Última actualización planilla : ${json.actualizacion}</b>`); return json.data; }
         }
       });
-      
+
       } else {
         $("#tabla_resumen").DataTable().clear().draw();
         $(".tfoot_table").html("");
@@ -147,18 +108,6 @@
     $(document).off('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_res').on('change', '#periodo_resumen , #trabajadores_resumen ,#jefe_res', function(event) {
       procesaDatatable(true)
     }); 
-
-    /*$(document).off('change', '#periodo_resumen').on('change', '#periodo_resumen',function(event) {
-      $(".btn_filtro_resumen").prop("disabled" , true);
-      $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...');
-      procesaDatatable(true)
-    }); 
-
-    $(document).off('change', '#trabajadores_resumen').on('change', '#trabajadores_resumen',function(event) {
-      $(".btn_filtro_resumen").prop("disabled" , true);
-      $(".btn_filtro_resumen").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...');
-      procesaDatatable(true)
-    }); */
      
   })
 </script>
