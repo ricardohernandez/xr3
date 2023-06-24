@@ -644,7 +644,8 @@ class Productividad extends CI_Controller {
 			$res = $this->Productividadmodel->getResumen($fechasPeriodo["desde_prod"], $fechasPeriodo["hasta_prod"], $jefe, $trabajador);
 			
 			$data = array_map(function($row) {
-
+				
+				
 				$detalleArray = array_map(fn($item) => [fecha_to_str(explode(':', $item)[0]) => explode(':', $item)[1]], explode(',', $row['Detalle']));
 
 				return [
