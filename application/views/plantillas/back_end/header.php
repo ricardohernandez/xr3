@@ -107,6 +107,8 @@
         $("body").css("display", "");
         $(".logo_oscuro").show();
         $(".logo_claro").hide();
+
+        window.dispatchEvent(new Event('modoOscuroActivado'));
         
       } else if (modo === 'modo_dia') {
         modoNocheElements.forEach(element => element.style.display = 'inline');
@@ -122,6 +124,8 @@
         $("body").css("display", "");
         $(".logo_claro").show();
         $(".logo_oscuro").hide();
+
+        window.dispatchEvent(new Event('modoClaroActivado'));
 
       }
 		}

@@ -36,9 +36,17 @@
 <script type="text/javascript" charset="utf-8"> 
   $(function(){ 
     $.fn.modal.Constructor.prototype.enforceFocus = function() {};
-
-    activarTymce()
     
+    window.addEventListener('modoOscuroActivado', function() {
+      activarTymce("oscuro")
+      console.log('Modo oscuro activado desde otro archivo');
+    });
+
+    window.addEventListener('modoClaroActivado', function() {
+      activarTymce("claro")
+      console.log('Modo claro activado desde otro archivo');
+    });
+
     /*****DATATABLE*****/  
 
       base_url = "<?php echo base_url() ?>";
@@ -108,341 +116,350 @@
             { "data": "ultima_actualizacion" ,"class":"margen-td centered"},
 
           ]
-    }); 
+      }); 
 
 
-    $(document).on('keyup paste', '#buscador', function() {
-      tb.search($(this).val().trim()).draw();
-    });
+      $(document).on('keyup paste', '#buscador', function() {
+        tb.search($(this).val().trim()).draw();
+      });
 
-    String.prototype.capitalize = function() {
-        return this.charAt(0).toUpperCase() + this.slice(1);
-    }
-
-    setTimeout( function () {
-      var tb = $.fn.dataTable.fnTables(true);
-      if ( tb.length > 0 ) {
-          $(tb).dataTable().fnAdjustColumnSizing();
-    }}, 200 ); 
-
-    setTimeout( function () {
-      var tb = $.fn.dataTable.fnTables(true);
-      if ( tb.length > 0 ) {
-          $(tb).dataTable().fnAdjustColumnSizing();
-    }}, 2000 ); 
-
-    setTimeout( function () {
-      var tb = $.fn.dataTable.fnTables(true);
-      if ( tb.length > 0 ) {
-          $(tb).dataTable().fnAdjustColumnSizing();
+      String.prototype.capitalize = function() {
+          return this.charAt(0).toUpperCase() + this.slice(1);
       }
-    }, 4000 ); 
 
+      setTimeout( function () {
+        var tb = $.fn.dataTable.fnTables(true);
+        if ( tb.length > 0 ) {
+            $(tb).dataTable().fnAdjustColumnSizing();
+      }}, 200 ); 
 
-    $(document).off('click', '.btn_filtro').on('click', '.btn_filtro',function(event) {
-     event.preventDefault();
-      $(this).prop("disabled" , true);
-      $(".btn_filtro").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
-       tb.ajax.reload();
-    });
+      setTimeout( function () {
+        var tb = $.fn.dataTable.fnTables(true);
+        if ( tb.length > 0 ) {
+            $(tb).dataTable().fnAdjustColumnSizing();
+      }}, 2000 ); 
 
-    $(document).off('click', '.btn_nuevo_prevencion').on('click', '.btn_nuevo_prevencion', function(event) {
-        $('#formIngreso')[0].reset();
-        $("#hash_id").val("");
-        $('#modal_ingreso').modal('toggle'); 
-        $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
-        $(".btn_ingreso").attr("disabled", false);
-        $(".cierra_modal").attr("disabled", false);
-        $("#contenedor_imagen").hide();
-        $("#link1_form").html("").hide()
-        $("#link2_form").html("").hide()
-        $("#link3_form").html("").hide()
-        $("#principal_form").html("").hide()
-        activarTymce()
+      setTimeout( function () {
+        var tb = $.fn.dataTable.fnTables(true);
+        if ( tb.length > 0 ) {
+            $(tb).dataTable().fnAdjustColumnSizing();
+        }
+      }, 4000 ); 
 
-    });
+    /*****DATATABLE*****/  
 
-    $(document).off('submit', '#formIngreso').on('submit', '#formIngreso',function(event) {
-        var url="<?php echo base_url()?>";
-        var formElement = document.querySelector("#formIngreso");
-        var formData = new FormData(formElement);
+      $(document).off('click', '.btn_filtro').on('click', '.btn_filtro',function(event) {
+      event.preventDefault();
+        $(this).prop("disabled" , true);
+        $(".btn_filtro").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
+        tb.ajax.reload();
+      });
 
-        $image_crop.croppie('result', {
-            type: 'canvas',
-            size: 'viewport'
-        }).then(function(response){
+      /*****FORM*****/  
 
-        formData.append("imagen", response);
-          $.ajax({
-            url: $('#formIngreso').attr('action')+"?"+$.now(),  
-            type: 'POST',
-            data: formData,
-            cache: false,
-            processData: false,
-            dataType: "json",
-            contentType : false,
-            beforeSend:function(){
-              /*  $(".btn_ingreso").attr("disabled", true);
-              $(".cierra_modal").attr("disabled", true);
-              $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", true);
-              $(".btn_ingreso").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true); */
-            },
-            success: function (data) {
-              if(data.res == "sess"){
-                window.location="unlogin";
+        $(document).off('click', '.btn_nuevo_prevencion').on('click', '.btn_nuevo_prevencion', function(event) {
+            $('#formIngreso')[0].reset();
+            $("#hash_id").val("");
+            $('#modal_ingreso').modal('toggle'); 
+            $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
+            $(".btn_ingreso").attr("disabled", false);
+            $(".cierra_modal").attr("disabled", false);
+            $("#contenedor_imagen").hide();
+            $("#link1_form").html("").hide()
+            $("#link2_form").html("").hide()
+            $("#link3_form").html("").hide()
+            $("#principal_form").html("").hide()
 
-              }else if(data.res=="ok"){
-                $('#modal_ingreso').modal('toggle'); 
-                $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
-                $(".btn_ingreso").attr("disabled", false);
-                $(".cierra_modal").attr("disabled", false);
-                $(".btn_ingreso").html(' <i class="fa fa-save"></i> Guardar').prop("disabled",true);
+            window.addEventListener('modoOscuroActivado', function() {
+              activarTymce("oscuro")
+              console.log('Modo oscuro activado desde otro archivo');
+            });
 
-                $.notify(data.msg, {  
-                  className:'success',
-                  globalPosition: 'top right',
-                  autoHideDelay:5000,
-                });
+            window.addEventListener('modoClaroActivado', function() {
+              activarTymce("claro")
+              console.log('Modo claro activado desde otro archivo');
+            });
+        });
 
-                $('#formIngreso')[0].reset();
-                tb.ajax.reload();
-              }else if(data.res=="error"){
-                $(".btn_ingreso").html(' <i class="fa fa-save"></i> Guardar').prop("disabled",true);
-                $(".btn_ingreso").attr("disabled", false);
-                $(".cierra_modal").attr("disabled", false);
-                $.notify(data.msg, {
-                  className:'error',
-                  globalPosition: 'top right',
-                  autoHideDelay:5000,
-                });
-                $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
+        $(document).off('submit', '#formIngreso').on('submit', '#formIngreso',function(event) {
+            var url="<?php echo base_url()?>";
+            var formElement = document.querySelector("#formIngreso");
+            var formData = new FormData(formElement);
 
-              }
-            },
-            error : function(xhr, textStatus, errorThrown ) {
-              if (textStatus == 'timeout') {
-                  this.tryCount++;
-                  if (this.tryCount <= this.retryLimit) {
-                      $.notify("Reintentando...", {
-                        className:'info',
-                        globalPosition: 'top right'
-                      });
-                      $.ajax(this);
+            $image_crop.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function(response){
+
+            formData.append("imagen", response);
+              $.ajax({
+                url: $('#formIngreso').attr('action')+"?"+$.now(),  
+                type: 'POST',
+                data: formData,
+                cache: false,
+                processData: false,
+                dataType: "json",
+                contentType : false,
+                beforeSend:function(){
+                  /*  $(".btn_ingreso").attr("disabled", true);
+                  $(".cierra_modal").attr("disabled", true);
+                  $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", true);
+                  $(".btn_ingreso").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true); */
+                },
+                success: function (data) {
+                  if(data.res == "sess"){
+                    window.location="unlogin";
+
+                  }else if(data.res=="ok"){
+                    $('#modal_ingreso').modal('toggle'); 
+                    $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
+                    $(".btn_ingreso").attr("disabled", false);
+                    $(".cierra_modal").attr("disabled", false);
+                    $(".btn_ingreso").html(' <i class="fa fa-save"></i> Guardar').prop("disabled",true);
+
+                    $.notify(data.msg, {  
+                      className:'success',
+                      globalPosition: 'top right',
+                      autoHideDelay:5000,
+                    });
+
+                    $('#formIngreso')[0].reset();
+                    tb.ajax.reload();
+                  }else if(data.res=="error"){
+                    $(".btn_ingreso").html(' <i class="fa fa-save"></i> Guardar').prop("disabled",true);
+                    $(".btn_ingreso").attr("disabled", false);
+                    $(".cierra_modal").attr("disabled", false);
+                    $.notify(data.msg, {
+                      className:'error',
+                      globalPosition: 'top right',
+                      autoHideDelay:5000,
+                    });
+                    $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
+
+                  }
+                },
+                error : function(xhr, textStatus, errorThrown ) {
+                  if (textStatus == 'timeout') {
+                      this.tryCount++;
+                      if (this.tryCount <= this.retryLimit) {
+                          $.notify("Reintentando...", {
+                            className:'info',
+                            globalPosition: 'top right'
+                          });
+                          $.ajax(this);
+                          return;
+                      } else{
+                          $.notify("Problemas en el servidor, intente nuevamente.", {
+                            className:'warn',
+                            globalPosition: 'top right'
+                          });     
+                          $('#modal_ingreso').modal("toggle");
+                      }    
                       return;
-                  } else{
-                      $.notify("Problemas en el servidor, intente nuevamente.", {
+                  }
+
+                  if (xhr.status == 500) {
+                      $.notify("Problemas en el servidor, intente más tarde.", {
                         className:'warn',
                         globalPosition: 'top right'
-                      });     
+                      });
                       $('#modal_ingreso').modal("toggle");
-                  }    
-                  return;
-              }
+                  }
+              },timeout:235000
+            }); 
+          });
+          return false; 
+        });
 
-              if (xhr.status == 500) {
-                  $.notify("Problemas en el servidor, intente más tarde.", {
-                    className:'warn',
-                    globalPosition: 'top right'
-                  });
-                  $('#modal_ingreso').modal("toggle");
-              }
-          },timeout:235000
-        }); 
-      });
-      return false; 
-    });
+        $(document).off('click', '.btn_editar').on('click', '.btn_editar',function(event) {
+            event.preventDefault();
+            hash_id=$(this).attr("data-hash");
+            $('#formIngreso')[0].reset();
+            $("#hash_id").val("");
+            $("#hash_id").val(hash_id);
+            $('#modal_ingreso').modal('toggle'); 
+            $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", true);
+            $(".btn_ingreso").attr("disabled", true);
+            $(".cierra_modal").attr("disabled", true);
+            $("#contenedor_imagen").hide();
 
-    $(document).off('click', '.btn_editar').on('click', '.btn_editar',function(event) {
-        event.preventDefault();
-        hash_id=$(this).attr("data-hash");
-        $('#formIngreso')[0].reset();
-        $("#hash_id").val("");
-        $("#hash_id").val(hash_id);
-        $('#modal_ingreso').modal('toggle'); 
-        $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", true);
-        $(".btn_ingreso").attr("disabled", true);
-        $(".cierra_modal").attr("disabled", true);
-        $("#contenedor_imagen").hide();
+            $.ajax({
+              url: base_url+"getDataNormativas"+"?"+$.now(),  
+              type: 'POST',
+              cache: false,
+              tryCount : 0,
+              retryLimit : 3,
+              data:{hash_id:hash_id},
+              dataType:"json",
+              beforeSend:function(){
+              $(".btn_ingreso").prop("disabled",true); 
+              $(".cierra_modal").prop("disabled",true); 
+              },
+              success: function (data) {
+                if(data.res=="ok"){
+                  for(dato in data.datos){
+                      $("#hash_id").val(data.datos[dato].hash_id);
+                      $("#titulo").val(data.datos[dato].titulo);
+                      tinymce.get('descripcion').setContent(data.datos[dato].descripcion);
 
-        $.ajax({
-          url: base_url+"getDataNormativas"+"?"+$.now(),  
-          type: 'POST',
-          cache: false,
-          tryCount : 0,
-          retryLimit : 3,
-          data:{hash_id:hash_id},
-          dataType:"json",
-          beforeSend:function(){
-           $(".btn_ingreso").prop("disabled",true); 
-           $(".cierra_modal").prop("disabled",true); 
-          },
-          success: function (data) {
-            if(data.res=="ok"){
-              for(dato in data.datos){
-                  $("#hash_id").val(data.datos[dato].hash_id);
-                  $("#titulo").val(data.datos[dato].titulo);
-                  tinymce.get('descripcion').setContent(data.datos[dato].descripcion);
+                      if(data.datos[dato].archivo!=""){
+                        $("#principal_form").html(`<a title="Ver archivo principal" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].archivo}"><i class="fa fa-file"></i></a>`).show()
+                      }
 
-                  if(data.datos[dato].archivo!=""){
-                    $("#principal_form").html(`<a title="Ver archivo principal" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].archivo}"><i class="fa fa-file"></i></a>`).show()
+                      if(data.datos[dato].link1!=""){
+                        $("#link1_form").html(`<a title="Ver archivo 1" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].link1}"><i class="fa fa-file"></i></a>`).show()
+                      }
+
+                      if(data.datos[dato].link2!=""){
+                        $("#link2_form").html(`<a title="Ver archivo 2" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].link2}"><i class="fa fa-file"></i></a>`).show()
+                      }
+
+                      if(data.datos[dato].link3!=""){
+                        $("#link3_form").html(`<a title="Ver archivo 3" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].link3}"><i class="fa fa-file"></i></a>`).show()
+                      }
+
                   }
 
-                  if(data.datos[dato].link1!=""){
-                    $("#link1_form").html(`<a title="Ver archivo 1" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].link1}"><i class="fa fa-file"></i></a>`).show()
-                  }
+                  $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
+                  $(".cierra_modal").prop("disabled", false);
+                  $(".btn_ingreso").prop("disabled", false);
 
-                  if(data.datos[dato].link2!=""){
-                    $("#link2_form").html(`<a title="Ver archivo 2" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].link2}"><i class="fa fa-file"></i></a>`).show()
-                  }
+                }else if(data.res == "sess"){
+                  window.location="../";
+                }
 
-                  if(data.datos[dato].link3!=""){
-                    $("#link3_form").html(`<a title="Ver archivo 3" style="margin-left:10px;" target="_blank" href="${base_url}archivos/prevencion_modulos/${data.datos[dato].link3}"><i class="fa fa-file"></i></a>`).show()
-                  }
-
-              }
-
-              $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", false);
-              $(".cierra_modal").prop("disabled", false);
-              $(".btn_ingreso").prop("disabled", false);
-
-            }else if(data.res == "sess"){
-              window.location="../";
-            }
-
-            $(".btn_ingreso").prop("disabled",false); 
-            $(".cierra_modal").prop("disabled",false); 
-          },
-          error : function(xhr, textStatus, errorThrown ) {
-            if (textStatus == 'timeout') {
-                this.tryCount++;
-                if (this.tryCount <= this.retryLimit) {
-                    $.notify("Reintentando...", {
-                      className:'info',
-                      globalPosition: 'top right'
-                    });
-                    $.ajax(this);
+                $(".btn_ingreso").prop("disabled",false); 
+                $(".cierra_modal").prop("disabled",false); 
+              },
+              error : function(xhr, textStatus, errorThrown ) {
+                if (textStatus == 'timeout') {
+                    this.tryCount++;
+                    if (this.tryCount <= this.retryLimit) {
+                        $.notify("Reintentando...", {
+                          className:'info',
+                          globalPosition: 'top right'
+                        });
+                        $.ajax(this);
+                        return;
+                    } else{
+                      $.notify("Problemas en el servidor, intente nuevamente.", {
+                          className:'warn',
+                          globalPosition: 'top right'
+                        });     
+                        $('#modal_nuevo_usuario').modal("toggle");
+                    }    
                     return;
-                } else{
-                   $.notify("Problemas en el servidor, intente nuevamente.", {
+                }
+                if (xhr.status == 500) {
+                    $.notify("Problemas en el servidor, intente más tarde.", {
                       className:'warn',
                       globalPosition: 'top right'
-                    });     
-                    $('#modal_nuevo_usuario').modal("toggle");
-                }    
-                return;
-            }
-            if (xhr.status == 500) {
-                $.notify("Problemas en el servidor, intente más tarde.", {
-                  className:'warn',
-                  globalPosition: 'top right'
-                });
-                $('#modal_ingreso').modal("toggle");
-            }
-        },timeout:135000
-      }); 
-    });
+                    });
+                    $('#modal_ingreso').modal("toggle");
+                }
+            },timeout:135000
+          }); 
+        });
 
-    $(document).off('click', '.btn_eliminar').on('click', '.btn_eliminar',function(event) {
-        hash=$(this).data("hash");
-        if(confirm("¿Esta seguro que desea eliminar este registro?")){
-            $.post(base_url+'eliminaNormativas'+"?"+$.now(),{"hash": hash}, function(data) {
-              
-              if(data.res=="ok"){
+        $(document).off('click', '.btn_eliminar').on('click', '.btn_eliminar',function(event) {
+            hash=$(this).data("hash");
+            if(confirm("¿Esta seguro que desea eliminar este registro?")){
+                $.post(base_url+'eliminaNormativas'+"?"+$.now(),{"hash": hash}, function(data) {
+                  
+                  if(data.res=="ok"){
 
-                $.notify(data.msg, {
-                  className:'success',
-                  globalPosition: 'top right',
-                  autoHideDelay:5000
-                });
-               tb.ajax.reload();
+                    $.notify(data.msg, {
+                      className:'success',
+                      globalPosition: 'top right',
+                      autoHideDelay:5000
+                    });
+                  tb.ajax.reload();
 
-              }else{
+                  }else{
 
-                $.notify(data.msg, {
-                  className:'danger',
-                  globalPosition: 'top right'
-                });
-                
+                    $.notify(data.msg, {
+                      className:'danger',
+                      globalPosition: 'top right'
+                    });
+                    
+                  }
+
+                },"json");
               }
-
-            },"json");
-          }
-    });
-
-    $image_crop = $('#contenedor_imagen').croppie({
-      enableExif: true,
-      viewport: {
-        width:700,
-        height:460,
-        type:'square' //circle
-      },
-      boundary:{
-        width:900,
-        height:480
-      }
-    });
-
-    $('#imagen').on('change', function(){
-      const file = this.files[0];
-      const  fileType = file['type'];
-      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/jpg'];
+        });
     
-      if (validImageTypes.includes(fileType)) {   
+    /*****OTROS*****/  
 
-        $("#contenedor_imagen").show();
-
-        var reader = new FileReader();
-        reader.onload = function (event) {
-          $image_crop.croppie('bind', {
-            url: event.target.result
-          }).then(function(){
-            console.log('jQuery bind complete');
-          });
+      async function activarTymce(tema) {
+        // Eliminar la instancia actual de TinyMCE si existe
+        if (tinymce.activeEditor) {
+          tinymce.remove(tinymce.activeEditor);
         }
+
+        // Definir el skin y content_css según el tema
+        const skin = tema === 'oscuro' ? 'oxide-dark' : 'oxide';
+        const contentCSS = tema === 'oscuro' ? 'dark' : 'default';
+
+        // Inicializar el editor TinyMCE
+        tinymce.init({
+          selector: '#descripcion',
+          skin: skin,
+          content_css: contentCSS,
+          plugins: 'searchreplace autolink directionality visualblocks visualchars image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap emoticons autosave',
+          toolbar: 'undo redo print spellcheckdialog formatpainter | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | alignleft aligncenter alignright alignjustify lineheight | checklist bullist numlist indent outdent | removeformat',
+          height: "400",
+          language: 'es'
+        });
+      }
+
+
         
-        reader.readAsDataURL(this.files[0]);
-
-      }else{
-        $("#contenedor_imagen").hide();
-        const validImageTypesVideo = ['video/mp4'];
-        if (!validImageTypesVideo.includes(fileType)) {
-            $.notify("Formato de archivo no soportado.", {
-                  type:'error',
-                  globalPosition: 'top right'
-            });  
-            return;
+      $image_crop = $('#contenedor_imagen').croppie({
+        enableExif: true,
+        viewport: {
+          width:700,
+          height:460,
+          type:'square' //circle
+        },
+        boundary:{
+          width:900,
+          height:480
         }
-      }
-    });
-
-
-    async function activarTymce() {
-      // Eliminar la instancia actual de TinyMCE si existe
-      if (tinymce.activeEditor) {
-        tinymce.remove(tinymce.activeEditor);
-      }
-
-      // Inicializar el editor TinyMCE
-      tinymce.init({
-        selector: '#descripcion',
-        skin: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "oxide-dark" : ""),
-        content_css: (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : ""),
-
-        plugins: '  searchreplace autolink directionality  visualblocks visualchars image link media  codesample table charmap pagebreak nonbreaking anchor  insertdatetime advlist lists  wordcount   help   charmap  emoticons   autosave',
-        toolbar: 'undo redo print spellcheckdialog formatpainter | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | alignleft aligncenter alignright alignjustify lineheight | checklist bullist numlist indent outdent | removeformat',
-        height: "400",
-
-        /* plugins: [
-          "advlist autolink lists link image charmap print preview anchor",
-          "searchreplace visualblocks code fullscreen",
-          "insertdatetime media table contextmenu paste"
-        ],
-       
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
-        advlist_bullet_styles: "circle", */
-        language: 'es'
       });
-    }
+
+      $('#imagen').on('change', function(){
+        const file = this.files[0];
+        const  fileType = file['type'];
+        const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/jpg'];
+      
+        if (validImageTypes.includes(fileType)) {   
+
+          $("#contenedor_imagen").show();
+
+          var reader = new FileReader();
+          reader.onload = function (event) {
+            $image_crop.croppie('bind', {
+              url: event.target.result
+            }).then(function(){
+              console.log('jQuery bind complete');
+            });
+          }
+          
+          reader.readAsDataURL(this.files[0]);
+
+        }else{
+          $("#contenedor_imagen").hide();
+          const validImageTypesVideo = ['video/mp4'];
+          if (!validImageTypesVideo.includes(fileType)) {
+              $.notify("Formato de archivo no soportado.", {
+                    type:'error',
+                    globalPosition: 'top right'
+              });  
+              return;
+          }
+        }
+      });
+
 
 
   });
