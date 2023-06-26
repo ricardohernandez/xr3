@@ -482,11 +482,21 @@ $config = array(
                         'label'   => 'Responsable 1',
                         'rules'   => 'trim|required'
                   ),
+            ),
 
-                  
-                  
+             'formIngresoNormativas' => array(
+                  array(
+                        'field'   => 'titulo',
+                        'label'   => 'Título',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'descripcion',
+                        'label'   => 'Descripción',
+                        'rules'   => 'trim|required'
+                  )
+             
              )
-               
             
                
  );

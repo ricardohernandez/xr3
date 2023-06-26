@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Documentacion extends CI_Controller {
+class Prevencion_documentacion extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
 		if($this->uri->segment("1")==""){
 			redirect("inicio");
 		}
-		$this->load->model("back_end/Documentacionmodel");
+		$this->load->model("back_end/Prevencion_documentacionmodel");
 		$this->load->model("back_end/Iniciomodel");
 		$this->load->helper(array('fechas','str'));
 		$this->load->library('user_agent');
@@ -22,11 +22,9 @@ class Documentacion extends CI_Controller {
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
 	    	"ip"=>$this->input->ip_address(),
     	);
-    	$this->Documentacionmodel->insertarVisita($data);
+    	$this->Prevencion_documentacionmodel->insertarVisita($data);
 	}
-
-
-
+ 
 	public function checkLogin(){
 		// if($this->session->userdata('rutUsuario')==""){
 		// 	echo json_encode(array('res'=>"sess"));exit;
@@ -39,93 +37,213 @@ class Documentacion extends CI_Controller {
 	      }
 	}
 
-	/***********CAPACITACION*****************/
+	/***********NORMATIVAS*****************/
 
-		public function indexCapacitacion(){
+		public function indexNormativas(){
 	    	$this->acceso();
+
+			$tipo = $this->uri->segment(2);
+
 		    $datos = array(
-		        'titulo' => "Documentación XR3",
-		        'contenido' => "documentacion/inicio",
+		        'titulo' => "Prevención riesgos XR3",
+		        'contenido' => "prevencion_documentacion/inicio",
+				'tipo' => $tipo,
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
 			$this->load->view('plantillas/plantilla_back_end',$datos);
 			
 		}
 
-		public function vistaCapacitacion(){
+		public function vistaNormativas(){
+			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
 			$this->visitas("Inicio",2);
+
 			if($this->input->is_ajax_request()){
+
 				$datos=array(	
+					"tipo" => $tipo,
+					"tipo_str" => $this->getTipoCompletoDoc($tipo)
 			    );
-				$this->load->view('back_end/documentacion/capacitacion',$datos);
+
+				$this->load->view('back_end/prevencion_documentacion/normativas',$datos);
 			}
 		}
 
-		public function getCapacitacionList(){
-			echo json_encode($this->Documentacionmodel->getCapacitacionList());
+		public function getNormativasList(){
+			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
+
+			$normativasList = $this->Prevencion_documentacionmodel->getNormativasList($this->getTipoDoc($tipo));
+
+			foreach ($normativasList as &$normativa) {
+				$normativa['descripcion'] = strip_tags($normativa['descripcion']);
+				$normativa['descripcion'] = html_entity_decode($normativa['descripcion']);
+				$normativa['descripcion'] = preg_replace('/\s+/', ' ', $normativa['descripcion']);
+				$normativa['descripcion'] = trim($normativa['descripcion']);
+			}
+
+			echo json_encode($normativasList);
+
+		}
+
+		public function getTipoDoc($tipo) {
+			$tipos = [
+				'normativas' => 1,
+				'identificacion_riesgos' => 2,
+				'medidas_proteccion' => 3,
+				'seguridad_equipos_herramientas' => 4,
+				'primeros_auxilios' => 5,
+				'ergonomia_y_cuidado' => 6,
+				'comunicacion_conciencia' => 7
+			];
+		
+			return $tipos[$tipo] ?? 1;
+		}
+
+		public function getTipoCompletoDoc($tipo) {
+			$tipos = [
+				'normativas' => 'Normativas y regulaciones de seguridad',
+				'identificacion_riesgos' => 'Identificación de riesgos',
+				'medidas_proteccion' => 'Medidas de prevención y protección',
+				'seguridad_equipos_herramientas' => 'Seguridad en el manejo de equipos y herramientas',
+				'primeros_auxilios' => 'Primeros auxilios y manejo de emergencias',
+				'ergonomia_y_cuidado' => 'Ergonomía y cuidado postural',
+				'comunicacion_conciencia' => 'Comunicación y conciencia situacional'
+			];
+		
+			return $tipos[$tipo] ?? 1;
 		}
 		
-		public function formIngresoCapacitacion(){
+		public function formIngresoNormativas(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$nombre=$this->security->xss_clean(strip_tags($this->input->post("nombre_archivo")));
-				$fecha = date("Y-m-d");
-				$digitador=$this->session->userdata("id");
+				$titulo=$this->security->xss_clean(strip_tags($this->input->post("titulo")));
+				$tipo=$this->getTipoDoc($this->security->xss_clean(strip_tags($this->input->post("tipo"))));
+				$descripcion=$this->input->post("descripcion");
+				$fecha = date("Y-m-d G:i:s");
+				$id_autor=$this->session->userdata("id");
 				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
-		   		$adjunto=@$_FILES["userfile"]["name"];
+				$archivo_principal=@$_FILES["archivo_principal"]["name"];
+				$link1=@$_FILES["link1"]["name"];
+				$link2=@$_FILES["link2"]["name"];
+				$link3=@$_FILES["link3"]["name"];
 
-	   			if ($this->form_validation->run("formIngresoCapacitacion") == FALSE){
+	   			if ($this->form_validation->run("formIngresoNormativas") == FALSE){
 					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 				}else{	
-
 					
+					$archivo = $_POST['imagen']; 
+
 			    	if($hash==FALSE){
 
-			    		$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'id_digitador' => $digitador,
-		    		 	'fecha' => $fecha,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
+						$data = array(
+							'id_categoria' => $tipo,
+							'titulo' => $titulo,
+							'descripcion' => $descripcion,
+							'id_autor' => $id_autor,
+							'fecha' => $fecha,
+							'ultima_actualizacion' => $ultima_actualizacion);
+						
+						if($archivo_principal!=""){
 
+							$path = $_FILES['archivo_principal']['name'];
+							$ext = pathinfo($path, PATHINFO_EXTENSION);
 
-			    		if($adjunto!=""){
-							$nombre=$this->procesaArchivoCapacitacion($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-						}else{
-							$data["archivo"]="";
+							if($ext!="mp4" and $ext!="MP4" and $ext!="png" and $ext!="PNG" and $ext!="jpg" and $ext!="JPG" and $ext!="jpeg" and $ext!="JPEG"){
+								echo json_encode(array('res'=>'error', 'msg' => 'Formato de archivo no soportado.'));exit;
+							}
+
+							if($ext=="mp4"){
+
+								$nombre=$this->procesaVideo($_FILES["archivo_principal"]);
+								$data["archivo"]=$nombre;
+
+							}else{
+								$img = str_replace('data:image/png;base64,', '', $archivo);
+								$nombre=strtolower(url_title(convert_accented_characters("noticia_".rand(10, 99999)))).".jpg";
+								file_put_contents('./archivos/prevencion_modulos/'.$nombre, base64_decode($img));
+								$data["archivo"]=$nombre;
+							}
 						}
 
-						$insert_id=$this->Documentacionmodel->formIngresoCapacitacion($data);
+						
+			    		if($link1!=""){
+							$nombre=$this->procesaArchivo($_FILES["link1"],"link1"."_".date("ymdHis"));
+							$data["link1"]=$nombre;
+						}
+
+						if($link2!=""){
+							$nombre=$this->procesaArchivo($_FILES["link2"],"link2"."_".date("ymdHis"));
+							$data["link2"]=$nombre;
+						}
+
+						if($link3!=""){
+							$nombre=$this->procesaArchivo($_FILES["link3"],"link3"."_".date("ymdHis"));
+							$data["link3"]=$nombre;
+						}
+
+						$insert_id=$this->Prevencion_documentacionmodel->formIngresoNormativas($data);
 						if($insert_id!=FALSE){
 							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
 						}
+				
 
 					}else{
-						
+						$archivo = $_POST['imagen']; 
+
 						$data = array(
-		    		 	'nombre' => $nombre,
+		    		 	'titulo' => $titulo,
+						'descripcion'=>$descripcion,
 		    		 	'ultima_actualizacion' => $ultima_actualizacion);
+						
+						 if($archivo_principal!=""){
 
-						if($adjunto!=""){
-							$nombre=$this->procesaArchivoCapacitacion($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
+							$path = $_FILES['archivo_principal']['name'];
+							$ext = pathinfo($path, PATHINFO_EXTENSION);
 
-							$archivo_bd=$this->Documentacionmodel->getDataRegistroCapacitacion($hash);
-
-							foreach($archivo_bd as $a){
-								if($a["archivo"]!=""){
-									if (file_exists("./archivos_documentacion/capacitacion/".$a["archivo"])){
-										unlink("./archivos_documentacion/capacitacion/".$a["archivo"]);
-									}	
-								}
+							if($ext!="mp4" and $ext!="MP4" and $ext!="png" and $ext!="PNG" and $ext!="jpg" and $ext!="JPG" and $ext!="jpeg" and $ext!="JPEG"){
+								echo json_encode(array('res'=>'error', 'msg' => 'Formato de archivo no soportado.'));exit;
 							}
 
+							$imagen=$this->Prevencion_documentacionmodel->getImagen($hash);
+							if($imagen!=""){
+								if (file_exists('./archivos/prevencion_modulos/'.$imagen)){
+									unlink('./archivos/prevencion_modulos/'.$imagen);
+								}
+							}
+							
+							if($ext=="mp4"){
+
+								$nombre=$this->procesaVideo($_FILES["archivo_principal"]);
+								$data["archivo"]=$nombre;
+
+							}else{
+								$img = str_replace('data:image/png;base64,', '', $archivo);
+								$nombre=strtolower(url_title(convert_accented_characters("noticia_".rand(10, 99999)))).".jpg";
+								file_put_contents('./archivos/prevencion_modulos/'.$nombre, base64_decode($img));
+								$data["archivo"]=$nombre;
+							}
 						}
 
-						if($this->Documentacionmodel->formActualizarCapacitacion($hash,$data)){
+						if($link1!=""){
+							$nombre=$this->procesaArchivo($_FILES["link1"],"link1"."_".date("ymdHis"));
+							$data["link1"]=$nombre;
+						}
+
+						if($link2!=""){
+							$nombre=$this->procesaArchivo($_FILES["link2"],"link2"."_".date("ymdHis"));
+							$data["link2"]=$nombre;
+						}
+
+						if($link3!=""){
+							$nombre=$this->procesaArchivo($_FILES["link3"],"link3"."_".date("ymdHis"));
+							$data["link3"]=$nombre;
+						}
+
+
+						if($this->Prevencion_documentacionmodel->formActualizarNormativas($hash,$data)){
 							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
@@ -138,172 +256,44 @@ class Documentacion extends CI_Controller {
 			}
 		}
 
-		public function procesaArchivoCapacitacion($file,$titulo){
-				$path = $file['name'];
-				$ext = pathinfo($path, PATHINFO_EXTENSION);
-				$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-				$config['upload_path'] = './archivos_documentacion/capacitacion';
-				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC|mp4|MP4';
-			    $config['file_name'] = $archivo;
-				$config['max_size']	= '80300';
-				$config['overwrite']	= FALSE;
-				$this->load->library('upload', $config);
-				$_FILES['userfile']['name'] = $archivo;
-			    $_FILES['userfile']['type'] = $file['type'];
-			    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
-			    $_FILES['userfile']['error'] = $file['error'];
-				$_FILES['userfile']['size'] = $file['size'];
-				$this->upload->initialize($config);
+		public function procesaVideo($file){
+			$path = $file['name'];
+			$ext = pathinfo($path, PATHINFO_EXTENSION);
+			$archivo=strtolower(url_title(convert_accented_characters("noticia_".rand(10, 1000)))).".".$ext;
+			$config['upload_path'] = './archivos/prevencion_modulos';
+			$config['allowed_types'] = 'mp4';
+			$config['file_name'] = $archivo;
+			$config['max_size']	= '153300';
+			$config['overwrite']	= FALSE;
+			$this->load->library('upload', $config);
+			$_FILES['userfile']['name'] = $archivo;
+			$_FILES['userfile']['type'] = $file['type'];
+			$_FILES['userfile']['tmp_name'] = $file['tmp_name'];
+			$_FILES['userfile']['error'] = $file['error'];
+			$_FILES['userfile']['size'] = $file['size'];
+			$this->upload->initialize($config);
 
-				if (!$this->upload->do_upload()){ 
-				    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
-			    }else{
-			    	unset($config);
-			    	return $archivo;
-			    }
-	    }
-
-		public function eliminaCapacitacion(){
-			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			$data=$this->Documentacionmodel->getDataRegistroCapacitacion($hash);
-			foreach($data as $key){
-				if($key["archivo"]!=""){
-					if (file_exists("./archivos_documentacion/capacitacion/".$key["archivo"])){
-						unlink("./archivos_documentacion/capacitacion/".$key["archivo"]);
-					}	
-				}
-			}
-
-			if($this->Documentacionmodel->eliminaCapacitacion($hash)){
-				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
-			}else{	
-				echo json_encode(array("res" => "error" , "msg" => "Error eliminando el registro, intente nuevamente."));
-			}
-		}
-
-		public function getDataRegistroCapacitacion(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();	
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$data=$this->Documentacionmodel->getDataRegistroCapacitacion($hash);
-				if($data){
-					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-				}else{
-					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-				}	
+			if (!$this->upload->do_upload()){ 
+				echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
 			}else{
-				exit('No direct script access allowed');
+				unset($config);
+				return $archivo;
 			}
 		}
 
-	/***********REPORTES*****************/
 
-		public function indexReportes(){
-	    	$this->acceso();
-		    $datos = array(
-		        'titulo' => "Documentación XR3",
-		        'contenido' => "documentacion/inicio",
-		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
-			);  
-			$this->load->view('plantillas/plantilla_back_end',$datos);
-			
-		}
-		
-		public function vistaReportes(){
-			$this->visitas("Inicio",4);
-			if($this->input->is_ajax_request()){
-				$datos=array();
-				$this->load->view('back_end/documentacion/reportes',$datos);
-			}
-		}
-
-		public function getReportesList(){
-			echo json_encode($this->Documentacionmodel->getReportesList());
-		}
-		
-		public function formIngresoReportes(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();	
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$nombre=$this->security->xss_clean(strip_tags($this->input->post("nombre_archivo")));
-				$fecha = date("Y-m-d");
-				$digitador=$this->session->userdata("id");
-				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
-		   		$adjunto=@$_FILES["userfile"]["name"];
-
-	   			if ($this->form_validation->run("formIngresoReportes") == FALSE){
-					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
-				}else{	
-
-					
-			    	if($hash==FALSE){
-
-			    		$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'id_digitador' => $digitador,
-		    		 	'fecha' => $fecha,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
-
-
-			    		if($adjunto!=""){
-							$nombre=$this->procesaArchivoReportes($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-						}else{
-							$data["archivo"]="";
-						}
-
-						$insert_id=$this->Documentacionmodel->formIngresoReportes($data);
-						if($insert_id!=FALSE){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-						}else{
-							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-						}
-
-					}else{
-						
-						$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
-
-						if($adjunto!=""){
-							$nombre=$this->procesaArchivoReportes($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-
-							$archivo_bd=$this->Documentacionmodel->getDataRegistroReportes($hash);
-
-							foreach($archivo_bd as $a){
-								if($a["archivo"]!=""){
-									if (file_exists("./archivos_documentacion/reportes/".$a["archivo"])){
-										unlink("./archivos_documentacion/reportes/".$a["archivo"]);
-									}	
-								}
-							}
-
-						}
-
-						if($this->Documentacionmodel->formActualizarReportes($hash,$data)){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-						}else{
-							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
-						}
-					}
-				}
-
-			}else{
-				exit('No direct script access allowed');
-			}
-		}
-
-		public function procesaArchivoReportes($file,$titulo){
-			/*	var_dump($_FILES);*/
+		public function procesaArchivo($file,$titulo){
 			$path = $file['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 			$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-			$config['upload_path'] = './archivos_documentacion/reportes';
-			$config['allowed_types'] = 'xlsx|csv|xls|pdf|PDF|XLS|XLSX|jpg|jpeg|bmp|png|doc|docx|ppt|pptx|html|htm|DOC|mp4|MP4';
+			$config['upload_path'] = './archivos/prevencion_modulos';
+			$config['allowed_types'] = 'jpg|jpeg|png|pdf|PDF|xls|xlsx|doc|docx';
 		    $config['file_name'] = $archivo;
-			$config['max_size']	= '15300';
+			$config['max_size']	= '5300';
 			$config['overwrite']	= FALSE;
+			$config['width'] = "700";      
+	    	$config['height'] = "330";
+
 			$this->load->library('upload', $config);
 			$_FILES['userfile']['name'] = $archivo;
 		    $_FILES['userfile']['type'] = $file['type'];
@@ -320,29 +310,29 @@ class Documentacion extends CI_Controller {
 		    }
 	    }
 
-		public function eliminaReportes(){
+		public function eliminaNormativas(){
 			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			$data=$this->Documentacionmodel->getDataRegistroReportes($hash);
+			$data=$this->Prevencion_documentacionmodel->getDataNormativas($hash);
 			foreach($data as $key){
 				if($key["archivo"]!=""){
-					if (file_exists("./archivos_documentacion/reportes/".$key["archivo"])){
-						unlink("./archivos_documentacion/reportes/".$key["archivo"]);
+					if (file_exists("./archivos/prevencion_modulos/".$key["archivo"])){
+						unlink("./archivos/prevencion_modulos/".$key["archivo"]);
 					}	
 				}
 			}
 
-			if($this->Documentacionmodel->eliminaReportes($hash)){
+			if($this->Prevencion_documentacionmodel->eliminaNormativas($hash)){
 				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 			}else{	
 				echo json_encode(array("res" => "error" , "msg" => "Error eliminando el registro, intente nuevamente."));
 			}
 		}
 
-		public function getDataRegistroReportes(){
+		public function getDataNormativas(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$data=$this->Documentacionmodel->getDataRegistroReportes($hash);
+				$data=$this->Prevencion_documentacionmodel->getDataNormativas($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{
@@ -353,315 +343,5 @@ class Documentacion extends CI_Controller {
 			}
 		}
 
-	/***********PREVENCION*****************/
-
-		public function indexPrevencion(){
-	    	$this->acceso();
-		    $datos = array(
-		        'titulo' => "Documentación XR3",
-		        'contenido' => "documentacion/inicio",
-		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
-			);  
-			$this->load->view('plantillas/plantilla_back_end',$datos);
-		}
-
-		public function vistaPrevencion(){
-			$this->visitas("Inicio",3);
-			if($this->input->is_ajax_request()){
-				$datos=array();
-				$this->load->view('back_end/documentacion/prevencion_riesgos',$datos);
-			}
-		}
-
-		public function getPrevencionList(){
-			echo json_encode($this->Documentacionmodel->getPrevencionList());
-		}
-		
-		public function formIngresoPrevencion(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();	
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$nombre=$this->security->xss_clean(strip_tags($this->input->post("nombre_archivo")));
-				$fecha = date("Y-m-d");
-				$digitador=$this->session->userdata("id");
-				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
-		   		$adjunto=@$_FILES["userfile"]["name"];
-
-	   			if ($this->form_validation->run("formIngresoPrevencion") == FALSE){
-					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
-				}else{	
-					
-			    	if($hash==FALSE){
-
-			    		$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'id_digitador' => $digitador,
-		    		 	'fecha' => $fecha,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
-
-
-			    		if($adjunto!=""){
-							$nombre=$this->procesaArchivoPrevencion($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-						}else{
-							$data["archivo"]="";
-						}
-
-						$insert_id=$this->Documentacionmodel->formIngresoPrevencion($data);
-						if($insert_id!=FALSE){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-						}else{
-							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-						}
-
-					}else{
-						
-						$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
-
-						if($adjunto!=""){
-							$nombre=$this->procesaArchivoPrevencion($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-
-							$archivo_bd=$this->Documentacionmodel->getDataRegistroPrevencion($hash);
-
-							foreach($archivo_bd as $a){
-								if($a["archivo"]!=""){
-									if (file_exists("./archivos_documentacion/prevencion/".$a["archivo"])){
-										unlink("./archivos_documentacion/prevencion/".$a["archivo"]);
-									}	
-								}
-							}
-
-						}
-
-						if($this->Documentacionmodel->formActualizarPrevencion($hash,$data)){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-						}else{
-							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
-						}
-					}
-				}
-
-			}else{
-				exit('No direct script access allowed');
-			}
-		}
-
-		public function procesaArchivoPrevencion($file,$titulo){
-				$path = $file['name'];
-				$ext = pathinfo($path, PATHINFO_EXTENSION);
-				$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-				$config['upload_path'] = './archivos_documentacion/prevencion';
-				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC|mp4|MP4';
-			    $config['file_name'] = $archivo;
-				$config['max_size']	= '10300';
-				$config['overwrite']	= FALSE;
-				$this->load->library('upload', $config);
-				$_FILES['userfile']['name'] = $archivo;
-			    $_FILES['userfile']['type'] = $file['type'];
-			    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
-			    $_FILES['userfile']['error'] = $file['error'];
-				$_FILES['userfile']['size'] = $file['size'];
-				$this->upload->initialize($config);
-
-				if (!$this->upload->do_upload()){ 
-				    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
-			    }else{
-			    	unset($config);
-			    	return $archivo;
-			    }
-	    }
-
-		public function eliminaPrevencion(){
-			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			$data=$this->Documentacionmodel->getDataRegistroPrevencion($hash);
-			foreach($data as $key){
-				if($key["archivo"]!=""){
-					if (file_exists("./archivos_documentacion/prevencion/".$key["archivo"])){
-						unlink("./archivos_documentacion/prevencion/".$key["archivo"]);
-					}	
-				}
-			}
-
-			if($this->Documentacionmodel->eliminaPrevencion($hash)){
-				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
-			}else{	
-				echo json_encode(array("res" => "error" , "msg" => "Error eliminando el registro, intente nuevamente."));
-			}
-		}
-
-		public function getDataRegistroPrevencion(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();	
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$data=$this->Documentacionmodel->getDataRegistroPrevencion($hash);
-				if($data){
-					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-				}else{
-					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-				}	
-			}else{
-				exit('No direct script access allowed');
-			}
-		}
-
-
-		/***********DATAS MANDANTE*****************/
-
-		public function indexDatas(){
-	    	$this->acceso();
-		    $datos = array(
-		        'titulo' => "Datas mandante XR3",
-		        'contenido' => "documentacion/inicio",
-		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
-			);  
-			$this->load->view('plantillas/plantilla_back_end',$datos);
-			
-		}
-
-		public function vistaDatas(){
-			$this->visitas("Inicio",18);
-			if($this->input->is_ajax_request()){
-				$datos=array(	
-			    );
-				$this->load->view('back_end/documentacion/datas',$datos);
-			}
-		}
-
-		public function getDatasList(){
-			echo json_encode($this->Documentacionmodel->getDatasList());
-		}
-		
-		public function formIngresoDatas(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();	
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$nombre=$this->security->xss_clean(strip_tags($this->input->post("nombre_archivo")));
-				$fecha = date("Y-m-d");
-				$digitador=$this->session->userdata("id");
-				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
-		   		$adjunto=@$_FILES["userfile"]["name"];
-
-	   			if ($this->form_validation->run("formIngresoDatas") == FALSE){
-					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
-				}else{	
-
-					
-			    	if($hash==FALSE){
-
-			    		$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'id_digitador' => $digitador,
-		    		 	'fecha' => $fecha,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
-
-
-			    		if($adjunto!=""){
-							$nombre=$this->procesaArchivoDatas($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-						}else{
-							$data["archivo"]="";
-						}
-
-						$insert_id=$this->Documentacionmodel->formIngresoDatas($data);
-						if($insert_id!=FALSE){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-						}else{
-							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-						}
-
-					}else{
-						
-						$data = array(
-		    		 	'nombre' => $nombre,
-		    		 	'ultima_actualizacion' => $ultima_actualizacion);
-
-						if($adjunto!=""){
-							$nombre=$this->procesaArchivoDatas($_FILES["userfile"],$nombre."_".date("ymdHis"),1);
-							$data["archivo"]=$nombre;
-
-							$archivo_bd=$this->Documentacionmodel->getDataRegistroDatas($hash);
-
-							foreach($archivo_bd as $a){
-								if($a["archivo"]!=""){
-									if (file_exists("./archivos_documentacion/datas/".$a["archivo"])){
-										unlink("./archivos_documentacion/datas/".$a["archivo"]);
-									}	
-								}
-							}
-
-						}
-
-						if($this->Documentacionmodel->formActualizarDatas($hash,$data)){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-						}else{
-							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
-						}
-					}
-				}
-
-			}else{
-				exit('No direct script access allowed');
-			}
-		}
-
-		public function procesaArchivoDatas($file,$titulo){
-				$path = $file['name'];
-				$ext = pathinfo($path, PATHINFO_EXTENSION);
-				$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
-				$config['upload_path'] = './archivos_documentacion/datas';
-				$config['allowed_types'] = 'pdf|jpg|jpeg|bmp|png|doc|docx|xls|xlsx|ppt|pptx|html|htm|XLS|XLSX|DOC|mp4|MP4';
-			    $config['file_name'] = $archivo;
-				$config['max_size']	= '80300';
-				$config['overwrite']	= FALSE;
-				$this->load->library('upload', $config);
-				$_FILES['userfile']['name'] = $archivo;
-			    $_FILES['userfile']['type'] = $file['type'];
-			    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
-			    $_FILES['userfile']['error'] = $file['error'];
-				$_FILES['userfile']['size'] = $file['size'];
-				$this->upload->initialize($config);
-
-				if (!$this->upload->do_upload()){ 
-				    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
-			    }else{
-			    	unset($config);
-			    	return $archivo;
-			    }
-	    }
-
-		public function eliminaDatas(){
-			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			$data=$this->Documentacionmodel->getDataRegistroDatas($hash);
-			foreach($data as $key){
-				if($key["archivo"]!=""){
-					if (file_exists("./archivos_documentacion/datas/".$key["archivo"])){
-						unlink("./archivos_documentacion/datas/".$key["archivo"]);
-					}	
-				}
-			}
-
-			if($this->Documentacionmodel->eliminaDatas($hash)){
-				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
-			}else{	
-				echo json_encode(array("res" => "error" , "msg" => "Error eliminando el registro, intente nuevamente."));
-			}
-		}
-
-		public function getDataRegistroDatas(){
-			if($this->input->is_ajax_request()){
-				$this->checkLogin();	
-				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash_id")));
-				$data=$this->Documentacionmodel->getDataRegistroDatas($hash);
-				if($data){
-					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-				}else{
-					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
-				}	
-			}else{
-				exit('No direct script access allowed');
-			}
-		}
+	 
 }

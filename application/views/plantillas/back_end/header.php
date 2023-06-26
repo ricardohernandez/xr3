@@ -21,6 +21,12 @@
 <!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos_menu_oscuro.css" /> 
  <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/estilos_menu_claro.css" />
  -->
+ <link rel="stylesheet" href="<?php echo base_url()?>assets3/back_end/css/croppie.css">
+ <script src="<?php echo base_url();?>assets3/back_end/js/croppie.js"></script>
+<!--  <script src="<?php echo base_url();?>assets3/back_end/js/tinymce.min.js"></script> -->
+            
+<script src="https://cdn.tiny.cloud/1/h09ctxv9is142va6afgod7xylnoxlwzqehby3ytstmy3s5t4/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 
 <!-- <link rel="stylesheet" href="<?php echo base_url();?>assets3/back_end/css/loader.css" > -->
 <script type="text/javascript">
