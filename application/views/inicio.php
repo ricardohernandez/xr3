@@ -77,7 +77,7 @@
 				modoDiaElements.forEach(element => element.style.display = 'inline');
 
 				loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
-				$("body").removeClass("d-none");
+				$("body").show()
 				$(".logo_oscuro").show();
        			$(".logo_claro").hide();
 
@@ -87,7 +87,7 @@
 				modoDiaElements.forEach(element => element.style.display = 'none');
 
 				loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
-				$("body").removeClass("d-none");
+				$("body").show()
 				$(".logo_claro").show();
       		    $(".logo_oscuro").hide();
 				unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
@@ -184,7 +184,7 @@
 
 </script>
 
-<body class="bg-light style-default style-rounded d-none">
+<body class="bg-light style-default style-rounded"  style="display:none;">
 
 	<!-- PRELOADER -->
 		<div class="loader-mask">

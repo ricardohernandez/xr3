@@ -90,7 +90,6 @@
 	$route['formIngresoPrevencionModulos'] = "back_end/Prevencion_modulos/formIngreso";
 	$route['eliminarPrevencionModulos'] = "back_end/Prevencion_modulos/eliminar";
 
-	
 
 /*******AST*******/
 

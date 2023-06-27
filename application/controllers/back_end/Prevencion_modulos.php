@@ -56,7 +56,7 @@ class Prevencion_modulos extends CI_Controller {
 
 		public function vistaPrevencionModulos(){
 			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
-			$this->visitas("Inicio",2);
+			$this->visitas("Inicio",22);
 
 			if($this->input->is_ajax_request()){
 

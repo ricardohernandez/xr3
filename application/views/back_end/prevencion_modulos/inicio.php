@@ -72,7 +72,7 @@
 
 <!-- MENU -->
 
-<div class="contenido">
+<div class="contenido" style="display:none;">
 <div class="container-fluid">
 <section>
 <article class="content">

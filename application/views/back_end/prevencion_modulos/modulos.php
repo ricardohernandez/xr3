@@ -39,12 +39,10 @@
     
     window.addEventListener('modoOscuroActivado', function() {
       activarTymce("oscuro")
-      console.log('Modo oscuro activado desde otro archivo');
     });
 
     window.addEventListener('modoClaroActivado', function() {
       activarTymce("claro")
-      console.log('Modo claro activado desde otro archivo');
     });
 
     /*****DATATABLE*****/  
@@ -201,10 +199,10 @@
                 dataType: "json",
                 contentType : false,
                 beforeSend:function(){
-                  /*  $(".btn_ingreso").attr("disabled", true);
+                  $(".btn_ingreso").attr("disabled", true);
                   $(".cierra_modal").attr("disabled", true);
                   $("#formIngreso input,#formIngreso select,#formIngreso button,#formIngreso").prop("disabled", true);
-                  $(".btn_ingreso").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true); */
+                  $(".btn_ingreso").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
                 },
                 success: function (data) {
                   if(data.res == "sess"){

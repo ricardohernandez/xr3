@@ -104,7 +104,9 @@
         unloadCSS(url + 'assets3/back_end/css/estilos_menu_claro.css');
         unloadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-claro.css');
-        $("body").css("display", "");
+        $("body").css("display", "")
+        $("body").show()
+        $(".contenido").show()
         $(".logo_oscuro").show();
         $(".logo_claro").hide();
 
@@ -121,7 +123,9 @@
         unloadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro.css');
         unloadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
-        $("body").css("display", "");
+        $("body").css("display", "")
+        $("body").show()
+        $(".contenido").show()
         $(".logo_claro").show();
         $(".logo_oscuro").hide();
 
