@@ -139,7 +139,7 @@
                ?>
 
                <?php  
-                  if($perfil==0){
+                  if($perfil==1){
                ?>
 
                <li class="">
@@ -324,7 +324,7 @@
                         ?>
 
                         <?php  
-                           if($perfil==0){
+                           if($perfil==1){
                         ?>
                         
                            <li class="nav__dropdown">
