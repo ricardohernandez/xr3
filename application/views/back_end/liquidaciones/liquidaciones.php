@@ -93,6 +93,7 @@
     /*****DATATABLE*****/  
       const base = "<?php echo base_url() ?>";
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
+      console.log(p);
 
       var tabla_liquidaciones = $('#tabla_liquidaciones').DataTable({
         /*"sDom": '<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"text-center"ip>>>',*/
@@ -117,17 +118,16 @@
             return json;
           },       
           data: function(param){
-
             if(p==4){
               var trabajador = $("#trabajador_t").val();
             }else{
               var trabajador = $("#trabajadores_t").val();
             }
-
-            var jefe = $("#jefe_t").val()
-
+            var jefe = $("#jefe_t").val();
+            var periodo = $('#Periodo_f').val();
             param.trabajador = trabajador;
             param.jefe = jefe;
+            param.periodo = periodo;
           }
         },    
         "columns": [
@@ -142,19 +142,20 @@
 
             }
           },
-          { "data": "usuario" ,"class":"margen-td centered"},
-          { "data": "rut_usuario" ,"class":"margen-td centered"},
-          { "data": "cargo" ,"class":"margen-td centered"},
-          { "data": "jefe" ,"class":"margen-td centered"},
-          { "data": "digitador" ,"class":"margen-td centered"},
-          { "data": "periodo" ,"class":"margen-td centered"},
           {
             "class":"centered margen-td","data": function(row,type,val,meta){
               btn  =`<a  target="_blank" href="${row.archivo}" title="Archivo" class="btn_archivo"><i class="fas fa-file"></i> </a>`;
               return btn;
             }
           },
-
+          { "data": "periodo" ,"class":"margen-td centered"},
+          { "data": "rut_usuario" ,"class":"margen-td centered"},
+          { "data": "usuario" ,"class":"margen-td centered"},
+          { "data": "jefe" ,"class":"margen-td centered"},
+          { "data": "plaza" ,"class":"margen-td centered"},
+          { "data": "cargo" ,"class":"margen-td centered"},
+          { "data": "area" ,"class":"margen-td centered"},
+          { "data": "digitador" ,"class":"margen-td centered"},
           { "data": "ultima_actualizacion" ,"class":"margen-td centered"},
         ]
     }); 
@@ -212,7 +213,6 @@
             allowClear:true,
             })
         })
-        
     });
 
     $(document).off('submit', '#formLiquidaciones').on('submit', '#formLiquidaciones',function(event) {
@@ -440,7 +440,7 @@
       })
     }) 
 
-    $(document).off('change', '#trabajadores_t').on('change', '#trabajadores_t',function(event) {
+    $(document).off('change', '#trabajadores_t , #Periodo_f').on('change', '#trabajadores_t, #Periodo_f',function(event) {
       tabla_liquidaciones.ajax.reload()
     }) 
 
@@ -455,7 +455,7 @@
      if($this->session->userdata('id_perfil')<=3){
     ?>
 
-      <div class="col-1 col-lg-2"> 
+      <div class="col-1 col-lg-1"> 
         <div class="form-group">
           <button type="button" class="btn-block btn btn-sm btn-outline-primary btn_nueva_liquidacion btn_xr3">
           <i class="fa fa-plus-circle"></i>  Nuevo 
@@ -491,14 +491,13 @@
       }elseif($this->session->userdata('id_perfil')==3){
 
         ?>
-        
         <div class="col-lg-2">
           <div class="form-group">
-            <select id="jefe_t" name="jefe_t" class="custom-select custom-select-sm">
+            <select disabled id="jefe_t" name="jefe_t" class="custom-select custom-select-sm">
               <?php  
                 foreach($jefes as $j){
                   ?>
-                    <option selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
+                    <option disabled selected value="<?php echo $j["id_jefe"]?>" ><?php echo $j["nombre_jefe"]?> </option>
                   <?php
                 }
               ?>
@@ -511,9 +510,9 @@
     ?>
 
     <?php  
-       if($this->session->userdata('id_perfil')<>4){
+       if($this->session->userdata('id_perfil') <> 4){
           ?>
-          <div class="col-lg-3">  
+          <div class="col-lg-2">  
             <div class="form-group">
               <select id="trabajadores_t" name="trabajadores_t" style="width:100%!important;">
                   <option value="">Seleccione Trabajador | Todos</option>
@@ -525,7 +524,7 @@
         ?>
           <div class="col-lg-2">  
             <div class="form-group">
-              <select id="trabajador_t" name="trabajador_t" class="custom-select custom-select-sm" >
+              <select disabled id="trabajador_t" name="trabajador_t" class="custom-select custom-select-sm" >
                   <option selected value="<?php echo $this->session->userdata('id'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
               </select>
             </div>
@@ -534,12 +533,18 @@
        }
     ?>
 
+    <div class="col-lg-1">  
+      <div class="form-group">
+      <input type="month"  placeholder="Periodo" class="form-control form-control-sm"  name="Periodo_f" id="Periodo_f">
+      </div>
+    </div>
+
     <div class="col-2 col-lg-4">  
       <div class="form-group">
       <input type="text" placeholder="Ingrese su busqueda..." id="buscador" class="buscador form-control form-control-sm">
       </div>
     </div>
-                              
+
 	</div>
 
   <div class="row">
@@ -547,14 +552,16 @@
       <table id="tabla_liquidaciones" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%!important">
           <thead>
             <tr>
-              <th class="centered">Acciones</th> 
-              <th class="centered">Nombre colaborador</th>    
-              <th class="centered">RUT</th>    
-              <th class="centered">Cargo</th>    
-              <th class="centered">Jefe</th> 
-              <th class="centered">Digitador</th> 
+              <th class="centered">Acciones</th>
+              <th class="centered">Archivo</th>  
               <th class="centered">Periodo</th> 
-              <th class="centered">Archivo</th> 
+              <th class="centered">RUT</th>    
+              <th class="centered">Nombre trabajador</th>  
+              <th class="centered">Jefe</th>  
+              <th class="centered">Plaza op.</th>
+              <th class="centered">Cargo</th>    
+              <th class="centered">Area</th>  
+              <th class="centered">Digitador</th>   
               <th class="centered">Última actualización</th> 
             </tr>
           </thead>

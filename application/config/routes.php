@@ -471,6 +471,14 @@
 	$route['listaTrabajadores'] = "back_end/liquidaciones/listaTrabajadores";
 	$route['listaTrabajadoresFiltros'] = "back_end/liquidaciones/listaTrabajadores";
 	
+/**************CARGA MASIVA **************/
+
+	$route['carga_masiva'] = "back_end/carga_masiva/index";
+	$route['getCargamasivaInicio'] = "back_end/carga_masiva/getCargamasivaInicio";
+	$route['getCargamasivaList'] = "back_end/carga_masiva/getCargamasivaList";
+	$route['formMasivo'] = "back_end/carga_masiva/formMasivo";
+	$route['eliminaCargamasiva'] = "back_end/carga_masiva/eliminaCargamasiva";
+	$route['descargarTemplate'] = "back_end/carga_masiva/descargarTemplate";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

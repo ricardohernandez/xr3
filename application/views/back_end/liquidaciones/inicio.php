@@ -4,11 +4,6 @@
   	const base_url = "<?php echo base_url() ?>"
 
     $.extend(true,$.fn.dataTable.defaults,{
-      dom: "<'row'<'col-12 'f>>" + // Filtro
-            "<'row'<'col-12 '<'table-responsive't>>>" + 
-            "<'row d-none d-sm-flex '<'col-sm-4'l><'col-sm-4 text-center'i><'col-sm-4'p>>" + 
-            "<'row d-sm-none '<'col-12 text-center'p>>", 
-            
       info:true,
       paging:false,
       ordering:true,
@@ -73,9 +68,18 @@
       });
     });
 
+    $(document).off('click', '#menu_carga_masiva').on('click', '#menu_carga_masiva',function(event) {
+      event.preventDefault();
+      $("#menu_carga_masiva").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_carga_masiva").addClass('menuActivo');  
 
-
-
+      $.get(base_url+"getCargamasivaInicio", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_carga_masiva").removeClass('disabled_sub');
+      });
+    });
   })
 </script>
 
@@ -86,13 +90,20 @@
 <section>
 <article class="content">
 
-  <!-- <div class="row">
+  <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-       <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-       <li id="menu_listado" class="active"><a> <i class="fa fa-list-alt"></i> Liquidaciones  </a></li>
+      <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
+        <li id="menu_listado" class="active"><a> <i class="fa fa-list-alt"></i> Liquidaciones  </a></li>
+        <?php  
+          if($this->session->userdata('perfil')<=3){
+        ?>
+          <li id="menu_carga_masiva" class="active"><a> <i class="fa fa-list-alt"></i> Carga masiva </a></li>   
+        <?php  
+        }
+        ?> 
       </ul>  
     </div> 
-  </div> -->
+  </div> 
 
   <div class="row">
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

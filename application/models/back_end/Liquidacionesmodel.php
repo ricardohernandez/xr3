@@ -14,7 +14,7 @@ class Liquidacionesmodel extends CI_Model {
 	}
 	
 
-	public function getLiquidacionesList($jefe,$trabajador){
+	public function getLiquidacionesList($jefe,$trabajador,$periodo){
 
 		$this->db->select("l.*,
 				sha1(l.id) as hash,
@@ -24,6 +24,8 @@ class Liquidacionesmodel extends CI_Model {
 				CONCAT(SUBSTRING(u.rut, 1, LENGTH(u.rut) - 1), '-', RIGHT(u.rut, 1)) AS rut_usuario,
 				u.empresa as empresa,
 				c.cargo as cargo,
+				u.comuna as plaza,
+				a.area as area,
 				");
 
 		$this->db->from('liquidaciones as l');	
@@ -32,6 +34,8 @@ class Liquidacionesmodel extends CI_Model {
 
 		$this->db->join('usuarios_jefes uj', 'uj.id = u.id_jefe', 'left');
 		$this->db->join('usuarios u2', 'u2.id = uj.id_jefe', 'left');
+
+		$this->db->join('usuarios_areas a', 'a.id = u.id_area', 'left');
 		
 		$this->db->join('usuarios_cargos as c', 'c.id = u.id_cargo', 'left');		
 		$this->db->order_by('l.id', 'desc');
@@ -51,11 +55,12 @@ class Liquidacionesmodel extends CI_Model {
 			$this->db->where('l.id_usuario', $trabajador);
 		}
 
+		if($periodo!=""){
+			$this->db->where('l.periodo', $periodo);
+		}
 
 		$res=$this->db->get();
 
-		 
-		
 		if($res->num_rows()>0){
 			return $res->result_array();
 		}
@@ -222,6 +227,18 @@ class Liquidacionesmodel extends CI_Model {
 		$res=$this->db->get('usuarios');
 		$row=$res->row_array();
 		return $row["rut"];
+	}
+
+	public function getUsuarioRut($rut){
+		$this->db->select('u.id');
+		$this->db->where('u.rut', $rut);
+		$this->db->from('usuarios as u');
+		$res=$this->db->get();
+		if($res->num_rows()>0){
+			$row=$res->row_array();
+			return $row["id"];
+		}
+		return FALSE;
 	}
 
  

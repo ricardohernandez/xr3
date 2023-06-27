@@ -1,5 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+use setasign\Fpdi\Fpdi;
+
+require_once(APPPATH.'libraries/fpdf/fpdf.php');
+require_once(APPPATH.'libraries/fpdf/fpdi/src/autoload.php');
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 class Liquidaciones extends CI_Controller {
 
 	public function __construct(){
@@ -50,6 +58,10 @@ class Liquidaciones extends CI_Controller {
 		$this->load->view('plantillas/plantilla_back_end',$datos);
 	}
 
+	public function carga_masiva() {
+		redirect('./carga_masiva');
+	}
+
     public function getLiquidacionesInicio(){
 		if($this->input->is_ajax_request()){
 			$fecha_anio_atras = date('d-m-Y', strtotime('-365 day', strtotime(date("d-m-Y"))));
@@ -66,7 +78,9 @@ class Liquidaciones extends CI_Controller {
 	public function getLiquidacionesList(){
 		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
 		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
-		echo json_encode($this->Liquidacionesmodel->getLiquidacionesList($jefe,$trabajador));
+		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
+		if($periodo!=""){$periodo=date("m-Y",strtotime($periodo));}else{$periodo="";}
+		echo json_encode($this->Liquidacionesmodel->getLiquidacionesList($jefe,$trabajador,$periodo));
 	}
 
 	
@@ -259,7 +273,4 @@ class Liquidaciones extends CI_Controller {
 			exit('No direct script access allowed');
 		}
 	}
-
-
-
 }
