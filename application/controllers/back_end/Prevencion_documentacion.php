@@ -160,7 +160,7 @@ class Prevencion_documentacion extends CI_Controller {
 
 							}else{
 								$img = str_replace('data:image/png;base64,', '', $archivo);
-								$nombre=strtolower(url_title(convert_accented_characters("noticia_".rand(10, 99999)))).".jpg";
+								$nombre=strtolower(url_title(convert_accented_characters("doc".date("ymdHis")))).".jpg";
 								file_put_contents('./archivos/prevencion_modulos/'.$nombre, base64_decode($img));
 								$data["archivo"]=$nombre;
 							}
@@ -221,7 +221,7 @@ class Prevencion_documentacion extends CI_Controller {
 
 							}else{
 								$img = str_replace('data:image/png;base64,', '', $archivo);
-								$nombre=strtolower(url_title(convert_accented_characters("noticia_".rand(10, 99999)))).".jpg";
+								$nombre=strtolower(url_title(convert_accented_characters("doc".date("ymdHis")))).".jpg";
 								file_put_contents('./archivos/prevencion_modulos/'.$nombre, base64_decode($img));
 								$data["archivo"]=$nombre;
 							}
@@ -244,7 +244,7 @@ class Prevencion_documentacion extends CI_Controller {
 
 
 						if($this->Prevencion_documentacionmodel->formActualizarNormativas($hash,$data)){
-							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
 						}
@@ -259,7 +259,7 @@ class Prevencion_documentacion extends CI_Controller {
 		public function procesaVideo($file){
 			$path = $file['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
-			$archivo=strtolower(url_title(convert_accented_characters("noticia_".rand(10, 1000)))).".".$ext;
+			$archivo=strtolower(url_title(convert_accented_characters("doc".date("ymdHis")))).".".$ext;
 			$config['upload_path'] = './archivos/prevencion_modulos';
 			$config['allowed_types'] = 'mp4';
 			$config['file_name'] = $archivo;
@@ -285,7 +285,7 @@ class Prevencion_documentacion extends CI_Controller {
 		public function procesaArchivo($file,$titulo){
 			$path = $file['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
-			$archivo=strtolower(url_title(convert_accented_characters($titulo.rand(10, 1000)))).".".$ext;
+			$archivo=strtolower(url_title(convert_accented_characters($titulo.date("ymdHis")))).".".$ext;
 			$config['upload_path'] = './archivos/prevencion_modulos';
 			$config['allowed_types'] = 'jpg|jpeg|png|pdf|PDF|xls|xlsx|doc|docx';
 		    $config['file_name'] = $archivo;
