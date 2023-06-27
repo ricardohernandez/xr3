@@ -139,11 +139,11 @@
                ?>
 
                <?php  
-                  if($perfil==1){
+                  if($perfil<=3){
                ?>
 
-               <li class="">
-                  <a class="sidenav__menu-url" href="#!">Prevenci&oacute;n riesgos</a>
+               <li class="">                   
+                  <a class="sidenav__menu-url" href="<?php echo base_url() ?>documentacion/prevencion_riesgos">Prevenci&oacute;n riesgos</a>
                   <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
                   <ul class="sidenav__menu-dropdown">
                      
@@ -324,7 +324,7 @@
                         ?>
 
                         <?php  
-                           if($perfil==1){
+                            if($perfil<=3){
                         ?>
                         
                            <li class="nav__dropdown">

@@ -76,19 +76,19 @@
 	$route['formIngresoDatas'] = "back_end/documentacion/formIngresoDatas";
 	$route['eliminaDatas'] = "back_end/documentacion/eliminaDatas";
 
-	$route['prevencion_riesgos/normativas'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['prevencion_riesgos/identificacion_riesgos'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['prevencion_riesgos/medidas_proteccion'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['prevencion_riesgos/seguridad_equipos_herramientas'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['prevencion_riesgos/primeros_auxilios'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['prevencion_riesgos/ergonomia_y_cuidado'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['prevencion_riesgos/comunicacion_conciencia'] = "back_end/Prevencion_documentacion/indexNormativas";
-	$route['vistaNormativas'] = "back_end/Prevencion_documentacion/vistaNormativas";
+	$route['prevencion_riesgos/normativas'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['prevencion_riesgos/identificacion_riesgos'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['prevencion_riesgos/medidas_proteccion'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['prevencion_riesgos/seguridad_equipos_herramientas'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['prevencion_riesgos/primeros_auxilios'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['prevencion_riesgos/ergonomia_y_cuidado'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['prevencion_riesgos/comunicacion_conciencia'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+	$route['vistaPrevencionModulos'] = "back_end/Prevencion_modulos/vistaPrevencionModulos";
 	
-	$route['getNormativasList'] = "back_end/Prevencion_documentacion/getNormativasList";
-	$route['getDataNormativas'] = "back_end/Prevencion_documentacion/getDataNormativas";
-	$route['formIngresoNormativas'] = "back_end/Prevencion_documentacion/formIngresoNormativas";
-	$route['eliminaNormativas'] = "back_end/Prevencion_documentacion/eliminaNormativas";
+	$route['getListPrevencionModulos'] = "back_end/Prevencion_modulos/getList";
+	$route['getDataPrevencionModulos'] = "back_end/Prevencion_modulos/getData";
+	$route['formIngresoPrevencionModulos'] = "back_end/Prevencion_modulos/formIngreso";
+	$route['eliminarPrevencionModulos'] = "back_end/Prevencion_modulos/eliminar";
 
 	
 

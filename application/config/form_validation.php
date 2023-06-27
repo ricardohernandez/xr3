@@ -484,7 +484,7 @@ $config = array(
                   ),
             ),
 
-             'formIngresoNormativas' => array(
+            'formIngresoPrevencionModulos' => array(
                   array(
                         'field'   => 'titulo',
                         'label'   => 'Título',
