@@ -108,6 +108,11 @@
 
 </style>
 <!-- SIDENAV -->    
+
+<?php 
+   $perfil = $this->session->userdata('id_perfil');
+?>
+
 <header class="sidenav" id="sidenav">
    <!-- CLOSE -->
    <div class="sidenav__close">
@@ -124,16 +129,49 @@
             <ul class="sidenav__menu-dropdown">
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
                <?php  
-                  if($this->session->userdata('id_perfil')<=3){
+                  if($perfil<=3){
                ?>
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante </a></li>
-               <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n de riesgos </a></li>
+               
+
                <?php
                   }
                ?>
 
                <?php  
-                  if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
+                  if($perfil==0){
+               ?>
+
+               <li class="">
+                  <a class="sidenav__menu-url" href="#!">Prevenci&oacute;n riesgos</a>
+                  <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                  <ul class="sidenav__menu-dropdown">
+                     
+                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/normativas">Normativas</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/identificacion_riesgos">Identificación riesgos</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/medidas_proteccion">Medidas de prevención y protección</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/seguridad_equipos_herramientas">Seguridad en el manejo de equipos y herramientas</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
+                    
+                  </ul>
+               </li>
+
+               <?php
+                  }
+               ?>
+
+               <?php  
+                  if($perfil<=2){
+               ?>
+                  <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>liquidaciones"> RLS - Registro de Liquidación variable </a></li>
+               <?php
+                  }
+               ?>
+             
+               <?php  
+                  if($perfil<=3 || $perfil==7){
                   ?>
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a></li>
                <?php
@@ -150,34 +188,38 @@
                   <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
                   <ul class="sidenav__menu-dropdown">
                      <?php  
-                        if($this->session->userdata('id_perfil')<=3){
-                         ?>
+                        if($perfil<=3){
+                     ?>
+
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistHFC"> CLC - Checklist coaxial HFC</a></li>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistFTTH"> CLF - Checklist fibra FTTH</a></li>
+
                      <?php
                         }
                         ?>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
 
                      <?php  
-                        if($this->session->userdata('id_perfil')<=3){
+                        if($perfil<=3){
                      ?>
+
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklist_reportes">RCH - Reporte Checklist</a></li>
+
                      <?php
                         }
                      ?>
 
-
                   </ul>
                </li>
                <?php  
-                  if($this->session->userdata('id_perfil')<=3){
+                  if($perfil<=3){
                    ?>
                <li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
                <?php
                   }
-                  ?>
+               ?>
+
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>materiales"> MAT - Materiales seriados</a></li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>calidad"> RCO - reporte calidad operaciones</a></li>
@@ -186,7 +228,7 @@
             </ul>
          </li>
          <?php  
-            if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+            if($perfil==1 || $perfil==2){
               ?>
          <li>
             <a href="#" class="sidenav__menu-url">Editores</a>
@@ -200,7 +242,7 @@
             }
             ?>
          <?php  
-            if($this->session->userdata('id_perfil')<=2){
+            if($perfil<=2){
               ?>
          <li>
             <a href="#" class="sidenav__menu-url">Mantenedores</a>
@@ -208,7 +250,7 @@
             <ul class="sidenav__menu-dropdown">
 
                <?php  
-               if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+               if($perfil==1 || $perfil==2){
                ?>
                   <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
                <?php
@@ -263,47 +305,63 @@
                <img class="logo_empresa logo_oscuro " src="<?php echo base_url();?>assets3/imagenes/logo_blanco.png" alt="logo">
             </a>
             <!-- MENU IZQUIERDA -->
+
             <nav class="flex-child nav__wrap d-none d-lg-block">
                <ul class="nav__menu">
                   <li class="nav__dropdown ">
                      <a href="#">Documentación</a>
                      <ul class="nav__dropdown-menu">
                         <li><a  class="menu_list" href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
+                       
                         <?php  
-                           if($this->session->userdata('id_perfil')<=3){
-                            ?>
-                        <li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante</a></li>
+                           if($perfil<=3){
+                        ?>
 
-                        <li class="nav__dropdown">
-                        <a class="menu_list" href="#!"> Prevenci&oacute;n riesgos</a>
-                        <ul class="nav__dropdown-menu">
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/normativas">Normativas</a>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/identificacion_riesgos">Identificación riesgos</a>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/medidas_proteccion">Medidas de prevención y protección</a>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/seguridad_equipos_herramientas">Seguridad en el manejo de equipos y herramientas</a>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
-                        </li>
-                        </ul>
-                        </li>
+                           <li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante</a></li> 
 
                         <?php
                            }
-                           ?>
+                        ?>
+
                         <?php  
-                           if($this->session->userdata('id_perfil')<=3 || $this->session->userdata('id_perfil')==7){
+                           if($perfil==0){
+                        ?>
+                        
+                           <li class="nav__dropdown">
+                              <a class="menu_list" href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n riesgos</a>
+                              <ul class="nav__dropdown-menu">
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/normativas">Normativas</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/identificacion_riesgos">Identificación riesgos</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/medidas_proteccion">Medidas de prevención y protección</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/seguridad_equipos_herramientas">Seguridad en el manejo de equipos y herramientas</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
+                                 </li>
+                              </ul>
+                           </li>
+
+                        <?php
+                           }
+                        ?>
+
+                        <?php  
+                           if($perfil<=2){
+                        ?>
+                           <li><a class="menu_list"  href="<?php echo base_url() ?>liquidaciones"> RLS - Registro de Liquidación variable </a></li>
+                        <?php
+                           }
+                        ?>
+
+                        <?php  
+                           if($perfil<=3 || $perfil==7){
                             ?>
                         <li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a></li>
+
                         <?php
                            }
-                           ?>
-                        <!-- <li class="nav__dropdown">
-                           <a class="menu_list" href="#!">sub</a>
-                           <ul class="nav__dropdown-menu">
-                             <li><a  class="menu_list" href="">app</a></li>
-                           </ul>
-                           </li> -->
+                        ?>
+
                      </ul>
                   </li>
                   <li class="nav__dropdown ">
@@ -313,7 +371,7 @@
                            <a class="menu_list" href="#!">CKL - Checklist operativos</a>
                            <ul class="nav__dropdown-menu">
                               <?php  
-                                 if($this->session->userdata('id_perfil')<=3){
+                                 if($perfil<=3){
                                   ?>
                               <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
                               <li><a  class="menu_list" href="<?php echo base_url() ?>checklistHFC">CLC - Checklist coaxial HFC</a></li>
@@ -324,7 +382,7 @@
                               <li><a  class="menu_list" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
 
                               <?php  
-                                 if($this->session->userdata('id_perfil')<=3){
+                                 if($perfil<=3){
                               ?>
                               <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_reportes">RCH - Reporte Checklist</a></li>
                               <?php
@@ -333,7 +391,7 @@
                            </ul>
                         </li>
                         <?php  
-                           if($this->session->userdata('id_perfil')<=3){
+                           if($perfil<=3){
                             ?>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
                         <?php
@@ -355,7 +413,7 @@
                      </ul>
                   </li>
                   <?php  
-                     if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+                     if($perfil==1 || $perfil==2){
                      ?>
                   <li class="nav__dropdown ">
                      <a href="#">Editores</a>
@@ -369,7 +427,7 @@
                      ?>
 
                   <?php  
-                     if($this->session->userdata('id_perfil')<=2){
+                     if($perfil<=2){
                   ?>
 
                   <li class="nav__dropdown ">
@@ -377,7 +435,7 @@
                      <ul class="nav__dropdown-menu">
 
                      <?php  
-                     if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
+                     if($perfil==1 || $perfil==2){
                      ?>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
                      <?php
@@ -402,7 +460,7 @@
                <div class="nav__right-item nav__search">
 				<ul class="nav__menu menu_derecho">
 					<?php  
-					if($this->session->userdata('id_perfil')<=2){
+					if($perfil<=2){
 					?>
 					<li class="">
 					<a href="<?php echo base_url() ?>ticket"> 
@@ -422,7 +480,7 @@
 					<select id="sp"  style="margin-bottom: 0px!important;" class="custom-select custom-select-sm">
 						<?php  
 							foreach($perfiles as $p){
-							if($this->session->userdata('id_perfil')==$p["id"]){
+							if($perfil==$p["id"]){
 							?>
 						<option  selected value="<?php echo $p["id"] ?>"><?php echo $p["perfil"] ?> </option>
 						<?php
