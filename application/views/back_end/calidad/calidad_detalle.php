@@ -442,7 +442,9 @@
     }); 
 
 
-   
+    $(document).off('change', '#periodo_detalle , #jefe_det').on('change', '#periodo_detalle , #jefe_det', function(event) {
+      lista_detalle_calidad.ajax.reload()
+    }); 
       
   })
 </script>

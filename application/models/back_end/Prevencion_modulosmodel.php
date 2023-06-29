@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('	 direct script access allowed');
 
 class Prevencion_modulosmodel extends CI_Model {
 

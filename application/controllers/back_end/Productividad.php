@@ -629,7 +629,6 @@ class Productividad extends CI_Controller {
 			$data=json_decode(file_get_contents('php://input'),1);
 			$periodo=@$data["periodo"];
 
-			$periodo = "actual";
 			/* echo "<pre>";
 			print_r($this->Productividadmodel->cabecerasResumen(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"]));exit; */
 		 	echo json_encode(array("data" =>$this->Productividadmodel->cabecerasResumen(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"])));
