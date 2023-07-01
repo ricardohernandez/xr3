@@ -18,6 +18,26 @@ function meses($mes){
 	return $mes;
 }
 
+
+function obtenerNumeroMes($mes) {
+    $meses = array(
+        'JUN' => '06',
+        'JUL' => '07',
+        'AGO' => '08',
+        'SEP' => '09',
+        'OCT' => '10',
+        'NOV' => '11',
+        'DIC' => '12',
+        'ENE' => '01',
+        'FEB' => '02',
+        'MAR' => '03',
+        'ABR' => '04',
+        'MAY' => '05'
+    );
+    return isset($meses[$mes]) ? $meses[$mes] : '';
+}
+
+
 function mesesCorto($mes){
 	switch ($mes) {
 		case '1':$mes="Ene";break;

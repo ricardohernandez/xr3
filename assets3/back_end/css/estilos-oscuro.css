@@ -166,6 +166,13 @@
         font-size:1rem!important;
     }
 
+    .titulo_grafico{
+        margin:0 auto!important;
+        text-align:center!important;
+        font-size:1.1rem!important;
+        color:var(--text-color);
+    }
+
   /*   header li a {
         -webkit-transition: color .3s;
         -moz-transition: color .3s;

@@ -90,6 +90,26 @@
 	$route['formIngresoPrevencionModulos'] = "back_end/Prevencion_modulos/formIngreso";
 	$route['eliminarPrevencionModulos'] = "back_end/Prevencion_modulos/eliminar";
 
+	$route['dashboard/dashboard_operaciones'] = "back_end/Dashboard_operaciones/indexDashboardOP";
+	$route['dashboard/produccion_calidad_xr3'] = "back_end/Dashboard_operaciones/productividadCalidadXr3";
+	$route['dashboard/cargaDashboardProductividadXR3'] = "back_end/Dashboard_operaciones/cargaDashboardProductividadXR3";
+
+
+	$route['productividadNacional'] = "back_end/Dashboard_operaciones/productividadNacional";
+
+	
+	$route['dashboard/listaDashboardProductividad'] = "back_end/Dashboard_operaciones/listaDashboardProductividad";
+
+	$route['getDatasList'] = "back_end/Dashboard_operaciones/getDatasList";
+	$route['getDataRegistroDatas'] = "back_end/Dashboard_operaciones/getDataRegistroDatas";
+	$route['formIngresoDatas'] = "back_end/Dashboard_operaciones/formIngresoDatas";
+	$route['eliminaDatas'] = "back_end/Dashboard_operaciones/eliminaDatas";
+
+
+	$route['dashboard/capacitacion'] = "back_end/documentacion/indexCapacitacion";
+	$route['getDataPrevencionModulos'] = "back_end/Prevencion_modulos/getData";
+	$route['formIngresoPrevencionModulos'] = "back_end/Prevencion_modulos/formIngreso";
+	$route['eliminarPrevencionModulos'] = "back_end/Prevencion_modulos/eliminar";
 
 /*******AST*******/
 
@@ -471,8 +491,6 @@
 	$route['listaTrabajadores'] = "back_end/liquidaciones/listaTrabajadores";
 	$route['listaTrabajadoresFiltros'] = "back_end/liquidaciones/listaTrabajadores";
 	
-/**************CARGA MASIVA **************/
-
 	$route['carga_masiva'] = "back_end/carga_masiva/index";
 	$route['getCargamasivaInicio'] = "back_end/carga_masiva/getCargamasivaInicio";
 	$route['getCargamasivaList'] = "back_end/carga_masiva/getCargamasivaList";
