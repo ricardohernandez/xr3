@@ -14,29 +14,42 @@ class Dashboard_operacionesmodel extends CI_Model {
 	}
 
 	/**********PRODUCTIVIDAD XR3************/
+
+		public function getDataProductividad($tipo,$mes_inicio,$mes_termino) {
+			
+			$campos = $tipo['campos'];
+			$cabeceras = $tipo['cabeceras'];
 		
-		public function productividadNacional(){
-			$this->db->select("fecha,hfc_na,ftth_na");
-		
+			$this->db->select("fecha," . implode(",", $campos));
+	
+			if($mes_inicio!=""){
+				$this->db->where('fecha >=', date('Y-m-01', strtotime($mes_inicio)));
+				$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
+			}else{
+				$this->db->where('fecha >=', date('Y-m-01', strtotime('January')));
+			}
+
 			$res = $this->db->get('dashboard_productividad');
-			$cabeceras = array("mes","HFC",array('role'=> 'annotation'),"FTTH",array('role'=> 'annotation'),array('role'=> 'annotationText'));
-			$array = array();
+
+			$array = [];
 			$array[] = $cabeceras;
-
-			foreach($res->result_array() as $key) {
-				$temp = array();
+		
+			foreach ($res->result_array() as $key) {
+				$temp = [];
 				$temp[] = mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-
-				$temp[] = ($key["hfc_na"] != 0) ? (float)$key["hfc_na"] : 0;
-				$temp[] = ($key["hfc_na"] != 0) ? (float)$key["hfc_na"] : 0;
-				$temp[] = ($key["ftth_na"] != 0) ? (float)$key["ftth_na"] : 0;
-				$temp[] = ($key["ftth_na"] != 0) ? (float)$key["ftth_na"] : 0;
+				
+				foreach ($campos as $campo) {
+					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
+					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
+				}
+				
 				$temp[] = strtotime($key["fecha"]);
 				$array[] = $temp;
 			}
-
+		
 			return $array;
 		}
+	
 
 		public function listaDashboardProductividad(){
 			$this->db->select("sha1(c.id) as hash_id,

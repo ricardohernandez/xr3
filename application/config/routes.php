@@ -93,9 +93,7 @@
 	$route['dashboard/dashboard_operaciones'] = "back_end/Dashboard_operaciones/indexDashboardOP";
 	$route['dashboard/produccion_calidad_xr3'] = "back_end/Dashboard_operaciones/productividadCalidadXr3";
 	$route['dashboard/cargaDashboardProductividadXR3'] = "back_end/Dashboard_operaciones/cargaDashboardProductividadXR3";
-
-
-	$route['productividadNacional'] = "back_end/Dashboard_operaciones/productividadNacional";
+	$route['graficosProductividadXR3'] = "back_end/Dashboard_operaciones/graficosProductividadXR3";
 
 	
 	$route['dashboard/listaDashboardProductividad'] = "back_end/Dashboard_operaciones/listaDashboardProductividad";

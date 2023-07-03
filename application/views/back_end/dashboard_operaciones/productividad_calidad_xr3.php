@@ -2,106 +2,132 @@
   .file_cs{
     display:none;
   }
+ 
+  .body{
+    display: none;
+  }
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"
-  
+  const mes_inicio = "<?php echo $mes_inicio ?>"
+  $("#mes_inicio").val(mes_inicio) 
+  const mes_termino = "<?php echo $mes_termino ?>"
+  $("#mes_termino").val(mes_termino) 
 
-  google.charts.setOnLoadCallback(productividadNacional);
+  cargarGrafico()
 
-  function productividadNacional(){
+  function cargarGrafico () {
+  var mes_inicio = $("#mes_inicio").val();
+  var mes_termino = $("#mes_termino").val();
 
-    var periodo = $("#periodo").val();
-    var supervisor = $("#supervisor").val();
-    var zona = $("#zona").val();
-
-    $.ajax({
-      url: base_url+"productividadNacional"+"?"+$.now(),  
+  $.ajax({
+      url: base_url+'graficosProductividadXR3',
       type: 'POST',
-      data:{periodo:periodo,supervisor:supervisor,zona:zona},
-      dataType:"json",
-      beforeSend:function(){
-          $("#load").show()
-          $(".body").hide()
+      data: {
+          'mes_inicio': mes_inicio,
+          'mes_termino': mes_termino
       },
-      success: function (json) {
-          $("#load").hide()
-          $(".body").fadeIn(500)
-
-          var data = google.visualization.arrayToDataTable(json);
-          data.sort([{column: 5, desc: false}])
-
-          const options = {
-            fontName: 'ubuntu',
-            curveType: 'function',
-            fontColor:'#32477C',
-            backgroundColor: { fill:'transparent' },
-
-            colors: ['#F48432','#2f81f7'],
-              chartArea:{
-                  left:40,
-                  right:40,
-                  bottom:40,
-                  top:40,
-              },
-              height:250,
-              hAxis: {
-                title: '',
-                minValue: 0,
-                textStyle: {
-                    fontSize: 13,
-                    bold:false,
-                    color:'#808080'
-                }, 
-                gridlines: {
-                  color: '',
-                  count:0
-                }
-              },
-              vAxis: {
-                title: '',
-                textStyle: {
-                    fontSize: 13,
-                    bold:false,
-                    color:'#808080'
-                },
-                gridlines: {
-                  color: '',
-                  count:0
-                }
-              },
-              annotations: {
-                  alwaysOutside: false,
-                  textStyle: {
-                      fontSize: 13,
-                      auraColor: 'none'
-                  }
-              },
-              legend : {  
-                position: 'top',
-                alignment: 'center',
-                textStyle: {
-                    fontSize: 14,
-                    bold: true,
-                    color: '#808080'
-                }
-              },
-              tooltip: { 
-                  textStyle: {  
-                      color:'#ffffff96', 
-                      fontSize: 13
-                  }
-              },       
-
-          }
-      
-          var chart = new google.visualization.LineChart(document.getElementById('productividadNacional'));
-          chart.draw(data, options);
+      dataType: "json",
+      beforeSend:function(){
+       /*  $("#load").show()
+        $(".body").hide() */
+      }, 
+      success: function (response) {
+        $("#load").hide()
+        $(".body").fadeIn(500)
+        crearGrafico('productividadnacional', response.productividadnacional, 'line');
+        crearGrafico('productividadnorteHFC', response.productividadnorteHFC, 'line');
+        crearGrafico('productividadnorteFTTH', response.productividadnorteFTTH, 'line');
+        crearGrafico('productividadsurHFC', response.productividadsurHFC, 'line');
+        crearGrafico('productividadsurFTTH', response.productividadsurFTTH, 'line');
+      },
+      error: function (error) {
+          console.log(error);
       }
-    }) 
+  });
   }
 
 
+  function crearGrafico(divId, data, tipoGrafico) {
+    var data = google.visualization.arrayToDataTable((data));
+    data.sort([{ column: 5, desc: false }]);
+
+    const options = {
+        fontName: 'ubuntu',
+        curveType: 'function',
+        fontColor: '#32477C',
+        backgroundColor: { fill: 'transparent' },
+        colors: ['#F48432', '#2f81f7'],
+        chartArea: {
+          left: 40,
+          right: 40,
+          bottom: 40,
+          top: 40,
+        },
+        height: 250,
+        hAxis: {
+          title: '',
+          minValue: 0,
+          textStyle: {
+            fontSize: 13,
+            bold: false,
+            color: '#808080'
+          },
+          gridlines: {
+            color: '',
+            count: 0
+          }
+        },
+        vAxis: {
+          title: '',
+          textStyle: {
+            fontSize: 13,
+            bold: false,
+            color: '#808080'
+          },
+          gridlines: {
+            color: '',
+            count: 0
+          }
+        },
+        annotations: {
+          alwaysOutside: false,
+          textStyle: {
+            fontSize: 13,
+            auraColor: 'none'
+          }
+        },
+        legend: {
+          position: 'top',
+          alignment: 'center',
+          textStyle: {
+            fontSize: 14,
+            bold: true,
+            color: '#808080'
+          }
+        },
+        tooltip: {
+          textStyle: {
+            color: '#ffffff96',
+            fontSize: 13
+          }
+        },
+      };
+
+    var chart;
+
+    if (tipoGrafico === 'line') {
+      chart = new google.visualization.LineChart(document.getElementById(divId));
+    } else if (tipoGrafico === 'column') {
+      chart = new google.visualization.ColumnChart(document.getElementById(divId));
+    }
+
+    chart.draw(data, options);
+  }
+
+  $(document).off('change', '#mes_inicio,#mes_termino').on('change', '#mes_inicio,#mes_termino', function (event) {
+    cargarGrafico ();
+  });
 
   $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
     var myFormData = new FormData();
@@ -175,9 +201,8 @@
   })
 
 
+
 </script>
-
-
 
 <!-- FILTROS -->
   
@@ -193,16 +218,117 @@
         <?php
     }
     ?>
-</div>          
 
-
-<div class="col-12 col-lg-6">
-    <div class="card">
-
-    <div class="short-div">
-          <p class="titulo_grafico">Productividad nacional</p>
-          <div id="productividadNacional"></div>
+  <div class="col-12 col-lg-3">
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Meses<span></span> 
+        </div>
+        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio" id="mes_inicio">
+        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino" id="mes_termino">
       </div>
-
     </div>
   </div>
+
+
+</div>   
+
+
+<div style="text-align: center;;">
+  <i id="load" class="fa-solid fa-circle-notch fa-spin fa-8x" style="color: #1A56DB; opacity: .4;margin-top:250px"></i>
+</div>
+
+<div class="body">
+
+<div class="row mt-2 contenedor_graficos">
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Productividad nacional</p>
+          <div id="productividadnacional"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Calidad nacional</p>
+          <div id="calidadnacional"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Productividad zona norte HFC</p>
+          <div id="productividadnorteHFC"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Calidad zona norte HFC</p>
+          <div id="calidadnorteHFC"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Productividad zona norte FTTH</p>
+          <div id="productividadnorteFTTH"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Calidad zona norte FTTH</p>
+          <div id="calidadnorteFTTH"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Productividad zona sur HFC</p>
+          <div id="productividadsurHFC"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Calidad zona sur HFC</p>
+          <div id="calidadsurHFC"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Productividad zona sur FTTH</p>
+          <div id="productividadsurFTTH"></div>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mt-2">
+    <div class="card">
+      <div class="col-12">
+          <p class="titulo_grafico">Calidad zona sur FTTH</p>
+          <div id="calidadsurFTTH"></div>
+        </div>
+      </div>
+  </div>
+</div>

@@ -60,14 +60,55 @@ class Dashboard_operaciones extends CI_Controller {
 		
 		public function productividadCalidadXr3(){
 			$this->visitas("Inicio",4);
-			$datos=array();
+
+			$datos=array(
+				'mes_inicio' => date('Y') . '-01',
+				'mes_termino' => date('Y-m'),
+			);
+
 			$this->load->view('back_end/dashboard_operaciones/productividad_calidad_xr3',$datos);
 		}
 
-		public function listaDashboardProductividad(){
-			echo json_encode($this->Dashboard_operacionesmodel->listaDashboardProductividad());
-		}
+		public function graficosProductividadXR3(){
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino")));
 
+			$tipos = [
+				"nac" => [
+					"campos" => ['hfc_na', 'ftth_na'],
+					"cabeceras" => ["mes", "HFC", ['role' => 'annotation'], "FTTH", ['role' => 'annotation'], ['role' => 'annotationText']]
+				],
+				"nortehfc" => [
+					"campos" => ['hfc_nor', 'meta'],
+					"cabeceras" => ["mes", "HFC Norte", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText']]
+				],
+				"norteftth" => [
+					"campos" => ['ftth_nor', 'meta'],
+					"cabeceras" => ["mes", "FTTH Norte", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText']]
+				],
+				"surhfc" => [
+					"campos" => ['hfc_sur', 'meta'],
+					"cabeceras" => ["mes", "HFC Sur", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText']]
+				],
+				"surftth" => [
+					"campos" => ['ftth_sur', 'meta'],
+					"cabeceras" => ["mes", "FTTH Sur", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText']]
+				]
+			];
+
+	 
+			$datos = array(
+				'productividadnacional' => $this->Dashboard_operacionesmodel->getDataProductividad($tipos["nac"], $mes_inicio, $mes_termino),
+				'productividadnorteHFC' => $this->Dashboard_operacionesmodel->getDataProductividad($tipos["nortehfc"], $mes_inicio, $mes_termino),
+				'productividadnorteFTTH' => $this->Dashboard_operacionesmodel->getDataProductividad($tipos["norteftth"], $mes_inicio, $mes_termino),
+				'productividadsurHFC' => $this->Dashboard_operacionesmodel->getDataProductividad($tipos["surhfc"], $mes_inicio, $mes_termino),
+				'productividadsurFTTH' => $this->Dashboard_operacionesmodel->getDataProductividad($tipos["surftth"], $mes_inicio, $mes_termino),
+			);
+		
+			echo json_encode($datos);
+
+		}
+		
 		public function cargaDashboardProductividadXR3() {
 			$archivo = $_FILES['userfile']['tmp_name'];
 			$spreadsheet = IOFactory::load($archivo);
@@ -122,9 +163,5 @@ class Dashboard_operaciones extends CI_Controller {
 			
 		}
 		
-		public function productividadNacional(){
-			echo json_encode($this->Dashboard_operacionesmodel->productividadNacional());
-		}
-		 
 
 }
