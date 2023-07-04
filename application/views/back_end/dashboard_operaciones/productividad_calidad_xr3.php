@@ -29,8 +29,8 @@
       },
       dataType: "json",
       beforeSend:function(){
-       /*  $("#load").show()
-        $(".body").hide() */
+        $("#load").show()
+        $(".body").hide()  
       }, 
       success: function (response) {
         $("#load").hide()
@@ -40,6 +40,13 @@
         crearGrafico('productividadnorteFTTH', response.productividadnorteFTTH, 'line');
         crearGrafico('productividadsurHFC', response.productividadsurHFC, 'line');
         crearGrafico('productividadsurFTTH', response.productividadsurFTTH, 'line');
+
+        crearGrafico('calidadnacional', response.calidadnacional, 'column');
+        crearGrafico('calidadnorteHFC', response.calidadnorteHFC, 'column');
+        crearGrafico('calidadnorteFTTH', response.calidadnorteFTTH, 'column');
+        crearGrafico('calidadsurHFC', response.calidadsurHFC, 'column');
+        crearGrafico('calidadsurFTTH', response.calidadsurFTTH, 'column');
+
       },
       error: function (error) {
           console.log(error);
@@ -47,75 +54,226 @@
   });
   }
 
+  function contieneElementoMeta(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes("Meta")) {
+        return true;  
+      }
+    }
+    return false;
+  }
+
+  
+  function contieneElementoCalidad(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes("calidad")) {
+        return true;  
+      }
+    }
+    return false;
+  }
+
+  function contieneElementoProd(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes("productividad")) {
+        return true;  
+      }
+    }
+    return false;
+  }
+
 
   function crearGrafico(divId, data, tipoGrafico) {
-    var data = google.visualization.arrayToDataTable((data));
+    console.log(data)
+    var contieneMeta = contieneElementoMeta(data);
+    var contieneCalidad = contieneElementoCalidad(data);
+    var contieneProd = contieneElementoProd(data);
+    /* var contieneHFCFTTH = contieneHFCFTTH(data); */
+    
+
+    var data = google.visualization.arrayToDataTable(data);
     data.sort([{ column: 5, desc: false }]);
 
     const options = {
-        fontName: 'ubuntu',
-        curveType: 'function',
-        fontColor: '#32477C',
-        backgroundColor: { fill: 'transparent' },
-        colors: ['#F48432', '#2f81f7'],
-        chartArea: {
-          left: 40,
-          right: 40,
-          bottom: 40,
-          top: 40,
+      fontName: 'ubuntu',
+      curveType: 'function',
+      fontColor: '#32477C',
+      backgroundColor: { fill: 'transparent' },
+      colors: ['#F48432', '#2f81f7'],
+      chartArea: {
+        left: 40,
+        right: 40,
+        bottom: 40,
+        top: 40,
+      },
+      height: 280,
+      hAxis: {
+        title: '',
+        minValue: 0,
+        textStyle: {
+          fontSize: 13,
+          bold: false,
+          color: '#808080'
         },
-        height: 250,
-        hAxis: {
-          title: '',
-          minValue: 0,
-          textStyle: {
-            fontSize: 13,
-            bold: false,
-            color: '#808080'
+        gridlines: {
+          color: '',
+          count: 0
+        }
+      },
+      vAxis: {
+        title: '',
+        textStyle: {
+          fontSize: 13,
+          bold: false,
+          color: '#808080'
+        },
+        gridlines: {
+          color: '',
+          count: 0
+        },
+
+      },
+
+      
+    
+
+      annotations: {
+        alwaysOutside: false,
+        textStyle: {
+          fontSize: 13,
+          color: '#808080',
+          auraColor: 'none'
+        }
+      },
+      avoidOverlappingGridLines: true,
+
+      legend: {
+        position: 'top',
+        alignment: 'center',
+        textStyle: {
+          fontSize: 14,
+          bold: true,
+          color: '#808080'
+        }
+      },
+      tooltip: {
+        textStyle: {
+          color: '#ffffff96',
+          fontSize: 13
+        }
+      },
+    };
+
+    if(contieneMeta && contieneCalidad){
+      
+      options.vAxes ={
+       0: 
+        {
+        textStyle:{color: '#808080',bold:false,fontSize: 12},
+          gridlines: {color:'#808080', count:0},
+          viewWindowMode:'explicit',
+          viewWindow: {
+            min: 0,
+            max: 10
           },
-          gridlines: {
-            color: '',
-            count: 0
+        },
+        1: 
+        {
+          textStyle:{color: '#808080',bold:false,fontSize: 12},
+            gridlines: {color:'#808080', count:0},
+            viewWindow: {
+              min: 0,
+            max: 10
+            },
+          }
+     },
+
+
+      options.seriesType = 'bars'; 
+      options.series = {
+        1: {
+          type: 'line',
+          lineDashStyle: [4, 4], 
+          color: 'grey',
+          curveType: 'function',
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'square',
+          targetAxisIndex: 0,
+          annotations: {
+            stem: {
+              length: 4
+            },
+            
           }
         },
-        vAxis: {
-          title: '',
-          textStyle: {
-            fontSize: 13,
-            bold: false,
-            color: '#808080'
-          },
-          gridlines: {
-            color: '',
-            count: 0
+        0: {
+          type: 'bars',
+          color: '#2F81F7',
+          targetAxisIndex: 1,
+          annotations: {
+            style: 'line',
+            textStyle: {
+              fontSize: 12,
+              color: 'black',
+              strokeSize: 1,
+              auraColor: 'transparent'
+            },
+            alwaysOutside: false,
+            stem: {
+              color: 'transparent',
+              length: 8
+            }
           }
-        },
-        annotations: {
-          alwaysOutside: false,
-          textStyle: {
-            fontSize: 13,
-            auraColor: 'none'
-          }
-        },
-        legend: {
-          position: 'top',
-          alignment: 'center',
-          textStyle: {
-            fontSize: 14,
-            bold: true,
-            color: '#808080'
-          }
-        },
-        tooltip: {
-          textStyle: {
-            color: '#ffffff96',
-            fontSize: 13
-          }
-        },
+        }
       };
 
-    var chart;
+    }
 
+    if(contieneMeta && contieneProd){
+      
+      options.series = {
+        1: {
+          type: 'line',
+          lineDashStyle: [4, 4], 
+          color: '#808080',
+          curveType: 'function',
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'square',
+          targetAxisIndex: 0,
+          annotations: {
+            stem: {
+              length: 4
+            }
+          }
+        },
+        0: {
+          type: 'line',
+          color: '#2F81F7',
+          targetAxisIndex: 1,
+          annotations: {
+            style: 'line',
+            textStyle: {
+              fontSize: 12,
+              color: '#808080',
+              strokeSize: 1,
+              auraColor: 'transparent'
+            },
+            alwaysOutside: false,
+            stem: {
+              color: 'transparent',
+              length: 8
+            }
+          }
+        }
+      };
+
+
+    }
+
+    var chart;
+    
     if (tipoGrafico === 'line') {
       chart = new google.visualization.LineChart(document.getElementById(divId));
     } else if (tipoGrafico === 'column') {
@@ -123,6 +281,8 @@
     }
 
     chart.draw(data, options);
+
+   
   }
 
   $(document).off('change', '#mes_inicio,#mes_termino').on('change', '#mes_inicio,#mes_termino', function (event) {
@@ -231,9 +391,7 @@
     </div>
   </div>
 
-
 </div>   
-
 
 <div style="text-align: center;;">
   <i id="load" class="fa-solid fa-circle-notch fa-spin fa-8x" style="color: #1A56DB; opacity: .4;margin-top:250px"></i>
