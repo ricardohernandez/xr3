@@ -9,23 +9,23 @@
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"
-  const mes_inicio = "<?php echo $mes_inicio ?>"
-  $("#mes_inicio").val(mes_inicio) 
-  const mes_termino = "<?php echo $mes_termino ?>"
-  $("#mes_termino").val(mes_termino) 
+  const mes_inicio_eps = "<?php echo $mes_inicio ?>"
+  $("#mes_inicio_eps").val(mes_inicio_eps) 
+  const mes_termino_eps = "<?php echo $mes_termino ?>"
+  $("#mes_termino_eps").val(mes_termino_eps) 
 
-  cargarGrafico()
+  cargarGraficoEps()
 
-  function cargarGrafico () {
-  var mes_inicio = $("#mes_inicio").val();
-  var mes_termino = $("#mes_termino").val();
+  function cargarGraficoEps () {
+  var mes_inicio_eps = $("#mes_inicio_eps").val();
+  var mes_termino_eps = $("#mes_termino_eps").val();
 
   $.ajax({
-      url: base_url+'graficosProductividadXR3',
+      url: base_url+'graficosProductividadEps',
       type: 'POST',
       data: {
-          'mes_inicio': mes_inicio,
-          'mes_termino': mes_termino
+          'mes_inicio_eps': mes_inicio_eps,
+          'mes_termino_eps': mes_termino_eps
       },
       dataType: "json",
       beforeSend:function(){
@@ -35,17 +35,15 @@
       success: function (response) {
         $("#load").hide()
         $(".body").fadeIn(500)
-        crearGrafico('productividadnacional', response.productividadnacional, 'line');
-        crearGrafico('productividadnorteHFC', response.productividadnorteHFC, 'line');
-        crearGrafico('productividadnorteFTTH', response.productividadnorteFTTH, 'line');
-        crearGrafico('productividadsurHFC', response.productividadsurHFC, 'line');
-        crearGrafico('productividadsurFTTH', response.productividadsurFTTH, 'line');
 
-        crearGrafico('calidadnacional', response.calidadnacional, 'column');
-        crearGrafico('calidadnorteHFC', response.calidadnorteHFC, 'column');
-        crearGrafico('calidadnorteFTTH', response.calidadnorteFTTH, 'column');
-        crearGrafico('calidadsurHFC', response.calidadsurHFC, 'column');
-        crearGrafico('calidadsurFTTH', response.calidadsurFTTH, 'column');
+        crearGraficoEps('productividadnacional', response.productividadnacional, 'line');
+        crearGraficoEps('productividadHFC', response.productividadHFC, 'line');
+        crearGraficoEps('productividadFTTH', response.productividadFTTH, 'line');
+
+        crearGraficoEps('calidadnacional', response.calidadnacional, 'column');
+        crearGraficoEps('calidadHFC', response.calidadHFC, 'column');
+        crearGraficoEps('calidadFTTH', response.calidadFTTH, 'column');
+
 
       },
       error: function (error) {
@@ -83,21 +81,21 @@
   }
 
 
-  function crearGrafico(divId, data, tipoGrafico) {
+  function crearGraficoEps(divId, data, tipoGrafico) {
     console.log(data)
     var contieneMeta = contieneElementoMeta(data);
     var contieneCalidad = contieneElementoCalidad(data);
     var contieneProd = contieneElementoProd(data);
 
     var data = google.visualization.arrayToDataTable(data);
-    data.sort([{ column: 5, desc: false }]);
+    data.sort([{ column: 8, desc: false }]);
 
     const options = {
       fontName: 'ubuntu',
       curveType: 'function',
       fontColor: '#32477C',
       backgroundColor: { fill: 'transparent' },
-      colors: ['#F48432', '#2f81f7'],
+      colors: ['#118DFF','#12239E', '#F48432'],
       chartArea: {
         left: 40,
         right: 40,
@@ -283,81 +281,9 @@
    
   }
 
-  $(document).off('change', '#mes_inicio,#mes_termino').on('change', '#mes_inicio,#mes_termino', function (event) {
-    cargarGrafico ();
+  $(document).off('change', '#mes_inicio_eps,#mes_termino_eps').on('change', '#mes_inicio_eps,#mes_termino_eps', function (event) {
+    cargarGraficoEps ();
   });
-
-  $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
-    var myFormData = new FormData();
-    myFormData.append('userfile', $('#userfile').prop('files')[0]);
-    $.ajax({
-        url: "cargaDashboardProductividadXR3"+"?"+$.now(),  
-        type: 'POST',
-        data: myFormData,
-        cache: false,
-        tryCount : 0,
-        retryLimit : 3,
-        processData: false,
-        contentType : false,
-        dataType:"json",
-        beforeSend:function(){
-          $(".btn_file_cs").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
-        },  
-        success: function (data) {
-            $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
-            if(data.res=="ok"){
-              $.notify(data.msg, {
-                  className:data.tipo,
-                  globalPosition: 'top center',
-                  autoHideDelay: 20000,
-              });
-
-              productividadNacional()
-
-            }else{
-              $.notify(data.msg, {
-                  className:data.tipo,
-                  globalPosition: 'top center',
-                  autoHideDelay: 10000,
-              });
-            }
-
-            $("#userfile").val(null);
-        },
-        error : function(xhr, textStatus, errorThrown ) {
-          $("#userfile").val(null);
-          if (textStatus == 'timeout') {
-              this.tryCount++;
-              if (this.tryCount <= this.retryLimit) {
-                  $.notify("Reintentando...", {
-                    className:'info',
-                    globalPosition: 'top center'
-                  });
-                  $.ajax(this);
-                  $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad').prop("disabled",false);
-                  return;
-              } else{
-                  $.notify("Problemas cargando el archivo, intente nuevamente.", {
-                    className:'warn',
-                    globalPosition: 'top center',
-                    autoHideDelay: 10000,
-                  });
-              }    
-              return;
-          }
-
-          if (xhr.status == 500) {
-              $.notify("Problemas cargando el archivo, intente nuevamente.", {
-                className:'warn',
-                globalPosition: 'top center',
-                autoHideDelay: 10000,
-              });
-          $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base').prop("disabled",false);
-          }
-      },timeout:120000
-    });
-  })
-
 
 
 </script>
@@ -383,8 +309,8 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Meses<span></span> 
         </div>
-        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio" id="mes_inicio">
-        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino" id="mes_termino">
+        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_eps" id="mes_inicio_eps">
+        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_eps" id="mes_termino_eps">
       </div>
     </div>
   </div>
@@ -401,7 +327,7 @@
   <div class="col-12 col-lg-6">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">Productividad nacional</p>
+          <p class="titulo_grafico">Productividad nacional X EPS</p>
           <div id="productividadnacional"></div>
         </div>
       </div>
@@ -410,7 +336,7 @@
   <div class="col-12 col-lg-6">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">Calidad nacional</p>
+          <p class="titulo_grafico">Calidad nacional X EPS</p>
           <div id="calidadnacional"></div>
       </div>
     </div>
@@ -419,8 +345,8 @@
   <div class="col-12 col-lg-6 mt-2">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">Productividad zona norte HFC</p>
-          <div id="productividadnorteHFC"></div>
+          <p class="titulo_grafico">Productividad HFC X EPS</p>
+          <div id="productividadHFC"></div>
         </div>
       </div>
   </div>
@@ -428,8 +354,8 @@
   <div class="col-12 col-lg-6 mt-2">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">Calidad zona norte HFC</p>
-          <div id="calidadnorteHFC"></div>
+          <p class="titulo_grafico">Calidad HFC X EPS</p>
+          <div id="calidadHFC"></div>
         </div>
       </div>
   </div>
@@ -437,8 +363,8 @@
   <div class="col-12 col-lg-6 mt-2">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">Productividad zona norte FTTH</p>
-          <div id="productividadnorteFTTH"></div>
+          <p class="titulo_grafico">Productividad FTTH X EPS</p>
+          <div id="productividadFTTH"></div>
         </div>
       </div>
   </div>
@@ -446,45 +372,10 @@
   <div class="col-12 col-lg-6 mt-2">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">Calidad zona norte FTTH</p>
-          <div id="calidadnorteFTTH"></div>
+          <p class="titulo_grafico">Calidad FTTH X EPS</p>
+          <div id="calidadFTTH"></div>
         </div>
       </div>
   </div>
 
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Productividad zona sur HFC</p>
-          <div id="productividadsurHFC"></div>
-        </div>
-      </div>
-  </div>
-
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Calidad zona sur HFC</p>
-          <div id="calidadsurHFC"></div>
-        </div>
-      </div>
-  </div>
-
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Productividad zona sur FTTH</p>
-          <div id="productividadsurFTTH"></div>
-        </div>
-      </div>
-  </div>
-
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Calidad zona sur FTTH</p>
-          <div id="calidadsurFTTH"></div>
-        </div>
-      </div>
-  </div>
 </div>

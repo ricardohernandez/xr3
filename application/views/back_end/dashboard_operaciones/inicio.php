@@ -61,11 +61,27 @@
        vistaCapacitacion()
     } */
     
-    vistaProductividadCalidadXr3()
-
+    /* vistaProductividadCalidadXr3() */
+    vistaAnalisisCalidad()
+    
     $(document).off('click', '#menu_prod_cal_xr3').on('click', '#menu_prod_cal_xr3',function(event) {
       event.preventDefault();
       vistaProductividadCalidadXr3()
+    });
+
+    $(document).off('click', '#menu_prod_cal_eps').on('click', '#menu_prod_cal_eps',function(event) {
+      event.preventDefault();
+      vistaProductividadCalidadEps()
+    });
+
+    $(document).off('click', '#menu_dotacion').on('click', '#menu_dotacion',function(event) {
+      event.preventDefault();
+      vistaDotacion()
+    });
+
+    $(document).off('click', '#menu_analisis_calidad').on('click', '#menu_analisis_calidad',function(event) {
+      event.preventDefault();
+      vistaAnalisisCalidad()
     });
 
     function vistaProductividadCalidadXr3(){
@@ -79,8 +95,53 @@
         $("#menu_prod_cal_xr3").removeClass('disabled_sub');
       });
 
-      window.history.replaceState('statedata', 'title', 'dashboard_operaciones');
+      /* window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
+
+    
+    function vistaProductividadCalidadEps(){
+      $("#menu_prod_cal_eps").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_prod_cal_eps").addClass('menuActivo');  
+
+      $.get(base_url+"dashboard/produccion_calidad_EPS", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_prod_cal_eps").removeClass('disabled_sub');
+      });
+
+     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
+    }
+
+
+    function vistaDotacion(){
+      $("#menu_dotacion").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_dotacion").addClass('menuActivo');  
+
+      $.get(base_url+"dashboard/dotacion", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_dotacion").removeClass('disabled_sub');
+      });
+
+     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
+    }
+
+    function vistaAnalisisCalidad(){
+      $("#menu_analisis_calidad").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_analisis_calidad").addClass('menuActivo');  
+
+      $.get(base_url+"dashboard/analisis_calidad", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_analisis_calidad").removeClass('disabled_sub');
+      });
+
+     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
+    }
+
 
   })
 </script>
@@ -96,7 +157,10 @@
     <div class="col-12">
     <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-        <li id="menu_prod_cal_xr3" class="active"><a> <i class="fa fa-list-alt"></i> Productividad y calidad XR3 </a></li>   
+       <li id="menu_prod_cal_xr3" class="active"><a> <i class="fa fa-list-alt"></i> Productividad y calidad XR3 </a></li>   
+       <li id="menu_prod_cal_eps" class="active"><a> <i class="fa fa-list-alt"></i> Productividad y calidad EPS </a></li>   
+       <li id="menu_dotacion" class="active"><a> <i class="fa fa-list-alt"></i> Dotacion FTE </a></li>   
+       <li id="menu_analisis_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Analisis Calidad </a></li>   
       </ul>  
       </div> 
       </div> 

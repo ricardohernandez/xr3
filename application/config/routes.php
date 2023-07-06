@@ -92,12 +92,19 @@
 
 	$route['dashboard/dashboard_operaciones'] = "back_end/Dashboard_operaciones/indexDashboardOP";
 	$route['dashboard/produccion_calidad_xr3'] = "back_end/Dashboard_operaciones/productividadCalidadXr3";
+	$route['dashboard/produccion_calidad_EPS'] = "back_end/Dashboard_operaciones/produccionCalidadEPS";
+	$route['dashboard/dotacion'] = "back_end/Dashboard_operaciones/dotacion";
+	$route['dashboard/analisis_calidad'] = "back_end/Dashboard_operaciones/analisisCalidad";
+
 	$route['dashboard/cargaDashboardProductividadXR3'] = "back_end/Dashboard_operaciones/cargaDashboardProductividadXR3";
 	$route['graficosProductividadXR3'] = "back_end/Dashboard_operaciones/graficosProductividadXR3";
+	$route['graficosProductividadEps'] = "back_end/Dashboard_operaciones/graficosProductividadEps";
+	$route['graficoDotacion'] = "back_end/Dashboard_operaciones/graficoDotacion";
+	$route['graficoAnalisisCalidad'] = "back_end/Dashboard_operaciones/graficoAnalisisCalidad";
+ 	
 
 	
 	$route['dashboard/listaDashboardProductividad'] = "back_end/Dashboard_operaciones/listaDashboardProductividad";
-
 	$route['getDatasList'] = "back_end/Dashboard_operaciones/getDatasList";
 	$route['getDataRegistroDatas'] = "back_end/Dashboard_operaciones/getDataRegistroDatas";
 	$route['formIngresoDatas'] = "back_end/Dashboard_operaciones/formIngresoDatas";
