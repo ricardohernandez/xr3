@@ -95,6 +95,7 @@
 	$route['dashboard/produccion_calidad_EPS'] = "back_end/Dashboard_operaciones/produccionCalidadEPS";
 	$route['dashboard/dotacion'] = "back_end/Dashboard_operaciones/dotacion";
 	$route['dashboard/analisis_calidad'] = "back_end/Dashboard_operaciones/analisisCalidad";
+	$route['dashboard/prod_cal_claro'] = "back_end/Dashboard_operaciones/prodCalClaro";
 
 	$route['dashboard/cargaDashboardProductividadXR3'] = "back_end/Dashboard_operaciones/cargaDashboardProductividadXR3";
 	$route['graficosProductividadXR3'] = "back_end/Dashboard_operaciones/graficosProductividadXR3";

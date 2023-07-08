@@ -39,23 +39,24 @@ function obtenerNumeroMes($mes) {
 
 function obtenerNumeroMesCompleto($mes) {
     $meses = array(
-        'Enero' => '01',
-        'Febrero' => '02',
-        'Marzo' => '03',
-        'Abril' => '04',
-        'Mayo' => '05',
-        'Junio' => '06',
-        'Julio' => '07',
-        'Agosto' => '08',
-        'Septiembre' => '09',
-        'Octubre' => '10',
-        'Noviembre' => '11',
-        'Diciembre' => '12'
+        'enero' => '01',
+        'febrero' => '02',
+        'marzo' => '03',
+        'abril' => '04',
+        'mayo' => '05',
+        'junio' => '06',
+        'julio' => '07',
+        'agosto' => '08',
+        'septiembre' => '09',
+        'octubre' => '10',
+        'noviembre' => '11',
+        'diciembre' => '12'
     );
+
+    $mes = strtolower($mes); // Convertir el nombre del mes a minúsculas
+
     return isset($meses[$mes]) ? $meses[$mes] : '';
 }
-
-
 
 
 function mesesCorto($mes){

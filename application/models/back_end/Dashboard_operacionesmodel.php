@@ -222,62 +222,142 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $array;
 		}
 
-		public function getDataAnalisisCalidad(){
-				
-			if($mes_inicio!=""){
-				$this->db->where('fecha >=', date('Y-m-01', strtotime($mes_inicio)));
-				$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
-			}else{
-				$this->db->where('fecha >=', date('Y-m-01', strtotime('January')));
+		public function getDataAnalisisCalidad($zona,$comuna,$supervisor,$tecnologia,$mes_inicio,$mes_termino){
+			$this->db->where('fecha >=', $mes_inicio."-01");
+			$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
+
+			if($zona!=""){
+				$this->db->where('zona', $zona);
 			}
 
-			$res = $this->db->get('dashboard_dotacion');
+			if($comuna!=""){
+				$this->db->where('comuna', $comuna);
+			}
+
+			if($supervisor!=""){
+				$this->db->where('supervisor', $supervisor);
+			}
+
+			if($tecnologia!=""){
+				$this->db->where('tecnologia', $tecnologia);
+			}
+
+			
+			$res = $this->db->get('dashboard_analisis_calidad');
+
 			$array = [];
-			$cabeceras = ["mes", 
-				"Promedio Sur", ['role' => 'annotation'], 
-				"Promedio Norte", ['role' => 'annotation'], 
-				"Claro", ['role' => 'annotation'], 
-				"FTE Sur", ['role' => 'annotation'], 
-				"Total Operativo", ['role' => 'annotation'], 
-				"FTE Norte", ['role' => 'annotation'], 
-				"Total Mov FTE", ['role' => 'annotation'], 
-				"ACC", ['role' => 'annotation'], 
-				['role' => 'annotationText']];
+
+			if ($tecnologia === "HFC") {
+				$cabeceras = [
+					"comuna",
+					"HFC",
+					['role' => 'annotation'],
+				];
+			} elseif ($tecnologia === "FTTH") {
+				$cabeceras = [
+					"comuna",
+					"FTTH",
+					['role' => 'annotation'],
+				];
+			}
+
+			$cabeceras[] = ['role' => 'annotationText'];
 
 			$array[] = $cabeceras;
 
 			foreach ($res->result_array() as $key) {
 				$temp = [];
-				$temp[] = mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-				
-				$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
-				$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
-				$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
-				$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
-				$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
-				$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
-								
-				$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
-				$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
 
-				$temp[] = ($key["total_operativo"] != 0) ? (float)$key["total_operativo"] : 0;
-				$temp[] = ($key["total_operativo"] != 0) ? (float)$key["total_operativo"] : 0;
+				if ($tecnologia === "HFC") {
+					$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
+					$temp[] = ($key["hfc"] != 0) ? (float)$key["hfc"] : 0;
+					$temp[] = ($key["hfc"] != 0) ? (float)$key["hfc"] : 0;
 
-				$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
-				$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
-
-
-				$temp[] = ($key["total_mov_fte"] != 0) ? (float)$key["total_mov_fte"] : 0;
-				$temp[] = ($key["total_mov_fte"] != 0) ? (float)$key["total_mov_fte"] : 0;
-
-				$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
-				$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
+				} elseif ($tecnologia === "FTTH") {
+					$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
+					$temp[] = ($key["ftth"] != 0) ? (float)$key["ftth"] : 0;
+					$temp[] = ($key["ftth"] != 0) ? (float)$key["ftth"] : 0;
+				}
 				
 				$temp[] = strtotime($key["fecha"]);
 				$array[] = $temp;
 			}
 		
 			return $array;
+		}
+
+		public function getDataAnalisisCalidadTotal($zona,$comuna,$supervisor,$mes_inicio,$mes_termino){
+			$this->db->where('fecha >=', $mes_inicio."-01");
+			$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
+
+			if($zona!=""){
+				$this->db->where('zona', $zona);
+			}
+
+			if($comuna!=""){
+				$this->db->where('comuna', $comuna);
+			}
+
+			if($supervisor!=""){
+				$this->db->where('supervisor', $supervisor);
+			}
+
+			$this->db->order_by('comuna', 'asc');
+			$this->db->order_by('fecha', 'asc');
+			
+			$res = $this->db->get('dashboard_analisis_calidad');
+
+			$array = [];
+
+			$cabeceras = [
+				"comuna",
+				"Total",
+				['role' => 'annotation'],
+				['role' => 'annotationText']
+			];
+
+			$array[] = $cabeceras;
+
+			foreach ($res->result_array() as $key) {
+				$temp = [];
+
+				$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
+				$temp[] = ($key["total_general"] != 0) ? (float)$key["total_general"] : 0;
+				$temp[] = ($key["total_general"] != 0) ? (float)$key["total_general"] : 0;
+				$temp[] = strtotime($key["fecha"]);
+				$array[] = $temp;
+			}
+		
+			return $array;
+		}
+		
+
+		public function getZonas(){
+			$this->db->distinct();
+			$this->db->select('zona');
+			$res=$this->db->get('dashboard_analisis_calidad');
+			return $res->result_array();
+		}
+
+		public function getComunas(){
+			$this->db->distinct();
+			$this->db->select('comuna');
+			$res=$this->db->get('dashboard_analisis_calidad');
+			return $res->result_array();
+		}
+
+		public function getSupervisores(){
+			$this->db->distinct();
+			$this->db->select('supervisor');
+			$res=$this->db->get('dashboard_analisis_calidad');
+			return $res->result_array();
+		}
+
+		public function getTecnologias(){
+			$this->db->distinct();
+			$this->db->select('tecnologia');
+			$res=$this->db->get('dashboard_analisis_calidad');
+			return $res->result_array();
 		}
 		
 
@@ -335,6 +415,15 @@ class Dashboard_operacionesmodel extends CI_Model {
 			}
 			return FALSE;
 		} 
+
+		public function formProdCalClaro($data){
+			if($this->db->insert('dashboard_prod_cal_claro', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
+
+		
 
 		public function eliminaCapacitacion($hash){
 			$this->db->where('sha1(id)', $hash);
