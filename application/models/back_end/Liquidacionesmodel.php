@@ -88,6 +88,16 @@ class Liquidacionesmodel extends CI_Model {
 	
 	}
 
+	public function getRutaLiquidacion($hash){
+		$this->db->select("l.archivo as archivo");
+		$this->db->from('liquidaciones as l');			
+		$this->db->where('sha1(l.id)', $hash);
+		$res=$this->db->get();
+		$row = $res->row();
+		$ruta = $row->archivo;
+		return $ruta;
+	}
+
 	public function listaJefes(){
 		$this->db->select("sha1(uj.id) as hash_jefes,
 			uj.id as id_jefe,

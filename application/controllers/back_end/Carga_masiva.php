@@ -243,10 +243,25 @@ class Carga_masiva extends CI_Controller {
 
 	public function eliminaCargamasiva(){
 		$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+		$data = $this->Cargamasivamodel->getRutaCargaMasiva($hash);
+		$array = explode(",", $data["lista"]);
 	    if($this->Cargamasivamodel->eliminaCargamasiva($hash)){
-	      echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			$this->EliminaArchivo($data["archivo"]);
+			foreach($array as $id){
+				$this->eliminaLiquidacion($id);
+			}
+	      	echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 	    }else{
 	      echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+	    }
+	}
+
+	public function eliminaLiquidacion($id){
+		$ruta = $this->Cargamasivamodel->getRutaLiquidacion($id);
+	    if($this->Cargamasivamodel->eliminaLiquidacion($id)){
+			if (file_exists($ruta)){
+				$this->EliminaArchivo($ruta);
+			}
 	    }
 	}
 
@@ -630,4 +645,10 @@ class Carga_masiva extends CI_Controller {
 		}
 		return true;
 	}
+
+	private function EliminaArchivo($ruta){
+        if (file_exists($ruta)) {
+            unlink($ruta);
+        }
+    }
 }
