@@ -79,7 +79,7 @@ class Liquidaciones extends CI_Controller {
 		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
 		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
 		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
-		if($periodo!=""){$periodo=date("m-Y",strtotime($periodo));}else{$periodo="";}
+		//if($periodo!=""){$periodo=date("m-Y",strtotime($periodo));}else{$periodo="";}
 		echo json_encode($this->Liquidacionesmodel->getLiquidacionesList($jefe,$trabajador,$periodo));
 	}
 
