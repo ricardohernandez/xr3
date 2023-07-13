@@ -330,7 +330,79 @@ class Dashboard_operacionesmodel extends CI_Model {
 		
 			return $array;
 		}
+
+		public function graficoProdxEps($tipo,$mes_inicio,$mes_termino) {
+			$campos = $tipo['campos'];
+			$cabeceras = $tipo['cabeceras'];
+
+			$this->db->select("fecha," . implode(",", $campos));
+			$this->db->where('fecha >=', $mes_inicio."-01");
+			$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
+
+			$res = $this->db->get('dashboard_prod_cal_claro');
+			$array = [];
+
+			$array[] = $cabeceras;
 		
+			foreach ($res->result_array() as $key) {
+				$temp = [];
+				$temp[] =  (string)mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
+				
+				foreach ($campos as $campo) {
+					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
+					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
+				}
+				
+				$temp[] = strtotime($key["fecha"]);
+				$array[] = $temp;
+			}
+		
+			return $array;
+		}
+
+		public function graficoProdxCiudad($comuna,$supervisor,$tecnologia,$mes_inicio,$mes_termino){
+
+			$this->db->where('fecha >=', $mes_inicio."-01");
+			$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
+
+			if($comuna!=""){
+				$this->db->where('comuna', $comuna);
+			}
+
+			if($supervisor!=""){
+				$this->db->where('supervisor', $supervisor);
+			}
+
+			if($tecnologia!=""){
+				$this->db->where('tecnologia', $tecnologia);
+			}
+
+			$this->db->order_by('comuna', 'asc');
+			$this->db->order_by('fecha', 'asc');
+
+			$res = $this->db->get('dashboard_px_claro_ciudad');
+			
+			$array = [];
+			$cabeceras = [
+				"Mes",
+				"Suma PX",['role' => 'annotation'],
+				['role' => 'annotationText']
+			];
+			
+			$array[] = $cabeceras;
+
+			foreach ($res->result_array() as $key) {
+				$temp = [];
+				$temp[] = (string)mb_convert_case($key["comuna"], MB_CASE_TITLE, "UTF-8")." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
+				$temp[] = ($key["px"] != 0) ? (float)$key["px"] : 0;
+				$temp[] = ($key["px"] != 0) ? (float)$key["px"] : 0;
+				$temp[] = strtotime($key["fecha"]);
+				$array[] = $temp;
+			}
+		
+			return $array;
+		} 
+
 
 		public function getZonas(){
 			$this->db->distinct();
@@ -360,6 +432,26 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $res->result_array();
 		}
 		
+		public function getComunasProdCiudad(){
+			$this->db->distinct();
+			$this->db->select('comuna');
+			$res=$this->db->get('dashboard_px_claro_ciudad');
+			return $res->result_array();
+		}
+
+		public function getSupervisoresProdCiudad(){
+			$this->db->distinct();
+			$this->db->select('supervisor');
+			$res=$this->db->get('dashboard_px_claro_ciudad');
+			return $res->result_array();
+		}
+
+		public function getTecnologiasProdCiudad(){
+			$this->db->distinct();
+			$this->db->select('tecnologia');
+			$res=$this->db->get('dashboard_px_claro_ciudad');
+			return $res->result_array();
+		}
 
 		public function listaDashboardProductividad(){
 			$this->db->select("sha1(c.id) as hash_id,
@@ -423,7 +515,13 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return FALSE;
 		} 
 
-		
+		public function formPxClaroCiudad($data){
+			if($this->db->insert('dashboard_px_claro_ciudad', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
+
 
 		public function eliminaCapacitacion($hash){
 			$this->db->where('sha1(id)', $hash);

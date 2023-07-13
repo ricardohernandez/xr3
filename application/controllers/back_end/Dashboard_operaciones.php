@@ -123,9 +123,7 @@ class Dashboard_operaciones extends CI_Controller {
 				'calidadsurFTTH' => $this->Dashboard_operacionesmodel->getDataCalidad($tiposProductividad["surftth"], $mes_inicio, $mes_termino),
 
 			);
-			
 			echo json_encode($datos);
-
 		}
 		
 
@@ -209,28 +207,88 @@ class Dashboard_operaciones extends CI_Controller {
 		public function prodCalClaro(){
 			$this->visitas("Inicio",4);
 			$datos=array(
-				'mes_inicio' =>  date('Y-m', strtotime('-2 months', strtotime(date("Y-m-d")))),
+				'mes_inicio' =>  date('Y-m', strtotime('-3 months', strtotime(date("Y-m-d")))),
 				'mes_termino' => date('Y-m'),
-				'zonas' => $this->Dashboard_operacionesmodel->getZonas(),
-				'comunas' => $this->Dashboard_operacionesmodel->getComunas(),
-				'supervisores' => $this->Dashboard_operacionesmodel->getSupervisores(),
-				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologias()
+				'comunas' => $this->Dashboard_operacionesmodel->getComunasProdCiudad(),
+				'supervisores' => $this->Dashboard_operacionesmodel->getSupervisoresProdCiudad(),
+				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologiasProdCiudad()
 			);
 			$this->load->view('back_end/dashboard_operaciones/prod_cal_claro',$datos);
 		}
-
-		public function graficoProdCalClaro(){
-			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_cal")));
-			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_cal")));
-			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
+		
+		public function graficoProdxEps(){
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_prod_eps")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_prod_eps")));
 			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
 			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 			$tecnologia=$this->security->xss_clean(strip_tags($this->input->get_post("tecnologia")));
+			
+			$campos = [
+				"general" => [
+					"campos" => ['px_xr3', 'px_alianza_sur', 'px_red_cell'],
 
-			$data = $this->Dashboard_operacionesmodel->getDataAnalisisCalidad($zona,$comuna,$supervisor,$tecnologia,$mes_inicio, $mes_termino);
-			$total = $this->Dashboard_operacionesmodel->getDataAnalisisCalidadTotal($zona,$comuna,$supervisor,$mes_inicio, $mes_termino);
+					"cabeceras" => 
+						["mes", 
+						"PX XR3", ['role' => 'annotation'], 
+						"PX Alianza sur", ['role' => 'annotation'], 
+						"PX Red cell", ['role' => 'annotation'],
+						['role' => 'annotationText']
+						]
+				],
+				"hfc" => [
+					"campos" => ['px_hfc_xr3', 'px_hfc_alianza_sur', 'px_hfc_red_cell'],
 
-			echo json_encode(array("data" => $data , "total" => $total));
+					"cabeceras" => 
+						["mes", 
+						"PX HFC XR3", ['role' => 'annotation'], 
+						"PX HFC Alianza sur", ['role' => 'annotation'], 
+						"PX HFC Red cell", ['role' => 'annotation'],
+						['role' => 'annotationText']
+						]
+				],
+				"ftth" => [
+					"campos" => ['px_ftth_xr3', 'px_ftth_alianza_sur', 'px_ftth_red_cell'],
+
+					"cabeceras" => 
+						["mes", 
+						"PX XR3 FTTH", ['role' => 'annotation'], 
+						"PX Alianza sur FTTH", ['role' => 'annotation'], 
+						"PX Red cell FTTH", ['role' => 'annotation'],
+						['role' => 'annotationText']
+						]
+				],
+				"ca_hfc" => [
+					"campos" => ['ca_hfc_xr3', 'ca_hfc_alianza_sur'],
+
+					"cabeceras" => 
+						["mes", 
+							"PX HFC XR3", ['role' => 'annotation'], 
+							"PX HFC Alianza sur", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+						]
+				],
+				"ca_ftth" => [
+					"campos" => ['ca_ftth_xr3', 'ca_ftth_alianza_sur'],
+
+					"cabeceras" => 
+						["mes", 
+						"PX XR3 FTTH", ['role' => 'annotation'], 
+						"PX Alianza sur FTTH", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+					]
+				]
+			];
+	
+			$datos = array(
+				'prod_ciudad' =>$this->Dashboard_operacionesmodel->graficoProdxCiudad($comuna,$supervisor,$tecnologia,$mes_inicio, $mes_termino),
+				'prod_general' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["general"], $mes_inicio, $mes_termino),
+				'prod_hfc' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["hfc"], $mes_inicio, $mes_termino),
+				'prod_ftth' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["ftth"], $mes_inicio, $mes_termino),
+				'calidad_hfc' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["ca_hfc"], $mes_inicio, $mes_termino),
+				'calidad_ftth' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["ca_ftth"], $mes_inicio, $mes_termino),
+			);
+
+			echo json_encode($datos);
 		}
 		
 		public function cargaDashboardProductividadXR3() {
@@ -398,42 +456,82 @@ class Dashboard_operaciones extends CI_Controller {
 
 			//PROD Y CAL CLARO
 
-			$hoja_prod_cal_claro = $spreadsheet->getSheet(4);
-			$ultima_fila_prod_cal_claro  = $hoja_prod_cal_claro->getHighestRow();
+				$hoja_prod_cal_claro = $spreadsheet->getSheet(4);
+				$ultima_fila_prod_cal_claro  = $hoja_prod_cal_claro->getHighestRow();
 
-			$this->db->query("TRUNCATE TABLE dashboard_prod_cal_claro");
-			$filas_prod_cal_claro= 0;
+				$this->db->query("TRUNCATE TABLE dashboard_prod_cal_claro");
+				$filas_prod_cal_claro= 0;
 
-			for ($fila = 2; $fila <= $ultima_fila_prod_cal_claro; $fila++) {
-				$datos = array();
-		
-				$columnas_prod_cal_claro = ['anio','mes','orden_mes', 'px_xr3', 'px_hfc_xr3', 'px_ftth_xr3', 'px_alianza_sur', 'px_hfc_alianza_sur', 'px_ftth_alianza_sur', 'px_red_cell', 'px_hfc_red_cell', 'px_ftth_red_cell', 'ca_hfc_xr3', 'ca_ftth_xr3', 'ca_hfc_alianza_sur', 'ca_ftth_alianza_sur', 'meta_ca_ftth', 'meta_ca_hfc', 'meta_px_hfc', 'meta_px_ftth'];
+				for ($fila = 2; $fila <= $ultima_fila_prod_cal_claro; $fila++) {
+					$datos = array();
+			
+					$columnas_prod_cal_claro = ['anio','mes','orden_mes', 'px_xr3', 'px_hfc_xr3', 'px_ftth_xr3', 'px_alianza_sur', 'px_hfc_alianza_sur', 'px_ftth_alianza_sur', 'px_red_cell', 'px_hfc_red_cell', 'px_ftth_red_cell', 'ca_hfc_xr3', 'ca_ftth_xr3', 'ca_hfc_alianza_sur', 'ca_ftth_alianza_sur', 'meta_ca_ftth', 'meta_ca_hfc', 'meta_px_hfc', 'meta_px_ftth'];
 
-				$mes = '';
-				$anio = '';
-		
-				foreach ($columnas_prod_cal_claro as $index => $columna) {
-					$valor = $hoja_prod_cal_claro->getCellByColumnAndRow($index +2, $fila)->getFormattedValue();
-
-					if ($index === 0) {
-						$anio = $valor;
-						$datos[$columna] = $valor;
-					}
-					elseif ($index === 1) {
-						$mes = obtenerNumeroMesCompleto(trim($valor));
-						$datos[$columna] = $mes;
-					}else{
+					$mes = '';
+					$anio = '';
+			
+					foreach ($columnas_prod_cal_claro as $index => $columna) {
 						$valor = $hoja_prod_cal_claro->getCellByColumnAndRow($index +2, $fila)->getFormattedValue();
-						$datos[$columna] = $valor;
-					}
 
-				}	
+						if ($index === 0) {
+							$anio = $valor;
+							$datos[$columna] = $valor;
+						}
+						elseif ($index === 1) {
+							$mes = obtenerNumeroMesCompleto(trim($valor));
+							$datos[$columna] = $mes;
+						}else{
+							$valor = $hoja_prod_cal_claro->getCellByColumnAndRow($index +2, $fila)->getFormattedValue();
+							$datos[$columna] = $valor;
+						}
 
-				$datos["fecha"] = $anio . '-' . $mes . '-01';
-				
-				$this->Dashboard_operacionesmodel->formProdCalClaro($datos);
-				$filas_prod_cal_claro++;
-			}
+					}	
+
+					$datos["fecha"] = $anio . '-' . $mes . '-01';
+					
+					$this->Dashboard_operacionesmodel->formProdCalClaro($datos);
+					$filas_prod_cal_claro++;
+				}
+			
+
+			//PROD Y CAL CLARO
+
+				$hoja_px_claro_ciudad = $spreadsheet->getSheet(5);
+				$ultima_fila_px_claro_ciudad  = $hoja_px_claro_ciudad->getHighestRow();
+
+				$this->db->query("TRUNCATE TABLE dashboard_px_claro_ciudad");
+				$filas_px_ciudad_claro= 0;
+
+				for ($fila = 2; $fila <= $ultima_fila_px_claro_ciudad; $fila++) {
+					$datos = array();
+			
+					$columnas_px_claro = ['anio','mes','orden_mes', 'comuna', 'tecnologia', 'px', 'supervisor'];
+
+					$mes = '';
+					$anio = '';
+
+					foreach ($columnas_px_claro as $index => $columna) {
+						$valor = $hoja_px_claro_ciudad->getCellByColumnAndRow($index +2, $fila)->getFormattedValue();
+
+						if ($index === 0) {
+							$anio = $valor;
+							$datos[$columna] = $valor;
+						}
+						elseif ($index === 1) {
+							$mes = obtenerNumeroMesCompleto(trim($valor));
+							$datos[$columna] = $mes;
+						}else{
+							$valor = $hoja_px_claro_ciudad->getCellByColumnAndRow($index +2, $fila)->getFormattedValue();
+							$datos[$columna] = $valor;
+						}
+
+					}	
+
+
+					$datos["fecha"] = $anio . '-' . $mes . '-01';
+					$this->Dashboard_operacionesmodel->formPxClaroCiudad($datos);
+					$filas_px_ciudad_claro++;
+				}
 
 			echo json_encode(array(
 				'res' => 'ok',
@@ -443,7 +541,8 @@ class Dashboard_operaciones extends CI_Controller {
 				'.$filas_calidad.' filas de calidad insertadas,
 				'.$filas_dotacion.' filas de dotacion insertadas,
 				'.$filas_analisis_cal.' filas de analisis de calidad insertadas
-				'.$filas_prod_cal_claro.' filas de prod. y calidad claro insertadas'
+				'.$filas_prod_cal_claro.' filas de prod. y calidad claro insertadas
+				'.$filas_px_ciudad_claro.' filas de px x ciudad claro insertadas'
 			));
 
 			exit;

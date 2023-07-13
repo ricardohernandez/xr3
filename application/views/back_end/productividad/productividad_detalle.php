@@ -339,7 +339,7 @@
 
     });
 
-    $.getJSON(base + "listaTrabajadores", { jefe : $("#jefe_det").val() } , function(data) {
+    $.getJSON(base + "listaTrabajadoresProd", { jefe : $("#jefe_det").val() } , function(data) {
       response = data;
     }).done(function() {
         $("#trabajadores").select2({

@@ -102,6 +102,7 @@
 	$route['graficosProductividadEps'] = "back_end/Dashboard_operaciones/graficosProductividadEps";
 	$route['graficoDotacion'] = "back_end/Dashboard_operaciones/graficoDotacion";
 	$route['graficoAnalisisCalidad'] = "back_end/Dashboard_operaciones/graficoAnalisisCalidad";
+	$route['graficoProdxEps'] = "back_end/Dashboard_operaciones/graficoProdxEps";
  	
 
 	

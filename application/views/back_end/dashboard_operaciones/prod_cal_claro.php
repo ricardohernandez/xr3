@@ -10,82 +10,90 @@
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"
-  const mes_inicio_cal = "<?php echo $mes_inicio ?>"
-  $("#mes_inicio_cal").val(mes_inicio_cal) 
-  const mes_termino_cal = "<?php echo $mes_termino ?>"
-  $("#mes_termino_cal").val(mes_termino_cal) 
+  const mes_inicio_prod_eps = "<?php echo $mes_inicio ?>"
+  $("#mes_inicio_prod_eps").val(mes_inicio_prod_eps) 
+  const mes_termino_prod_eps = "<?php echo $mes_termino ?>"
+  $("#mes_termino_prod_eps").val(mes_termino_prod_eps) 
 
-  cargarGraficoAnalisisCalidad()
+  cargarGrafico()
 
-  function cargarGraficoAnalisisCalidad() {
-    var mes_inicio_cal = $("#mes_inicio_cal").val();
-    var mes_termino_cal = $("#mes_termino_cal").val();
-    var zona = $("#zona").val();
-    var comuna = $("#comuna").val();
-    var supervisor = $("#supervisor").val();
-    var tecnologia = $("#tecnologia").val();
+  function cargarGrafico () {
+    const mes_inicio = $("#mes_inicio_prod_eps").val()
+    const mes_termino = $("#mes_termino_prod_eps").val()
+    const comuna = $("#comuna").val()
+    const supervisor = $("#supervisor").val()
+    const tecnologia = $("#tecnologia").val()
 
     $.ajax({
-      url: base_url+'graficoAnalisisCalidad',
-      type: 'POST',
-      data: {
-          'mes_inicio_cal': mes_inicio_cal,
-          'mes_termino_cal': mes_termino_cal,
-          'zona': zona,
-          'comuna': comuna,
-          'supervisor': supervisor,
-          'tecnologia': tecnologia,
-      },
-      dataType: "json",
-      beforeSend:function(){
-        $("#load").show()
-        $(".body").hide()  
-      }, 
-      success: function (response) {
-        $("#load").hide()
-        $(".body").fadeIn(500)
-        crearGraficoAnalisisCalidad(response.data);
-        crearGraficoAnalisisCalidadTotal(response.total);
-      },
-      error: function (error) {
-          console.log(error);
-      }
-  });
+        url: base_url+'graficoProdxEps',
+        type: 'POST',
+        data: {
+            'mes_inicio_prod_eps': mes_inicio,
+            'mes_termino_prod_eps': mes_termino,
+            'comuna': comuna,
+            'supervisor': supervisor,
+            'tecnologia': tecnologia
+        },
+        dataType: "json",
+        beforeSend:function(){
+          $("#load").show()
+          $(".body").hide()  
+        }, 
+        success: function (response) {
+          $("#load").hide()
+          $(".body").fadeIn(500)
+          crearGrafico('prod_ciudad', response.prod_ciudad, 'column','Suma de PX');
+          crearGrafico('prod_general', response.prod_general, 'column','PX XR3,PX RED CELL,PX ALIANZA SUR');
+          crearGrafico('prod_hfc', response.prod_hfc, 'column','PX XR3 HFC,PX HFC RED CELL,PX HFC ALIANZA SUR');
+          crearGrafico('prod_ftth', response.prod_ftth, 'column','PX XR3 FTTH,PX FTTH RED CELL,PX FTTH ALIANZA SUR');
+          crearGrafico('calidad_hfc_eps', response.calidad_hfc, 'line','CA XR3 HFC,CA HFC ALIANZA SUR');
+          crearGrafico('calidad_ftth_eps', response.calidad_ftth, 'line','CA XR3 HFC,CA HFC ALIANZA SUR');
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
   }
  
-  function crearGraficoAnalisisCalidad(data) {
+  function crearGrafico(divId, data, tipoGrafico,title) {
+
     let size = Object.keys(data).length
     console.log(size)
 
     if(size==1){
-      $("#analisis_calidad").html('<p class="no_data_found">Sin datos encontrados</p>')
+      $("#prod_ciudad").html('<p class="no_data_found">Sin datos encontrados</p>')
       return
     }
     
+
     var data = google.visualization.arrayToDataTable(data);
 
+  
     const options = {
-    /*   isStacked: true, */
       fontName: 'ubuntu',
       curveType: 'function',
       fontColor: '#32477C',
       backgroundColor: { fill: 'transparent' },
-      colors: ['#F48432', '#2f81f7'],
-      /*   bar: {groupWidth: "50%"}, */
+      
+      colors: (tipoGrafico === 'column') ? 
+      ['#12239E', '#E66C37', '#118DFF'] : 
+      ['#12239E', '#E66C37'],
+
       chartArea: {
-        left: 60,
+        left: 70,
         right: 40,
-        bottom: 180,
-        top: 40,
+        bottom: (divId === 'prod_ciudad') ? 140 : 40,
+        top: (divId === 'prod_ciudad') ? 10 : 40,
       },
-      height: 480,
+ 
+      height: (divId === 'prod_ciudad') ? 350 : 250,
       hAxis: {
         title: '',
-        minValue: 0,
-        slantedText: true, 
+        minValue: 0, 
+        slantedText: (divId === 'prod_ciudad') ? true : false, 
         slantedTextAngle: 90 ,
         textStyle: {
-          fontSize: 13,
+          fontSize: (divId === 'prod_ciudad') ? 12 : 13,
           bold: false,
           color: '#808080'
         },
@@ -95,8 +103,12 @@
         }
       },
       vAxis: {
-        title: '',
-        titleTextStyle: {color: '#808080',italic:false} ,
+        title: title,
+        titleTextStyle:{
+          fontSize: 13,
+          bold: false,
+          color: '#808080'
+        },
         textStyle: {
           fontSize: 13,
           bold: false,
@@ -106,6 +118,7 @@
           color: '',
           count: 0
         },
+
       },
       annotations: {
         alwaysOutside: false,
@@ -115,9 +128,10 @@
           auraColor: 'none'
         }
       },
+      avoidOverlappingGridLines: true,
 
       legend: {
-        position: 'top',
+        position: (divId === 'prod_ciudad') ? 'none' : 'top',
         alignment: 'center',
         textStyle: {
           fontSize: 14,
@@ -131,169 +145,21 @@
           fontSize: 13
         }
       },
-      vAxes : {
-       0: 
-        {
-        title:'HFC y FTTH',
-        textStyle:{color: '#808080',bold:false,fontSize: 12},
-          gridlines: {
-            color:'',
-            count:0,   
-            /* minSpacing: 2, 
-            interval : [1, 15,20],  */
-          },
-          
-          minorGridlines:{
-            color:'#ccc',
-            count:5,
-          },
-
-          viewWindow: {
-            min: 0,
-            max: 30 
-          },
-        },
-        1: 
-        {
-          textStyle:{color: '#808080',bold:false,fontSize: 12},
-            gridlines: {color:'', count:0},
-            viewWindow: {
-              min: 0,
-            max: 10
-            },
-          }
-      },
     };
-  
-    chart = new google.visualization.ColumnChart(document.getElementById("analisis_calidad"));
-    chart.draw(data, options);
-  }
 
-
-  function crearGraficoAnalisisCalidadTotal(data) {
-    let size = Object.keys(data).length
-
-    if(size==1){
-      $("#analisis_calidad_total").html('<p class="no_data_found">Sin datos encontrados</p>')
-      return
-    }
+    var chart;
     
-    var data = google.visualization.arrayToDataTable(data);
+    if (tipoGrafico === 'line') {
+      chart = new google.visualization.LineChart(document.getElementById(divId));
+    } else if (tipoGrafico === 'column') {
+      chart = new google.visualization.ColumnChart(document.getElementById(divId));
+    }
 
-    const options = {
-      /* isStacked: true, */
-      fontName: 'ubuntu',
-      curveType: 'function',
-      fontColor: '#32477C',
-      backgroundColor: { fill: 'transparent' },
-      colors: ['#12239E'],
-      /*   bar: {groupWidth: "50%"}, */
-      chartArea: {
-        left: 60,
-        right: 40,
-        bottom: 180,
-        top: 40,
-      },
-      height: 480,
-      hAxis: {
-        title: 'asd',
-        minValue: 0,
-       /*  direction: -1,  */
-        slantedText: true, 
-        slantedTextAngle: 90 ,
-        textStyle: {
-          fontSize: 13,
-          bold: false,
-          color: '#808080'
-        },
-        gridlines: {
-          color: '',
-          count: 0
-        }
-      },
-      vAxis: {
-        title: 'asd',
-        titleTextStyle: {color: '#808080',italic:false} ,
-
-        textStyle: {
-          fontSize: 13,
-          bold: false,
-          color: '#808080'
-          
-        },
-        gridlines: {
-          color: '',
-          count: 0
-        },
-      },
-      annotations: {
-        alwaysOutside: false,
-        textStyle: {
-          fontSize: 13,
-          color: '#808080',
-          auraColor: 'none'
-        }
-      },
-
-      legend: {
-        position: 'top',
-        alignment: 'center',
-        textStyle: {
-          fontSize: 14,
-          bold: true,
-          color: '#808080'
-        }
-      },
-      tooltip: {
-        textStyle: {
-          color: '#ffffff96',
-          fontSize: 13
-        }
-      },
-
-         
-      vAxes : {
-       0: 
-        {
-        title:'Total general',
-        textStyle:{color: '#808080',bold:false,fontSize: 12},
-          gridlines: {
-            color:'',
-            count:0,   
-            /* minSpacing: 2, 
-            interval : [1, 15,20],  */
-          },
-          
-          minorGridlines:{
-            color:'#ccc',
-            count:5,
-          },
-
-          viewWindow: {
-            min: 0,
-            max: 30 
-          },
-        },
-        1: 
-        {
-            title:'Comuna Mes',
-            textStyle:{color: '#808080',bold:false,fontSize: 12},
-            gridlines: {color:'', count:0},
-            viewWindow: {
-              min: 0,
-              max: 10
-            },
-          }
-      },
-    };
-  
-    chart = new google.visualization.ColumnChart(document.getElementById("analisis_calidad_total"));
     chart.draw(data, options);
   }
 
-  $(document).off('change', '#mes_inicio_cal,#mes_termino_cal,#zona,#comuna,#supervisor,#tecnologia').on('change', '#mes_inicio_cal,#mes_termino_cal,#zona,#comuna,#supervisor,#tecnologia', function (event) {
-    cargarGraficoAnalisisCalidad();
-    cargarGraficoAnalisisCalidadTotal();
+  $(document).off('change', '#mes_inicio_prod_eps,#mes_termino_prod_eps,#comuna,#supervisor,#tecnologia').on('change', '#mes_inicio_prod_eps,#mes_termino_prod_eps,#comuna,#supervisor,#tecnologia', function (event) {
+    cargarGrafico();
   });
 
 </script>
@@ -308,31 +174,16 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Meses<span></span> 
         </div>
-        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_cal" id="mes_inicio_cal">
-        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_cal" id="mes_termino_cal">
+        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_prod_eps" id="mes_inicio_prod_eps">
+        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_prod_eps" id="mes_termino_prod_eps">
       </div>
     </div>
   </div>
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="zona" name="zona" class="custom-select custom-select-sm">
-      <option value="">Zona</option>
-      <?php 
-        foreach($zonas as $z){
-          ?>
-           <option value="<?php echo $z["zona"]?>"><?php echo $z["zona"]?></option>
-          <?php
-        }
-      ?>
-    </select>
-    </div>
-  </div>
-
-  <div class="col-12 col-lg-2">
-    <div class="form-group">
     <select id="comuna" name="comuna" class="custom-select custom-select-sm">
-      <option value="">Comuna</option>
+      <option value="">Comuna | Todas</option>
       <?php 
         foreach($comunas as $c){
           ?>
@@ -347,7 +198,7 @@
   <div class="col-12 col-lg-2">
     <div class="form-group">
     <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
-      <option value="">Supervisor</option>
+      <option value="">Supervisor | Todos</option>
       <?php 
         foreach($supervisores as $s){
           ?>
@@ -373,7 +224,6 @@
     </div>
   </div>
 
-
 </div>   
 
 <div style="text-align: center;;">
@@ -381,24 +231,61 @@
 </div>
 
 <div class="body">
+  <div class="form-row mt-2 contenedor_graficos">
+    <div class="col-12">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico"> Producción por ciudad </p>
+            <div id="prod_ciudad"></div>
+          </div>
+        </div>
+    </div>
 
-<div class="row mt-2 contenedor_graficos">
-  <div class="col-12">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">% Analisis de calidad</p>
-          <div id="analisis_calidad"></div>
+    <div class="col-12 mt-2">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico"> Producción por EPS </p>
+            <div id="prod_general"></div>
+          </div>
+        </div>
+    </div>
+
+
+    <div class="col-12 col-lg-6 mt-2">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico">Producción HFC X EPS </p>
+            <div id="prod_hfc"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6  mt-2">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico">Producción FTTH X EPS</p>
+            <div id="prod_ftth"></div>
         </div>
       </div>
-  </div>
-  
-  <div class="col-12 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">% Total general de calidad</p>
-          <div id="analisis_calidad_total"></div>
+    </div>
+
+
+    <div class="col-12 col-lg-6 mt-2">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico">Calidad HFC X EPS </p>
+            <div id="calidad_hfc_eps"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6  mt-2">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico">Calidad FTTH X EPS</p>
+            <div id="calidad_ftth_eps"></div>
         </div>
       </div>
+    </div>
   </div>
-
 </div>
