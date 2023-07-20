@@ -62,7 +62,7 @@
     } */
     
     /* vistaProductividadCalidadXr3() */
-    vistaProdCalClaro()
+    vistaProdXComuna()
     
     $(document).off('click', '#menu_prod_cal_xr3').on('click', '#menu_prod_cal_xr3',function(event) {
       event.preventDefault();
@@ -90,8 +90,10 @@
       vistaProdCalClaro()
     });
 
-    
-    
+    $(document).off('click', '#prod_x_comuna').on('click', '#prod_x_comuna',function(event) {
+      event.preventDefault();
+      vistaProdXComuna()
+    });
 
     function vistaProductividadCalidadXr3(){
       $("#menu_prod_cal_xr3").addClass('disabled_sub');
@@ -165,6 +167,20 @@
      /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
+    function vistaProdXComuna(){
+      $("#prod_x_comuna").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#prod_x_comuna").addClass('menuActivo');  
+
+      $.get(base_url+"dashboard/prod_x_comuna", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#prod_x_comuna").removeClass('disabled_sub');
+      });
+
+     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
+    }
+
 
   })
 </script>
@@ -180,11 +196,12 @@
     <div class="col-12">
     <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-       <li id="menu_prod_cal_xr3" class="active"><a> <i class="fa fa-list-alt"></i> Productividad y calidad XR3 </a></li>   
-       <li id="menu_prod_cal_eps" class="active"><a> <i class="fa fa-list-alt"></i> Productividad y calidad EPS </a></li>   
-       <li id="menu_dotacion" class="active"><a> <i class="fa fa-list-alt"></i> Dotacion FTE </a></li>   
-       <li id="menu_analisis_calidad" class="active"><a> <i class="fa fa-list-alt"></i> Analisis Calidad </a></li>   
-       <li id="prod_cal_claro" class="active"><a> <i class="fa fa-list-alt"></i> Producción y calidad CLARO  </a></li>   
+       <li id="menu_prod_cal_xr3" class="active"><a> <i class="fa fa-chart-line"></i> Productividad y calidad XR3 </a></li>   
+       <li id="menu_prod_cal_eps" class="active"><a> <i class="fa fa-chart-line"></i> Productividad y calidad EPS </a></li>   
+       <li id="menu_dotacion" class="active"><a> <i class="fa fa-chart-line"></i> Dotacion FTE </a></li>   
+       <li id="menu_analisis_calidad" class="active"><a> <i class="fa fa-chart-line"></i> Analisis Calidad </a></li>   
+       <li id="prod_cal_claro" class="active"><a> <i class="fa fa-chart-line"></i> Producción y calidad CLARO  </a></li>   
+       <li id="prod_x_comuna" class="active"><a> <i class="fa fa-chart-line"></i> Producción por comuna y empresa  </a></li>   
       </ul>  
       </div> 
       </div> 

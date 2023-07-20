@@ -10,27 +10,27 @@
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"
-  const mes_inicio_cal = "<?php echo $mes_inicio ?>"
-  $("#mes_inicio_cal").val(mes_inicio_cal) 
-  const mes_termino_cal = "<?php echo $mes_termino ?>"
-  $("#mes_termino_cal").val(mes_termino_cal) 
+  const mes_inicio_analisis_cal = "<?php echo $mes_inicio ?>"
+  $("#mes_inicio_analisis_cal").val(mes_inicio_analisis_cal) 
+  const mes_termino_analisis_cal = "<?php echo $mes_termino ?>"
+  $("#mes_termino_analisis_cal").val(mes_termino_analisis_cal) 
 
   cargarGraficoAnalisisCalidad()
 
   function cargarGraficoAnalisisCalidad() {
-    var mes_inicio_cal = $("#mes_inicio_cal").val();
-    var mes_termino_cal = $("#mes_termino_cal").val();
-    var zona = $("#zona").val();
-    var comuna = $("#comuna").val();
-    var supervisor = $("#supervisor").val();
-    var tecnologia = $("#tecnologia").val();
+    var mes_inicio_analisis_cal = $("#mes_inicio_analisis_cal").val();
+    var mes_termino_analisis_cal = $("#mes_termino_analisis_cal").val();
+    var zona = $("#zona_analisis_cal").val();
+    var comuna = $("#comuna_analisis_cal").val();
+    var supervisor = $("#supervisor_analisis_cal").val();
+    var tecnologia = $("#tecnologia_analisis_cal").val();
 
     $.ajax({
       url: base_url+'graficoAnalisisCalidad',
       type: 'POST',
       data: {
-          'mes_inicio_cal': mes_inicio_cal,
-          'mes_termino_cal': mes_termino_cal,
+          'mes_inicio_analisis_cal': mes_inicio_analisis_cal,
+          'mes_termino_analisis_cal': mes_termino_analisis_cal,
           'zona': zona,
           'comuna': comuna,
           'supervisor': supervisor,
@@ -291,7 +291,7 @@
     chart.draw(data, options);
   }
 
-  $(document).off('change', '#mes_inicio_cal,#mes_termino_cal,#zona,#comuna,#supervisor,#tecnologia').on('change', '#mes_inicio_cal,#mes_termino_cal,#zona,#comuna,#supervisor,#tecnologia', function (event) {
+  $(document).off('change', '#mes_inicio_analisis_cal,#mes_termino_analisis_cal,#zona_analisis_cal,#comuna_analisis_cal,#supervisor_analisis_cal,#tecnologia_analisis_cal').on('change', '#mes_inicio_analisis_cal,#mes_termino_analisis_cal,#zona_analisis_cal,#comuna_analisis_cal,#supervisor_analisis_cal,#tecnologia_analisis_cal', function (event) {
     cargarGraficoAnalisisCalidad();
     cargarGraficoAnalisisCalidadTotal();
   });
@@ -308,8 +308,8 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Meses<span></span> 
         </div>
-        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_cal" id="mes_inicio_cal">
-        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_cal" id="mes_termino_cal">
+        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  id="mes_inicio_analisis_cal">
+        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  id="mes_termino_analisis_cal">
       </div>
     </div>
   </div>
@@ -331,7 +331,7 @@
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="comuna" name="comuna" class="custom-select custom-select-sm">
+    <select id="comuna_analisis_cal" name="comuna" class="custom-select custom-select-sm">
       <option value="">Comuna</option>
       <?php 
         foreach($comunas as $c){
@@ -346,7 +346,7 @@
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
+    <select id="supervisor_analisis_cal" name="supervisor" class="custom-select custom-select-sm">
       <option value="">Supervisor</option>
       <?php 
         foreach($supervisores as $s){
@@ -361,7 +361,7 @@
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="tecnologia" name="tecnologia" class="custom-select custom-select-sm">
+    <select id="tecnologia_analisis_cal" name="tecnologia" class="custom-select custom-select-sm">
       <?php 
         foreach($tecnologias as $t){
           ?>

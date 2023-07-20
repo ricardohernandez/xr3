@@ -190,8 +190,8 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 
 		public function graficoAnalisisCalidad(){
-			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_cal")));
-			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_cal")));
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_analisis_cal")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_analisis_cal")));
 			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
 			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
@@ -215,10 +215,10 @@ class Dashboard_operaciones extends CI_Controller {
 			);
 			$this->load->view('back_end/dashboard_operaciones/prod_cal_claro',$datos);
 		}
-		
+
 		public function graficoProdxEps(){
-			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_prod_eps")));
-			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_prod_eps")));
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_cal_claro")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_cal_claro")));
 			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
 			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 			$tecnologia=$this->security->xss_clean(strip_tags($this->input->get_post("tecnologia")));
@@ -291,6 +291,43 @@ class Dashboard_operaciones extends CI_Controller {
 			echo json_encode($datos);
 		}
 		
+		
+		public function prodXComuna(){
+			$this->visitas("Inicio",5);
+			$datos=array(
+				'mes_inicio' =>  date('Y-m', strtotime('-2 months', strtotime(date("Y-m-d")))),
+				'mes_termino' => date('Y-m'),
+				'comunas' => $this->Dashboard_operacionesmodel->getComunasXcomuna(),
+				'zonas' => $this->Dashboard_operacionesmodel->getZonasXcomuna(),
+				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologiasXcomuna()
+			);
+			$this->load->view('back_end/dashboard_operaciones/productividad_comuna',$datos);
+		}
+		
+		
+		public function graficoXComuna(){
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino")));
+			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
+			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			$tecnologia=$this->security->xss_clean(strip_tags($this->input->get_post("tecnologia")));
+
+			$meses_diferencia = abs((strtotime($mes_termino) - strtotime($mes_inicio)) / (30 * 24 * 60 * 60));
+
+			if($meses_diferencia <= 3 ){
+
+				echo json_encode(array(
+					'res' => "ok",
+					'prod_comuna' => $this->Dashboard_operacionesmodel->getDataProductividadComuna($mes_inicio,$mes_termino,$zona,$comuna,$tecnologia)
+				));
+
+			}else{
+				echo json_encode(array("res"=>"error" , "msg" => "La cantidad máxima de meses a mostrar es 3"));
+			}
+			
+		}
+
+
 		public function cargaDashboardProductividadXR3() {
 			$archivo = $_FILES['userfile']['tmp_name'];
 			$spreadsheet = IOFactory::load($archivo);
@@ -533,6 +570,50 @@ class Dashboard_operaciones extends CI_Controller {
 					$filas_px_ciudad_claro++;
 				}
 
+			//PROD COMUNA
+
+				$hoja_px_comuna = $spreadsheet->getSheet(6);
+				$ultima_fila_px_comuna  = $hoja_px_comuna->getHighestRow();
+
+				$this->db->query("TRUNCATE TABLE dashboard_comparacion_comuna");
+				$filas_px_comuna= 0;
+
+				for ($fila = 2; $fila <= $ultima_fila_px_comuna; $fila++) {
+					$datos = array();
+			
+					$columnas_px_comuna = ['mes','mes2','anio','orden_mes', 'zona', 'comuna', 'emetel', 'xr3_inversion', 'tecnologia'];
+
+					$mes = '';
+					$anio = '';
+
+					foreach ($columnas_px_comuna as $index => $columna) {
+						$valor = $hoja_px_comuna->getCellByColumnAndRow($index+1 , $fila)->getFormattedValue();
+
+								if ($index === 0) {
+									$mes = obtenerNumeroMes(trim($valor));
+									$datos[$columna] = $mes;
+								}
+								elseif ($index === 1) {
+									$mes = obtenerNumeroMes(trim($valor));
+									$datos[$columna] = $mes;
+								}elseif ($index === 2) {
+									$anio = $valor;
+									$datos[$columna] = $valor;
+								}else{
+									$valor = $hoja_px_comuna->getCellByColumnAndRow($index +1, $fila)->getFormattedValue();
+									$datos[$columna] = $valor;
+								}
+						
+
+					}	
+
+					$datos["fecha"] = $anio . '-' . $mes . '-01';
+					unset($datos["mes2"]);
+
+					$this->Dashboard_operacionesmodel->formXComuna($datos);
+					$filas_px_comuna++;
+				}
+
 			echo json_encode(array(
 				'res' => 'ok',
 				'tipo' => 'success',
@@ -540,9 +621,11 @@ class Dashboard_operaciones extends CI_Controller {
 				'.$filas_productividad.' filas de productividad insertadas,
 				'.$filas_calidad.' filas de calidad insertadas,
 				'.$filas_dotacion.' filas de dotacion insertadas,
-				'.$filas_analisis_cal.' filas de analisis de calidad insertadas
-				'.$filas_prod_cal_claro.' filas de prod. y calidad claro insertadas
-				'.$filas_px_ciudad_claro.' filas de px x ciudad claro insertadas'
+				'.$filas_analisis_cal.' filas de analisis de calidad insertadas,
+				'.$filas_prod_cal_claro.' filas de prod. y calidad claro insertadas,
+				'.$filas_px_ciudad_claro.' filas de px x ciudad claro insertadas,
+				'.$filas_px_comuna.' filas de px x comuna insertadas,'
+				
 			));
 
 			exit;

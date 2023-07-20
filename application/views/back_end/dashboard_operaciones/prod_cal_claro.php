@@ -10,26 +10,26 @@
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"
-  const mes_inicio_prod_eps = "<?php echo $mes_inicio ?>"
-  $("#mes_inicio_prod_eps").val(mes_inicio_prod_eps) 
-  const mes_termino_prod_eps = "<?php echo $mes_termino ?>"
-  $("#mes_termino_prod_eps").val(mes_termino_prod_eps) 
+  const mes_inicio_cal_claro = "<?php echo $mes_inicio ?>"
+  $("#mes_inicio__al_claro").val(mes_inicio_cal_claro) 
+  const mes_termino_cal_claro = "<?php echo $mes_termino ?>"
+  $("#mes_termino_cal_claro").val(mes_termino_cal_claro) 
 
   cargarGrafico()
 
   function cargarGrafico () {
-    const mes_inicio = $("#mes_inicio_prod_eps").val()
-    const mes_termino = $("#mes_termino_prod_eps").val()
-    const comuna = $("#comuna").val()
-    const supervisor = $("#supervisor").val()
-    const tecnologia = $("#tecnologia").val()
+    const mes_inicio = $("#mes_inicio_cal_claro").val()
+    const mes_termino = $("#mes_termino_cal_claro").val()
+    const comuna = $("#comuna_cal_claro").val()
+    const supervisor = $("#supervisor_cal_claro").val()
+    const tecnologia = $("#tecnologia_cal_claro").val()
 
     $.ajax({
         url: base_url+'graficoProdxEps',
         type: 'POST',
         data: {
-            'mes_inicio_prod_eps': mes_inicio,
-            'mes_termino_prod_eps': mes_termino,
+            'mes_inicio_cal_claro': mes_inicio,
+            'mes_termino_cal_claro': mes_termino,
             'comuna': comuna,
             'supervisor': supervisor,
             'tecnologia': tecnologia
@@ -158,7 +158,7 @@
     chart.draw(data, options);
   }
 
-  $(document).off('change', '#mes_inicio_prod_eps,#mes_termino_prod_eps,#comuna,#supervisor,#tecnologia').on('change', '#mes_inicio_prod_eps,#mes_termino_prod_eps,#comuna,#supervisor,#tecnologia', function (event) {
+  $(document).off('change', '#mes_inicio_cal_claro,#mes_termino_cal_claro,#comuna_cal_claro,#supervisor_cal_claro,#tecnologia_cal_claro').on('change', '#mes_inicio_cal_claro,#mes_termino_cal_claro,#comuna_cal_claro,#supervisor_cal_claro,#tecnologia_cal_claro', function (event) {
     cargarGrafico();
   });
 
@@ -174,15 +174,15 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Meses<span></span> 
         </div>
-        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_prod_eps" id="mes_inicio_prod_eps">
-        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_prod_eps" id="mes_termino_prod_eps">
+        <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_cal_claro" id="mes_inicio_cal_claro">
+        <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_cal_claro" id="mes_termino_cal_claro">
       </div>
     </div>
   </div>
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="comuna" name="comuna" class="custom-select custom-select-sm">
+    <select id="comuna_cal_claro" name="comuna" class="custom-select custom-select-sm">
       <option value="">Comuna | Todas</option>
       <?php 
         foreach($comunas as $c){
@@ -197,7 +197,7 @@
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
+    <select id="supervisor_cal_claro" name="supervisor" class="custom-select custom-select-sm">
       <option value="">Supervisor | Todos</option>
       <?php 
         foreach($supervisores as $s){
@@ -212,7 +212,7 @@
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="tecnologia" name="tecnologia" class="custom-select custom-select-sm">
+    <select id="tecnologia_cal_claro" name="tecnologia" class="custom-select custom-select-sm">
       <?php 
         foreach($tecnologias as $t){
           ?>

@@ -127,6 +127,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $array;
 		}
 
+
+
 		public function getDataCalidadEPS($tipo,$mes_inicio,$mes_termino) {
 			
 			$campos = $tipo['campos'];
@@ -403,6 +405,52 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $array;
 		} 
 
+		public function getDataProductividadComuna($mes_inicio,$mes_termino,$zona,$comuna,$tecnologia){
+			$this->db->where('fecha >=', $mes_inicio."-01");
+			$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
+
+			if($zona!=""){
+				$this->db->where('zona', $zona);
+			}
+
+			if($comuna!=""){
+				$this->db->where('comuna', $comuna);
+			}
+
+			if($tecnologia!=""){
+				$this->db->where('tecnologia', $tecnologia);
+			}
+			
+			$this->db->order_by('comuna', 'asc');
+			$this->db->order_by('fecha', 'asc');
+			
+			$res = $this->db->get('dashboard_comparacion_comuna');
+			
+			$array = [];
+
+			$cabeceras = [
+				"comuna",
+				"XR3",['role' => 'annotation'],
+				"EMETEL",['role' => 'annotation']
+			];
+
+			$array[] = $cabeceras;
+
+			foreach ($res->result_array() as $key) {
+				$temp = [];
+				$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
+				$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+				$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+				$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+				$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+			  
+				$array[] = $temp;
+			  }
+			  
+		
+			return $array;
+		}
+
 
 		public function getZonas(){
 			$this->db->distinct();
@@ -452,6 +500,28 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$res=$this->db->get('dashboard_px_claro_ciudad');
 			return $res->result_array();
 		}
+
+		public function getTecnologiasXcomuna(){
+			$this->db->distinct();
+			$this->db->select('tecnologia');
+			$res=$this->db->get('dashboard_comparacion_comuna');
+			return $res->result_array();
+		}
+
+		public function getComunasXcomuna(){
+			$this->db->distinct();
+			$this->db->select('comuna');
+			$res=$this->db->get('dashboard_comparacion_comuna');
+			return $res->result_array();
+		}
+
+		public function getZonasXcomuna(){
+			$this->db->distinct();
+			$this->db->select('zona');
+			$res=$this->db->get('dashboard_comparacion_comuna');
+			return $res->result_array();
+		}
+
 
 		public function listaDashboardProductividad(){
 			$this->db->select("sha1(c.id) as hash_id,
@@ -522,7 +592,15 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return FALSE;
 		} 
 
+		
+		public function formXComuna($data){
+			if($this->db->insert('dashboard_comparacion_comuna', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
 
+		
 		public function eliminaCapacitacion($hash){
 			$this->db->where('sha1(id)', $hash);
 			if($this ->db->delete('documentacion_capacitacion')){
