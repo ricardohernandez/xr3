@@ -134,6 +134,34 @@ class Cargamasivamodel extends CI_Model {
 		return FALSE;
 	}
 
+	public function eliminaLiquidacion($id){
+		$this->db->where('id', $id);
+		if($this ->db->delete('liquidaciones')){
+		  	return TRUE;
+		}
+		return FALSE;
+	}
+
+	public function getRutaCargaMasiva($hash){
+		$this->db->select("l.archivo as archivo, l.lista_id_liquidaciones as lista");
+		$this->db->from('liquidaciones_carga_masiva as l');			
+		$this->db->where('sha1(l.id)', $hash);
+		$res=$this->db->get();
+		if($res->num_rows()>0){
+			return $res->row_array();
+		}
+	}
+
+	public function getRutaLiquidacion($id){
+		$this->db->select("l.archivo as archivo");
+		$this->db->from('liquidaciones as l');			
+		$this->db->where('l.id', $id);
+		$res=$this->db->get();
+		$row = $res->row();
+		$ruta = $row->archivo;
+		return $ruta;
+	}
+
 
 	public function formActualizar($id,$data){
 		$this->db->where('sha1(id)', $id);

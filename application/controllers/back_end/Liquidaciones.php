@@ -252,10 +252,14 @@ class Liquidaciones extends CI_Controller {
 
 	public function eliminaLiquidaciones(){
 		$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+		$ruta = $this->Liquidacionesmodel->getRutaLiquidacion($hash);
 	    if($this->Liquidacionesmodel->eliminaLiquidaciones($hash)){
-	      echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			if (file_exists($ruta)){
+				$this->EliminaArchivo($ruta);
+			}
+	      	echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 	    }else{
-	      echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+	      	echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 	    }
 	}
 
@@ -273,4 +277,11 @@ class Liquidaciones extends CI_Controller {
 			exit('No direct script access allowed');
 		}
 	}
+
+	private function EliminaArchivo($ruta){
+        if (file_exists($ruta)) {
+            unlink($ruta);
+        }
+    }
+	
 }

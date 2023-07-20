@@ -161,11 +161,11 @@
                ?>
 
                <?php  
-                  if($perfil<=2){
+                  //if($perfil<=2){
                ?>
-                  <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>liquidaciones"> RLS - Registro de Liquidación variable </a></li>
+                  <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>liquidaciones"> RLV - Registro de Liquidación variable </a></li>
                <?php
-                  }
+                  //}
                ?>
              
                <?php  
@@ -344,11 +344,11 @@
                         ?>
 
                         <?php  
-                           if($perfil<=2){
+                           //if($perfil<=2){
                         ?>
-                           <li><a class="menu_list"  href="<?php echo base_url() ?>liquidaciones"> RLS - Registro de Liquidación variable </a></li>
+                           <li><a class="menu_list"  href="<?php echo base_url() ?>liquidaciones"> RLV - Registro de Liquidación variable </a></li>
                         <?php
-                           }
+                           //}
                         ?>
 
                         <?php  
