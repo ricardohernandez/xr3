@@ -506,7 +506,7 @@ class Productividadmodel extends CI_Model {
 				ti.porcentaje_produccion_hfc as porcentaje_produccion_hfc,
 				ti.porcentaje_produccion_ftth as porcentaje_produccion_ftth,
 				ti.indice_asistencia as indice_asistencia,
-				'der' as derivaciones
+				ti.derivaciones as derivaciones,
 			");
 			 
 			$this->db->join('usuarios u', 'u.id = ti.id_tecnico', 'left');
