@@ -276,6 +276,10 @@
 	$route['actualizacionProductividad'] = "back_end/productividad/actualizacionProductividad";
 	$route['vistaGraficosProd'] = "back_end/productividad/vistaGraficosProd";
 	$route['dataGraficos'] = "back_end/productividad/dataGraficos";
+
+	$route['listaResumenProductividad'] = "back_end/productividad/listaResumenProductividad";
+	$route['graficosProductividad'] = "back_end/productividad/graficosProductividad";
+ 
 	$route['listaTrabajadoresProd'] = "back_end/productividad/listaTrabajadoresProd";
 	
 	$route['vistaResumen'] = "back_end/productividad/vistaResumen";

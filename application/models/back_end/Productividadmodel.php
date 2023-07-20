@@ -13,7 +13,7 @@ class Productividadmodel extends CI_Model {
 		return FALSE;
 	}
 
-	/*************PRODUCTIVIDAD*************/
+	/********PRODUCTIVIDAD*************/
 
 		public function listaDetalle($desde,$hasta,$trabajador,$jefe){
 
@@ -81,7 +81,7 @@ class Productividadmodel extends CI_Model {
 		}
 
 		public function listaTrabajadoresProd($jefe){
-			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+			$this->db->select("id,concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				empresa,id,rut,
 			    CONCAT(nombres,' ', apellidos) as 'nombre_completo',
 			    CONCAT(nombres,' ', apellidos) as 'nombre_corto',
@@ -101,7 +101,7 @@ class Productividadmodel extends CI_Model {
 				$array=array();
 				foreach($res->result_array() as $key){
 					$temp=array();
-					$temp["id"]=$key["rut"];
+					$temp["id"]=$key["id"];
 					$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_corto"];
 					$array[]=$temp;
 				}
@@ -495,7 +495,145 @@ class Productividadmodel extends CI_Model {
 			}
 			return FALSE;
 		}
+
+		public function listaResumenProductividad($mes,$trabajador,$jefe,$tipo_red,$proyecto){
 	
+			$this->db->select("
+				CONCAT(u.nombres,' ',u.apellidos) as 'trabajador',
+				u.rut as rut,
+				ti.mes as mes_completo,
+				ti.cumplimiento_ot as cumplimiento_ot,
+				ti.porcentaje_produccion_hfc as porcentaje_produccion_hfc,
+				ti.porcentaje_produccion_ftth as porcentaje_produccion_ftth,
+				ti.indice_asistencia as indice_asistencia,
+				ti.derivaciones as derivaciones,
+			");
+			 
+			$this->db->join('usuarios u', 'u.id = ti.id_tecnico', 'left');
+			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');	
+
+			if($trabajador!=""){
+				$this->db->where('u.id', $trabajador);
+			}
+
+			if($jefe!=""){
+				$this->db->where('(u.id_jefe="'.$jefe.'" or u.id="'.$jefe.'")');
+				$this->db->group_by('mes_completo');
+			}
+			
+			if($proyecto!=""){
+				$this->db->where('u.id_proyecto', $proyecto);
+			}
+
+			$this->db->where('ti.mes', $mes."-01");
+			$this->db->group_by('ti.id_tecnico');
+			$res=$this->db->get('tecnicos_indicadores ti');
+	
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					if($key["trabajador"]!=""){
+						return $res->result_array();
+					}
+				}
+			}
+		}
+
+		public function getDataProductividad($tipo,$trabajador,$jefe,$proyecto,$t) {
+			$campos = $tipo['campos'];
+			$cabeceras = $tipo['cabeceras'];
+		
+			$this->db->select("
+				ti.mes as mes_completo,
+				MONTH(ti.mes) AS mes,
+				YEAR(ti.mes) AS año,
+
+				ROUND(AVG(CASE WHEN ti.porcentaje_produccion_hfc <> 0 THEN ti.porcentaje_produccion_hfc END), 2) AS promedio_hfc,
+				ROUND(AVG(CASE WHEN ti.porcentaje_produccion_ftth <> 0 THEN ti.porcentaje_produccion_ftth END), 2) AS promedio_ftth,
+
+				CONCAT(
+					SUBSTRING(MONTHNAME(mes), 1, 3),
+					'-',
+					RIGHT(YEAR(mes), 2)
+				) AS fecha,". implode(",", $campos));
+
+			$this->db->from('tecnicos_indicadores ti');
+			$this->db->join('usuarios u', 'u.id = ti.id_tecnico', 'left');
+			$this->db->join('usuarios_areas a', 'u.id_area = a.id', 'left');    
+ 
+			if($trabajador!=""){
+				$this->db->where('u.id', $trabajador);
+			}else{
+				$this->db->group_by('mes_completo');
+			}
+
+			if($jefe!=""){
+				$this->db->where('(u.id_jefe="'.$jefe.'" or u.id="'.$jefe.'")');
+				$this->db->group_by('mes_completo');
+			}
+			
+			if($proyecto!=""){
+				$this->db->where('u.id_proyecto', $proyecto);
+			}
+
+			$this->db->where('ti.mes >=', date('Y-m-d', strtotime('-6 months')));
+			/* 	$this->db->where('ti.porcentaje_produccion_hfc !=', 0); */
+
+			$res = $this->db->get();
+
+			$array = [];
+			$array[] = $cabeceras;
+		
+			foreach ($res->result_array() as $key) {
+				$temp = [];
+				$temp[] = (string)$key["fecha"]; 
+
+			    if($t==1){
+					$temp[] = ($key["promedio_hfc"] != 0) ? (float)$key["promedio_hfc"] : 0;
+					$temp[] = ($key["promedio_hfc"] != 0) ? (float)$key["promedio_hfc"] : 0;
+					$temp[] = ($key["promedio_ftth"] != 0) ? (float)$key["promedio_ftth"] : 0;
+					$temp[] = ($key["promedio_ftth"] != 0) ? (float)$key["promedio_ftth"] : 0;
+				}else{
+
+					foreach ($campos as $campo) {
+						$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
+						$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
+					}
+				} 
+		
+				$temp[] = strtotime($key["mes_completo"]);
+				$array[] = $temp;
+			}
+		
+			return $array;
+		}
+		
+
+		public function getRutTecnicoJefe($id_jefe){
+			$this->db->select('us.rut rut');
+			$this->db->join('usuarios us', 'us.id = uj.id_jefe', 'left');
+			$this->db->where('uj.id', $id_jefe);
+			$res=$this->db->get('usuarios_jefes uj');
+			$row = $res->row_array();
+			return $row["rut"];
+		}
+
+		public function getCargoJefe($id_jefe){
+			$this->db->select('us2.id_cargo id_cargo');
+			$this->db->join('usuarios us2', 'us2.id = uj.id_jefe', 'left');
+			$this->db->where('uj.id', $id_jefe);
+			$res=$this->db->get('usuarios_jefes uj');
+			$row = $res->row_array();
+			return $row["id_cargo"];
+		}
+		
+		public function listaProyectos(){
+			$this->db->order_by('proyecto', 'asc');
+			$res=$this->db->get('usuarios_proyectos');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
 
 	/*************RESUMEN*******************/
 
