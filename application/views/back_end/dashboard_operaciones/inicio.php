@@ -78,13 +78,10 @@
       vistaProdCalClaro()
     });
 
-<<<<<<< HEAD
     $(document).off('click', '#prod_x_comuna').on('click', '#prod_x_comuna',function(event) {
       event.preventDefault();
       vistaProdXComuna()
     });
-=======
->>>>>>> feature/productividad_graficos2
 
     function vistaProductividadCalidadXr3(){
       $("#menu_prod_cal_xr3").addClass('disabled_sub');
