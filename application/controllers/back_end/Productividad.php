@@ -324,8 +324,6 @@ class Productividad extends CI_Controller {
 	        }   
 		}
 
-
-
 		public function cargaPlanillaProductividad(){
 
 			/*if(date("d")>"24"){
@@ -438,33 +436,121 @@ class Productividad extends CI_Controller {
 			$this->visitas("Graficos");
 			if($this->input->is_ajax_request()){
 
-				if(date("d")>"24"){
-					$desde_actual = date('d-m-Y', strtotime(date('Y-m-25')));
-					$hasta_actual = date('d-m-Y', strtotime('+1 month', strtotime(date('Y-m-24'))));
-					$desde_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta_anterior = date('d-m-Y', strtotime(date('Y-m-24')));
-				}else{
-					$desde_actual = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
-					$hasta_actual = date('d-m-Y',  strtotime(date('Y-m-24')));
-					$desde_anterior = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
-					$hasta_anterior = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
-				}
-
 				$datos=array(	
-					'desde_actual' => $desde_actual,
-			        'hasta_actual' => $hasta_actual,
-			        'desde_anterior' => $desde_anterior,
-			        'hasta_anterior' => $hasta_anterior,
-     		        'jefes' => $this->Productividadmodel->listaJefes(),
-     		        
-     		        'mes_actual' => mesesPeriodo("actual"),
-		       	    'mes_anterior' =>mesesPeriodo("anterior"),
-		       	    'mes_anterior2' =>mesesPeriodo("anterior2"),
+					'mes' =>  date('Y-m', strtotime('-1 months', strtotime(date("Y-m-d")))),
+					'jefes' => $this->Productividadmodel->listaJefes(),
+					'proyectos' => $this->Productividadmodel->listaProyectos(),
 			    );
-				$this->load->view('back_end/productividad/graficos',$datos);
+				
+				$this->load->view('back_end/productividad/graficos2',$datos);
 			}
 		}
 
+		public function listaResumenProductividad(){
+			$mes=$this->security->xss_clean(strip_tags($this->input->get_post("mes")));
+			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+			$tipo_red=$this->security->xss_clean(strip_tags($this->input->get_post("tipo_red")));
+			$proyecto=$this->security->xss_clean(strip_tags($this->input->get_post("proyecto")));
+			
+			$result =$this->Productividadmodel->listaResumenProductividad($mes,$trabajador,$jefe,$tipo_red,$proyecto);
+			$array = [];
+			
+			if($result != FALSE){
+				$array[] = $result;
+			}
+
+			if(count($array)>0) {
+				echo json_encode($array[0]);exit;
+			}else{
+				echo json_encode([]);exit;
+			}
+			
+		}	
+
+		public function graficosProductividad(){
+			$trabajador = $this->security->xss_clean($this->input->get_post("trabajador"));
+			$jefe = $this->security->xss_clean($this->input->get_post("jefe"));
+			$proyecto = $this->security->xss_clean($this->input->get_post("proyecto"));
+			
+			$cabeceras = array("Mes", "% Cumplimiento",array('role'=> 'annotation'),array('role'=> 'annotationText'));
+
+			$tipos = [
+				"produccion" => [
+					"campos" => ['porcentaje_produccion_hfc','porcentaje_produccion_ftth'],
+					"cabeceras" => ["mes", "%Cumplimiento HFC", ['role' => 'annotation'],  "%Cumplimiento FTTH", ['role' => 'annotation'],['role' => 'annotationText']]
+				],
+				"asistencia" => [
+					"campos" => ['indice_asistencia'],
+					"cabeceras" => ["mes", "% Cumplimiento asistencia", ['role' => 'annotation'], ['role' => 'annotationText']]
+				],
+				"derivaciones" => [
+					"campos" => ['derivaciones'],
+					"cabeceras" => ["mes", "% Cumplimiento derivaciones", ['role' => 'annotation'], ['role' => 'annotationText']]
+				]  
+			];
+
+			$datos = array(
+				'produccion' => $this->Productividadmodel->getDataProductividad($tipos["produccion"], $trabajador, $jefe,$proyecto,1),
+				'asistencia' => $this->Productividadmodel->getDataProductividad($tipos["asistencia"], $trabajador, $jefe,$proyecto,""),
+				'derivaciones' => $this->Productividadmodel->getDataProductividad($tipos["derivaciones"], $trabajador, $jefe,$proyecto,"")
+			);
+			echo json_encode($datos);
+		}
+
+ 
+		
+		public function graficoDerivaciones(){
+			$periodo = $this->security->xss_clean($this->input->get_post("periodo"));
+			$trabajador = $this->security->xss_clean($this->input->get_post("trabajador"));
+			$jefe = $this->security->xss_clean($this->input->get_post("jefe"));
+			$proyecto = $this->security->xss_clean($this->input->get_post("proyecto"));
+		
+ 			$array = array();
+			$periodos = array("actual", "anterior", "anterior_2", "anterior_3", "anterior_4", "anterior_5");
+
+			foreach($periodos as $periodo){
+				$fechas = getFechasPeriodo($periodo);
+				$result = $this->Productividadmodel->graficoHFC($fechas["desde_calidad"], $fechas["hasta_calidad"], $trabajador, $jefe, $proyecto);
+ 
+				if($result != FALSE){
+					$array[] = $result[0];
+				}
+			}
+		
+			$cabeceras = array("Periodo", "Calidad", "Ordenes", "Fallos", array('role'=> 'annotationText'));
+			$list = array_merge(array($cabeceras), $array);
+			echo json_encode($list);exit;
+		}
+
+		public function graficoAsistencia(){
+			$periodo = $this->security->xss_clean($this->input->get_post("periodo"));
+			$trabajador = $this->security->xss_clean($this->input->get_post("trabajador"));
+			$jefe = $this->security->xss_clean($this->input->get_post("jefe"));
+			$proyecto = $this->security->xss_clean($this->input->get_post("proyecto"));
+		
+			$cargo_jefe = ($jefe != "") ? $this->Productividadmodel->getCargoJefe($jefe) : "";
+			$data_calidad_hfc = array();
+			$periodos = array("actual", "anterior", "anterior_2", "anterior_3", "anterior_4", "anterior_5");
+
+			foreach($periodos as $periodo){
+				$fechas = getFechasPeriodo($periodo);
+				$result = ($cargo_jefe == "32") 
+				? $this->Productividadmodel->graficoHFCCalidadLideres($fechas["desde_calidad"], $fechas["hasta_calidad"], $trabajador, $jefe, $proyecto) 
+				: $this->Productividadmodel->graficoHFC($fechas["desde_calidad"], $fechas["hasta_calidad"], $trabajador, $jefe, $proyecto);
+
+				if($result != FALSE){
+					$data_calidad_hfc[] = $result[0];
+				}
+			}
+		
+			$cabeceras = array("Periodo", "Calidad", "Ordenes", "Fallos", array('role'=> 'annotationText'));
+			$list = array_merge(array($cabeceras), $data_calidad_hfc);
+			echo json_encode($list);exit;
+		}
+		
+
+		
 		public function dataGraficos(){
 			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));

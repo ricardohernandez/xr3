@@ -50,19 +50,7 @@
      },
     });
 
-   /*  const url2 = window.location.href;  
-    console.log(url2)
-    part=url2.split("/");
-    cont=(part.length)-1;
-
-    if(part[cont]=="dashboard/dashboard_operaciones"){
-        vistaPrevencion()
-    }else if(part[cont]=="produccion_calidad_eps"){ 
-       vistaCapacitacion()
-    } */
-    
-    /* vistaProductividadCalidadXr3() */
-    vistaProdCalClaro()
+    vistaProductividadCalidadXr3()
     
     $(document).off('click', '#menu_prod_cal_xr3').on('click', '#menu_prod_cal_xr3',function(event) {
       event.preventDefault();
@@ -90,8 +78,6 @@
       vistaProdCalClaro()
     });
 
-    
-    
 
     function vistaProductividadCalidadXr3(){
       $("#menu_prod_cal_xr3").addClass('disabled_sub');
@@ -104,7 +90,6 @@
         $("#menu_prod_cal_xr3").removeClass('disabled_sub');
       });
 
-      /* window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
     
@@ -119,7 +104,6 @@
         $("#menu_prod_cal_eps").removeClass('disabled_sub');
       });
 
-     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
 
@@ -134,7 +118,6 @@
         $("#menu_dotacion").removeClass('disabled_sub');
       });
 
-     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
     function vistaAnalisisCalidad(){
@@ -148,7 +131,6 @@
         $("#menu_analisis_calidad").removeClass('disabled_sub');
       });
 
-     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
     function vistaProdCalClaro(){
@@ -162,7 +144,6 @@
         $("#prod_cal_claro").removeClass('disabled_sub');
       });
 
-     /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
 

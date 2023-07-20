@@ -111,6 +111,7 @@ class Igt extends CI_Controller {
 					    	"porcentaje_produccion_ftth"=>str_replace('%', '', $data[15]),
 					    	"porcentaje_calidad_ftth"=>str_replace('%', '', $data[16]),
 					    	"indice_asistencia"=>str_replace('%', '', $data[17]),
+					    	"derivaciones"=>str_replace('%', '', $data[18]),
 						);	
 
 					    $this->Igtmodel->insertarIgt($arr);
