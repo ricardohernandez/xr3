@@ -59,7 +59,7 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 		
 		public function productividadCalidadXr3(){
-			$this->visitas("Inicio",4);
+			$this->visitas("Productividad y calidad xr3",23);
 
 			$datos=array(
 				'mes_inicio' => date('Y') . '-01',
@@ -70,7 +70,7 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 
 		public function produccionCalidadEPS(){
-			$this->visitas("Inicio",4);
+			$this->visitas("Productividad y calidad EPS",23);
 
 			$datos=array(
 				'mes_inicio' => date('Y') . '-01',
@@ -160,7 +160,7 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 
 		public function dotacion(){
-			$this->visitas("Inicio",4);
+			$this->visitas("Dotación",23);
 
 			$datos=array(
 				'mes_inicio' => date('Y') . '-01',
@@ -177,7 +177,7 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 		
 		public function analisisCalidad(){
-			$this->visitas("Inicio",4);
+			$this->visitas("Analisis calidad",23);
 			$datos=array(
 				'mes_inicio' =>  date('Y-m', strtotime('-2 months', strtotime(date("Y-m-d")))),
 				'mes_termino' => date('Y-m'),
@@ -205,7 +205,7 @@ class Dashboard_operaciones extends CI_Controller {
 
 
 		public function prodCalClaro(){
-			$this->visitas("Inicio",4);
+			$this->visitas("Productividad y calidad claro",23);
 			$datos=array(
 				'mes_inicio' =>  date('Y-m', strtotime('-3 months', strtotime(date("Y-m-d")))),
 				'mes_termino' => date('Y-m'),
@@ -293,7 +293,7 @@ class Dashboard_operaciones extends CI_Controller {
 		
 		
 		public function prodXComuna(){
-			$this->visitas("Inicio",5);
+			$this->visitas("Productividad x comuna y eps",23);
 			$datos=array(
 				'mes_inicio' =>  date('Y-m', strtotime('-2 months', strtotime(date("Y-m-d")))),
 				'mes_termino' => date('Y-m'),
