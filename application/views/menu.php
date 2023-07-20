@@ -1,7 +1,5 @@
 <script type="text/javascript">
    $(function(){
-      
-
    	$(".btn_modal_pass").click(function(event) {
    	    $("#modal_pass").modal('toggle'); 
    	    $(".cont_mensajes").html();
@@ -81,7 +79,7 @@
          width:95%!important;
       }
    }
-/* 
+   /* 
    @media (max-width: 768px){
       .logo_pto {
          margin-top: 5px;
@@ -132,8 +130,6 @@
                   if($perfil<=3){
                ?>
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante </a></li>
-               
-
                <?php
                   }
                ?>
@@ -170,11 +166,16 @@
              
                <?php  
                   if($perfil<=3 || $perfil==7){
-                  ?>
-               <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a></li>
+               ?>
+                  <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a>
+                     <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                     <ul class="sidenav__menu-dropdown">
+                        <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>dashboard/dashboard_operaciones">Dashboard operaciones</a>
+                     </ul>
+                  </li>
                <?php
                   }
-                  ?>
+               ?>
             </ul>
          </li>
          <li>
@@ -352,14 +353,20 @@
                         ?>
 
                         <?php  
-                           if($perfil<=3 || $perfil==7){
-                            ?>
-                        <li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a></li>
+                           if($perfil<=3){
+                        ?>
+
+                        <li class="nav__dropdown">
+                           <a class="menu_list" href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a>
+                           <ul class="nav__dropdown-menu">
+                              <li><a  class="menu_list" href="<?php echo base_url() ?>dashboard/dashboard_operaciones">Dashboard operaciones</a>
+                              </li>
+                           </ul>
+                        </li>
 
                         <?php
                            }
                         ?>
-
                      </ul>
                   </li>
                   <li class="nav__dropdown ">
