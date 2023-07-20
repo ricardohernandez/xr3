@@ -114,7 +114,7 @@
         top: 40,
       },
       width: ancho,
-      height: 650,
+      height: 550,
       hAxis: {
         title: '',
         minValue: 0, 
