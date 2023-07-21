@@ -437,7 +437,7 @@ class Productividad extends CI_Controller {
 			if($this->input->is_ajax_request()){
 
 				$datos=array(	
-					'mes' =>  date('Y-m', strtotime('-1 months', strtotime(date("Y-m-d")))),
+					'mes' =>  date('Y-m'),
 					'jefes' => $this->Productividadmodel->listaJefes(),
 					'proyectos' => $this->Productividadmodel->listaProyectos(),
 			    );
