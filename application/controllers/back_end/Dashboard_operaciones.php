@@ -128,8 +128,8 @@ class Dashboard_operaciones extends CI_Controller {
 		
 
 		public function graficosProductividadEps(){
-			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio")));
-			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino")));
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_eps")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_eps")));
 
 			$campos = [
 				"nac" => [
@@ -171,8 +171,8 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 
 		public function graficoDotacion(){
-			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio")));
-			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino")));
+			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_dot")));
+			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_dot")));
 			echo json_encode($this->Dashboard_operacionesmodel->getDataDotacion($mes_inicio, $mes_termino));
 		}
 		
@@ -199,10 +199,22 @@ class Dashboard_operaciones extends CI_Controller {
 
 			$data = $this->Dashboard_operacionesmodel->getDataAnalisisCalidad($zona,$comuna,$supervisor,$tecnologia,$mes_inicio, $mes_termino);
 			$total = $this->Dashboard_operacionesmodel->getDataAnalisisCalidadTotal($zona,$comuna,$supervisor,$mes_inicio, $mes_termino);
+			$meses_diferencia = abs((strtotime($mes_termino) - strtotime($mes_inicio)) / (30 * 24 * 60 * 60));
 
-			echo json_encode(array("data" => $data , "total" => $total));
+
+			if($meses_diferencia <= 3 ){
+
+				echo json_encode(array(
+					'res' => "ok",
+					"data" => $data , 
+					"total" => $total
+				));
+
+			}else{
+				echo json_encode(array("res"=>"error" , "msg" => "La cantidad máxima de meses a mostrar es 3"));
+			}
+
 		}
-
 
 		public function prodCalClaro(){
 			$this->visitas("Productividad y calidad claro",23);

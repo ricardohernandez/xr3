@@ -7,6 +7,13 @@
     margin:250px auto;
     text-align:center;
   }
+
+  #analisis_calidad_total{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+  }
+
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"
@@ -44,8 +51,23 @@
       success: function (response) {
         $("#load").hide()
         $(".body").fadeIn(500)
-        crearGraficoAnalisisCalidad(response.data);
-        crearGraficoAnalisisCalidadTotal(response.total);
+
+        if(response.res=="error"){
+
+          $.notify(response.msg, {
+              className:response.res,
+              globalPosition: 'top center',
+              autoHideDelay: 20000,
+          });
+
+          $("#analisis_calidad").html('<p class="no_data_found">Sin datos encontrados</p>')
+          $("#analisis_calidad_total").html('<p class="no_data_found">Sin datos encontrados</p>')
+        
+        }else{
+          crearGraficoAnalisisCalidad(response.data);
+          crearGraficoAnalisisCalidadTotal(response.total);
+        }
+    
       },
       error: function (error) {
           console.log(error);
@@ -55,17 +77,16 @@
  
   function crearGraficoAnalisisCalidad(data) {
     let size = Object.keys(data).length
-    console.log(size)
 
     if(size==1){
-      $("#analisis_calidad").html('<p class="no_data_found">Sin datos encontrados</p>')
+      $("#graficoXComuna").html('<p class="no_data_found">Sin datos encontrados</p>')
       return
     }
     
     var data = google.visualization.arrayToDataTable(data);
 
     const options = {
-    /*   isStacked: true, */
+      /*   isStacked: true, */
       fontName: 'ubuntu',
       curveType: 'function',
       fontColor: '#32477C',
@@ -110,7 +131,7 @@
       annotations: {
         alwaysOutside: false,
         textStyle: {
-          fontSize: 13,
+          fontSize: 12,
           color: '#808080',
           auraColor: 'none'
         }
@@ -172,12 +193,31 @@
 
   function crearGraficoAnalisisCalidadTotal(data) {
     let size = Object.keys(data).length
+    console.log(size)
+    switch (true) {
+      case size < 10:
+        cant = 0;
+        break;
+      case size >= 11 && size <= 40:
+        cant = 300;
+        break;
+      case size >= 41 && size <= 80:
+        cant = 500;
+        break;
+      case size >= 81 && size <= 120:
+        cant = 600;
+        break;
+      default:
+        cant = 1000;
+    }
 
     if(size==1){
-      $("#analisis_calidad_total").html('<p class="no_data_found">Sin datos encontrados</p>')
+      $("#graficoXComuna").html('<p class="no_data_found">Sin datos encontrados</p>')
       return
     }
-    
+
+    const cont = document.getElementById('contenedor_grafico_total')
+    const ancho = cont.offsetWidth+cant
     var data = google.visualization.arrayToDataTable(data);
 
     const options = {
@@ -194,6 +234,7 @@
         bottom: 180,
         top: 40,
       },
+      width: ancho,
       height: 480,
       hAxis: {
         title: 'asd',
@@ -229,7 +270,7 @@
       annotations: {
         alwaysOutside: false,
         textStyle: {
-          fontSize: 13,
+          fontSize: 12,
           color: '#808080',
           auraColor: 'none'
         }
@@ -293,7 +334,6 @@
 
   $(document).off('change', '#mes_inicio_analisis_cal,#mes_termino_analisis_cal,#zona_analisis_cal,#comuna_analisis_cal,#supervisor_analisis_cal,#tecnologia_analisis_cal').on('change', '#mes_inicio_analisis_cal,#mes_termino_analisis_cal,#zona_analisis_cal,#comuna_analisis_cal,#supervisor_analisis_cal,#tecnologia_analisis_cal', function (event) {
     cargarGraficoAnalisisCalidad();
-    cargarGraficoAnalisisCalidadTotal();
   });
 
 </script>
@@ -316,7 +356,7 @@
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
-    <select id="zona" name="zona" class="custom-select custom-select-sm">
+    <select id="zona_analisis_cal" name="zona" class="custom-select custom-select-sm">
       <option value="">Zona</option>
       <?php 
         foreach($zonas as $z){
@@ -383,22 +423,24 @@
 <div class="body">
 
 <div class="row mt-2 contenedor_graficos">
-  <div class="col-12">
+  <div class="col-12" id="contenedor_grafico_calidad">
+
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">% Analisis de calidad</p>
-          <div id="analisis_calidad"></div>
-        </div>
+        <p class="titulo_grafico">% Analisis de calidad</p>
+        <div id="analisis_calidad"></div>
       </div>
+    </div>
+
   </div>
   
-  <div class="col-12 mt-2">
+  <div class="col-12 mt-2"  id="contenedor_grafico_total">
     <div class="card">
       <div class="col-12">
-          <p class="titulo_grafico">% Total general de calidad</p>
-          <div id="analisis_calidad_total"></div>
-        </div>
+        <p class="titulo_grafico">% Total general de calidad</p>
+        <div id="analisis_calidad_total"></div>
       </div>
+    </div>
   </div>
 
 </div>

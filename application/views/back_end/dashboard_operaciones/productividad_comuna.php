@@ -14,8 +14,6 @@
     width: 100%;
   }
 
-  
-
  </style>
 <script>
   const base_url = "<?php echo base_url() ?>"

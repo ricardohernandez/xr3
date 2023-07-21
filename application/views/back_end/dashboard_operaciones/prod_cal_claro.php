@@ -11,7 +11,7 @@
 <script>
   const base_url = "<?php echo base_url() ?>"
   const mes_inicio_cal_claro = "<?php echo $mes_inicio ?>"
-  $("#mes_inicio__al_claro").val(mes_inicio_cal_claro) 
+  $("#mes_inicio_cal_claro").val(mes_inicio_cal_claro) 
   const mes_termino_cal_claro = "<?php echo $mes_termino ?>"
   $("#mes_termino_cal_claro").val(mes_termino_cal_claro) 
 
@@ -213,10 +213,11 @@
   <div class="col-12 col-lg-2">
     <div class="form-group">
     <select id="tecnologia_cal_claro" name="tecnologia" class="custom-select custom-select-sm">
+      <option value="" selected >Tecnologia</option>
       <?php 
         foreach($tecnologias as $t){
           ?>
-          <option value="<?php echo $t["tecnologia"]?>" <?php if ($t["tecnologia"] === "HFC") echo "selected"?>><?php echo $t["tecnologia"]?></option>
+          <option value="<?php echo $t["tecnologia"]?>"><?php echo $t["tecnologia"]?></option> <!-- <?php if ($t["tecnologia"] === "HFC") echo "selected"?> -->
           <?php
         }
       ?>

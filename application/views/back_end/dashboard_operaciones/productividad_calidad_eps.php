@@ -323,7 +323,7 @@
 
 <div class="body">
 
-<div class="row mt-2 contenedor_graficos">
+<div class="form-row mt-2 contenedor_graficos">
   <div class="col-12 col-lg-6">
     <div class="card">
       <div class="col-12">

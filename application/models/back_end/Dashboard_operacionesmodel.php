@@ -167,7 +167,6 @@ class Dashboard_operacionesmodel extends CI_Model {
 		
 
 		public function getDataDotacion($mes_inicio,$mes_termino) {
-			
 			if($mes_inicio!=""){
 				$this->db->where('fecha >=', date('Y-m-01', strtotime($mes_inicio)));
 				$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
@@ -272,13 +271,13 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 				if ($tecnologia === "HFC") {
 					$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-					$temp[] = ($key["hfc"] != 0) ? (float)$key["hfc"] : 0;
-					$temp[] = ($key["hfc"] != 0) ? (float)$key["hfc"] : 0;
+					$temp[] = ($key["hfc"] != 0) ? (float)round($key["hfc"],1) : null;
+					$temp[] = ($key["hfc"] != 0) ? (float)round($key["hfc"],1) : null;
 
 				} elseif ($tecnologia === "FTTH") {
 					$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-					$temp[] = ($key["ftth"] != 0) ? (float)$key["ftth"] : 0;
-					$temp[] = ($key["ftth"] != 0) ? (float)$key["ftth"] : 0;
+					$temp[] = ($key["ftth"] != 0) ? (float)round($key["ftth"],1) : null;
+					$temp[] = ($key["ftth"] != 0) ? (float)round($key["ftth"],1) : null;
 				}
 				
 				$temp[] = strtotime($key["fecha"]);
@@ -324,8 +323,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 				$temp = [];
 
 				$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-				$temp[] = ($key["total_general"] != 0) ? (float)$key["total_general"] : 0;
-				$temp[] = ($key["total_general"] != 0) ? (float)$key["total_general"] : 0;
+				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : null;
+				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : null;
 				$temp[] = strtotime($key["fecha"]);
 				$array[] = $temp;
 			}
