@@ -50,7 +50,7 @@ class Dashboard_operaciones extends CI_Controller {
 		public function indexDashboardOP(){
 	    	$this->acceso();
 		    $datos = array(
-		        'titulo' => "Documentación XR3",
+		        'titulo' => "Dashboard operaciones XR3",
 		        'contenido' => "dashboard_operaciones/inicio",
 		        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 			);  
