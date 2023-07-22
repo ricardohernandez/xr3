@@ -549,12 +549,14 @@ class Productividadmodel extends CI_Model {
 
 				ROUND(AVG(CASE WHEN ti.porcentaje_produccion_hfc <> 0 THEN ti.porcentaje_produccion_hfc END), 2) AS promedio_hfc,
 				ROUND(AVG(CASE WHEN ti.porcentaje_produccion_ftth <> 0 THEN ti.porcentaje_produccion_ftth END), 2) AS promedio_ftth,
+				ROUND(AVG(CASE WHEN ti.indice_asistencia <> 0 THEN ti.indice_asistencia END), 2) AS indice_asistencia,
+				ROUND(AVG(CASE WHEN ti.derivaciones <> 0 THEN ti.derivaciones END), 2) AS derivaciones,
 
 				CONCAT(
 					SUBSTRING(MONTHNAME(mes), 1, 3),
 					'-',
 					RIGHT(YEAR(mes), 2)
-				) AS fecha,". implode(",", $campos));
+				) AS fecha");
 
 			$this->db->from('tecnicos_indicadores ti');
 			$this->db->join('usuarios u', 'u.id = ti.id_tecnico', 'left');
