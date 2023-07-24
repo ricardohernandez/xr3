@@ -39,9 +39,13 @@ class Dashboard_operaciones extends CI_Controller {
 	}
 
 	public function acceso(){
-		 if(!$this->session->userdata('id')){
-	      	redirect("./login");
-	      }
+		if(!$this->session->userdata('id')){
+				redirect("./login");
+		}
+
+		if($this->session->userdata('perfil')>2){
+			redirect("./login");
+		}
 	}
 
 
