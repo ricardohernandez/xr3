@@ -70,6 +70,7 @@
 	$route['formIngresoPrevencion'] = "back_end/documentacion/formIngresoPrevencion";
 	$route['eliminaPrevencion'] = "back_end/documentacion/eliminaPrevencion";
 	$route['documentacion/datas_mandante'] = "back_end/documentacion/indexDatas";
+
 	$route['vistaDatas'] = "back_end/documentacion/vistaDatas";
 	$route['getDatasList'] = "back_end/documentacion/getDatasList";
 	$route['getDataRegistroDatas'] = "back_end/documentacion/getDataRegistroDatas";
@@ -107,13 +108,6 @@
 	$route['graficoXComuna'] = "back_end/Dashboard_operaciones/graficoXComuna";
  	
 	
-	$route['dashboard/listaDashboardProductividad'] = "back_end/Dashboard_operaciones/listaDashboardProductividad";
-	$route['getDatasList'] = "back_end/Dashboard_operaciones/getDatasList";
-	$route['getDataRegistroDatas'] = "back_end/Dashboard_operaciones/getDataRegistroDatas";
-	$route['formIngresoDatas'] = "back_end/Dashboard_operaciones/formIngresoDatas";
-	$route['eliminaDatas'] = "back_end/Dashboard_operaciones/eliminaDatas";
-
-
 	$route['dashboard/capacitacion'] = "back_end/documentacion/indexCapacitacion";
 	$route['getDataPrevencionModulos'] = "back_end/Prevencion_modulos/getData";
 	$route['formIngresoPrevencionModulos'] = "back_end/Prevencion_modulos/formIngreso";
