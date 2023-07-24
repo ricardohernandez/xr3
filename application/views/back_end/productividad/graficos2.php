@@ -17,6 +17,9 @@
       display: inline-block;
       font-size: 11px;
   }
+  .centered{
+	text-align:center;
+  }
 </style>
 <script type= "text/javascript" >
 	var base_url = "<?php echo base_url() ?>" 

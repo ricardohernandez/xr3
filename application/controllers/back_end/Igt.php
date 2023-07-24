@@ -69,9 +69,10 @@ class Igt extends CI_Controller {
             	}
 
             	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
+				$proyecto = $d[19];
 
-	    	  	if($this->Igtmodel->existeMes($mes_completo)){
-	    	  		$this->Igtmodel->borrarMesActual($mes_completo);
+	    	  	if($this->Igtmodel->existeMes($mes_completo,$proyecto)){
+	    	  		$this->Igtmodel->borrarMesActual($mes_completo,$proyecto);
 	    	  	}
             }
          	
@@ -112,6 +113,7 @@ class Igt extends CI_Controller {
 					    	"porcentaje_calidad_ftth"=>str_replace('%', '', $data[16]),
 					    	"indice_asistencia"=>str_replace('%', '', $data[17]),
 					    	"derivaciones"=>str_replace('%', '', $data[18]),
+					    	"proyecto"=> $data[19]
 						);	
 
 					    $this->Igtmodel->insertarIgt($arr);

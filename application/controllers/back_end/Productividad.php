@@ -432,6 +432,8 @@ class Productividad extends CI_Controller {
 
 		}	
 
+	/*********GRAFICOS************/
+
 		public function vistaGraficosProd(){
 			$this->visitas("Graficos");
 			if($this->input->is_ajax_request()){
@@ -548,8 +550,6 @@ class Productividad extends CI_Controller {
 			$list = array_merge(array($cabeceras), $data_calidad_hfc);
 			echo json_encode($list);exit;
 		}
-		
-
 		
 		public function dataGraficos(){
 			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));

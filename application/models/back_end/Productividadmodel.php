@@ -487,7 +487,9 @@ class Productividadmodel extends CI_Model {
 					$this->db->where('uj.id', $this->session->userdata('id_jefe'));
 				}
 			}
-
+			
+			$this->db->where('id_cargo', 18);
+			
 			$this->db->order_by('nombre_jefe', 'asc');
 			$res=$this->db->get('usuarios_jefes uj');
 			if($res->num_rows()>0){

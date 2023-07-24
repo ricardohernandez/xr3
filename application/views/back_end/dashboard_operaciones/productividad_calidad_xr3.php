@@ -90,7 +90,7 @@
     var contieneProd = contieneElementoProd(data);
 
     var data = google.visualization.arrayToDataTable(data);
-    data.sort([{ column: 5, desc: false }]);
+   /*  data.sort([{ column: 5, desc: false }]); */
 
     const options = {
       fontName: 'ubuntu',
@@ -131,10 +131,6 @@
         },
 
       },
-
-      
-    
-
       annotations: {
         alwaysOutside: false,
         textStyle: {
@@ -230,6 +226,28 @@
 
     if(contieneMeta && contieneProd){
       
+      options.vAxes ={
+        0: 
+          {
+          textStyle:{color: '#808080',bold:false,fontSize: 12},
+            gridlines: {color:'#808080', count:0},
+            viewWindowMode:'explicit',
+            viewWindow: {
+              min: 3,
+              max: 5
+            },
+          },
+          1: 
+          {
+            textStyle:{color: '#808080',bold:false,fontSize: 12},
+              gridlines: {color:'#808080', count:0},
+              viewWindow: {
+                min: 3,
+                max: 5
+              },
+            }
+      },
+    
       options.series = {
         1: {
           type: 'line',
