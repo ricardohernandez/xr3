@@ -90,7 +90,7 @@
     var contieneProd = contieneElementoProd(data);
 
     var data = google.visualization.arrayToDataTable(data);
-   /*  data.sort([{ column: 5, desc: false }]); */
+    data.sort([{ column: 5, desc: false }]);
 
     const options = {
       fontName: 'ubuntu',
@@ -130,7 +130,7 @@
           count: 0
         },
 
-      },
+      }, 
       annotations: {
         alwaysOutside: false,
         textStyle: {
@@ -139,8 +139,7 @@
           auraColor: 'none'
         }
       },
-      avoidOverlappingGridLines: true,
-
+      avoidOverlappingGridLines: true, 
       legend: {
         position: 'top',
         alignment: 'center',
@@ -234,7 +233,7 @@
             viewWindowMode:'explicit',
             viewWindow: {
               min: 3,
-              max: 5
+              max: 6
             },
           },
           1: 
@@ -243,32 +242,31 @@
               gridlines: {color:'#808080', count:0},
               viewWindow: {
                 min: 3,
-                max: 5
+                max: 6
               },
             }
       },
-    
+      
       options.series = {
         1: {
           type: 'line',
           lineDashStyle: [4, 4], 
           color: '#808080',
-          curveType: 'function',
-          lineWidth: 2,
-          pointSize: 5,
+           lineWidth: 1,
+          pointSize: 1,
           pointShape: 'square',
-          targetAxisIndex: 0,
+          targetAxisIndex: 1,
           annotations: {
             stem: {
-              length: 4
+              color: 'transparent',
+              length: -20
             }
           }
         },
         0: {
           type: 'line',
           color: '#2F81F7',
-          targetAxisIndex: 1,
-          annotations: {
+           annotations: {
             style: 'line',
             textStyle: {
               fontSize: 12,
@@ -277,13 +275,14 @@
               auraColor: 'transparent'
             },
             alwaysOutside: false,
+            
             stem: {
-              color: 'transparent',
-              length: 8
+              color: '808080',
+              length: 11
             }
           }
         }
-      };
+        }
 
 
     }
