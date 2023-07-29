@@ -165,7 +165,7 @@
                ?>
              
                <?php  
-                  if($perfil<3){
+                  if($perfil<=3){
                ?>
                   <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/reportes"> Reportes Operaciones</a>
                      <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
@@ -353,7 +353,7 @@
                         ?>
 
                         <?php  
-                           if($perfil<3){
+                           if($perfil<=3){
                         ?>
 
                         <li class="nav__dropdown">

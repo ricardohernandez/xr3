@@ -19,13 +19,17 @@
   function cargarGraficoEps () {
   var mes_inicio_eps = $("#mes_inicio_eps").val();
   var mes_termino_eps = $("#mes_termino_eps").val();
+  var tecnologia = $("#tecnologia_prod_eps").val();
+  var zona = $("#zona_prod_eps").val();
 
   $.ajax({
       url: base_url+'graficosProductividadEps',
       type: 'POST',
       data: {
           'mes_inicio_eps': mes_inicio_eps,
-          'mes_termino_eps': mes_termino_eps
+          'mes_termino_eps': mes_termino_eps,
+          'tecnologia': tecnologia,
+          'zona': zona
       },
       dataType: "json",
       beforeSend:function(){
@@ -39,12 +43,23 @@
         crearGraficoEps('productividadnacional', response.productividadnacional, 'line');
         crearGraficoEps('productividadHFC', response.productividadHFC, 'line');
         crearGraficoEps('productividadFTTH', response.productividadFTTH, 'line');
-
         crearGraficoEps('calidadnacional', response.calidadnacional, 'column');
         crearGraficoEps('calidadHFC', response.calidadHFC, 'column');
         crearGraficoEps('calidadFTTH', response.calidadFTTH, 'column');
 
+        crearGraficoEps('productividadnor', response.productividadnor, 'line');
+        crearGraficoEps('productividadHFCnor', response.productividadHFCnor, 'line');
+        crearGraficoEps('productividadFTTHnor', response.productividadFTTHnor, 'line');
+        crearGraficoEps('calidadnor', response.calidadnor, 'column');
+        crearGraficoEps('calidadHFCnor', response.calidadHFCnor, 'column');
+        crearGraficoEps('calidadFTTHnor', response.calidadFTTHnor, 'column');
 
+        crearGraficoEps('productividadsur', response.productividadsur, 'line');
+        crearGraficoEps('productividadHFCsur', response.productividadHFCsur, 'line');
+        crearGraficoEps('productividadFTTHsur', response.productividadFTTHsur, 'line');
+        crearGraficoEps('calidadsur', response.calidadsur, 'column');
+        crearGraficoEps('calidadHFCsur', response.calidadHFCsur, 'column');
+        crearGraficoEps('calidadFTTHsur', response.calidadFTTHsur, 'column');
       },
       error: function (error) {
           console.log(error);
@@ -82,7 +97,7 @@
 
 
   function crearGraficoEps(divId, data, tipoGrafico) {
-    console.log(data)
+   /*  console.log(data) */
     var contieneMeta = contieneElementoMeta(data);
     var contieneCalidad = contieneElementoCalidad(data);
     var contieneProd = contieneElementoProd(data);
@@ -103,6 +118,7 @@
         top: 40,
       },
       height: 230,
+      width:"100%",
       hAxis: {
         title: '',
         minValue: 0,
@@ -127,12 +143,7 @@
           color: '',
           count: 0
         },
-
       },
-
-      
-    
-
       annotations: {
         alwaysOutside: false,
         textStyle: {
@@ -278,12 +289,28 @@
 
     chart.draw(data, options);
 
-   
   }
+  
 
-  $(document).off('change', '#mes_inicio_eps,#mes_termino_eps').on('change', '#mes_inicio_eps,#mes_termino_eps', function (event) {
-    cargarGraficoEps ();
-  });
+  $(document).off('change', '#mes_inicio_eps, #mes_termino_eps, #zona_prod_eps, #tecnologia_prod_eps').on('change', '#mes_inicio_eps, #mes_termino_eps, #zona_prod_eps, #tecnologia_prod_eps', function (event) {
+    if ($(this).attr('id') === 'zona_prod_eps') {
+      if ($(this).val() === "NORTE") {
+        $(".contenedor_sur").hide();
+        $(".contenedor_nacional").hide();
+        $(".contenedor_norte").show();
+      } else if ($(this).val() === "SUR") {
+        $(".contenedor_norte").hide();
+        $(".contenedor_nacional").hide();
+        $(".contenedor_sur").show();
+      } else {
+        $(".contenedor_norte").show();
+        $(".contenedor_sur").show();
+        $(".contenedor_nacional").show();
+      }
+    }
+  cargarGraficoEps();
+});
+
 
 
 </script>
@@ -291,7 +318,7 @@
 <!-- FILTROS -->
   
 <div class="form-row">
-    <?php
+  <?php
     if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
         ?>
         <div class="col-6 col-lg-1">  
@@ -299,9 +326,9 @@
         <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
         <i class="fa fa-file-import"></i> Cargar base  
         </div>
-        <?php
+    <?php
     }
-    ?>
+  ?>
 
   <div class="col-12 col-lg-3">
     <div class="form-group">
@@ -315,6 +342,21 @@
     </div>
   </div>
 
+  <div class="col-12 col-lg-2">
+    <div class="form-group">
+    <select id="zona_prod_eps" name="zona_prod_eps" class="custom-select custom-select-sm">
+      <option value="" selected>Zona | Todas</option>
+      <?php 
+        foreach($zonas as $z){
+          ?>
+           <option value="<?php echo $z["zona"]?>"><?php echo $z["zona"]?></option>
+          <?php
+        }
+      ?>
+    </select>
+    </div>
+  </div>
+   
 </div>   
 
 <div style="text-align: center;;">
@@ -322,60 +364,173 @@
 </div>
 
 <div class="body">
+  <div class="form-row mt-2 " id="contenedor_graficos">
 
-<div class="form-row mt-2 contenedor_graficos">
-  <div class="col-12 col-lg-6">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Productividad nacional X EPS</p>
-          <div id="productividadnacional"></div>
+   <!--  <div class="contenedor_nacional">
+      <div class="form-row"> -->
+       
+        <div class="col-12 col-lg-6 contenedor_nacional">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Productividad nacional X EPS</p>
+              <div id="productividadnacional"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
 
-  <div class="col-12 col-lg-6">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Calidad nacional X EPS</p>
-          <div id="calidadnacional"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Productividad HFC X EPS</p>
-          <div id="productividadHFC"></div>
+        <div class="col-12 col-lg-6 contenedor_nacional">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Calidad nacional X EPS</p>
+              <div id="calidadnacional"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
 
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Calidad HFC X EPS</p>
-          <div id="calidadHFC"></div>
+        <div class="col-12 col-lg-6 mt-2 contenedor_nacional">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Productividad HFC X EPS</p>
+              <div id="productividadHFC"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
 
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Productividad FTTH X EPS</p>
-          <div id="productividadFTTH"></div>
+        <div class="col-12 col-lg-6 mt-2 contenedor_nacional">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Calidad HFC X EPS</p>
+              <div id="calidadHFC"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
 
-  <div class="col-12 col-lg-6 mt-2">
-    <div class="card">
-      <div class="col-12">
-          <p class="titulo_grafico">Calidad FTTH X EPS</p>
-          <div id="calidadFTTH"></div>
+        <div class="col-12 col-lg-6 mt-2 contenedor_nacional">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Productividad FTTH X EPS</p>
+              <div id="productividadFTTH"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
 
+        <div class="col-12 col-lg-6 mt-2 contenedor_nacional">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Calidad FTTH X EPS</p>
+              <div id="calidadFTTH"></div>
+            </div>
+          </div>
+        </div>
+ 
+        <div class="col-12 col-lg-6 contenedor_norte">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Productividad norte X EPS</p>
+              <div id="productividadnor"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 contenedor_norte">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Calidad norte X EPS</p>
+              <div id="calidadnor"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_norte">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Productividad HFC norte X EPS</p>
+                <div id="productividadHFCnor"></div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_norte">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Calidad HFC norte X EPS</p>
+                <div id="calidadHFCnor"></div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_norte">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Productividad FTTH norte X EPS</p>
+                <div id="productividadFTTHnor"></div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_norte">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Calidad FTTH norte X EPS</p>
+                <div id="calidadFTTHnor"></div>
+              </div>
+            </div>
+        </div>
+  
+ 
+        <div class="col-12 col-lg-6 contenedor_sur">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Productividad  sur X EPS</p>
+              <div id="productividadsur"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 contenedor_sur">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Calidad  sur X EPS</p>
+                <div id="calidadsur"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_sur">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Productividad HFC sur X EPS</p>
+                <div id="productividadHFCsur"></div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_sur">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Calidad HFC sur X EPS</p>
+                <div id="calidadHFCsur"></div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_sur">
+          <div class="card">
+            <div class="col-12">
+                <p class="titulo_grafico">Productividad FTTH sur X EPS</p>
+                <div id="productividadFTTHsur"></div>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-2 contenedor_sur">
+          <div class="card">
+            <div class="col-12">
+              <p class="titulo_grafico">Calidad FTTH sur X EPS</p>
+              <div id="calidadFTTHsur"></div>
+            </div>
+          </div>
+        </div>
+     
+  </div>
 </div>

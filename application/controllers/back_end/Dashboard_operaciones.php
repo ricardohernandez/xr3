@@ -43,7 +43,7 @@ class Dashboard_operaciones extends CI_Controller {
 				redirect("./login");
 		}
 
-		if($this->session->userdata('perfil')>2){
+		if($this->session->userdata('id_perfil')>3){
 			redirect("./login");
 		}
 	}
@@ -72,18 +72,6 @@ class Dashboard_operaciones extends CI_Controller {
 
 			$this->load->view('back_end/dashboard_operaciones/productividad_calidad_xr3',$datos);
 		}
-
-		public function produccionCalidadEPS(){
-			$this->visitas("Productividad y calidad EPS",23);
-
-			$datos=array(
-				'mes_inicio' => date('Y') . '-01',
-				'mes_termino' => date('Y-m'),
-			);
-
-			$this->load->view('back_end/dashboard_operaciones/productividad_calidad_eps',$datos);
-		}
-
 		
 		public function graficosProductividadXR3(){
 			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio")));
@@ -130,10 +118,25 @@ class Dashboard_operaciones extends CI_Controller {
 			echo json_encode($datos);
 		}
 		
+		public function produccionCalidadEPS(){
+			$this->visitas("Productividad y calidad EPS",23);
+
+			$datos=array(
+				'mes_inicio' => date('Y') . '-01',
+				'mes_termino' => date('Y-m'),
+				'zonas' => $this->Dashboard_operacionesmodel->getZonas(),
+				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologias()
+			);
+
+			$this->load->view('back_end/dashboard_operaciones/productividad_calidad_eps',$datos);
+		}
+
 
 		public function graficosProductividadEps(){
 			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_eps")));
 			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_eps")));
+			$tecnologia=$this->security->xss_clean(strip_tags($this->input->get_post("tecnologia")));
+			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 
 			$campos = [
 				"nac" => [
@@ -148,16 +151,58 @@ class Dashboard_operaciones extends CI_Controller {
 					"campos" => ['xr3_x_eps_ftth', 'jr_x_eps_ftth', 'emetel_x_eps_ftth'],
 					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
+
+				"nor" => [
+					"campos" => ['xr3_x_eps_nor', 'jr_x_eps_nor', 'emetel_x_eps_nor'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"hfcnor" => [
+					"campos" => ['xr3_x_eps_hfc_nor', 'jr_x_eps_hfc_nor', 'emetel_x_eps_hfc_nor'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"ftthnor" => [
+					"campos" => ['xr3_x_eps_ftth_nor', 'jr_x_eps_ftth_nor', 'emetel_x_eps_ftth_nor'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+
+				"sur" => [
+					"campos" => ['xr3_x_eps_sur', 'jr_x_eps_sur', 'emetel_x_eps_sur'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"hfcsur" => [
+					"campos" => ['xr3_x_eps_hfc_sur', 'jr_x_eps_hfc_sur', 'emetel_x_eps_hfc_sur'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"ftthsur" => [
+					"campos" => ['xr3_x_eps_ftth_sur', 'jr_x_eps_ftth_sur', 'emetel_x_eps_ftth_sur'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				
 			 
 			];
+
+			
 			$datos = array(
 				'productividadnacional' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["nac"], $mes_inicio, $mes_termino),
 				'productividadHFC' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["hfc"], $mes_inicio, $mes_termino),
 				'productividadFTTH' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["ftth"], $mes_inicio, $mes_termino),
-
 				'calidadnacional' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["nac"], $mes_inicio, $mes_termino),
 				'calidadHFC' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["hfc"], $mes_inicio, $mes_termino),
 				'calidadFTTH' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["ftth"], $mes_inicio, $mes_termino),
+
+				'productividadnor' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["nor"], $mes_inicio, $mes_termino),
+				'productividadHFCnor' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["hfcnor"], $mes_inicio, $mes_termino),
+				'productividadFTTHnor' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["ftthnor"], $mes_inicio, $mes_termino),
+				'calidadnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["nor"], $mes_inicio, $mes_termino),
+				'calidadHFCnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["hfcnor"], $mes_inicio, $mes_termino),
+				'calidadFTTHnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["ftthnor"], $mes_inicio, $mes_termino),
+
+				'productividadsur' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["sur"], $mes_inicio, $mes_termino),
+				'productividadHFCsur' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["hfcsur"], $mes_inicio, $mes_termino),
+				'productividadFTTHsur' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["ftthsur"], $mes_inicio, $mes_termino),
+				'calidadsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["sur"], $mes_inicio, $mes_termino),
+				'calidadHFCsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["hfcsur"], $mes_inicio, $mes_termino),
+				'calidadFTTHsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["ftthsur"], $mes_inicio, $mes_termino),
 
 			);
 			echo json_encode($datos);
