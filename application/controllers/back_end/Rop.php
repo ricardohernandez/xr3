@@ -414,6 +414,7 @@ class Rop extends CI_Controller {
 
 					$this->email->to($para);
 					$this->email->cc($copias);
+					$this->email->bcc(array("ricardo.hernandez@splice.cl","german.cortes@km-telecomunicaciones.cl"));
 					$this->email->subject($asunto);
 
 					$datos = array("dato" => $key, "asunto" => $asunto, "cuerpo" => $cuerpo, "cuerpo2" => $cuerpo2);
