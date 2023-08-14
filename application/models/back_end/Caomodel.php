@@ -59,8 +59,10 @@ class Caomodel extends CI_Model {
 			if($jefe!=""){	$this->db->where('u.id_jefe', $jefe);}
 			if($nivel_tecnico!=""){	$this->db->where('u.id_nivel_tecnico', $nivel_tecnico);}
 
+			$this->db->where('u.estado',"1");
 			$this->db->order_by('u.nombres', 'asc');
 			$this->db->group_by('u.id');
+			
 			$res=$this->db->get('cao c');
 			$array_fechas = arrayRangoFechas($desde,$hasta,"+1 day", "Y-m-d");
 			$array = array();
@@ -222,6 +224,7 @@ class Caomodel extends CI_Model {
 			if($jefe!=""){
 				$this->db->where('id_jefe', $jefe);
 			}
+			$this->db->where('estado',"1");
 
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");
