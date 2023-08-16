@@ -50,10 +50,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 		
 			return $array;
 		}
-		
 
 		public function getDataCalidad($tipo,$mes_inicio,$mes_termino) {
-			
 			$campos = $tipo['campos'];
 			$cabeceras = $tipo['cabeceras'];
 		
@@ -65,7 +63,9 @@ class Dashboard_operacionesmodel extends CI_Model {
 			}else{
 				$this->db->where('fecha >=', date('Y-m-01', strtotime('January')));
 			}
-
+			
+			$this->db->group_by('fecha');
+			
 			$res = $this->db->get('dashboard_calidad');
 
 			$array = [];
@@ -87,9 +87,6 @@ class Dashboard_operacionesmodel extends CI_Model {
 		
 			return $array;
 		}
-
-		
-		
 
 		public function getDataProductividadEPS($tipo,$mes_inicio,$mes_termino) {
 			
@@ -211,12 +208,13 @@ class Dashboard_operacionesmodel extends CI_Model {
 				$cabeceras = ["mes", 
 					"Promedio Sur", ['role' => 'annotation'], 
 					"Promedio Norte", ['role' => 'annotation'], 
-					"Claro", ['role' => 'annotation'], 
+					"Promedio Claro", ['role' => 'annotation'], 
 					"FTE Sur", ['role' => 'annotation'], 
 					"Total Operativo", ['role' => 'annotation'], 
 					"FTE Norte", ['role' => 'annotation'], 
 					"Total Mov FTE", ['role' => 'annotation'], 
 					"ACC", ['role' => 'annotation'], 
+					"Operativo Claro", ['role' => 'annotation'], 
 					['role' => 'annotationText']];
 			} 
 
@@ -231,6 +229,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 					"ACC", ['role' => 'annotation'], 
 					['role' => 'annotationText']];
  			*/
+			
 			$array[] = $cabeceras;
 
 			foreach ($res->result_array() as $key) {
@@ -264,7 +263,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 						$temp[] = 0;
 						$temp[] = 0;
- */
+ 						*/
 
 
 					}elseif($tipo=="sur"){
@@ -289,8 +288,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 					$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
 					$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
 					
-					$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
-					$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
+					$temp[] = ($key["promedio_claro"] != 0) ? (float)$key["promedio_claro"] : 0;
+					$temp[] = ($key["promedio_claro"] != 0) ? (float)$key["promedio_claro"] : 0;
 									
 					$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
 					$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
@@ -308,6 +307,9 @@ class Dashboard_operacionesmodel extends CI_Model {
 					$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
 					$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
 				
+					$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
+					$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
+
 				} 
 
 				$temp[] = strtotime($key["fecha"]);

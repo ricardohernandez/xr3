@@ -180,7 +180,7 @@
         },
         2: {
           type: 'bars',
-          color: 'grey',
+          color: '#6C007A',
           targetAxisIndex:1,
           annotations: {
           style: 'line',
@@ -307,6 +307,31 @@
           type: 'line',
           color: 'green',
 
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'cirle',
+          targetAxisIndex:0,
+
+          targetAxisIndex:1,
+          annotations: {
+          style: 'line',
+          textStyle: {
+            fontSize: 12,
+            color: '808080',
+            strokeSize: 1,
+            auraColor: 'transparent'
+          },
+          alwaysOutside: false,  
+          stem:{
+              color: 'transparent',
+              length: 8
+            },   
+          }
+        },
+
+        8: {
+          type: 'line',
+          color: '#6C007A',
           lineWidth: 2,
           pointSize: 5,
           pointShape: 'cirle',

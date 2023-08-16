@@ -35,13 +35,13 @@
       success: function (response) {
         $("#load").hide()
         $(".body").fadeIn(500)
-        crearGrafico('productividadnacional', response.productividadnacional, 'line');
+        crearGraficoNac('productividadnacional', response.productividadnacional, 'line');
         crearGrafico('productividadnorteHFC', response.productividadnorteHFC, 'line');
         crearGrafico('productividadnorteFTTH', response.productividadnorteFTTH, 'line');
         crearGrafico('productividadsurHFC', response.productividadsurHFC, 'line');
         crearGrafico('productividadsurFTTH', response.productividadsurFTTH, 'line');
 
-        crearGrafico('calidadnacional', response.calidadnacional, 'column');
+        crearGraficoNac('calidadnacional', response.calidadnacional, 'column');
         crearGrafico('calidadnorteHFC', response.calidadnorteHFC, 'column');
         crearGrafico('calidadnorteFTTH', response.calidadnorteFTTH, 'column');
         crearGrafico('calidadsurHFC', response.calidadsurHFC, 'column');
@@ -297,6 +297,279 @@
 
     chart.draw(data, options);
 
+   
+  }
+
+  function crearGraficoNac(divId, data, tipoGrafico) {
+    console.log(data)
+    var contieneCalidad = contieneElementoCalidad(data);
+    var contieneProd = contieneElementoProd(data);
+
+    var data = google.visualization.arrayToDataTable(data);
+    data.sort([{ column: 8, desc: false }]);
+
+    const options = {
+      fontName: 'ubuntu',
+      curveType: 'function',
+      fontColor: '#32477C',
+      backgroundColor: { fill: 'transparent' },
+      colors: ['#F48432', '#2f81f7'],
+      chartArea: {
+        left: 40,
+        right: 40,
+        bottom: 40,
+        top: 40,
+      },
+      height: 230,
+      hAxis: {
+        title: '',
+        minValue: 0,
+        textStyle: {
+          fontSize: 13,
+          bold: false,
+          color: '#808080'
+        },
+        gridlines: {
+          color: '',
+          count: 0
+        }
+      },
+      vAxis: {
+        title: '',
+        textStyle: {
+          fontSize: 13,
+          bold: false,
+          color: '#808080'
+        },
+        gridlines: {
+          color: '',
+          count: 0
+        },
+
+      }, 
+      annotations: {
+        alwaysOutside: false,
+        textStyle: {
+          fontSize: 13,
+          color: '#808080',
+          auraColor: 'none'
+        }
+      },
+      avoidOverlappingGridLines: true, 
+      legend: {
+        position: 'top',
+        alignment: 'center',
+        textStyle: {
+          fontSize: 14,
+          bold: true,
+          color: '#808080'
+        }
+      },
+      tooltip: {
+        textStyle: {
+          color: '#ffffff96',
+          fontSize: 13
+        }
+      },
+    };
+
+    if(contieneCalidad){
+      
+      options.vAxes ={
+       0: 
+        {
+        textStyle:{color: '#808080',bold:false,fontSize: 12},
+          gridlines: {color:'#808080', count:0},
+          viewWindowMode:'explicit',
+          viewWindow: {
+            min: 0,
+            max: 10
+          },
+        },
+        1: 
+        {
+        textStyle:{color: '#808080',bold:false,fontSize: 12},
+        gridlines: {color:'#808080', count:0},
+        viewWindow: {
+          min: 0,
+          max: 10
+        },
+        },
+
+        2: 
+        {
+        textStyle:{color: '#808080',bold:false,fontSize: 12},
+        gridlines: {color:'#808080', count:0},
+        viewWindow: {
+          min: 0,
+          max: 10
+        },
+        }
+     },
+
+
+      options.seriesType = 'bars'; 
+      options.series = {
+        2: {
+          type: 'line',
+          lineDashStyle: [4, 4], 
+          color: 'grey',
+          curveType: 'function',
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'square',
+          targetAxisIndex: 0,
+          annotations: {
+            stem: {
+              length: 4
+            },
+            
+          }
+        },
+        1: {
+          type: 'bars',
+          color: '#F48432',
+          targetAxisIndex: 1,
+          annotations: {
+            style: 'line',
+            textStyle: {
+              fontSize: 12,
+              color: 'grey',
+              strokeSize: 1,
+              auraColor: 'transparent'
+            },
+            alwaysOutside: false,
+            stem: {
+              color: 'transparent',
+              length: 8
+            }
+          }
+        },
+        0: {
+          type: 'bars',
+          color: '#2F81F7',
+          targetAxisIndex: 1,
+          annotations: {
+            style: 'line',
+            textStyle: {
+              fontSize: 12,
+              color: 'black',
+              strokeSize: 1,
+              auraColor: 'transparent'
+            },
+            alwaysOutside: false,
+            stem: {
+              color: 'transparent',
+              length: 8
+            }
+          }
+        }
+      };
+
+    }
+
+    if(contieneProd){
+      
+      options.vAxes ={
+        0: 
+          {
+          textStyle:{color: '#808080',bold:false,fontSize: 12},
+            gridlines: {color:'#808080', count:0},
+            viewWindowMode:'explicit',
+            viewWindow: {
+              min: 3,
+              max: 6
+            },
+          },
+          1: 
+          {
+            textStyle:{color: '#808080',bold:false,fontSize: 12},
+              gridlines: {color:'#808080', count:0},
+              viewWindow: {
+                min: 3,
+                max: 6
+              },
+            },
+
+            2: 
+            {
+            textStyle:{color: '#808080',bold:false,fontSize: 12},
+              gridlines: {color:'#808080', count:0},
+              viewWindow: {
+                min: 3,
+                max: 10
+              },
+            }
+      },
+      
+      options.series = {
+        2: {
+          type: 'line',
+          lineDashStyle: [4, 4], 
+          color: '#808080',
+           lineWidth: 1,
+          pointSize: 1,
+          pointShape: 'square',
+          targetAxisIndex: 1,
+          annotations: {
+            stem: {
+              color: 'transparent',
+              length: -20
+            }
+          }
+        },
+        1: {
+          type: 'line',
+          color: '#2F81F7',
+           annotations: {
+            style: 'line',
+            textStyle: {
+              fontSize: 12,
+              color: '#808080',
+              strokeSize: 1,
+              auraColor: 'transparent'
+            },
+            alwaysOutside: false,
+            
+            stem: {
+              color: '808080',
+              length: 11
+            }
+          }
+        },
+        0: {
+          type: 'line',
+          color: '#F48432',
+           annotations: {
+            style: 'line',
+            textStyle: {
+              fontSize: 12,
+              color: '#808080',
+              strokeSize: 1,
+              auraColor: 'transparent'
+            },
+            alwaysOutside: false,
+            
+            stem: {
+              color: '808080',
+              length: 11
+            }
+          }
+        }
+        }
+
+
+    }
+
+    var chart;
+    
+    if (tipoGrafico === 'line') {
+      chart = new google.visualization.LineChart(document.getElementById(divId));
+    } else if (tipoGrafico === 'column') {
+      chart = new google.visualization.ColumnChart(document.getElementById(divId));
+    }
+
+    chart.draw(data, options);
    
   }
 

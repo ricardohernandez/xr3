@@ -79,8 +79,8 @@ class Dashboard_operaciones extends CI_Controller {
 
 			$tiposProductividad = [
 				"nac" => [
-					"campos" => ['hfc_na', 'ftth_na'],
-					"cabeceras" => ["mes", "HFC", ['role' => 'annotation'], "FTTH", ['role' => 'annotation'], ['role' => 'annotationText'], ['role' => 'annotationText']]
+					"campos" => ['hfc_na', 'ftth_na','meta'],
+					"cabeceras" => ["mes", "HFC", ['role' => 'annotation'], "FTTH", ['role' => 'annotation'], "Meta", ['role' => 'annotation'],['role' => 'annotationText'], ['role' => 'annotationText']]
 				],
 				"nortehfc" => [
 					"campos" => ['hfc_nor', 'meta'],
@@ -495,7 +495,7 @@ class Dashboard_operaciones extends CI_Controller {
 					$columnas_dotacion = [
 						"mes", "anio", "n_mes", "promedio_sur", "promedio_norte",
 						"total_operativo", "fte_sur", "fte_norte", "total_mov_fte",
-						"acc", "claro"
+						"acc", "claro","promedio_claro"
 					];
 			
 					$mes = '';
