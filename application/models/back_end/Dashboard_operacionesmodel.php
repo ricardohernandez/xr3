@@ -166,7 +166,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 		}
 		
 
-		public function getDataDotacion($mes_inicio,$mes_termino) {
+		public function getDataDotacion($mes_inicio,$mes_termino,$tipo) {
 			if($mes_inicio!=""){
 				$this->db->where('fecha >=', date('Y-m-01', strtotime($mes_inicio)));
 				$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
@@ -176,46 +176,140 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 			$res = $this->db->get('dashboard_dotacion');
 			$array = [];
-			$cabeceras = ["mes", 
-				"Promedio Sur", ['role' => 'annotation'], 
-				"Promedio Norte", ['role' => 'annotation'], 
-				"Claro", ['role' => 'annotation'], 
-				"FTE Sur", ['role' => 'annotation'], 
-				"Total Operativo", ['role' => 'annotation'], 
-				"FTE Norte", ['role' => 'annotation'], 
-				"Total Mov FTE", ['role' => 'annotation'], 
-				"ACC", ['role' => 'annotation'], 
-				['role' => 'annotationText']];
 
+			if($tipo!=""){
+
+				if($tipo=="norte"){
+
+					$cabeceras = [
+						"mes",
+						"Promedio Norte", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+					];
+
+				}elseif($tipo=="sur"){
+
+					$cabeceras = [
+						"mes",
+						"Promedio Sur", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+					];
+
+				}elseif($tipo=="fte"){
+
+					$cabeceras = [
+						"mes",
+						"FTE Sur", ['role' => 'annotation'], 
+						"FTE Norte", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+					];
+
+				}
+
+			}else{
+
+				$cabeceras = ["mes", 
+					"Promedio Sur", ['role' => 'annotation'], 
+					"Promedio Norte", ['role' => 'annotation'], 
+					"Claro", ['role' => 'annotation'], 
+					"FTE Sur", ['role' => 'annotation'], 
+					"Total Operativo", ['role' => 'annotation'], 
+					"FTE Norte", ['role' => 'annotation'], 
+					"Total Mov FTE", ['role' => 'annotation'], 
+					"ACC", ['role' => 'annotation'], 
+					['role' => 'annotationText']];
+			} 
+
+			/* $cabeceras = ["mes", 
+					"Promedio Sur", ['role' => 'annotation'], 
+					"Promedio Norte", ['role' => 'annotation'], 
+					"Claro", ['role' => 'annotation'], 
+					"FTE Sur", ['role' => 'annotation'], 
+					"Total Operativo", ['role' => 'annotation'], 
+					"FTE Norte", ['role' => 'annotation'], 
+					"Total Mov FTE", ['role' => 'annotation'], 
+					"ACC", ['role' => 'annotation'], 
+					['role' => 'annotationText']];
+ 			*/
 			$array[] = $cabeceras;
 
 			foreach ($res->result_array() as $key) {
 				$temp = [];
 				$temp[] = mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
 				
-				$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
-				$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
-				$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
-				$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
-				$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
-				$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
-								
-				$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
-				$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
+				if($tipo!=""){
 
-				$temp[] = ($key["total_operativo"] != 0) ? (float)$key["total_operativo"] : 0;
-				$temp[] = ($key["total_operativo"] != 0) ? (float)$key["total_operativo"] : 0;
+					if($tipo=="norte"){
+						
+						$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
+						$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
+					
+						/* $temp[] = 0;
+						$temp[] = 0;
 
-				$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
-				$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
+						$temp[] = 0;
+						$temp[] = 0;
+
+						$temp[] = 0;
+						$temp[] = 0;
+
+						$temp[] = 0;
+						$temp[] = 0;
+
+						$temp[] = 0;
+						$temp[] = 0;
+
+						$temp[] = 0;
+						$temp[] = 0;
+
+						$temp[] = 0;
+						$temp[] = 0;
+ */
 
 
-				$temp[] = ($key["total_mov_fte"] != 0) ? (float)$key["total_mov_fte"] : 0;
-				$temp[] = ($key["total_mov_fte"] != 0) ? (float)$key["total_mov_fte"] : 0;
+					}elseif($tipo=="sur"){
+	
+						$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
+						$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
+	
+					}elseif($tipo=="fte"){
+	
+						$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
+						$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
 
-				$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
-				$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
+						$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
+						$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
+					}
+	
+				}else{
+					
+					$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
+					$temp[] = ($key["promedio_sur"] != 0) ? (float)$key["promedio_sur"] : 0;
+
+					$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
+					$temp[] = ($key["promedio_norte"] != 0) ? (float)$key["promedio_norte"] : 0;
+					
+					$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
+					$temp[] = ($key["claro"] != 0) ? (float)$key["claro"] : 0;
+									
+					$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
+					$temp[] = ($key["fte_sur"] != 0) ? (float)$key["fte_sur"] : 0;
+
+					$temp[] = ($key["total_operativo"] != 0) ? (float)$key["total_operativo"] : 0;
+					$temp[] = ($key["total_operativo"] != 0) ? (float)$key["total_operativo"] : 0;
+
+					$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
+					$temp[] = ($key["fte_norte"] != 0) ? (float)$key["fte_norte"] : 0;
+
+
+					$temp[] = ($key["total_mov_fte"] != 0) ? (float)$key["total_mov_fte"] : 0;
+					$temp[] = ($key["total_mov_fte"] != 0) ? (float)$key["total_mov_fte"] : 0;
+
+					$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
+					$temp[] = ($key["acc"] != 0) ? (float)$key["acc"] : 0;
 				
+				} 
+
 				$temp[] = strtotime($key["fecha"]);
 				$array[] = $temp;
 			}
@@ -404,7 +498,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $array;
 		} 
 
-		public function getDataProductividadComuna($mes_inicio,$mes_termino,$zona,$comuna,$tecnologia){
+		public function getDataProductividadComuna($mes_inicio,$mes_termino,$zona,$comuna,$tecnologia,$empresa){
 			$this->db->where('fecha >=', $mes_inicio."-01");
 			$this->db->where('fecha <=', date('Y-m-t', strtotime($mes_termino)));
 
@@ -419,7 +513,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 			if($tecnologia!=""){
 				$this->db->where('tecnologia', $tecnologia);
 			}
-			
+
+		 
 			$this->db->order_by('comuna', 'asc');
 			$this->db->order_by('fecha', 'asc');
 			
@@ -427,21 +522,48 @@ class Dashboard_operacionesmodel extends CI_Model {
 			
 			$array = [];
 
-			$cabeceras = [
-				"comuna",
-				"XR3",['role' => 'annotation'],
-				"EMETEL",['role' => 'annotation']
-			];
+			if($empresa!=""){
+				if($empresa=="xr3"){
+					$cabeceras = [
+						"comuna",
+						"EMETEL",['role' => 'annotation']
+					];
+				}elseif($empresa=="emetel"){
+					$cabeceras = [
+						"comuna",
+						"EMETEL",['role' => 'annotation']
+					];
+				}
+			}else{
 
+				$cabeceras = [
+					"comuna",
+					"XR3",['role' => 'annotation'],
+					"EMETEL",['role' => 'annotation']
+				];
+			} 
+
+			
 			$array[] = $cabeceras;
 
 			foreach ($res->result_array() as $key) {
 				$temp = [];
 				$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-				$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
-				$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
-				$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
-				$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+
+				if($empresa!=""){
+					if($empresa=="xr3"){
+						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+					}elseif($empresa=="emetel"){
+						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+					}
+				}else{
+					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+				}
 			  
 				$array[] = $temp;
 			  }

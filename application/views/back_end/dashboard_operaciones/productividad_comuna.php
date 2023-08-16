@@ -30,6 +30,7 @@
     const comuna = $("#comuna_x_comuna").val()
     const tecnologia = $("#tecnologia_x_comuna").val()
     const zona = $("#zona_x_comuna").val()
+    const empresa = $("#empresa").val()
     
     $.ajax({
         url: base_url+'graficoXComuna',
@@ -39,7 +40,8 @@
           'mes_termino': mes_termino,
           'comuna': comuna,
           'zona': zona,
-          'tecnologia': tecnologia
+          'tecnologia': tecnologia,
+          'empresa': empresa
         },
         dataType: "json",
         beforeSend:function(){
@@ -51,7 +53,6 @@
           $(".body").fadeIn(500)
 
           if(response.res=="error"){
-
               $.notify(response.msg, {
                   className:response.res,
                   globalPosition: 'top center',
@@ -60,7 +61,8 @@
               $("#graficoXComuna").html('<p class="no_data_found">Sin datos encontrados</p>')
 
           }else{
-            crearGrafico('prod_comuna', response.prod_comuna, 'column','XR3 y EMETEL');
+            const empresa = $("#empresa").val();
+            crearGrafico('prod_comuna', response.prod_comuna, 'column', empresa === "xr3" ? "XR3" : (empresa === "emetel" ? "EMETEL" : "XR3 y EMETEL"));
           }
         
         },
@@ -191,7 +193,7 @@
     chart.draw(data, options);
   }
 
-  $(document).off('change', '#mes_inicio_x_comuna, #mes_termino_x_comuna, #comuna_x_comuna, #zona_x_comuna, #tecnologia_x_comuna').on('change', '#mes_inicio_x_comuna, #mes_termino_x_comuna, #comuna_x_comuna, #zona_x_comuna, #tecnologia_x_comuna', function (event) {
+  $(document).off('change', '#mes_inicio_x_comuna, #mes_termino_x_comuna, #comuna_x_comuna, #zona_x_comuna, #tecnologia_x_comuna, #empresa').on('change', '#mes_inicio_x_comuna, #mes_termino_x_comuna, #comuna_x_comuna, #zona_x_comuna, #tecnologia_x_comuna, #empresa', function (event) {
     cargarGrafico();
   });
 
@@ -256,6 +258,16 @@
           <?php
         }
       ?>
+    </select>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-2">
+    <div class="form-group">
+    <select id="empresa" name="empresa" class="custom-select custom-select-sm">
+      <option value="" selected>Seleccione empresa</option>
+      <option value="xr3">XR3</option>
+      <option value="emetel">EMETEL</option>
     </select>
     </div>
   </div>

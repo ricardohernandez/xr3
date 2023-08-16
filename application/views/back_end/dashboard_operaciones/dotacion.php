@@ -15,13 +15,15 @@
   function cargarGraficoDotacion () {
   var mes_inicio_dot = $("#mes_inicio_dot").val();
   var mes_termino_dot = $("#mes_termino_dot").val();
+  var tipo_dot = $("#tipo_dot").val();
 
   $.ajax({
       url: base_url+'graficoDotacion',
       type: 'POST',
       data: {
           'mes_inicio_dot': mes_inicio_dot,
-          'mes_termino_dot': mes_termino_dot
+          'mes_termino_dot': mes_termino_dot,
+          'tipo': tipo_dot
       },
       dataType: "json",
       beforeSend:function(){
@@ -40,10 +42,11 @@
   }
  
   function crearGraficoDotacion(data) {
-    console.log(data)
-     
+    var numTotalColumnas = data[0].length; // Obtener el número total de columnas
     var data = google.visualization.arrayToDataTable(data);
-    data.sort([{ column: 17, desc: false }]);
+
+
+    data.sort([{ column: numTotalColumnas-1, desc: false }]);
 
     const options = {
       fontName: 'ubuntu',
@@ -339,7 +342,7 @@
    
   }
 
-  $(document).off('change', '#mes_inicio_dot,#mes_termino_dot').on('change', '#mes_inicio_dot,#mes_termino_dot', function (event) {
+  $(document).off('change', '#mes_inicio_dot,#mes_termino_dot,#tipo_dot').on('change', '#mes_inicio_dot,#mes_termino_dot,#tipo_dot', function (event) {
     cargarGraficoDotacion ();
   });
 
@@ -349,7 +352,7 @@
 <!-- FILTROS -->
   
 <div class="form-row">
-    <?php
+  <?php
     if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
         ?>
         <div class="col-6 col-lg-1">  
@@ -359,7 +362,7 @@
         </div>
         <?php
     }
-    ?>
+  ?>
 
   <div class="col-12 col-lg-3">
     <div class="form-group">
@@ -370,6 +373,17 @@
         <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_dot" id="mes_inicio_dot">
         <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_dot" id="mes_termino_dot">
       </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-2">
+    <div class="form-group">
+    <select id="tipo_dot" name="tipo_dot" class="custom-select custom-select-sm">
+      <option value="" selected>Seleccione tipo | Todos</option>
+      <option value="norte">Norte</option>
+      <option value="sur">Sur</option>
+      <option value="fte">FTE</option>
+    </select>
     </div>
   </div>
 

@@ -222,7 +222,8 @@ class Dashboard_operaciones extends CI_Controller {
 		public function graficoDotacion(){
 			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio_dot")));
 			$mes_termino=$this->security->xss_clean(strip_tags($this->input->get_post("mes_termino_dot")));
-			echo json_encode($this->Dashboard_operacionesmodel->getDataDotacion($mes_inicio, $mes_termino));
+			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
+			echo json_encode($this->Dashboard_operacionesmodel->getDataDotacion($mes_inicio, $mes_termino,$tipo));
 		}
 		
 		public function analisisCalidad(){
@@ -372,14 +373,15 @@ class Dashboard_operaciones extends CI_Controller {
 			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
 			$tecnologia=$this->security->xss_clean(strip_tags($this->input->get_post("tecnologia")));
-
+			$empresa=$this->security->xss_clean(strip_tags($this->input->get_post("empresa")));
+			
 			$meses_diferencia = abs((strtotime($mes_termino) - strtotime($mes_inicio)) / (30 * 24 * 60 * 60));
 
 			if($meses_diferencia <= 3 ){
 
 				echo json_encode(array(
 					'res' => "ok",
-					'prod_comuna' => $this->Dashboard_operacionesmodel->getDataProductividadComuna($mes_inicio,$mes_termino,$zona,$comuna,$tecnologia)
+					'prod_comuna' => $this->Dashboard_operacionesmodel->getDataProductividadComuna($mes_inicio,$mes_termino,$zona,$comuna,$tecnologia,$empresa)
 				));
 
 			}else{
