@@ -221,7 +221,7 @@ class Igt extends CI_Controller {
 
 		$rut=str_replace('-', '', $trabajador);
         $id_tecnico = $this->Igtmodel->getIdTecnico($rut);
-
+		
    		$array_data = array();
 
 		/***********PRODUCTIVIDAD PROM FTTH *********************/

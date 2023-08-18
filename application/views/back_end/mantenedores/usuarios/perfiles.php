@@ -242,13 +242,19 @@
 <!-- FILTROS -->
   
     <div class="form-row">
-
+      <?php  
+        if($this->session->userdata('id_perfil')==1){
+      ?>
         <div class="col-6 col-lg-1">  
-	        <div class="form-group">
-	           <button type="button" class="btn btn-block btn-sm btn-primary btn_nueva_perfil btn_xr3">
-	           <i class="fa fa-plus-circle"></i>  Crear 
-	           </button>
-	        </div>
+          <div class="form-group">
+              <button type="button" class="btn btn-block btn-sm btn-primary btn_nueva_perfil btn_xr3">
+              <i class="fa fa-plus-circle"></i>  Crear 
+              </button>
+          </div>
+
+      <?php
+        }
+      ?>
 		</div>
 
 	    <div class="col-6  col-lg-4">  
