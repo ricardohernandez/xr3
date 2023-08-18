@@ -814,7 +814,39 @@ class Igtmodel extends CI_Model {
 		return FALSE;
 	}
 
-	
+	public function listaDetalle($desde,$hasta,$trabajador,$jefe){
+
+		$this->db->select("sha1(p.id) as hash,
+			p.*,
+			TRIM(puntaje)+0 as puntaje,
+			CONCAT(u.nombres,' ',u.apellidos) as 'tecnico',
+			if(p.fecha!='0000-00-00', DATE_FORMAT(p.fecha,'%Y-%m-%d'),'') as 'fecha'
+		");
+
+
+		if($desde!="" and $hasta!=""){
+			$this->db->where("p.fecha BETWEEN '".$desde."' AND '".$hasta."'");	
+		}
+
+		if($trabajador!=""){
+			$this->db->where('u.rut', $trabajador);
+		}
+
+
+		if($jefe!=""){
+			$this->db->where('u.id_jefe', $jefe);
+		}
+
+		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
+		$this->db->order_by('p.fecha', 'desc');
+		$res=$this->db->get('productividad p');
+		/* echo $this->db->last_query(); */
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
+
 
 	public function listaDetalleOtsDrive($desde,$hasta,$trabajador,$jefe){
 		$this->db->select("sha1(p.id) as hash,
@@ -838,7 +870,7 @@ class Igtmodel extends CI_Model {
 			$this->db->where('u.id_jefe', $jefe);
 		}
 
-		$this->db->where('estado_ot', "DRIVE NO DETECTA REGISTRO");
+		$this->db->like('estado_ot', 'NO DETECTA');
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 		$this->db->order_by('p.fecha', 'desc');
 		$res=$this->db->get('productividad p');

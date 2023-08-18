@@ -517,7 +517,7 @@
               <select id="periodo" name="periodo" class="custom-select custom-select-sm">
                 <option value="actual" selected>Actual - <?php echo $mes_actual ?> </option>
                 <option value="anterior">Anterior - <?php echo $mes_anterior?> </option>
-                <option value="anterior2">Anterior 2- <?php echo $mes_anterior2?> </option>
+               <!--  <option value="anterior2">Anterior 2- <?php echo $mes_anterior2?> </option> -->
              </select>
           </div>
         </div>
@@ -586,7 +586,7 @@
            <div class="col-6 col-lg-3">  
               <div class="form-group">
                 <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
-                    <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+                    <option selected value="<?php echo $this->session->userdata('id'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
                 </select>
               </div>
             </div>

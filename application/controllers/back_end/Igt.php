@@ -608,7 +608,7 @@ class Igt extends CI_Controller {
 
 	/*******PRODUCTIVIDAD***/
 
-		public function listaDetalle(){
+		public function listaDetalleIgt(){
 			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
@@ -633,11 +633,11 @@ class Igt extends CI_Controller {
 				}
 			}
 
-			echo json_encode($this->Productividadmodel->listaDetalle($desde,$hasta,$trabajador,$jefe));
+			echo json_encode($this->Igtmodel->listaDetalle($desde,$hasta,$trabajador,$jefe));
 
 		}	
 
-		public function excel_detalle(){
+		public function excel_detalle_prod_igt(){
 			$periodo=$this->uri->segment(2);
 			$trabajador=$this->uri->segment(3);
 			$jefe=$this->uri->segment(4);
@@ -651,6 +651,7 @@ class Igt extends CI_Controller {
 			}
 
 			if(date("d")>"24"){
+
 				if($periodo=="actual"){
 					$desde = date('Y-m-d', strtotime(date('Y-m-25')));
 					$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
@@ -658,7 +659,7 @@ class Igt extends CI_Controller {
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
 				}
-				
+
 			}else{
 				if($periodo=="actual"){
 					$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
@@ -670,7 +671,7 @@ class Igt extends CI_Controller {
 			}
 
 
-			$data=$this->Productividadmodel->listaDetalle($desde,$hasta,$trabajador,$jefe);
+			$data=$this->Igtmodel->listaDetalle($desde,$hasta,$trabajador,$jefe);
 
 			if(!$data){
 				echo "Sin datos disponibles.";

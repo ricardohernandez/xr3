@@ -351,7 +351,7 @@
    <div class="col-6 col-lg-3">
       <div class="form-group">
          <select id="trabajador_g" name="trabajador_g" class="custom-select custom-select-sm" >
-            <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
+            <option selected value="<?php echo $this->session->userdata('id'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
          </select>
       </div>
    </div>

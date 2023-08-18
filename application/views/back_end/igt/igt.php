@@ -118,7 +118,7 @@
       if(perfil==4){
         $("#trabajadores").select2().val(r).trigger("change");
       }else{
-        $("#trabajadores").select2().val("123053206").trigger("change");
+        $("#trabajadores").select2().val("08352622K").trigger("change");
         /*$("#trabajadores").select2().val("8352622K").trigger("change");*/
       }
 
@@ -1185,7 +1185,7 @@
        "select" : true,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
-          "url":"<?php echo base_url();?>listaDetalle",
+          "url":"<?php echo base_url();?>listaDetalleIgt",
           "dataSrc": function (json) {
 
             var desde_actual="<?php echo $desde_actual_prod; ?>"
@@ -1287,7 +1287,7 @@
         }
 
         // window.location="excel_detalle/"+desde+"/"+hasta+"/"+trabajador;
-        window.location="excel_detalle/"+periodo+"/"+trabajador+"/-";
+        window.location="excel_detalle_prod_igt/"+periodo+"/"+trabajador+"/-";
 
       });
 
