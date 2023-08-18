@@ -216,6 +216,7 @@ class Ropmodel extends CI_Model {
 		public function getRopListVencidas(){
 			$this->db->select('r.*,
 			sha1(r.id) as hash,
+			r.id as id_rop,
 			CONCAT(LEFT(us.nombres, 1), ". ", SUBSTRING_INDEX(us.apellidos, " ", 1)) AS usuario_asignado,
 			CONCAT(LEFT(us2.nombres, 1), ". ", SUBSTRING_INDEX(us2.apellidos, " ", 1)) AS validador_real,
 			CONCAT(LEFT(us3.nombres, 1), ". ", SUBSTRING_INDEX(us3.apellidos, " ", 1)) AS solicitante,

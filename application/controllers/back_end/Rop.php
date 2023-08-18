@@ -395,7 +395,7 @@ class Rop extends CI_Controller {
 
 					$this->email->initialize($config);
 
-					$asunto = "Escalamiento por vencimiento de plazo solicitud SYR N° " . $key["id_rop"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ";
+					$asunto = "Escalamiento por vencimiento de plazo solicitud SYR N° ".$key["id_rop"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ";
 					$cuerpo = "Le informamos que se la solicitud SYR N° " . $key["id_rop"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ha superado el tiempo predefinido para responder y finalizar por parte del responsable primario de la actividad, por lo que el sistema automáticamente le está reasignando la respuesta a usted como escalamiento superior predefinido. El detalle es el siguiente.";
 					$cuerpo2 = "Para contestar, puede ingresar al siguiente enlace con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl", "Solicitudes y requerimientos plataforma XR3");
@@ -408,7 +408,7 @@ class Rop extends CI_Controller {
 					$copias[] = "roberto.segovia@xr3.cl";
 
 					if ($prueba) {
-						$para = array("ricardo.hernandez@splice.cl","roberto.segovia@xr3.cl","german.cortes@km-telecomunicaciones.cl");
+						$para = array("ricardo.hernandez@splice.cl");
 						$copias = array("ricardo.hernandez@km-t.cl");
 					}
 
