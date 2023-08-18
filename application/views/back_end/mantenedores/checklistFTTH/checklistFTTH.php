@@ -51,7 +51,7 @@
 <script type="text/javascript">
   $(function(){
 
-    const perfil="<?php echo $this->session->userdata('perfil'); ?>";
+    const perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const base = "<?php echo base_url() ?>";
 
     $(document).off('keydown', '.numbersOnly').on('keydown', '.numbersOnly',function(e) {

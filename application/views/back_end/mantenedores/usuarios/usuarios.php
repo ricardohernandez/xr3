@@ -21,7 +21,7 @@
 <script type="text/javascript">
   $(function(){
 
-    const perfil="<?php echo $this->session->userdata('perfil'); ?>";
+    const perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const base = "<?php echo base_url() ?>";
 
     $('#rut').Rut({
@@ -135,7 +135,7 @@
            "class":"centered center margen-td","data": function(row,type,val,meta){
               btn='<center><a data-toggle="modal" href="#modal_usuario" data-hash_usuario="'+row.hash_usuario+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar_usuario"></a>';
               
-              if(perfil<=1){
+              if(perfil==1 || perfil==2){
                 btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_usuario" data-hash_usuario="'+row.hash_usuario+'"></a></center>';
               }
               
