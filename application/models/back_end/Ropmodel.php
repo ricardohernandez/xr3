@@ -18,6 +18,7 @@ class Ropmodel extends CI_Model {
 		public function getRopList($desde,$hasta,$estado,$responsable){
 			$this->db->select('r.*,
 				sha1(r.id) as hash,
+				r.id as id_rop,
 				CONCAT(LEFT(us.nombres, 1), ". ", SUBSTRING_INDEX(us.apellidos, " ", 1)) AS usuario_asignado,
 				CONCAT(LEFT(us2.nombres, 1), ". ", SUBSTRING_INDEX(us2.apellidos, " ", 1)) AS validador_real,
 				CONCAT(LEFT(us3.nombres, 1), ". ", SUBSTRING_INDEX(us3.apellidos, " ", 1)) AS solicitante,
@@ -127,6 +128,7 @@ class Ropmodel extends CI_Model {
 
 		public function getDataRop($hash){
 			$this->db->select('r.*,
+			r.id as id_rop,
 			sha1(r.id) as hash,
 				CONCAT(us.nombres," " ,us.apellidos) as usuario_asignado,
 				CONCAT(us2.nombres," ",us2.apellidos) as validador_real,

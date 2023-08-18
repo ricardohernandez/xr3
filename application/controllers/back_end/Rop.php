@@ -274,8 +274,8 @@ class Rop extends CI_Controller {
 				$this->email->initialize($config);
 
 				if($tipo==0){ //NUEVO
-					$asunto = "Solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
-					$cuerpo = "Le informamos que se ha ingresado la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
+					$asunto = "Solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
+					$cuerpo = "Le informamos que se ha ingresado la solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
 					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en  ".$key["horas_estimadas"]." hrs aprox, terminado dicho plazo la solicitud sera escalada al responsable superior predefinido por su organización.<br> 
 					Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
@@ -286,8 +286,8 @@ class Rop extends CI_Controller {
 				}
 
 				if($tipo==1){ //ASIGNADO
-					$asunto = "Asignación solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
-					$cuerpo = "Le informamos que se ha asignado la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
+					$asunto = "Asignación solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
+					$cuerpo = "Le informamos que se ha asignado la solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] con el siguiente detalle.";
 					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en  ".$key["horas_estimadas"]." hrs aprox, terminado dicho día la solciitud sera escalada al responsable superior predefinido por su organización.<br> 
 					Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
@@ -299,8 +299,8 @@ class Rop extends CI_Controller {
 				}
 
 				if($tipo==2){//FINALIZAR
-					$asunto = "Finalización solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
-					$cuerpo = "Le informamos que se la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ha sido finalizada.";
+					$asunto = "Finalización solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
+					$cuerpo = "Le informamos que se la solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ha sido finalizada.";
 					$cuerpo2 = "Para más detalles puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
@@ -311,8 +311,8 @@ class Rop extends CI_Controller {
 				}
 
 				if($tipo==3){//CANCELADA
-					$asunto = "Cancelación solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
-					$cuerpo = "Le informamos que se la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ha sido cancelada.";
+					$asunto = "Cancelación solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
+					$cuerpo = "Le informamos que se la solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ha sido cancelada.";
 					$cuerpo2 = "Para más detalles puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
@@ -323,8 +323,8 @@ class Rop extends CI_Controller {
 				}
 
 				if($tipo==4){//VALIDAR
-					$asunto = "Validación previa solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
-					$cuerpo = "Le informamos que se la solicitud SYR N°".$key["id"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ya cuenta con la validación requerida por su organización por lo que ahora comienza el plazo de  ".$key["horas_estimadas"]."  horas para su finalización.";
+					$asunto = "Validación previa solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ";
+					$cuerpo = "Le informamos que se la solicitud SYR N°".$key["id_rop"]." [".$key["tipo"]." |  ".$key["requerimiento"]."] ya cuenta con la validación requerida por su organización por lo que ahora comienza el plazo de  ".$key["horas_estimadas"]."  horas para su finalización.";
 					$cuerpo2 = "Para más detalles puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
 
@@ -395,8 +395,8 @@ class Rop extends CI_Controller {
 
 					$this->email->initialize($config);
 
-					$asunto = "Escalamiento por vencimiento de plazo solicitud SYR N° " . $key["id"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ";
-					$cuerpo = "Le informamos que se la solicitud SYR N° " . $key["id"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ha superado el tiempo predefinido para responder y finalizar por parte del responsable primario de la actividad, por lo que el sistema automáticamente le está reasignando la respuesta a usted como escalamiento superior predefinido. El detalle es el siguiente.";
+					$asunto = "Escalamiento por vencimiento de plazo solicitud SYR N° " . $key["id_rop"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ";
+					$cuerpo = "Le informamos que se la solicitud SYR N° " . $key["id_rop"] . " [" . $key["tipo"] . " |  " . $key["requerimiento"] . "] ha superado el tiempo predefinido para responder y finalizar por parte del responsable primario de la actividad, por lo que el sistema automáticamente le está reasignando la respuesta a usted como escalamiento superior predefinido. El detalle es el siguiente.";
 					$cuerpo2 = "Para contestar, puede ingresar al siguiente enlace con previo ingreso de sus credenciales de seguridad.";
 					$this->email->from("syr@xr3t.cl", "Solicitudes y requerimientos plataforma XR3");
 

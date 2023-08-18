@@ -89,7 +89,7 @@
                 return btn;
               }
             },
-            { "data": "id" ,"class":"margen-td centered"},
+            { "data": "id_rop" ,"class":"margen-td centered"},
 
             {
               "class":"centered margen-td","data": function(row,type,val,meta){
@@ -218,7 +218,33 @@
         $(".requiere_validar_cont").hide()
         $(".finalizado_cont").hide()
         $('#checkcorreo').prop('checked', true);
-        
+
+        $.getJSON(base + "listaRequerimientos" , {tipo: ""},function(data) {
+          response = data;
+         
+        }).done(function() {
+            if(response!=""){
+              $("#requerimiento").empty().select2('destroy');
+
+              var init = $('<option>', {
+                  value: '',
+                  text: 'Seleccione Requerimiento | Todos'
+              });
+
+              $('#requerimiento').append(init);
+
+              $("#requerimiento").select2({
+                placeholder: 'Seleccione requerimiento',
+                data: response,
+                width: '100%',
+                allowClear:true,
+              });
+            }else{
+              $("#requerimiento").empty()
+              $('#requerimiento').val("").trigger('change');
+            }
+        });
+          
     });
 
     $(document).off('submit', '#formRop').on('submit', '#formRop',function(event) {
@@ -335,7 +361,7 @@
               for(dato in data.datos){
 
                   $("#hash_rop").val(data.datos[dato].hash);
-                  $("#id_rop").val(data.datos[dato].id);
+                  $("#id_rop").val(data.datos[dato].id_rop);
                   $("#titulo").val(data.datos[dato].titulo);
                   $("#descripcion").val(data.datos[dato].descripcion);
                   $("#tipo option[value='"+data.datos[dato].id_tipo+"'").prop("selected", true);
@@ -380,7 +406,7 @@
                   }).done(function() {
 
                       $("#requerimiento").empty().select2('destroy');
-
+                      
                       $("#requerimiento").select2({
                         placeholder: 'Seleccione requerimiento',
                         data: response,
@@ -468,6 +494,14 @@
       }).done(function() {
           if(response!=""){
             $("#requerimiento").empty().select2('destroy');
+
+            var init = $('<option>', {
+                value: '',
+                text: 'Seleccione Requerimiento | Todos'
+            });
+
+            $('#requerimiento').append(init);
+
             $("#requerimiento").select2({
               placeholder: 'Seleccione requerimiento',
               data: response,
