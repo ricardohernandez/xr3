@@ -864,7 +864,7 @@ class Calidadmodel extends CI_Model {
 			foreach($res->result_array() as $key){
 				$temp=array();
 				$temp["id"]=$key["rut"];
-				$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_corto"];
+				$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_completo"];
 				$array[]=$temp;
 			}
 			return json_encode($array);

@@ -30,7 +30,7 @@ class Productividadmodel extends CI_Model {
 			}
 
 			if($trabajador!=""){
-				$this->db->where('p.rut_tecnico', $trabajador);
+				$this->db->where('u.id', $trabajador);
 			}
 
 
@@ -749,7 +749,7 @@ class Productividadmodel extends CI_Model {
 				WHERE
 					(u.id_nivel_tecnico <> '' AND u.id_nivel_tecnico <> '5')
 					AND (u.id_jefe = '$jefe' OR '$jefe' = '')
-					AND (u.rut = '$trabajador' OR '$trabajador' = '')
+					AND (u.id = '$trabajador' OR '$trabajador' = '')
 				GROUP BY
 					u.rut, a.area, u.nombres, u.apellidos
 				HAVING

@@ -37,7 +37,7 @@
 		var mes = $("#mes").val();
 		var jefe = $("#jefe").val();
 		var proyecto = $("#proyecto").val();
-		var trabajador = perfil <= 3 ? $("#trabajadores").val() : $("#trabajador").val();
+		var trabajador = perfil <= 3 ? $("#trabajadores_g").val() : $("#trabajador_g").val();
 
 		$.ajax({
 			url: base_url+'graficosProductividad',
@@ -174,9 +174,9 @@
 					param.proyecto = $("#proyecto").val();
 
 					if (perfil == 4) {
-						param.trabajador = $("#trabajador").val();
+						param.trabajador = $("#trabajador_g").val();
 					} else {
-						param.trabajador = $("#trabajadores").val();
+						param.trabajador = $("#trabajadores_g").val();
 					}
 				}
 			},
@@ -224,7 +224,7 @@
 		$.getJSON(base_url + "listaTrabajadoresProd", function(data) {
 			response = data;
 		}).done(function() {
-			$("#trabajadores").select2({
+			$("#trabajadores_g").select2({
 				placeholder: 'Seleccione Trabajador | Todos',
 				data: response,
 				width: 'resolve',
@@ -279,7 +279,7 @@
 			});
 		}
 
-		$(document).off('change', '#mes,#jefe,#trabajadores,#proyecto').on('change', '#mes,#jefe,#trabajadores,#proyecto', function (event) {
+		$(document).off('change', '#mes,#jefe,#trabajadores_g,#proyecto').on('change', '#mes,#jefe,#trabajadores_g,#proyecto', function (event) {
 			tabla_resumen_productividad.ajax.reload()
 			cargarGraficos()
 		});
@@ -340,7 +340,7 @@
       ?>
    <div class="col-6 col-lg-3">
       <div class="form-group">
-         <select id="trabajadores" name="trabajadores" style="width:100%!important;">
+         <select id="trabajadores_g" name="trabajadores_g" style="width:100%!important;">
             <option value="">Seleccione Trabajador | Todos</option>
          </select>
       </div>
@@ -350,7 +350,7 @@
       ?>
    <div class="col-6 col-lg-3">
       <div class="form-group">
-         <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
+         <select id="trabajador_g" name="trabajador_g" class="custom-select custom-select-sm" >
             <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
          </select>
       </div>

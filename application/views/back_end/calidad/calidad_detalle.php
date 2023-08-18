@@ -63,9 +63,9 @@
             param.jefe = $("#jefe_det").val();
 
             if(perfil==4){
-              param.trabajador = $("#trabajador").val();
+              param.trabajador = $("#trabajador_cal_det").val();
             }else{
-              param.trabajador = $("#trabajadores").val();
+              param.trabajador = $("#trabajadores_cal_det").val();
             }
           }
         },    
@@ -288,9 +288,9 @@
       event.preventDefault();
 
       if(perfil<=3){
-        trabajador = $("#trabajadores").val()
+        trabajador = $("#trabajadores_cal_det").val()
       }else{
-        trabajador = $("#trabajador").val();
+        trabajador = $("#trabajador_cal_det").val();
       }
 
       var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
@@ -307,7 +307,7 @@
     $.getJSON(base + "listaTrabajadoresCalidad", { jefe : $("#jefe_det").val() } , function(data) {
       response = data;
     }).done(function() {
-        $("#trabajadores").select2({
+        $("#trabajadores_cal_det").select2({
          placeholder: 'Seleccione Trabajador | Todos',
          data: response,
          width: 'resolve',
@@ -442,7 +442,7 @@
     }); 
 
 
-    $(document).off('change', '#periodo_detalle , #jefe_det').on('change', '#periodo_detalle , #jefe_det', function(event) {
+    $(document).off('change', '#periodo_detalle , #jefe_det,#trabajadores_cal_det').on('change', '#periodo_detalle , #jefe_det,#trabajadores_cal_det', function(event) {
       lista_detalle_calidad.ajax.reload()
     }); 
       
@@ -534,7 +534,7 @@
           ?>
             <div class="col-6  col-lg-2">  
               <div class="form-group">
-                <select id="trabajadores" name="trabajadores" style="width:100%!important;">
+                <select id="trabajadores_cal_det" name="trabajadores_cal_det" style="width:100%!important;">
                     <option value="">Seleccione Trabajador | Todos</option>
                 </select>
               </div>
@@ -544,7 +544,7 @@
         ?>
            <div class="col-6  col-lg-2">  
               <div class="form-group">
-                <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
+                <select id="trabajador_cal_det" name="trabajador_cal_det" class="custom-select custom-select-sm" >
                     <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
                 </select>
               </div>
