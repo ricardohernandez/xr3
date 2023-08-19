@@ -96,6 +96,8 @@
   .body{
     display: none;
   }
+
+
 </style>
 
 <script type="text/javascript">
@@ -635,7 +637,7 @@
               var options = {
                 isStacked: true,
                 width: "100%",
-                height: 280,
+                height: 330,
                 is3D:true,
                 colors:["#2f81f7","#DC3912"],
                 fontName: 'ubuntu',
@@ -776,7 +778,7 @@
 
             }else{
               $(".graficoHFC").show()
-              $("#graficoHFC").html("<span class='title_section'>No aplica</span>").show()
+              $("#graficoHFC").html("<span class='title_section p-3'>No aplica</span>").show()
             }
 
           // CALIDAD FTTH
@@ -792,7 +794,7 @@
               var options = {
                 isStacked: true,
                 width: "100%",
-                height: 270,
+                height: 330,
                 is3D:true,
                 colors:["#1A56DB","#DC3912"],
                 fontName: 'ubuntu',
@@ -933,7 +935,7 @@
 
             }else{
               $(".graficoFTTH").show()
-              $("#graficoFTTH").html("<span class='title_section'>No aplica</span>").show()
+              $("#graficoFTTH").html("<span class='title_section p-3'>No aplica</span>").show()
             }
 
           // PRODUCTIVIDAD DIARIO
@@ -948,7 +950,7 @@
               var options = {
                 title: '',
                 width: "100%",
-                height: 310,
+                height: 335,
                 is3D:true,
                 colors:["#1A56DB"],
                 fontName: 'ubuntu',
@@ -1748,8 +1750,8 @@
             <center><div id="grafico_dias_trabajados_hfc" class="gauge"></div></center>
           </div>
           <div class="card-footer card_dash">
-            <span class="meta_dias_trabajados_hfc_green" style="display: none;"></span> 
-            <span class="meta_dias_trabajados_red red2" style="display: none;"> </span> 
+            <span class="meta_dias_trabajados_hfc_green">&nbsp;</span> 
+            <!-- <span class="meta_dias_trabajados_red red2"> </span>  -->
           </div>
         </div>
       </div>
@@ -1812,7 +1814,7 @@
     </div>
  
 
-    <div class="row p-1">
+    <div class="form-row p-1">
       <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-header card_dash">
@@ -1872,15 +1874,15 @@
           <div class="form-row">
             
             <div class="col-lg-6 graficoHFC">
-              <div class="card-header card_dash">
-                <span class="title_section">Calidad HFC Últimos 6 periodos</span>
+              <div class="card-header card_dash" style="padding:10px!important;">
+                <span class="title_section">Calidad HFC Últimos 3 periodos</span>
               </div>
               <div id="graficoHFC"></div>
             </div>
 
             <div class="col-lg-6 graficoFTTH">
-              <div class="card-header card_dash">
-                <span class="title_section">Calidad FTTH Últimos 6 periodos</span>
+              <div class="card-header card_dash" style="padding:10px!important;">
+                <span class="title_section">Calidad FTTH Últimos 3 periodos</span>
               </div>
               <div id="graficoFTTH"></div>
             </div>
@@ -1890,7 +1892,7 @@
       </div>
     </div>
 
-    <div class="row p-1">
+    <div class="form-row p-1">
 
       <div class="col-12 col-lg-6">
         <div class="card">
@@ -1949,7 +1951,7 @@
         <div class="card">
           <div class="form-row">
             <div class="col-12">
-              <div class="card-header card_dash">
+              <div class="card-header card_dash" style="padding:10px!important;">
                <span class="title_section">Productividad diario</span>
               </div>
               <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
