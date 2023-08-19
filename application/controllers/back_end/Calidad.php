@@ -419,7 +419,7 @@ class Calidad extends CI_Controller {
 		
 			$cargo_jefe = ($jefe != "") ? $this->Calidadmodel->getCargoJefe($jefe) : "";
 			$data_calidad_hfc = array();
-			$periodos = array("actual", "anterior", "anterior_2", "anterior_3", "anterior_4", "anterior_5");
+			$periodos = array("actual", "anterior", "anterior_2");
 
 			foreach($periodos as $periodo){
 				$fechas = getFechasPeriodo($periodo);
@@ -446,7 +446,7 @@ class Calidad extends CI_Controller {
 		
 			$cargo_jefe = ($jefe != "") ? $this->Calidadmodel->getCargoJefe($jefe) : "";
 			$data_calidad_ftth= array();
-			$periodos = array("actual", "anterior", "anterior_2", "anterior_3", "anterior_4", "anterior_5");
+			$periodos = array("actual", "anterior", "anterior_2");
 
 			foreach($periodos as $periodo){
 				$fechas = getFechasPeriodo($periodo);

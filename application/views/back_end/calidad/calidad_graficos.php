@@ -755,7 +755,7 @@
    <?php  
       if($this->session->userdata('id_perfil')<=3){
       ?>
-   <div class="col-6 col-lg-2">
+   <div class="col-6 col-lg-3">
       <div class="form-group">
          <select id="trabajadores" name="trabajadores" style="width:100%!important;">
             <option value="">Seleccione Trabajador | Todos</option>
@@ -765,7 +765,7 @@
    <?php
       }else{
       ?>
-   <div class="col-6 col-lg-2">
+   <div class="col-6 col-lg-3">
       <div class="form-group">
          <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
             <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
