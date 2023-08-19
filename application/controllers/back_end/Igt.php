@@ -360,7 +360,7 @@ class Igt extends CI_Controller {
 				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador);
 			}
 
-			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador)!=FALSE){
+			/* if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador)!=FALSE){
 				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador);
 			}
 
@@ -370,7 +370,7 @@ class Igt extends CI_Controller {
 
 			if($this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador)!=FALSE){
 				$data_calidad_hfc[] = $this->Igtmodel->graficoHFC(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador);
-			}
+			} */
 
 
 			$cabeceras_calidad = array(
@@ -417,7 +417,7 @@ class Igt extends CI_Controller {
 				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_2")["desde_calidad"],getFechasPeriodo("anterior_2")["hasta_calidad"],$trabajador);
 			}
 
-			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador)!=FALSE){
+			/* if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador)!=FALSE){
 				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_3")["desde_calidad"],getFechasPeriodo("anterior_3")["hasta_calidad"],$trabajador);
 			}
 
@@ -427,7 +427,7 @@ class Igt extends CI_Controller {
 
 			if($this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador)!=FALSE){
 				$data_calidad_ftth[] = $this->Igtmodel->graficoFTTH(getFechasPeriodo("anterior_5")["desde_calidad"],getFechasPeriodo("anterior_5")["hasta_calidad"],$trabajador);
-			}
+			} */
 
 			$cabeceras_calidad = array(
 				"Periodo",

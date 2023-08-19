@@ -687,7 +687,7 @@
 					});
 				}
 			},
-			timeout: 5000
+			timeout: 15000
 		});
 	}
 
@@ -863,11 +863,11 @@
                </div>
                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                   <div class="short-div">
-                     <p class="section_titulo">Calidad HFC Últimos 6 periodos</p>
+                     <p class="section_titulo">Calidad HFC Últimos 3 periodos</p>
                      <div id="graficoHFC"></div>
                   </div>
                   <div class="short-div">
-                     <p class="section_titulo">Calidad FTTH Últimos 6 periodos</p>
+                     <p class="section_titulo">Calidad FTTH Últimos 3 periodos</p>
                      <div id="graficoFTTH"></div>
                   </div>
                </div>
