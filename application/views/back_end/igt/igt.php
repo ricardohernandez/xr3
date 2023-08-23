@@ -120,7 +120,7 @@
       if(perfil==4){
         $("#trabajadores").select2().val(r).trigger("change");
       }else{
-        $("#trabajadores").select2().val("08352622K").trigger("change");
+        $("#trabajadores").select2().val("13414632k").trigger("change");
         /*$("#trabajadores").select2().val("8352622K").trigger("change");*/
       }
 

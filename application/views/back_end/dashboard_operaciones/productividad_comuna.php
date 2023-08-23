@@ -106,6 +106,7 @@
       fontName: 'ubuntu',
       fontColor: '#32477C',
       backgroundColor: { fill: 'transparent' },
+      bar: { groupWidth: '90%' },
       colors: ['#12239E', '#E66C37'],
       chartArea: {
         left: 70,

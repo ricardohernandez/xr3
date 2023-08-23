@@ -554,17 +554,17 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 				if($empresa!=""){
 					if($empresa=="xr3"){
-						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
-						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
+						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
+						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
 					}elseif($empresa=="emetel"){
-						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
-						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
+						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
 					}
 				}else{
-					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
-					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : null;
-					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
-					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : null;
+					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
+					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
+					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
+					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
 				}
 			  
 				$array[] = $temp;
