@@ -44,7 +44,7 @@
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
 
       var tabla_rop = $('#tabla_rop').DataTable({
-         "aaSorting" : [[22,"desc"]],
+         "aaSorting" : [[23,"desc"]],
          "scrollY": "65vh",
          "responsive":false,
          "scrollX": true,
@@ -116,6 +116,7 @@
             },
             { "data": "estado" ,"class":"margen-td centered"},
             { "data": "solicitante" ,"class":"margen-td centered"},
+            { "data": "tecnico" ,"class":"margen-td centered"},
             { "data": "comuna" ,"class":"margen-td centered"},
             { "data": "fecha_ingreso" ,"class":"margen-td centered"},
             { "data": "hora_ingreso" ,"class":"margen-td centered"},
@@ -244,7 +245,31 @@
               $('#requerimiento').val("").trigger('change');
             }
         });
-          
+
+        $.getJSON(base + "listaPersonas" , function(data) {
+            response = data;
+        }).done(function() {
+          if(response!=""){
+            $("#tecnico").empty().select2('destroy');
+
+            var init = $('<option>', {
+                value: '',
+                text: 'Seleccione tecnico | Todos'
+            });
+
+            $('#tecnico').append(init);
+
+            $("#tecnico").select2({
+              placeholder: 'Seleccione tecnico',
+              data: response,
+              width: '100%',
+              allowClear:true,
+            });
+          }else{
+            $("#tecnico").empty()
+            $('#tecnico').val("").trigger('change');
+          }
+      });
     });
 
     $(document).off('submit', '#formRop').on('submit', '#formRop',function(event) {
@@ -367,6 +392,7 @@
                   $("#tipo option[value='"+data.datos[dato].id_tipo+"'").prop("selected", true);
                   $("#estado option[value='"+data.datos[dato].id_estado+"'").prop("selected", true);
                   $('#usuario_asignado').val(data.datos[dato].id_usuario_asignado).trigger('change');
+                  $('#tecnico').val(data.datos[dato].id_tecnico).trigger('change');
                   $("#observacion").val(data.datos[dato].observacion);
 
                   $("#fecha_ingreso").val(data.datos[dato].fecha_ingreso+" "+data.datos[dato].hora_ingreso);
@@ -537,6 +563,13 @@
 		       width: '100%',
 	         allowClear:true,
 		    });
+
+        $("#tecnico").select2({
+           placeholder: 'Seleccione técnico',
+		       data: response,
+		       width: '100%',
+	         allowClear:true,
+		    });
 	  });
 
     $.getJSON(base + "listaResponsables" , function(data) {
@@ -666,6 +699,7 @@
               <th class="centered">Arch. Resp.</th>    
               <th class="centered">Estado </th>    
               <th class="centered">Solicitante </th>    
+              <th class="centered">Técnico afectado </th>    
               <th class="centered">Comuna </th>    
               <th class="centered">Fecha Ing. </th> 
               <th class="centered">Hr.Ing. </th> 
@@ -740,8 +774,18 @@
                       <input type="file" id="adjunto_req1" name="adjunto_req1">
                     </div>
                   </div>
+
+                  <div class="col-lg-3">  
+                    <div class="form-group">
+                      <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Técnico afectado</label>
+                      <select id="tecnico" name="tecnico" style="width:100%!important;">
+                          <option value="">Seleccione técnico afectado</option>
+                      </select>
+                    </div>
+                  </div>
+
   
-                  <div class="col-lg-12">  
+                  <div class="col-lg-9">  
                     <div class="form-group">
                       <label for="">Descripción</label>
                       <input type="text" placeholder="descripcion" id="descripcion"  name="descripcion" class="form-control form-control-sm">

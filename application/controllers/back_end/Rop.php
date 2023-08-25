@@ -109,6 +109,7 @@ class Rop extends CI_Controller {
 				$validador_sistema = $this->security->xss_clean(strip_tags($this->input->post("validador_sistema")));
 				$horas_estimadas = $this->security->xss_clean(strip_tags($this->input->post("horas_estimadas")));
 				$observacion = $this->security->xss_clean(strip_tags($this->input->post("observacion")));
+				$tecnico = $this->security->xss_clean(strip_tags($this->input->post("tecnico")));
 				
 				$adjunto_req1 =  @$_FILES["adjunto_req1"]["name"];
 				$adjunto_req2 =  @$_FILES["adjunto_req2"]["name"];
@@ -141,6 +142,7 @@ class Rop extends CI_Controller {
 						$data = array(
 							'id_requerimiento' => $requerimiento,
 							'id_estado' => "0",
+							'id_tecnico'=> $tecnico,
 							'id_solicitante'=> $id_solicitante,
 							'comuna' => $comuna,
 							'descripcion' => $descripcion,
@@ -515,7 +517,7 @@ class Rop extends CI_Controller {
 				return FALSE;
 			}else{
 
-				$nombre="reporte-rop.xls";
+				$nombre="reporte-syr.xls";
 				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
 				header("Content-Disposition: attachment; filename=$nombre");
 				?>
@@ -531,12 +533,13 @@ class Rop extends CI_Controller {
 					td{font-size:12px;text-align:center;   vertical-align:middle;}
 				</style>
 
-				<h3>Reporte Rop (Requerimientos operacionales de personas)</h3>
+				<h3>Reporte SYR (Solicitudes y requerimientos)</h3>
 				<table align='center' border="1"> 
 					<tr style="background-color:#F9F9F9">
 						<th class="head">ID </th>    
 						<th class="head">Estado </th>    
 						<th class="head">Solicitante </th>    
+						<th class="head">T&eacute;cnico afectado </th>    
 						<th class="head">Comuna </th>    
 						<th class="head">Fecha ingreso </th> 
 						<th class="head">Hora de ingreso </th> 
@@ -566,6 +569,7 @@ class Rop extends CI_Controller {
 									<td><?php echo utf8_decode($d["id"]); ?></td>
 									<td><?php echo utf8_decode($d["estado"]); ?></td>
 									<td><?php echo utf8_decode($d["solicitante"]); ?></td>
+									<td><?php echo utf8_decode($d["tecnico"]); ?></td>
 									<td><?php echo utf8_decode($d["comuna"]); ?></td>
 									<td><?php echo utf8_decode($d["fecha_ingreso"]); ?></td>
 									<td><?php echo utf8_decode($d["hora_ingreso"]); ?></td>
