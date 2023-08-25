@@ -107,11 +107,35 @@
 	$route['graficoProdxEps'] = "back_end/Dashboard_operaciones/graficoProdxEps";
 	$route['graficoXComuna'] = "back_end/Dashboard_operaciones/graficoXComuna";
  	
-	
 	$route['dashboard/capacitacion'] = "back_end/documentacion/indexCapacitacion";
 	$route['getDataPrevencionModulos'] = "back_end/Prevencion_modulos/getData";
 	$route['formIngresoPrevencionModulos'] = "back_end/Prevencion_modulos/formIngreso";
 	$route['eliminarPrevencionModulos'] = "back_end/Prevencion_modulos/eliminar";
+
+	/********** PREVENCION TERRENO ***********/
+		$route['prevencion_riesgos/checklist_prevencion'] = "back_end/Prevencion_checklist/index";
+
+		/****** EPPS Y CONDICIONES ENCONTRADAS *******/
+			$route['getEPPSInicio'] = "back_end/Prevencion_checklist/getPrevencion_EPPSInicio";
+			$route['getCondicionesList'] = "back_end/Prevencion_checklist/getCondicionesList";
+			$route['formCondiciones'] = "back_end/Prevencion_checklist/formCondiciones";
+			$route['eliminaCondicion'] = "back_end/Prevencion_checklist/eliminaCondicion";
+			$route['getDataCondicion'] = "back_end/Prevencion_checklist/getDataCondicion";
+
+		/****** INVESTIGACION ACCIDENTES *******/
+			$route['getIAInicio'] = "back_end/Prevencion_checklist/getPrevencion_IAInicio";
+			$route['getInvestigacionesList'] = "back_end/Prevencion_checklist/getInvestigacionesList";
+			$route['formInvestigaciones'] = "back_end/Prevencion_checklist/formInvestigaciones";
+			$route['eliminaInvestigacion'] = "back_end/Prevencion_checklist/eliminaInvestigacion";
+			$route['getDataInvestigacion'] = "back_end/Prevencion_checklist/getDataInvestigacion";
+
+		/****** REUNIONES DE EQUIPO *******/
+			$route['getREInicio'] = "back_end/Prevencion_checklist/getPrevencion_REInicio";
+			$route['getReunionesList'] = "back_end/Prevencion_checklist/getReunionesList";
+			$route['formReuniones'] = "back_end/Prevencion_checklist/formReuniones";
+			$route['eliminaReunion'] = "back_end/Prevencion_checklist/eliminaReunion";
+			$route['getDataReunion'] = "back_end/Prevencion_checklist/getDataReunion";
+
 
 /*******AST*******/
 
