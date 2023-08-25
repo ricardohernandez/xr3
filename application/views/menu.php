@@ -149,6 +149,7 @@
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/checklist_prevencion">Checklist prevención terreno</a>
                   </ul>
                </li>
 
@@ -336,6 +337,7 @@
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/checklist_prevencion">Checklist prevención terreno</a>
                                  </li>
                               </ul>
                            </li>
