@@ -139,6 +139,10 @@ class Rop extends CI_Controller {
 							$validador_sistema = $this->Ropmodel->getJefeSolicitante($id_solicitante);
 						}
 
+						if(empty($tecnico)){
+							echo json_encode(array('res'=>"error", 'msg' => 'El campo técnico es obligatorio.'));exit;
+						}
+
 						$data = array(
 							'id_requerimiento' => $requerimiento,
 							'id_estado' => "0",
@@ -445,9 +449,9 @@ class Rop extends CI_Controller {
 			}
 
  			if (!empty($data)) {
-				return TRUE;
+				echo "vencidos";
 			} else {
-				return FALSE;
+				echo "no vencidos";
 			} 
 		}
 
