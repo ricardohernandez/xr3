@@ -318,17 +318,6 @@
 <!-- FILTROS -->
   
 <div class="form-row">
-  <?php
-    if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
-        ?>
-        <div class="col-6 col-lg-1">  
-        <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
-        <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
-        <i class="fa fa-file-import"></i> Cargar base  
-        </div>
-    <?php
-    }
-  ?>
 
   <div class="col-12 col-lg-3">
     <div class="form-group">

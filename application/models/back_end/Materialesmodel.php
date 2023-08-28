@@ -17,6 +17,7 @@ class Materialesmodel extends CI_Model {
 
 		public function listaDetalle($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(m.id) as hash,
+				concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				m.*,
 				if(m.fecha!='1970-01-01' and m.fecha!='0000-00-00',DATE_FORMAT(m.fecha,'%Y-%m-%d'),'') as 'fecha',
 				if(m.dias!='0',m.dias,'') as 'dias',
@@ -91,6 +92,7 @@ class Materialesmodel extends CI_Model {
 		
 		public function listaTecnico($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(m.id) as hash,
+				concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				m.*,
 				COUNT(CASE WHEN tipo = 'RETIRO' THEN 1 END) as reversa,
 				COUNT(CASE WHEN tipo = 'OPERATIVO' THEN 1 END) as directa,
@@ -134,6 +136,8 @@ class Materialesmodel extends CI_Model {
 
 		public function listaSeriesDevolucion($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(m.id) as hash,
+				concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+				CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
 				m.*,
 			");
 
@@ -145,11 +149,9 @@ class Materialesmodel extends CI_Model {
 			$this->db->where('tipo<>', 'OPERATIVO');
 			$this->db->group_by('m.serie');
 			$this->db->order_by('m.material', 'asc');
-
+			$this->db->join('usuarios u', 'u.id = m.id_tecnico', 'left');
 			$res=$this->db->get('materiales m');
 
-			/* echo $this->db->last_query(); */
-			
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -158,6 +160,8 @@ class Materialesmodel extends CI_Model {
 
 		public function listaSeriesOperativos($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(m.id) as hash,
+				concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+				CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
 				m.*,
 			");
 
@@ -169,7 +173,7 @@ class Materialesmodel extends CI_Model {
 			if($trabajador!=""){
 				$this->db->where('m.id_tecnico', $trabajador);
 			}
-
+			$this->db->join('usuarios u', 'u.id = m.id_tecnico', 'left');
 			$res=$this->db->get('materiales m');
 			
 			if($res->num_rows()>0){

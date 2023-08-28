@@ -224,11 +224,12 @@ class Materiales extends CI_Controller {
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
 							<th class="head">T&eacute;cnico</th> 
+							<th class="head">RUT</th> 
 							<th class="head">Descripci&oacute;n</th> 
 				            <th class="head">Serie</th> 
 				            <th class="head">Tipo</th> 
 				            <th class="head">Fecha</th> 
-				            <th class="head">Días</th> 
+				            <th class="head">D&iacute;as</th> 
 				            <th class="head">Estado</th> 
 				        </tr>
 				        </thead>	
@@ -238,7 +239,8 @@ class Materiales extends CI_Controller {
 					      		foreach($data as $d){
 				      			?>
 				      			 <tr>
-									<td><?php echo utf8_decode($d["tecnico"]); ?></td>
+								    <td><?php echo utf8_decode($d["tecnico"]); ?></td>
+								    <td><?php echo utf8_decode($d["rut_format"]); ?></td>
 									<td><?php echo utf8_decode($d["material"]); ?></td>
 									<td><?php echo utf8_decode($d["serie"]); ?></td>
 									<td><?php echo utf8_decode($d["tipo"]); ?></td>
@@ -324,7 +326,8 @@ class Materiales extends CI_Controller {
 				<h3>Reporte materiales por t&eacute;cnico </h3>
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
-			                <th class="head">T&eacute;cnico</th> 
+							<th class="head">T&eacute;cnico</th> 
+							<th class="head">RUT</th> 
 				            <th class="head">Reversa</th> 
 				            <th class="head">Directa</th> 
 				        </tr>
@@ -335,7 +338,8 @@ class Materiales extends CI_Controller {
 					      		foreach($data as $d){
 				      			?>
 				      			 <tr>
-									 <td><?php echo utf8_decode($d["tecnico"]); ?></td>
+								     <td><?php echo utf8_decode($d["tecnico"]); ?></td>
+									 <td><?php echo utf8_decode($d["rut_format"]); ?></td>
 									 <td><?php echo utf8_decode($d["reversa"]); ?></td>
 									 <td><?php echo utf8_decode($d["directa"]); ?></td>
 								 </tr>
@@ -482,7 +486,8 @@ class Materiales extends CI_Controller {
 				<h3>Reporte equipos para devoluci&oacute;n (Retiro)</h3>
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
-			                <th class="head">Descripci&oacute;n</th> 
+							<th class="head">RUT</th> 
+							<th class="head">Descripci&oacute;n</th> 
 				            <th class="head">Serie</th> 
 				        </tr>
 				        </thead>	
@@ -492,6 +497,7 @@ class Materiales extends CI_Controller {
 					      		foreach($data as $d){
 				      			?>
 				      			 <tr>
+								     <td><?php echo utf8_decode($d["rut_format"]); ?></td>
 									 <td><?php echo utf8_decode($d["material"]); ?></td>
 									 <td><?php echo utf8_decode($d["serie"]); ?></td>
 								 </tr>
@@ -546,7 +552,8 @@ class Materiales extends CI_Controller {
 				<h3>Reporte equipos operativos</h3>
 					<table align='center' border="1"> 
 				        <tr style="background-color:#F9F9F9">
-			                <th class="head">Descripci&oacute;n</th> 
+							<th class="head">RUT</th> 
+							<th class="head">Descripci&oacute;n</th> 
 				            <th class="head">Serie</th> 
 				        </tr>
 				        </thead>	
@@ -556,6 +563,7 @@ class Materiales extends CI_Controller {
 					      		foreach($data as $d){
 				      			?>
 				      			 <tr>
+								  	 <td><?php echo utf8_decode($d["rut_format"]); ?></td>
 									 <td><?php echo utf8_decode($d["material"]); ?></td>
 									 <td><?php echo utf8_decode($d["serie"]); ?></td>
 								 </tr>

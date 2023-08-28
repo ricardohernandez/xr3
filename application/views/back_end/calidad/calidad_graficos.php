@@ -687,7 +687,7 @@
 					});
 				}
 			},
-			timeout: 5000
+			timeout: 15000
 		});
 	}
 
@@ -755,7 +755,7 @@
    <?php  
       if($this->session->userdata('id_perfil')<=3){
       ?>
-   <div class="col-6 col-lg-2">
+   <div class="col-6 col-lg-3">
       <div class="form-group">
          <select id="trabajadores" name="trabajadores" style="width:100%!important;">
             <option value="">Seleccione Trabajador | Todos</option>
@@ -765,7 +765,7 @@
    <?php
       }else{
       ?>
-   <div class="col-6 col-lg-2">
+   <div class="col-6 col-lg-3">
       <div class="form-group">
          <select id="trabajador" name="trabajador" class="custom-select custom-select-sm" >
             <option selected value="<?php echo $this->session->userdata('rut'); ?>"><?php echo $this->session->userdata('nombre_completo'); ?></option>
@@ -863,11 +863,11 @@
                </div>
                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                   <div class="short-div">
-                     <p class="section_titulo">Calidad HFC Últimos 6 periodos</p>
+                     <p class="section_titulo">Calidad HFC Últimos 3 periodos</p>
                      <div id="graficoHFC"></div>
                   </div>
                   <div class="short-div">
-                     <p class="section_titulo">Calidad FTTH Últimos 6 periodos</p>
+                     <p class="section_titulo">Calidad FTTH Últimos 3 periodos</p>
                      <div id="graficoFTTH"></div>
                   </div>
                </div>

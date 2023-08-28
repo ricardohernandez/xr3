@@ -18,9 +18,11 @@ class Ropmodel extends CI_Model {
 		public function getRopList($desde,$hasta,$estado,$responsable){
 			$this->db->select('r.*,
 				sha1(r.id) as hash,
+				r.id as id_rop,
 				CONCAT(LEFT(us.nombres, 1), ". ", SUBSTRING_INDEX(us.apellidos, " ", 1)) AS usuario_asignado,
 				CONCAT(LEFT(us2.nombres, 1), ". ", SUBSTRING_INDEX(us2.apellidos, " ", 1)) AS validador_real,
 				CONCAT(LEFT(us3.nombres, 1), ". ", SUBSTRING_INDEX(us3.apellidos, " ", 1)) AS solicitante,
+				CONCAT(ust.nombres, " ", ust.apellidos) AS tecnico,
 				CONCAT(LEFT(usj.nombres, 1), ". ", SUBSTRING_INDEX(usj.apellidos, " ", 1)) AS jefe_solicitante,
 
 				IF(STR_TO_DATE(r.fecha_ingreso, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_ingreso,"%d-%m-%Y"),"") as fecha_ingreso,
@@ -83,7 +85,8 @@ class Ropmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = r.id_usuario_asignado', 'left');
 			$this->db->join('usuarios as us2', 'us2.id = r.id_validador_real', 'left');
 			$this->db->join('usuarios as us3', 'us3.id = r.id_solicitante', 'left');
-
+			$this->db->join('usuarios as ust', 'ust.id = r.id_tecnico', 'left');
+			
 			$this->db->join('usuarios_jefes uj', 'uj.id = us3.id_jefe', 'left');
 			$this->db->join('usuarios usj', 'usj.id = uj.id_jefe', 'left');
 
@@ -127,11 +130,13 @@ class Ropmodel extends CI_Model {
 
 		public function getDataRop($hash){
 			$this->db->select('r.*,
-			sha1(r.id) as hash,
+				r.id as id_rop,
+				sha1(r.id) as hash,
 				CONCAT(us.nombres," " ,us.apellidos) as usuario_asignado,
 				CONCAT(us2.nombres," ",us2.apellidos) as validador_real,
 				CONCAT(us3.nombres," ",us3.apellidos) as solicitante,
 				CONCAT(usj.nombres," " ,usj.apellidos) as jefe_solicitante,
+				CONCAT(ust.nombres," " ,ust.apellidos) as tecnico,
 
 				IF(STR_TO_DATE(r.fecha_ingreso, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_ingreso,"%d-%m-%Y"),"") as fecha_ingreso,
 				
@@ -196,6 +201,7 @@ class Ropmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = r.id_usuario_asignado', 'left');
 			$this->db->join('usuarios as us2', 'us2.id = r.id_validador_real', 'left');
 			$this->db->join('usuarios as us3', 'us3.id = r.id_solicitante', 'left');
+			$this->db->join('usuarios as ust', 'ust.id = r.id_tecnico', 'left');
 
 			$this->db->join('usuarios_jefes uj', 'uj.id = us3.id_jefe', 'left');
 			$this->db->join('usuarios usj', 'usj.id = uj.id_jefe', 'left');
@@ -214,6 +220,7 @@ class Ropmodel extends CI_Model {
 		public function getRopListVencidas(){
 			$this->db->select('r.*,
 			sha1(r.id) as hash,
+			r.id as id_rop,
 			CONCAT(LEFT(us.nombres, 1), ". ", SUBSTRING_INDEX(us.apellidos, " ", 1)) AS usuario_asignado,
 			CONCAT(LEFT(us2.nombres, 1), ". ", SUBSTRING_INDEX(us2.apellidos, " ", 1)) AS validador_real,
 			CONCAT(LEFT(us3.nombres, 1), ". ", SUBSTRING_INDEX(us3.apellidos, " ", 1)) AS solicitante,

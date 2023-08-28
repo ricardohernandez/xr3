@@ -51,18 +51,19 @@
 
 <style type="text/css" media="screen">
   @media (max-width: 768px){
-    .log_tit{
-      font-size: 16px;
-    }
     .log_tit2{
-       font-size: 13px;
-       color: #000!important;
+      font-size: 14px;
+      color: #000!important;
     }
-
+    .subtitle{
+      font-size:18px;
+      width:100%!important;
+      margin-top:1px!important;
+      margin-left:10px!important;
+      text-align:center;
+    }
     .logo_pto {
-       width: 65px;
-       margin-right:4px;
-       margin-left:6px;
+       width: 165px;
     }
 
     .llave{
@@ -82,11 +83,13 @@
       margin-left: 60%;
       text-align: center;
     }
-
     .copy{
-      font-size: 11px;
+      font-size: 13px;
     }
-
+    .logo_empresa{
+      width:20px;
+      margin-top:-10px!important;
+    }
   }
   
   @media (min-width: 768px){
@@ -97,105 +100,103 @@
       margin-left: 70%;
       text-align: center;
     }
-
+    .subtitle{
+      font-size:22px;
+      text-align:center;
+    }
     .log_tit{
-      font-size: 18px;
+      font-size: 22px;
     }
     .log_tit2{
-      font-size: 18px;
+      font-size: 23px;
       color: #000!important;
     }
 
     .logo_pto {
-       width: 80px;
-       margin-right:20px;";
+       width: 130px;
+      /*  margin-right:20px;"; */
     }
     
     .copy{
-      font-size: 13px;
+      font-size: 16px;
+    }
+    }
+    .logo_pto {
+        width: 115px;
+        /* margin-right:4px;
+        margin-left:6px; */
     }
 
-  }
-  
+    body{
+      background-image: url("./assets3/imagenes/fondolog.jpg");
+      background-size: cover;
+    }
+    .validacion{
+      font-size:12px!important;
 
-  body{
-	  background-image: url("./assets3/imagenes/fondolog.jpg");
-	  background-size: cover;
-  }
-
-  .validacion{
-    font-size:12px!important;
-
-  }
-
-  .alert-primary {
-    color: #000;
-    background-color: #CFE2FF;
-    border-color: #CFE2FF;
-  }
-
-  .alert {
-    padding: 3px 15px;
-    margin-bottom: 0px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    text-align:left;
-  }
-  .top-content{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-  }
-  .validacion-correo{
-    margin-top:10px;
-    margin-bottom: 10px;
-  }
-
-  .logo_empresa{
-    width: 100px;
-    margin-top: 9px;
-  }
-  .recuperar_contrasena{
-    font-size: 14px;
-    display: inline-block;
-    margin: 4px;
-    color: #172969;
-  }
-  button.btn {
-    height: 40px;
-    line-height: 40px;
-  }
-
-  #togglePassword{
-    cursor: pointer;
-  }
-
-  .input-icons i {
+    }
+    .alert-primary {
+      color: #000;
+      background-color: #CFE2FF;
+      border-color: #CFE2FF;
+    }
+    .alert {
+      padding: 3px 15px;
+      margin-bottom: 0px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      text-align:left;
+    }
+    .top-content{
       position: absolute;
-  }
-    
-  .input-icons {
-      width: 100%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+    }
+    .validacion-correo{
+      margin-top:10px;
       margin-bottom: 10px;
-  }
-    
-
-    
-  .input-field {
-      width: 100%;
-      padding: 10px;
-      text-align: left;
-  }
-    
-  h2 {
-      color: green;
-  }
-
-  .alert-dismissible .close {
-    padding: 0.35rem 1.25rem!important;
-}
+    }
+    .logo_empresa{
+      width:70px;
+      /* margin-left:30px; */
+      margin-top: 30px;
+    }
+    .recuperar_contrasena{
+      font-size: 16px;
+      display: inline-block;
+      margin: 4px;
+      color: #172969;
+    }
+    button.btn {
+      height: 40px;
+      line-height: 40px;
+    }
+    #togglePassword{
+      cursor: pointer;
+    }
+    .input-icons i {
+        position: absolute;
+    }
+    .input-icons {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .input-field {
+        width: 100%;
+        padding: 10px;
+        text-align: left;
+    }
+    h2 {
+        color: green;
+    }
+    .alert-dismissible .close {
+        padding: 0.35rem 1.25rem!important;
+    }
+    body{
+      color:#000!important;
+    }
 
 </style>
 <script type="text/javascript">
@@ -357,27 +358,45 @@
     <div class="inner-bg">
         <div class="container">
           <div class="form-row">
-              <div class="col-lg-6 offset-lg-3  form-box">
+              <div class="col-lg-8 offset-lg-2  form-box">
 
                   <div class="form-top">
-                    <div class="form-top-left">
-                      
-                      <h4 class="log_tit2 mb-3">
-                        <img class="logo_pto" src="<?php echo base_url();?>assets3/imagenes/pto.jpg" alt="logo">
-                        <?php echo $subtitulo ?>
-                      </h4>
+                    <div class="form-top-left" style="width: 100%!important;">
+                    
+                      <div class="col-12 d-none d-sm-block">   
+                        <div class="row">
+                        <div class="col-3">
+                          <center><img class="logo_pto img-fluid" src="<?php echo base_url();?>assets3/imagenes/pto.jpg" alt="logo"></center>
+                        </div>
+                        <div class="col-7">
+                            <h4 class="mt-5 subtitle">
+                                <span class="d-block"><?php echo $subtitulo ?></span>
+                            </h4>
+                        </div>
+                        <div class="col-2 mt-3">
+                          <img class="logo_empresa" src="<?php echo base_url();?>assets3/imagenes/logo_claro.png" alt="logo">
+                        </div> 
+                        </div>
+                      </div>
 
-                     <!--  <h3 class="log_tit">
-                        <?php echo $titulo ?>
-                      </h3>
-                       -->
-                     
+                      <div class="col-12 d-block d-sm-none">   
 
-                    </div>
-                    <div class="form-top-right llave">
-                      <img class="logo_empresa" src="<?php echo base_url();?>assets3/imagenes/logo_claro.png" alt="logo">
-                     <!--  <i class="fa fa-key"></i> -->
-                    </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <center><img class="logo_pto img-fluid" src="<?php echo base_url();?>assets3/imagenes/pto.jpg" alt="logo"></center>
+                          </div>
+                          <div class="col-12">
+                              <h4 class="subtitle">
+                                  <span class="d-block"><?php echo $subtitulo ?></span>
+                              </h4>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <center><img class="logo_empresa" src="<?php echo base_url();?>assets3/imagenes/logo_claro.png" alt="logo"></center>
+                          </div> 
+                          </div>
+                        </div>
+
+                      </div>
                   </div>
 
                   <div class="form-bottom">

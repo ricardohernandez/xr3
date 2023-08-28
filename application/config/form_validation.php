@@ -449,6 +449,7 @@ $config = array(
                         'label'   => 'Descripción',
                         'rules'   => 'trim|required'
                   ), 
+                  
             ),
 
             'formMantenedorReq' => array(

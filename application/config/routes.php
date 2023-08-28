@@ -41,10 +41,12 @@
 
 	$route['igt'] = "back_end/igt/index";
 	$route['getIgtInicio'] = "back_end/igt/getIgtInicio";
+	$route['listaDetalleIgt'] = "back_end/igt/listaDetalleIgt";
+	$route['excel_detalle_prod_igt/(:any)/(:any)/(:any)'] = "back_end/igt/excel_detalle_prod_igt/$1/$2/$3";
 	$route['listaDetalleOtsDrive'] = "back_end/igt/listaDetalleOtsDrive";
+	$route['excel_detalle_ots_drive/(:any)/(:any)/(:any)'] = "back_end/igt/excel_detalle_ots_drive/$1/$2/$3";
 	$route['dataIgt'] = "back_end/igt/dataIgt";
 	$route['graficoProductividad'] = "back_end/igt/graficoProductividad";
-	$route['excel_detalle_ots_drive/(:any)/(:any)/(:any)'] = "back_end/igt/excel_detalle_ots_drive/$1/$2/$3";
 	$route['listaTrabajadoresIGT'] = "back_end/igt/listaTrabajadoresIGT";
 	$route['dataGraficosIgt'] = "back_end/igt/dataGraficosIgt";
 	$route['formCargaMasivaIgt'] = "back_end/igt/formCargaMasivaIgt";

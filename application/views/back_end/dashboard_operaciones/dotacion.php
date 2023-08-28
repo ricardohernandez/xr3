@@ -15,13 +15,15 @@
   function cargarGraficoDotacion () {
   var mes_inicio_dot = $("#mes_inicio_dot").val();
   var mes_termino_dot = $("#mes_termino_dot").val();
+  var tipo_dot = $("#tipo_dot").val();
 
   $.ajax({
       url: base_url+'graficoDotacion',
       type: 'POST',
       data: {
           'mes_inicio_dot': mes_inicio_dot,
-          'mes_termino_dot': mes_termino_dot
+          'mes_termino_dot': mes_termino_dot,
+          'tipo': tipo_dot
       },
       dataType: "json",
       beforeSend:function(){
@@ -40,10 +42,11 @@
   }
  
   function crearGraficoDotacion(data) {
-    console.log(data)
-     
+    var numTotalColumnas = data[0].length; // Obtener el número total de columnas
     var data = google.visualization.arrayToDataTable(data);
-    data.sort([{ column: 17, desc: false }]);
+
+
+    data.sort([{ column: numTotalColumnas-1, desc: false }]);
 
     const options = {
       fontName: 'ubuntu',
@@ -124,7 +127,7 @@
           viewWindowMode:'explicit',
           viewWindow: {
             min: 0,
-            max: 200
+            max: 170
           },
         },
         1: 
@@ -133,7 +136,7 @@
           gridlines: {color:'#808080', count:0},
           viewWindow: {
             min: 0,
-            max: 200
+            max: 170
           },
         },
   
@@ -177,7 +180,7 @@
         },
         2: {
           type: 'bars',
-          color: 'grey',
+          color: '#6C007A',
           targetAxisIndex:1,
           annotations: {
           style: 'line',
@@ -324,6 +327,31 @@
               length: 8
             },   
           }
+        },
+
+        8: {
+          type: 'line',
+          color: '#6C007A',
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'cirle',
+          targetAxisIndex:0,
+
+          targetAxisIndex:1,
+          annotations: {
+          style: 'line',
+          textStyle: {
+            fontSize: 12,
+            color: '808080',
+            strokeSize: 1,
+            auraColor: 'transparent'
+          },
+          alwaysOutside: false,  
+          stem:{
+              color: 'transparent',
+              length: 8
+            },   
+          }
         }
 
 
@@ -339,7 +367,7 @@
    
   }
 
-  $(document).off('change', '#mes_inicio_dot,#mes_termino_dot').on('change', '#mes_inicio_dot,#mes_termino_dot', function (event) {
+  $(document).off('change', '#mes_inicio_dot,#mes_termino_dot,#tipo_dot').on('change', '#mes_inicio_dot,#mes_termino_dot,#tipo_dot', function (event) {
     cargarGraficoDotacion ();
   });
 
@@ -349,17 +377,6 @@
 <!-- FILTROS -->
   
 <div class="form-row">
-    <?php
-    if($this->session->userdata('id_perfil')==1 || $this->session->userdata('id_perfil')==2){
-        ?>
-        <div class="col-6 col-lg-1">  
-        <input type="file" id="userfile" name="userfile" class="file_cs" style="display:none;" />
-        <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
-        <i class="fa fa-file-import"></i> Cargar base  
-        </div>
-        <?php
-    }
-    ?>
 
   <div class="col-12 col-lg-3">
     <div class="form-group">
@@ -370,6 +387,17 @@
         <input type="month" placeholder="Desde" class=" form-control form-control-sm"  name="mes_inicio_dot" id="mes_inicio_dot">
         <input type="month" placeholder="Hasta" class=" form-control form-control-sm"  name="mes_termino_dot" id="mes_termino_dot">
       </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-2">
+    <div class="form-group">
+    <select id="tipo_dot" name="tipo_dot" class="custom-select custom-select-sm">
+      <option value="" selected>Seleccione tipo | Todos</option>
+      <option value="norte">Norte</option>
+      <option value="sur">Sur</option>
+      <option value="fte">FTE</option>
+    </select>
     </div>
   </div>
 
