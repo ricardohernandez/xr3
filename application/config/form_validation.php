@@ -675,7 +675,7 @@ $config = array(
                         'rules'   => 'trim|required'
                   ),
                   array(
-                        'field'   => 'cargo_asistentes[]',
+                        'field'   => 'cargos[]',
                         'label'   => 'Cargo de asistentes',
                         'rules'   => 'trim|required'
                   ),
