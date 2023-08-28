@@ -534,6 +534,15 @@
             $(".agrega_linea_cont_ingresos").show();
       }
     }
+
+    $(document).off('change', '#responsable_inspeccion').on('change', '#responsable_inspeccion',function(event) {
+      const trabajadores = <?php echo json_encode($trabajadores); ?>;
+      trabajadores.forEach(trabajador => {
+            if (trabajador.id === document.getElementById("responsable_inspeccion").value) {
+              document.getElementById("cargo_prevencionista").value = trabajador.id_cargo;
+            }
+        });
+    })
       
   })
 </script>

@@ -95,11 +95,12 @@ class Prevencion_checklist extends CI_Controller {
 				$fecha_inspeccion = $this->input->post("fecha_inspeccion");
 				$fecha_generacion = $this->input->post("fecha_generacion");
 				$tecnico_auditado = $this->input->post("tecnico_auditado");
-				$rut_tecnico_auditado = $this->input->post("rut_tecnico_auditado");
+				$rut_tecnico_auditado = $this->security->xss_clean(strip_tags($this->input->post("rut_tecnico_auditado")));
 				$zona = $this->input->post("zona");
 				$plaza = $this->input->post("plaza");
 				$proyecto = $this->input->post("proyecto");
 				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombresUsuario")." ".$this->session->userdata("apellidosUsuario");
+				$adjunto = $_FILES["userfile"]["name"];
 
 				$herramientas=$this->input->post("herramientas");
 				$estado_epps=$this->input->post("estado_epps");
@@ -153,74 +154,89 @@ class Prevencion_checklist extends CI_Controller {
 				$JSONacciones = json_encode($lacciones);
 				$firma=$this->input->post("firma");
 
-
-				/*if ($this->form_validation->run("formReuniones") == FALSE){echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;}else{}*/
-				if($hash==""){
-					$data = array(
-						'responsable' => $responsable_inspeccion,
-						'cargo_responsable' => $cargo,
-						'fecha_inspeccion' => $fecha_inspeccion,
-						'fecha_reporte' => $fecha_generacion,
-						'tecnico_auditado' => $tecnico_auditado,
-						'rut_tecnico' => $rut_tecnico_auditado,
-						'zona' => $zona,
-						'plaza' => $plaza,
-						'proyecto' => $proyecto,
-						'epps' => $JSONepps,
-						'riesgos' => $JSONriesgos,
-						'acciones' => $JSONacciones,
-						'firma' => $firma,
-						'ultima_actualizacion' => $ultima_actualizacion,
-					);
-					$path = $_FILES['userfile']['name'];
-					$ext = pathinfo($path, PATHINFO_EXTENSION);
-					$carpeta = "archivos/prevencion/";
-					$archivo =  date("ymdHis").".".$ext;
-					$adjunto = $_FILES["userfile"]["name"];
-					if($adjunto!=""){
-						$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
-						$data["archivo"]=$carpeta.$archivo;
-					}
-
-					$insert_id=$this->Prevencion_checklistmodel->ingresarCondicion($data);
-
-					if($insert_id!=FALSE){
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-					}
+				if($herramientas == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe subir al menos un epps.'));exit;
+				}
+				if($riesgos == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe subir al menos un riesgo.'));exit;
+				}
+				if($acciones == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe subir al menos una acción.'));exit;
+				}
+				
+				if ($this->form_validation->run("formCondiciones") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));
+					exit;
 				}else{
-					$data_mod= array(
-						'responsable' => $responsable_inspeccion,
-						'cargo_responsable' => $cargo,
-						'fecha_inspeccion' => $fecha_inspeccion,
-						'fecha_reporte' => $fecha_generacion,
-						'tecnico_auditado' => $tecnico_auditado,
-						'rut_tecnico' => $rut_tecnico_auditado,
-						'zona' => $zona,
-						'plaza' => $plaza,
-						'proyecto' => $proyecto,
-						'epps' => $JSONepps,
-						'riesgos' => $JSONriesgos,
-						'acciones' => $JSONacciones,
-						'firma' => $firma,
-						'ultima_actualizacion' => $ultima_actualizacion,
-					);
-
-					$path = $_FILES['userfile']['name'];
-					$ext = pathinfo($path, PATHINFO_EXTENSION);
-					$carpeta = "archivos/prevencion/";
-					$archivo =  date("ymdHis").".".$ext;
-					$adjunto = $_FILES["userfile"]["name"];
-					if($adjunto!=""){
-						$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
-						$data_mod["archivo"]=$carpeta.$archivo;
-					}
-
-					if($this->Prevencion_checklistmodel->ActualizarCondicion($hash,$data_mod)){
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+					if($hash==""){
+						if($adjunto==""){
+							echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo.'));exit;
+						}
+						$data = array(
+							'responsable' => $responsable_inspeccion,
+							'cargo_responsable' => $cargo,
+							'fecha_inspeccion' => $fecha_inspeccion,
+							'fecha_reporte' => $fecha_generacion,
+							'tecnico_auditado' => $tecnico_auditado,
+							'rut_tecnico' => $rut_tecnico_auditado,
+							'zona' => $zona,
+							'plaza' => $plaza,
+							'proyecto' => $proyecto,
+							'epps' => $JSONepps,
+							'riesgos' => $JSONriesgos,
+							'acciones' => $JSONacciones,
+							'firma' => $firma,
+							'ultima_actualizacion' => $ultima_actualizacion,
+						);
+						$path = $_FILES['userfile']['name'];
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+						$carpeta = "archivos/prevencion/";
+						$archivo =  date("ymdHis").".".$ext;
+						$adjunto = $_FILES["userfile"]["name"];
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
+							$data["archivo"]=$carpeta.$archivo;
+						}
+						$insert_id=$this->Prevencion_checklistmodel->ingresarCondicion($data);
+						if($insert_id!=FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
 					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						if($adjunto==""){
+							echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo.'));exit;
+						}
+						$data_mod= array(
+							'responsable' => $responsable_inspeccion,
+							'cargo_responsable' => $cargo,
+							'fecha_inspeccion' => $fecha_inspeccion,
+							'fecha_reporte' => $fecha_generacion,
+							'tecnico_auditado' => $tecnico_auditado,
+							'rut_tecnico' => $rut_tecnico_auditado,
+							'zona' => $zona,
+							'plaza' => $plaza,
+							'proyecto' => $proyecto,
+							'epps' => $JSONepps,
+							'riesgos' => $JSONriesgos,
+							'acciones' => $JSONacciones,
+							'firma' => $firma,
+							'ultima_actualizacion' => $ultima_actualizacion,
+						);
+						$path = $_FILES['userfile']['name'];
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+						$carpeta = "archivos/prevencion/";
+						$archivo =  date("ymdHis").".".$ext;
+						$adjunto = $_FILES["userfile"]["name"];
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
+							$data_mod["archivo"]=$carpeta.$archivo;
+						}
+						if($this->Prevencion_checklistmodel->ActualizarCondicion($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
 					}
 				}
 			}
@@ -294,112 +310,121 @@ class Prevencion_checklist extends CI_Controller {
 				$hora=$this->input->post("hora");
 				$tipo=$this->input->post("tipo");
 				$lugar=$this->input->post("lugar");
-				$direccion=$this->input->post("direccion");
+				$this->security->xss_clean(strip_tags($direccion=$this->input->post("direccion")));
 				$comuna=$this->input->post("comuna");
 				$nombre_informante=$this->input->post("nombre_informante");
 				$cargo_informante=$this->input->post("cargo_informante");
-				$descripcion=$this->input->post("descripcion");
+				$this->security->xss_clean(strip_tags($descripcion=$this->input->post("descripcion")));
 				$nombre_afectado=$this->input->post("nombre_afectado");
 				$cargo_afectado=$this->input->post("cargo_afectado");
-				$rut_afectado=$this->input->post("rut_afectado");
+				$this->security->xss_clean(strip_tags($rut_afectado=$this->input->post("rut_afectado")));
 				$horas_trabajadas=$this->input->post("horas_trabajadas");
 				$gravedad_lesion=$this->input->post("gravedad_lesion");
 				$tipo_lesion=$this->input->post("tipo_lesion");
-				$nombre_testigo_1=$this->input->post("nombre_testigo_1");
-				$relacion_testigo_1=$this->input->post("relacion_testigo_1");
-				$nombre_testigo_2=$this->input->post("nombre_testigo_2");
-				$relacion_testigo_2=$this->input->post("relacion_testigo_2");
-				$nombre_testigo_3=$this->input->post("nombre_testigo_3");
-				$relacion_testigo_3=$this->input->post("relacion_testigo_3");
-				$observacion=$this->input->post("observacion");
+				$this->security->xss_clean(strip_tags($nombre_testigo_1=$this->input->post("nombre_testigo_1")));
+				$this->security->xss_clean(strip_tags($relacion_testigo_1=$this->input->post("relacion_testigo_1")));
+				$this->security->xss_clean(strip_tags($nombre_testigo_2=$this->input->post("nombre_testigo_2")));
+				$this->security->xss_clean(strip_tags($relacion_testigo_2=$this->input->post("relacion_testigo_2")));
+				$this->security->xss_clean(strip_tags($nombre_testigo_3=$this->input->post("nombre_testigo_3")));
+				$this->security->xss_clean(strip_tags($relacion_testigo_3=$this->input->post("relacion_testigo_3")));
+				$this->security->xss_clean(strip_tags($observacion=$this->input->post("observacion")));
 				$ultima_actualizacion=date("Y-m-d G:i:s")." | ".$this->session->userdata("nombresUsuario")." ".$this->session->userdata("apellidosUsuario");
+				$adjunto = $_FILES["userfile"]["name"];
 
-				/*if ($this->form_validation->run("formReuniones") == FALSE){echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;}else{}*/
-				if($hash==""){
-					$data = array(
-						'fecha' => $fecha,
-						'hora' => $hora,
-						'tipo' => $tipo,
-						'lugar' => $lugar,
-						'direccion' => $direccion,
-						'comuna' => $comuna,
-						'nombre_informante' => $nombre_informante,
-						'cargo_informante' => $cargo_informante,
-						'descripcion' => $descripcion,
-						'nombre_afectado' => $nombre_afectado,
-						'cargo_afectado' => $cargo_afectado,
-						'rut_afectado' => $rut_afectado,
-						'horas_trabajadas' => $horas_trabajadas,
-						'gravedad_lesion' => $gravedad_lesion,
-						'tipo_lesion' => $tipo_lesion,
-						'nombre_testigo_1' => $nombre_testigo_1,
-						'relacion_testigo_1' => $relacion_testigo_1,
-						'nombre_testigo_2' => $nombre_testigo_2,
-						'relacion_testigo_2' => $relacion_testigo_2,
-						'nombre_testigo_3' => $nombre_testigo_3,
-						'relacion_testigo_3' => $relacion_testigo_3,
-						'observacion' => $observacion,
-						'ultima_actualizacion' => $ultima_actualizacion
-					);
-
-					$path = $_FILES['userfile']['name'];
-					$ext = pathinfo($path, PATHINFO_EXTENSION);
-					$carpeta = "archivos/prevencion/";
-					$archivo =  date("ymdHis").".".$ext;
-					$adjunto = $_FILES["userfile"]["name"];
-					if($adjunto!=""){
-						$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
-						$data["archivo"]=$carpeta.$archivo;
-					}
-
-					$insert_id=$this->Prevencion_checklistmodel->ingresarInvestigacion($data);
-
-					if($insert_id!=FALSE){
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+				if ($this->form_validation->run("formInvestigaciones") == FALSE)
+					{echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;}
+				else{
+					if($hash==""){
+						if($adjunto==""){
+							echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo.'));exit;
+						}
+						$data = array(
+							'fecha' => $fecha,
+							'hora' => $hora,
+							'tipo' => $tipo,
+							'lugar' => $lugar,
+							'direccion' => $direccion,
+							'comuna' => $comuna,
+							'nombre_informante' => $nombre_informante,
+							'cargo_informante' => $cargo_informante,
+							'descripcion' => $descripcion,
+							'nombre_afectado' => $nombre_afectado,
+							'cargo_afectado' => $cargo_afectado,
+							'rut_afectado' => $rut_afectado,
+							'horas_trabajadas' => $horas_trabajadas,
+							'gravedad_lesion' => $gravedad_lesion,
+							'tipo_lesion' => $tipo_lesion,
+							'nombre_testigo_1' => $nombre_testigo_1,
+							'relacion_testigo_1' => $relacion_testigo_1,
+							'nombre_testigo_2' => $nombre_testigo_2,
+							'relacion_testigo_2' => $relacion_testigo_2,
+							'nombre_testigo_3' => $nombre_testigo_3,
+							'relacion_testigo_3' => $relacion_testigo_3,
+							'observacion' => $observacion,
+							'ultima_actualizacion' => $ultima_actualizacion
+						);
+	
+						$path = $_FILES['userfile']['name'];
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+						$carpeta = "archivos/prevencion/";
+						$archivo =  date("ymdHis").".".$ext;
+						$adjunto = $_FILES["userfile"]["name"];
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
+							$data["archivo"]=$carpeta.$archivo;
+						}
+	
+						$insert_id=$this->Prevencion_checklistmodel->ingresarInvestigacion($data);
+	
+						if($insert_id!=FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
 					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
-					}
-				}else{
-					$data_mod= array(
-						'fecha' => $fecha,
-						'hora' => $hora,
-						'tipo' => $tipo,
-						'lugar' => $lugar,
-						'direccion' => $direccion,
-						'comuna' => $comuna,
-						'nombre_informante' => $nombre_informante,
-						'cargo_informante' => $cargo_informante,
-						'descripcion' => $descripcion,
-						'nombre_afectado' => $nombre_afectado,
-						'cargo_afectado' => $cargo_afectado,
-						'rut_afectado' => $rut_afectado,
-						'horas_trabajadas' => $horas_trabajadas,
-						'gravedad_lesion' => $gravedad_lesion,
-						'tipo_lesion' => $tipo_lesion,
-						'nombre_testigo_1' => $nombre_testigo_1,
-						'relacion_testigo_1' => $relacion_testigo_1,
-						'nombre_testigo_2' => $nombre_testigo_2,
-						'relacion_testigo_2' => $relacion_testigo_2,
-						'nombre_testigo_3' => $nombre_testigo_3,
-						'relacion_testigo_3' => $relacion_testigo_3,
-						'observacion' => $observacion,
-						'ultima_actualizacion' => $ultima_actualizacion
-					);
-
-					$path = $_FILES['userfile']['name'];
-					$ext = pathinfo($path, PATHINFO_EXTENSION);
-					$carpeta = "archivos/prevencion/";
-					$archivo =  date("ymdHis").".".$ext;
-					$adjunto = $_FILES["userfile"]["name"];
-					if($adjunto!=""){
-						$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
-						$data_mod["archivo"]=$carpeta.$archivo;
-					}
-
-					if($this->Prevencion_checklistmodel->ActualizarInvestigacion($hash,$data_mod)){
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						if($adjunto==""){
+							echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo.'));exit;
+						}
+						$data_mod= array(
+							'fecha' => $fecha,
+							'hora' => $hora,
+							'tipo' => $tipo,
+							'lugar' => $lugar,
+							'direccion' => $direccion,
+							'comuna' => $comuna,
+							'nombre_informante' => $nombre_informante,
+							'cargo_informante' => $cargo_informante,
+							'descripcion' => $descripcion,
+							'nombre_afectado' => $nombre_afectado,
+							'cargo_afectado' => $cargo_afectado,
+							'rut_afectado' => $rut_afectado,
+							'horas_trabajadas' => $horas_trabajadas,
+							'gravedad_lesion' => $gravedad_lesion,
+							'tipo_lesion' => $tipo_lesion,
+							'nombre_testigo_1' => $nombre_testigo_1,
+							'relacion_testigo_1' => $relacion_testigo_1,
+							'nombre_testigo_2' => $nombre_testigo_2,
+							'relacion_testigo_2' => $relacion_testigo_2,
+							'nombre_testigo_3' => $nombre_testigo_3,
+							'relacion_testigo_3' => $relacion_testigo_3,
+							'observacion' => $observacion,
+							'ultima_actualizacion' => $ultima_actualizacion
+						);
+	
+						$path = $_FILES['userfile']['name'];
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+						$carpeta = "archivos/prevencion/";
+						$archivo =  date("ymdHis").".".$ext;
+						$adjunto = $_FILES["userfile"]["name"];
+						if($adjunto!=""){
+							$nombre=$this->procesaArchivo($_FILES["userfile"],$archivo,$carpeta);
+							$data_mod["archivo"]=$carpeta.$archivo;
+						}
+						if($this->Prevencion_checklistmodel->ActualizarInvestigacion($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
 					}
 				}
 			}
@@ -457,96 +482,105 @@ class Prevencion_checklist extends CI_Controller {
 		public function formReuniones(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
-				//$this->security->xss_clean(strip_tags());
-
-				$hash = $this->input->post("hash_liqui");
+				//$this->security->xss_clean(strip_tags());$hash = $this->input->post("hash_liqui");
+				$this->security->xss_clean(strip_tags($hash = $this->input->post("hash_liqui")));
 				$fecha_reunion=$this->input->post("fecha");
 				$fecha_generacion=$this->input->post("fecha_generacion");
 				$inicio=$this->input->post("inicio");
 				$termino=$this->input->post("termino");
 				$area=$this->input->post("area");
-				$objetivo=$this->input->post("objetivo");
+				$this->security->xss_clean(strip_tags($objetivo=$this->input->post("objetivo")));
 				$nombre_asistentes=$this->input->post("nombre_asistentes");
 				$cargos_asistentes=$this->input->post("cargos");
-				$tema1=$this->input->post("tema_1");
-				$tema2=$this->input->post("tema_2");
-				$tema3=$this->input->post("tema_3");
-				$tema4=$this->input->post("tema_4");
-				$tema5=$this->input->post("tema_5");
-				$observacion=$this->input->post("observacion");
+				$this->security->xss_clean(strip_tags($tema1=$this->input->post("tema_1")));
+				$this->security->xss_clean(strip_tags($tema2=$this->input->post("tema_2")));
+				$this->security->xss_clean(strip_tags($tema3=$this->input->post("tema_3")));
+				$this->security->xss_clean(strip_tags($tema4=$this->input->post("tema_4")));
+				$this->security->xss_clean(strip_tags($tema5=$this->input->post("tema_5")));
+				$this->security->xss_clean(strip_tags($observacion=$this->input->post("observacion")));
 				$responsable_inspeccion=$this->input->post("responsable_inspeccion");
 				$cargo_prevencionista=$this->input->post("cargo_prevencionista");
 				$firma=$this->input->post("firma");
 
-				$asistentes = array();
-
-				for ($i = 0; $i < count($nombre_asistentes); $i++) {
-					$asistente = array(
-						"nombre" => $nombre_asistentes[$i],
-						"cargo" => $cargos_asistentes[$i]
-					);
-					$asistentes[] = $asistente;
+				if($nombre_asistentes == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe subir al menos un asistente.'));exit;
 				}
-				$JSONasistentes = json_encode($asistentes);
+				elseif($cargos_asistentes == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Agregar cargo a los asistentes.'));exit;
+				}
 
-				/*if ($this->form_validation->run("formReuniones") == FALSE){echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;}else{}*/
-				if($hash==""){
-					$data = array(
-						"fecha_reunion" => $fecha_reunion,
-						"fecha_generacion" => $fecha_generacion,
-						"inicio" => $inicio,
-						"termino" => $termino,
-						"area" => $area,
-						"objetivo" => $objetivo,
-						"asistentes" => $JSONasistentes,
-						"tema_1" => $tema1,
-						"tema_2" => $tema2,
-						"tema_3" => $tema3,
-						"tema_4" => $tema4,
-						"tema_5" => $tema5,
-						"observacion" => $observacion,
-						"responsable_inspeccion" => $responsable_inspeccion,
-						"cargo_prevencionista" => $cargo_prevencionista,
-						"firma" => $firma,
-					);
+				if ($this->form_validation->run("formReuniones") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));
+					exit;}
+				else{
 
-					$insert_id=$this->Prevencion_checklistmodel->ingresarReunion($data);
-
-					if($insert_id!=FALSE){
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
-					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+					$asistentes = array();
+					for ($i = 0; $i < count($nombre_asistentes); $i++) {
+						$asistente = array(
+							"nombre" => $nombre_asistentes[$i],
+							"cargo" => $cargos_asistentes[$i]
+						);
+						$asistentes[] = $asistente;
 					}
-				}else{
-					$data_mod= array(
-						"fecha_reunion" => $fecha_reunion,
-						"fecha_generacion" => $fecha_generacion,
-						"inicio" => $inicio,
-						"termino" => $termino,
-						"area" => $area,
-						"objetivo" => $objetivo,
-						"asistentes" => $JSONasistentes,
-						"tema_1" => $tema1,
-						"tema_2" => $tema2,
-						"tema_3" => $tema3,
-						"tema_4" => $tema4,
-						"tema_5" => $tema5,
-						"observacion" => $observacion,
-						"responsable_inspeccion" => $responsable_inspeccion,
-						"cargo_prevencionista" => $cargo_prevencionista,
-						"firma" => $firma,
-					);
-					if($this->Prevencion_checklistmodel->ActualizarReunion($hash,$data_mod)){
-						echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+					$JSONasistentes = json_encode($asistentes);
+
+					if($hash==""){
+						$data = array(
+							"fecha_reunion" => $fecha_reunion,
+							"fecha_generacion" => $fecha_generacion,
+							"inicio" => $inicio,
+							"termino" => $termino,
+							"area" => $area,
+							"objetivo" => $objetivo,
+							"asistentes" => $JSONasistentes,
+							"tema_1" => $tema1,
+							"tema_2" => $tema2,
+							"tema_3" => $tema3,
+							"tema_4" => $tema4,
+							"tema_5" => $tema5,
+							"observacion" => $observacion,
+							"responsable_inspeccion" => $responsable_inspeccion,
+							"cargo_prevencionista" => $cargo_prevencionista,
+							"firma" => $firma,
+						);
+	
+						$insert_id=$this->Prevencion_checklistmodel->ingresarReunion($data);
+	
+						if($insert_id!=FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
 					}else{
-						echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						$data_mod= array(
+							"fecha_reunion" => $fecha_reunion,
+							"fecha_generacion" => $fecha_generacion,
+							"inicio" => $inicio,
+							"termino" => $termino,
+							"area" => $area,
+							"objetivo" => $objetivo,
+							"asistentes" => $JSONasistentes,
+							"tema_1" => $tema1,
+							"tema_2" => $tema2,
+							"tema_3" => $tema3,
+							"tema_4" => $tema4,
+							"tema_5" => $tema5,
+							"observacion" => $observacion,
+							"responsable_inspeccion" => $responsable_inspeccion,
+							"cargo_prevencionista" => $cargo_prevencionista,
+							"firma" => $firma,
+						);
+						if($this->Prevencion_checklistmodel->ActualizarReunion($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
 					}
 				}
 			}
 			else{
 				exit('No direct script access allowed');
 			}
-			
 		}
 
 		public function getReunionesList(){
