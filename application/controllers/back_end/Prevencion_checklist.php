@@ -52,7 +52,7 @@ class Prevencion_checklist extends CI_Controller {
     	$this->acceso();
 	    $datos = array(
 	        'titulo' => "Prevención Terreno",
-	        'contenido' => "Prevencion_checklist/inicio",
+	        'contenido' => "prevencion_checklist/inicio",
 	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 	    );  
 		$this->load->view('plantillas/plantilla_back_end',$datos);
