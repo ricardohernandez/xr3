@@ -199,6 +199,7 @@
         $("#hash_liqui").val("");
         $('#modal_epps').modal('toggle'); 
         $("#formCondiciones input,#formCondiciones select,#formCondiciones button,#formCondiciones").prop("disabled", false);
+        $("#cargo,#zona ,#plaza,#proyecto").prop("disabled", true);
         $(".btn_ingreso").attr("disabled", false);
         $(".cierra_modal").attr("disabled", false);
         $("#periodo").val(new Date().getFullYear() + '-' + ((new Date().getMonth()+1) < 10 ? '0' : '') + (new Date().getMonth()+1))
@@ -541,6 +542,7 @@
                 </div>
               </div>
 
+
               <div class="col-lg-6">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Fecha de inspección</label>
@@ -583,6 +585,13 @@
                   <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Zona</label>
                   <select id="zona" class="form-control form-control-sm" name="zona" style="width:100%!important;">
                       <option value="">Seleccione zona</option>
+                      <?php 
+                      foreach($areas as $key){
+                      ?>
+                        <option value="<?php echo $key["id"] ?>"><?php echo $key["area"] ?></option>
+                      <?php
+                      }
+                      ?>
                   </select>
                 </div>
               </div>
@@ -658,16 +667,16 @@
 
                           <td><p class="table_text">
                             <select  name="estado_epps[]" id="estado_epps_<?php echo $key["id"] ?>"  class="estado input-xs">
-                              <option selected value="No">No</option>
-                              <option value="Si">Si</option>
+                              <option value="No">No</option>
+                              <option selected value="Si">Si</option>
                               <option value="No aplica">No aplica</option>
                             </select>
                           </td>
                           
                           <td><p class="table_text">
                             <select  name="uso_epps[]" id="uso_epps_<?php echo $key["id"] ?>"  class="uso input-xs">
-                              <option selected value="Uso inadecuado">Uso inadecuado</option>
-                              <option value="Uso adecuado">Uso adecuado</option>
+                              <option value="Inadecuado">Inadecuado</option>
+                              <option selected value="Adecuado">Adecuado</option>
                               <option value="No aplica">No aplica</option>
                             </select>
                           </td>

@@ -200,6 +200,7 @@
         $("#hash_liqui").val("");
         $('#modal_reuniones').modal('toggle'); 
         $("#formReuniones input,#formReuniones select,#formReuniones button,#formReuniones").prop("disabled", false);
+        $("#cargo_prevencionista").prop("disabled", true);
         $(".btn_ingreso").attr("disabled", false);
         $(".cierra_modal").attr("disabled", false);
         $("#periodo").val(new Date().getFullYear() + '-' + ((new Date().getMonth()+1) < 10 ? '0' : '') + (new Date().getMonth()+1))

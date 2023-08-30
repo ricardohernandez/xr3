@@ -232,6 +232,7 @@
         $("#hash_liqui").val("");
         $('#modal_IA').modal('toggle'); 
         $("#formInvestigaciones input,#formInvestigaciones select,#formInvestigaciones button,#formInvestigaciones").prop("disabled", false);
+        $("#cargo_informante ,#cargo_afectado").prop("disabled", true);
         $(".btn_ingreso").attr("disabled", false);
         $(".cierra_modal").attr("disabled", false);
         $("#periodo").val(new Date().getFullYear() + '-' + ((new Date().getMonth()+1) < 10 ? '0' : '') + (new Date().getMonth()+1))

@@ -36,6 +36,16 @@ class Prevencion_checklistmodel extends CI_Model {
 		return FALSE;
 	}
 
+	public function listaAreas(){
+		$this->db->select('a.*');	
+		$this->db->from('usuarios_areas as a');
+		$this->db->order_by('area', 'asc');
+		$res=$this->db->get();
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+	}
+
 	public function listaComunas(){
 		$this->db->select('c.*');	
 		$this->db->from('comunas as c');

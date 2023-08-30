@@ -70,6 +70,7 @@ class Prevencion_checklist extends CI_Controller {
 				$cargos=$this->Prevencion_checklistmodel->listacargos();
 				$plazas=$this->Prevencion_checklistmodel->listaplazas();
 				$proyectos=$this->Prevencion_checklistmodel->listaproyectos();
+				$areas=$this->Prevencion_checklistmodel->listaAreas();
 
 				$datos = array(
 					'hoy' => $fecha_hoy,
@@ -80,8 +81,9 @@ class Prevencion_checklist extends CI_Controller {
 					'cargos' => $cargos,
 					'plazas' => $plazas,
 					'proyectos' => $proyectos,
+					'areas' => $areas,
 				);
-				$this->load->view('back_end/Prevencion_checklist/epps',$datos);
+				$this->load->view('back_end/prevencion_checklist/epps',$datos);
 			}
 		}
 
@@ -295,9 +297,8 @@ class Prevencion_checklist extends CI_Controller {
 					'comunas' => $comunas,
 					'trabajadores' => $trabajadores,
 					'cargos' => $cargos,
-
 				);
-				$this->load->view('back_end/Prevencion_checklist/investigacion_accidentes',$datos);
+				$this->load->view('back_end/prevencion_checklist/investigacion_accidentes',$datos);
 			}
 		}
 
@@ -475,7 +476,7 @@ class Prevencion_checklist extends CI_Controller {
 					'trabajadores' => $trabajadores,
 					'cargos' => $cargos,
 				);
-				$this->load->view('back_end/Prevencion_checklist/reuniones_equipo',$datos);
+				$this->load->view('back_end/prevencion_checklist/reuniones_equipo',$datos);
 			}
 		}
 
