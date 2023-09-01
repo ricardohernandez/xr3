@@ -401,7 +401,7 @@ function getPeriodo($periodo){
 		return ($mes_anterior);
 	}
 
-	if($periodo=="anterior2"){
+	if($periodo=="anterior_2"){
 		return ($mes_anterior2);
 	}
 

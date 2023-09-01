@@ -93,6 +93,8 @@ class Igtmodel extends CI_Model {
 			$this->db->select('utn.meta_actual as meta');
 		}elseif($periodo=="anterior"){
 			$this->db->select('utn.meta_anterior as meta');
+		}elseif($periodo=="anterior_2"){
+			$this->db->select('utn.meta_anterior as meta');
 		}
 
 		$this->db->where('id_nivel', $perfil_tecnico);

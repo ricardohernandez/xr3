@@ -1064,7 +1064,7 @@
          "select" : true,
          // "columnDefs": [{ orderable: false, targets: 0 }  ],
          "ajax": {
-            "url":"<?php echo base_url();?>listaCalidad",
+            "url":"<?php echo base_url();?>listaCalidadIGT",
             "dataSrc": function (json) {
               $(".btn_filtro_calidad").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
               $(".btn_filtro_calidad").prop("disabled" , false);
@@ -1073,6 +1073,8 @@
               var hasta_actual="<?php echo $hasta_actual_calidad; ?>"
               var desde_anterior="<?php echo $desde_anterior_calidad; ?>"
               var hasta_anterior="<?php echo $hasta_anterior_calidad; ?>"
+              var desde_anterior2="<?php echo $desde_anterior2_calidad; ?>"
+              var hasta_anterior2="<?php echo $hasta_anterior2_calidad; ?>"
 
               var desde_actual="<?php echo $desde_actual_calidad; ?>"
               var hasta_actual="<?php echo $hasta_actual_calidad; ?>"
@@ -1083,7 +1085,8 @@
               var hasta_actual_relojes ="<?php echo $hasta_actual_relojes; ?>"
               var desde_anterior_relojes ="<?php echo $desde_anterior_relojes; ?>"
               var hasta_anterior_relojes ="<?php echo $hasta_anterior_relojes; ?>"
-
+              var desde_anterior2_relojes ="<?php echo $desde_anterior2_relojes; ?>"
+              var hasta_anterior2_relojes ="<?php echo $hasta_anterior2_relojes; ?>"
 
               var periodo =$("#periodo_detalle").val()
 
@@ -1091,6 +1094,8 @@
                 $("#fecha_f").val(`${desde_actual_relojes.substring(0,5)} - ${hasta_actual_relojes.substring(0,5)}` );
               }else if(periodo=="anterior"){
                 $("#fecha_f").val(`${desde_anterior_relojes.substring(0,5)} - ${hasta_anterior_relojes.substring(0,5)}`);
+              }else if(periodo=="anterior_2"){
+                $("#fecha_f").val(`${desde_anterior2_relojes.substring(0,5)} - ${hasta_anterior2_relojes.substring(0,5)}`);
               }
 
               if($("#trabajadores").val()!=""){
@@ -1567,6 +1572,7 @@
           <select id="periodo_detalle" name="periodo" class="custom-select custom-select-sm" style="font-size: 1rem!important;">
             <option value="actual" selected><?php echo $mes_actual ?></option>
             <option value="anterior"><?php echo $mes_anterior ?></option>
+            <option value="anterior_2"><?php echo $mes_anterior2 ?></option>
           </select>
         </div>
       </div>

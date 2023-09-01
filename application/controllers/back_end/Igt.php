@@ -166,22 +166,30 @@ class Igt extends CI_Controller {
 				$hasta_actual_calidad = date('d-m-Y', strtotime(date('Y-m-24')));
 				$desde_anterior_calidad = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_calidad = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior2_calidad = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior2_calidad = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
 
 				$desde_actual_prod = date('d-m-Y', strtotime(date('Y-m-25')));
 				$hasta_actual_prod = date('d-m-Y', strtotime('+1 month', strtotime(date('Y-m-24'))));
 				$desde_anterior_prod = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_prod = date('d-m-Y', strtotime(date('Y-m-24')));
+				$desde_anterior2_prod = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior2_prod = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
 
 			}else{
 				$desde_actual_calidad = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
 				$hasta_actual_calidad = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				$desde_anterior_calidad = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_calidad = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				$desde_anterior2_calidad = date('d-m-Y', strtotime('-4 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior2_calidad = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-24'))));
 
 				$desde_actual_prod = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-25'))));
 				$hasta_actual_prod = date('d-m-Y',  strtotime(date('Y-m-24')));
 				$desde_anterior_prod = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-25'))));
 				$hasta_anterior_prod = date('d-m-Y', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				$desde_anterior2_prod = date('d-m-Y', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta_anterior2_prod = date('d-m-Y', strtotime('-2 month', strtotime(date('Y-m-24'))));
 
 			}
 			
@@ -191,19 +199,26 @@ class Igt extends CI_Controller {
 		        'hasta_actual_calidad' => $hasta_actual_calidad,
 		        'desde_anterior_calidad' => $desde_anterior_calidad,
 		        'hasta_anterior_calidad' => $hasta_anterior_calidad,
+				'desde_anterior2_calidad' => $desde_anterior2_calidad,
+		        'hasta_anterior2_calidad' => $hasta_anterior2_calidad,
 
 		        'desde_actual_prod' => $desde_actual_prod,
 		        'hasta_actual_prod' => $hasta_actual_prod,
 		        'desde_anterior_prod' => $desde_anterior_prod,
 		        'hasta_anterior_prod' => $hasta_anterior_prod,
+				'desde_anterior2_prod' => $desde_anterior2_prod,
+		        'hasta_anterior2_prod' => $hasta_anterior2_prod,
 
 		        'desde_actual_relojes' => $desde_actual_prod,
 		        'hasta_actual_relojes' => $hasta_actual_prod,
 		        'desde_anterior_relojes' => $desde_anterior_prod,
 		        'hasta_anterior_relojes' => $hasta_anterior_prod,
+				'desde_anterior2_relojes' => $desde_anterior2_prod,
+		        'hasta_anterior2_relojes' => $hasta_anterior2_prod,
 		        
 		        'mes_actual' => mesesPeriodo("actual"),
 		        'mes_anterior' =>mesesPeriodo("anterior"),
+		        'mes_anterior2' =>mesesPeriodo("anterior2"),
 		        'jefes' => $this->Calidadmodel->listaJefes(),
 		    );
 
@@ -479,7 +494,7 @@ class Igt extends CI_Controller {
 
 	/*******CALIDAD*******/
 
-		public function listaCalidad(){
+		public function listaCalidadIGT(){
 			$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
 			$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
@@ -491,6 +506,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -500,6 +518,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
@@ -527,6 +548,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -536,6 +560,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
 					$hasta = date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde = date('Y-m-d', strtotime('-4 month', strtotime(date('Y-m-25'))));
+					$hasta = date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
@@ -621,6 +648,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -630,6 +660,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
@@ -658,6 +691,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -667,6 +703,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
@@ -751,6 +790,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 
 			}else{
@@ -760,6 +802,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
 
@@ -786,6 +831,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
 				}
 				
 			}else{
@@ -795,6 +843,9 @@ class Igt extends CI_Controller {
 				}elseif($periodo=="anterior"){
 					$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
 					$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+				}elseif($periodo=="anterior_2"){
+					$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+					$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
 				}
 			}
 

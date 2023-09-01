@@ -48,9 +48,10 @@
 	$route['dataIgt'] = "back_end/igt/dataIgt";
 	$route['graficoProductividad'] = "back_end/igt/graficoProductividad";
 	$route['listaTrabajadoresIGT'] = "back_end/igt/listaTrabajadoresIGT";
+	$route['listaCalidadIGT'] = "back_end/igt/listaCalidadIGT";
 	$route['dataGraficosIgt'] = "back_end/igt/dataGraficosIgt";
 	$route['formCargaMasivaIgt'] = "back_end/igt/formCargaMasivaIgt";
-
+	
 /*******DOCUMENTACION*******/
 
 	$route['documentacion/capacitacion'] = "back_end/documentacion/indexCapacitacion";
