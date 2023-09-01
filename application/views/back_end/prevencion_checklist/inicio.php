@@ -44,52 +44,52 @@
      },
     });
 
-    $("#menu_listado").addClass('disabled_sub');
+    $("#condicion").addClass('disabled_sub');
 	  $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
 	  $(".menu_lista li").removeClass('menuActivo');       
-	  $("#menu_listado").addClass('menuActivo');  
+	  $("#condicion").addClass('menuActivo');  
 
     $.get(base_url+"getEPPSInicio", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_listado").removeClass('disabled_sub');
+        $("#condicion").removeClass('disabled_sub');
     });
  
-    $(document).off('click', '#menu_listado').on('click', '#menu_listado',function(event) {
+    $(document).off('click', '#condicion').on('click', '#condicion',function(event) {
       event.preventDefault();
-      $("#menu_listado").addClass('disabled_sub');
+      $("#condicion").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_listado").addClass('menuActivo');  
+      $("#condicion").addClass('menuActivo');  
 
       $.get(base_url+"getEPPSInicio", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_listado").removeClass('disabled_sub');
+        $("#condicion").removeClass('disabled_sub');
       });
     });
 
-    $(document).off('click', '#menu_listado2').on('click', '#menu_listado2',function(event) {
+    $(document).off('click', '#investigacion').on('click', '#investigacion',function(event) {
       event.preventDefault();
-      $("#menu_listado2").addClass('disabled_sub');
+      $("#investigacion").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_listado2").addClass('menuActivo');  
+      $("#investigacion").addClass('menuActivo');  
 
       $.get(base_url+"getIAInicio", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_listado2").removeClass('disabled_sub');
+        $("#investigacion").removeClass('disabled_sub');
       });
     });
 
-    $(document).off('click', '#menu_listado3').on('click', '#menu_listado3',function(event) {
+    $(document).off('click', '#reunion').on('click', '#reunion',function(event) {
       event.preventDefault();
-      $("#menu_listado3").addClass('disabled_sub');
+      $("#reunion").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
       $(".menu_lista li").removeClass('menuActivo');       
-      $("#menu_listado3").addClass('menuActivo');  
+      $("#reunion").addClass('menuActivo');  
 
       $.get(base_url+"getREInicio", function( data ) {
         $(".contenedor_app").html(data);    
-        $("#menu_listado3").removeClass('disabled_sub');
+        $("#reunion").removeClass('disabled_sub');
       });
     });
   })
@@ -105,9 +105,9 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-        <li id="menu_listado" class="active"><a> <i class="fa fa-list-alt"></i> EPPS y condicion final  </a></li>
-        <li id="menu_listado2" class="active"><a> <i class="fa fa-list-alt"></i> Investigación de accidentes  </a></li>
-        <li id="menu_listado3" class="active"><a> <i class="fa fa-list-alt"></i> Reuniones de equipo  </a></li>
+        <li id="condicion" class="active"><a> <i class="fa fa-list-alt"></i> EPPS y condiciones encontradas  </a></li>
+        <li id="investigacion" class="active"><a> <i class="fa fa-list-alt"></i> Investigación de accidentes  </a></li>
+        <li id="reunion" class="active"><a> <i class="fa fa-list-alt"></i> Reuniones de equipo  </a></li>
       </ul>  
     </div> 
   </div> 

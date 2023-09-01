@@ -497,8 +497,214 @@ $config = array(
                         'rules'   => 'trim|required'
                   )
              
-             )
-            
-               
+            ),
+
+             'formCondiciones' => array(
+                  array(
+                        'field'   => 'responsable_inspeccion',
+                        'label'   => 'Responsable de inspeccion',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'cargo',
+                        'label'   => 'Cargo del responsable ',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'fecha_inspeccion',
+                        'label'   => 'Fecha de inspección',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'fecha_generacion',
+                        'label'   => 'Fecha de generación de reporte',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tecnico_auditado',
+                        'label'   => 'Nombre de técnico auditado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'rut_tecnico_auditado',
+                        'label'   => 'Rut de técnico auditado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'zona',
+                        'label'   => 'Zona',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'plaza',
+                        'label'   => 'Plaza',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'proyecto',
+                        'label'   => 'Proyecto',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'herramientas[]',
+                        'label'   => 'EPPS',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'riesgos[]',
+                        'label'   => 'Riesgos del entorno',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'acciones[]',
+                        'label'   => 'Acciones recomendadas',
+                        'rules'   => 'trim|required'
+                  )
+             
+                  ),
+             'formInvestigaciones' => array(
+                  array(
+                        'field'   => 'fecha',
+                        'label'   => 'Fecha',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'hora',
+                        'label'   => 'Hora',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tipo',
+                        'label'   => 'Tipo',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'lugar',
+                        'label'   => 'Lugar',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'direccion',
+                        'label'   => 'Dirección',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'comuna',
+                        'label'   => 'Comuna',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'nombre_informante',
+                        'label'   => 'Nombre del informante',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'cargo_informante',
+                        'label'   => 'Cargo del informante',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'descripcion',
+                        'label'   => 'Descripción del incidente',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'nombre_afectado',
+                        'label'   => 'Nombre del afectado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'cargo_afectado',
+                        'label'   => 'Cargo del afectado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'rut_afectado',
+                        'label'   => 'RUT del afectado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'horas_trabajadas',
+                        'label'   => 'Horas trabajadas',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'gravedad_lesion',
+                        'label'   => 'Gravedad de lesión',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tipo_lesion',
+                        'label'   => 'Tipo de lesión',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'nombre_testigo_1',
+                        'label'   => 'Nombre del testigo 1',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'relacion_testigo_1',
+                        'label'   => 'Relación del testigo 1',
+                        'rules'   => 'trim|required'
+                  ),
+                  ),
+             'formReuniones' => array(
+                  array(
+                        'field'   => 'fecha',
+                        'label'   => 'Fecha',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'area',
+                        'label'   => 'Area',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'inicio',
+                        'label'   => 'Hora de inicio',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'termino',
+                        'label'   => 'Hora de termino',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'nombre_asistentes[]',
+                        'label'   => 'Nombre de asistentes',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'cargos[]',
+                        'label'   => 'Cargo de asistentes',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'fecha_generacion',
+                        'label'   => 'Fecha de registro',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tema_1',
+                        'label'   => 'Tema 1',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'responsable_inspeccion',
+                        'label'   => 'Prevencionista responsable',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'cargo_prevencionista',
+                        'label'   => 'Cargo del prevencionista',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'fecha_generacion',
+                        'label'   => 'Fecha de registro',
+                        'rules'   => 'trim|required'
+                  ),
+             )        
  );
 
