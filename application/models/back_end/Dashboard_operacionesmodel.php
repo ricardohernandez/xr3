@@ -528,7 +528,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 				if($empresa=="xr3"){
 					$cabeceras = [
 						"comuna",
-						"EMETEL",['role' => 'annotation']
+						"XR3",['role' => 'annotation']
 					];
 				}elseif($empresa=="emetel"){
 					$cabeceras = [
@@ -554,24 +554,35 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 				if($empresa!=""){
 					if($empresa=="xr3"){
-						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
-						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
+						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : NULL;
+						$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : NULL;
 					}elseif($empresa=="emetel"){
-						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
-						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
+						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : NULL;
+						$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : NULL;
 					}
 				}else{
-					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
-					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : 0;
-					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
-					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : 0;
+					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : NULL;
+					$temp[] = ($key["xr3_inversion"] != 0) ? (float)$key["xr3_inversion"] : NULL;
+					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : NULL;
+					$temp[] = ($key["emetel"] != 0) ? (float)$key["emetel"] : NULL;
 				}
 			  
 				$array[] = $temp;
 			  }
 			  
-		
-			return $array;
+			
+			function filterNullRows($row) {
+				return !(count($row) == 3 && is_null($row[1]) && is_null($row[2]));
+			}
+
+			// Aplicar el filtro al arreglo de datos
+			$result = array_filter($array, 'filterNullRows');
+
+			// Convertir el resultado de nuevo a un arreglo indexado
+			$result = array_values($result);
+
+
+			return $result;
 		}
 
 
@@ -634,6 +645,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 		public function getComunasXcomuna(){
 			$this->db->distinct();
 			$this->db->select('comuna');
+			$this->db->order_by('comuna', 'asc');
 			$res=$this->db->get('dashboard_comparacion_comuna');
 			return $res->result_array();
 		}

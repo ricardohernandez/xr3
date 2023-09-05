@@ -68,7 +68,7 @@
               Técnico afectado 
             </td>
             <td width="80%" style="padding-left:20px;border-color:#ccc;border-collapse: collapse;padding:2px;margin:1px;font-size:13px;font-family: Arial,Helvetica Neue,Helvetica,sans-serif;">
-            <?php echo $dato["tecnico"];?>
+            <?php echo $dato["tecnico"] ?? '' ?>
             </td>
           </tr>
 
