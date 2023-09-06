@@ -1974,7 +1974,7 @@
           <div class="card-header card_dash">
             <div class="form-row">
               <div class="col-12 col-lg-4">
-                 <span class="title_section">Detalle OTS no detectadas en drive</span>
+                 <span class="title_section">Detalle OTS no detectadas en TQW</span>
               </div>
 
               <div class="col-8 col-lg-6">  
