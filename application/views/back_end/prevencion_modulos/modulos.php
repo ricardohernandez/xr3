@@ -48,7 +48,6 @@
     /*****DATATABLE*****/  
 
       base_url = "<?php echo base_url() ?>";
-      tipo = "<?php echo $tipo ?>";
       const p = "<?php echo $this->session->userdata('id_perfil') ?>";
 
       var tb = $('#tb').DataTable({
@@ -72,7 +71,8 @@
               return json;
             },       
             data: function(param){
-              param.tipo = tipo
+              var tipo = $("#tipo").val();
+              param.tipo = tipo;
             }
           },    
           "columns": [
@@ -388,6 +388,10 @@
     
     /*****OTROS*****/  
 
+      $(document).off('change', '#tipo').on('change', '#tipo',function(event) {
+        tb.ajax.reload()
+      }) 
+
       async function activarTymce(tema) {
         // Eliminar la instancia actual de TinyMCE si existe
         if (tinymce.activeEditor) {
@@ -467,12 +471,18 @@
 
   <div class="form-row">
 
-    <div div class="col-6 col-lg-6"> 
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page"><a href="">Prevención de riesgos - <?php echo $tipo_str?></a></li>
-        </ol>
-      </nav>
+    <div class="col-6 col-lg-6">  
+      <div class="form-group">
+        <select id="tipo" class="form-control form-control-sm" name="tipo" style="width:100%!important;">
+          <?php 
+          foreach($documentos as $index => $value){
+          ?>
+            <option value="<?php echo $value ?>"><?php echo $index ?></option>
+          <?php
+          }
+          ?>
+        </select>
+      </div>
     </div>
 
     <div class="col-6 col-lg-4">  
@@ -480,7 +490,6 @@
       <input type="text" placeholder="Ingrese su busqueda..." id="buscador" class="buscador form-control form-control-sm">
       </div>
     </div>
-
     
     <div class="col-6 col-lg-2"> 
       <div class="form-group">

@@ -142,13 +142,7 @@
                   <a class="sidenav__menu-url" href="<?php echo base_url() ?>documentacion/prevencion_riesgos">Prevenci&oacute;n riesgos</a>
                   <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
                   <ul class="sidenav__menu-dropdown">
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/normativas">Normativas</a>
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/identificacion_riesgos">Identificación riesgos</a>
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/medidas_proteccion">Medidas de prevención y protección</a>
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/seguridad_equipos_herramientas">Seguridad en el manejo de equipos y herramientas</a>
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
-                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
+                     <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos">Documentos</a>
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>prevencion_riesgos/checklist_prevencion">CKL2 - Checklist EPP y Riesgos del entorno </a>
                   </ul>
                </li>
@@ -330,13 +324,7 @@
                            <li class="nav__dropdown">
                               <a class="menu_list" href="<?php echo base_url() ?>documentacion/prevencion_riesgos"> Prevenci&oacute;n riesgos</a>
                               <ul class="nav__dropdown-menu">
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/normativas">Normativas</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/identificacion_riesgos">Identificación riesgos</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/medidas_proteccion">Medidas de prevención y protección</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/seguridad_equipos_herramientas">Seguridad en el manejo de equipos y herramientas</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos">Documentos</a>
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/checklist_prevencion">CKLP - Checklist EPP y Riesgos del entorno </a>
                                  </li>
                               </ul>

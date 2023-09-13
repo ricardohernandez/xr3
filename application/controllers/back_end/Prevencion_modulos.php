@@ -41,9 +41,7 @@ class Prevencion_modulos extends CI_Controller {
 
 		public function indexPrevencionModulos(){
 	    	$this->acceso();
-
 			$tipo = $this->uri->segment(2);
-
 		    $datos = array(
 		        'titulo' => "Prevención riesgos XR3",
 		        'contenido' => "prevencion_modulos/inicio",
@@ -58,10 +56,21 @@ class Prevencion_modulos extends CI_Controller {
 			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
 			$this->visitas("Inicio",22);
 
+			$documentos = [
+				'Normativas y regulaciones de seguridad' => 1,
+				'Identificación de riesgos' => 2,
+				'Medidas de prevención y protección' => 3,
+				'Seguridad en el manejo de equipos y herramientas' => 4,
+				'Primeros auxilios y manejo de emergencias' => 5,
+				'Ergonomía y cuidado postural' => 6,
+				'Comunicación y conciencia situacional' => 7
+			];	
+
 			if($this->input->is_ajax_request()){
 
 				$datos=array(	
 					"tipo" => $tipo,
+					"documentos" =>$documentos,
 					"tipo_str" => $this->getTipoCompletoDoc($tipo)
 			    );
 
@@ -71,9 +80,7 @@ class Prevencion_modulos extends CI_Controller {
 
 		public function getList(){
 			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
-
-			$lista = $this->Prevencion_modulosmodel->getList($this->getTipoDoc($tipo));
-
+			$lista = $this->Prevencion_modulosmodel->getList($tipo);
 			foreach ($lista as &$key) {
 				$key['descripcion'] = strip_tags($key['descripcion']);
 				$key['descripcion'] = html_entity_decode($key['descripcion']);
