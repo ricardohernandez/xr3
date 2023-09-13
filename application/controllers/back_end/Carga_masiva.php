@@ -435,7 +435,7 @@ class Carga_masiva extends CI_Controller {
 					$pdf->SetXY(149.5,131.9);$pdf->Cell(100, 10, "$ ".number_format($fila[10], 0, ',', '.'), 0, 1); //Comision por produccion y calidad
 
 					$pdf->SetXY(58,139.2);
-					$pdf->Cell(100, 10, $fila[57]." puntos", 0, 1); //HFC puntaje promedio
+					$pdf->Cell(100, 10, number_format($fila[57], 2, ',', '.')." puntos", 0, 1); //HFC puntaje promedio
 					$pdf->SetXY(154.8,139.2);
 					$pdf->Cell(100, 10, number_format($fila[54], 2) . '%', 0, 1); //HFC % calidad 30 dias
 
@@ -450,7 +450,7 @@ class Carga_masiva extends CI_Controller {
 					$pdf->Cell(100, 10, number_format($fila[53], 2) . '%', 0, 1); // FTTH % calidad 30 dias
 
 					$pdf->SetXY(58,161.3);
-					$pdf->Cell(100, 10, $fila[55], 0, 1); // FTTHOT promedio
+					$pdf->Cell(100, 10, number_format($fila[55], 2, ',', '.'), 0, 1); // FTTHOT promedio
 					$pdf->SetXY(154.8,161.3);
 					$pdf->Cell(100, 10, number_format($fila[48], 2) . '%', 0, 1); // FTTH % de cumplimiento calidad
 

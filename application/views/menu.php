@@ -337,7 +337,7 @@
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/primeros_auxilios">Primeros auxilios y manejo de emergencias</a>
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/ergonomia_y_cuidado">Ergonomía y cuidado postural</a>
                                  <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/comunicacion_conciencia">Comunicación y conciencia situacional</a>
-                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/checklist_prevencion">CKL2 - Checklist EPP y Riesgos del entorno </a>
+                                 <li><a  class="menu_list" href="<?php echo base_url() ?>prevencion_riesgos/checklist_prevencion">CKLP - Checklist EPP y Riesgos del entorno </a>
                                  </li>
                               </ul>
                            </li>
