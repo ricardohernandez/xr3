@@ -419,15 +419,30 @@ class Dashboard_operacionesmodel extends CI_Model {
 				$temp = [];
 
 				$temp[] = (string)$key["comuna"]." ".mesesCorto(date("n", strtotime($key["fecha"]))) . "-" . date("y", strtotime($key["fecha"]));
-				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : null;
-				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : null;
+				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : NULL;
+				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : NULL;
 				$temp[] = strtotime($key["fecha"]);
 				$array[] = $temp;
 			}
-		
-			return $array;
+			
+			$nuevoArray = $this->eliminarElementosNull($array);
+
+			return $nuevoArray;
 		}
 
+		function eliminarElementosNull($array) {
+			$resultado = [];
+		
+			foreach ($array as $elemento) {
+				// Verificar si los índices 1 y 2 son NULL
+				if ($elemento[1] !== null && $elemento[2] !== null) {
+					$resultado[] = $elemento;
+				}
+			}
+		
+			return $resultado;
+		}
+		
 		public function graficoProdxEps($tipo,$mes_inicio,$mes_termino) {
 			$campos = $tipo['campos'];
 			$cabeceras = $tipo['cabeceras'];

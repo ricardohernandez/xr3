@@ -237,7 +237,7 @@
       width: ancho,
       height: 480,
       hAxis: {
-        title: 'asd',
+        title: '',
         minValue: 0,
        /*  direction: -1,  */
         slantedText: true, 
@@ -253,7 +253,7 @@
         }
       },
       vAxis: {
-        title: 'asd',
+        title: '',
         titleTextStyle: {color: '#808080',italic:false} ,
 
         textStyle: {
