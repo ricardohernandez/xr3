@@ -508,11 +508,12 @@
             $(".agrega_linea_cont_ingresos").show();
         }
       }else{
+        var correlativo = $('.corr').length;
         var html ='<tr>'+
                   '<td><p class="table_text corr">Asistente</p></td>'+
                     '<td><p class="table_text">'+
                         '<p class="table_text">'+
-                          '<select id="nombre_asistentes" name="nombre_asistentes[]" style="width:100%!important;" class="form-control form-control-sm">'+
+                          '<select id="nombre_asistentes_'+correlativo+'" name="nombre_asistentes[]" style="width:100%!important;" class="form-control form-control-sm">'+
                             '<option value="">Seleccione Trabajador</option>'+
                             option_trabajadores +
                           '</select>'+
@@ -520,7 +521,7 @@
                     '</td>'+
                     '<td><p class="table_text">'+
                       '<p class="table_text">'+
-                        '<select id="cargos" name="cargos[]" style="width:100%!important;" class="form-control form-control-sm">'+
+                        '<select disabled id="cargos_'+correlativo+'" name="cargos[]" style="width:100%!important;" class="form-control form-control-sm">'+
                             '<option value="">Seleccione cargo</option>'+
                             option_cargos +
                         '</select>'+
@@ -528,7 +529,7 @@
                   '</td>'+
                 '</tr>';
         $(".form_detalle_asistentes").append(html);
-        var correlativo = $('.corr').length;
+
             $(".corr:last").val(correlativo);
             $(".corr").prop("disabled",true);
             $(".agrega_linea_cont_ingresos").show();
@@ -543,6 +544,18 @@
             }
         });
     })
+
+    $(document).off('change', 'select[name="nombre_asistentes[]"]').on('change', 'select[name="nombre_asistentes[]"]', function(event) {
+      var valor = $(this).val();
+      var id = this.id;
+      var i = id.charAt(id.length - 1);
+      const trabajadores = <?php echo json_encode($trabajadores); ?>;
+        trabajadores.forEach(trabajador => {
+              if (trabajador.id === valor) {
+                document.getElementById("cargos_"+i).value = trabajador.id_cargo;
+              }
+          });
+    });
       
   })
 </script>

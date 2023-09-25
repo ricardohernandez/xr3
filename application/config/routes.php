@@ -87,6 +87,9 @@
 	$route['prevencion_riesgos/primeros_auxilios'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
 	$route['prevencion_riesgos/ergonomia_y_cuidado'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
 	$route['prevencion_riesgos/comunicacion_conciencia'] = "back_end/Prevencion_modulos/indexPrevencionModulos";
+
+	$route['prevencion_riesgos'] = "back_end/Prevencion_modulos/indexPrevencionModulos"; //NUEVO
+
 	$route['vistaPrevencionModulos'] = "back_end/Prevencion_modulos/vistaPrevencionModulos";
 	
 	$route['getListPrevencionModulos'] = "back_end/Prevencion_modulos/getList";
