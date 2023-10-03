@@ -782,4 +782,45 @@ class Rop extends CI_Controller {
 			}
 		}
 
+	/******************* GRAFICOS *******************/
+
+	public function getResumenSyr(){
+		$desde=date('Y-m-d', strtotime('-35 day', strtotime(date("d-m-Y"))));
+		$hasta=date('Y-m-d');
+		if($this->input->is_ajax_request()){
+			$datos=array(	
+				'desde' => $desde,
+				'hasta' => $hasta,
+				'tipos' => $this->Ropmodel->listaTipos(),			
+			);
+			$this->load->view('back_end/rop/resumen',$datos);
+		}
+	}
+
+	public function graphRequerimientos(){
+		$desde=date('Y-m-d', strtotime('-35 day', strtotime(date("d-m-Y"))));
+		$hasta=date('Y-m-d');
+		$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
+
+		if($desde!=""){$desde=date("Y-m-d",strtotime($desde));
+		}else{$desde="";}
+		if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));
+		}else{$hasta="";}
+
+		echo json_encode(array("data"=>$this->Ropmodel->graphRequerimientos($desde,$hasta,$tipo)));
+	}
+
+	public function graphRequerimientosSeg(){
+		$desde=date('Y-m-d', strtotime('-35 day', strtotime(date("d-m-Y"))));
+		$hasta=date('Y-m-d');
+		$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
+
+		if($desde!=""){$desde=date("Y-m-d",strtotime($desde));
+		}else{$desde="";}
+		if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));
+		}else{$hasta="";}
+
+		echo json_encode(array("data"=>$this->Ropmodel->graphRequerimientosSeg($desde,$hasta,$tipo)));
+	}
+
 }

@@ -385,8 +385,14 @@
 	$route['eliminaMantenedorReq'] = "back_end/rop/eliminaMantenedorReq";
 	$route['getDataMantReq'] = "back_end/rop/getDataMantReq";
 	$route['excelMantReq/(:any)'] = "back_end/rop/excelMantReq/$1";
-	
-	
+
+	/******************RESUMEN******************/
+
+	$route['getResumenSyr'] = "back_end/rop/getResumenSyr"; //VISTA
+	$route['graphRequerimientos'] = "back_end/rop/graphRequerimientos"; // REQUERIMIENTOS CON UNA GRAFICA DE 35 DIAS MOVILES
+	$route['graphRequerimientosSeg'] = "back_end/rop/graphRequerimientosSeg"; // GRAFICA POR MES SERGMENTADO POR REQUERIMIENTO
+	// FILTRO DE AMBOS GRAFICOS DE TIPO CON OPCION POR DEFECTO TODOS
+
 /*****************TURNOS*******/
 	$route['cao'] = "back_end/cao/index";
 	$route['vistaTurnos'] = "back_end/cao/vistaTurnos";

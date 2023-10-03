@@ -574,4 +574,114 @@ class Ropmodel extends CI_Model {
 			return FALSE;
 		}
  
+			/*********** GRAFICOS ***************/
+
+	public function graphRequerimientos($desde,$hasta,$tipo){
+		$this->db->select(
+			"
+			t.tipo as tipo,
+			req.requerimiento as requerimiento,
+			COUNT(*) as cantidad,
+			MONTH(r.fecha_ingreso) as mes,
+			MONTHNAME(r.fecha_ingreso) as nombre_mes,
+			");
+		$this->db->from('rop as r');
+		$this->db->join('rop_mantenedor_requerimientos as req', 'req.id = r.id_requerimiento','left');
+		$this->db->join('rop_tipos as t', 't.id = req.id_tipo','left');
+
+		if($desde!="" and $hasta!=""){
+			$this->db->where("r.fecha_ingreso BETWEEN '".$desde."' AND '".$hasta."'");	
+		}
+
+		if($tipo!=""){	
+			$this->db->where("req.id_tipo",$tipo);	
+		}
+
+		$this->db->group_by('MONTH(r.fecha_ingreso)');
+		$this->db->order_by('MONTH(r.fecha_ingreso)', 'desc');
+		$res=$this->db->get();
+
+		$mes = array(
+			1 => 'Enero',
+			2 => 'Febrero',
+			3 => 'Marzo',
+			4 => 'Abril',
+			5 => 'Mayo',
+			6 => 'Junio',
+			7 => 'Julio',
+			8 => 'Agosto',
+			9 => 'Septiembre',
+			10 => 'Octubre',
+			11 => 'Noviembre',
+			12 => 'Diciembre'
+		);
+		
+		$array = array();
+		$array[]= array(
+			"mes",
+			"cantidad",
+		);
+		if($res->num_rows()>0){
+			foreach($res->result_array() as $key){
+				$temp = array();
+				$temp[] = $mes[$key['mes']];
+				$temp[] = (int) $key['cantidad'];
+				$array[] = $temp;
+			}
+		}
+		else{
+			$temp = array();
+			$temp[] = "";
+			$temp[] = 0;
+			$array[] = $temp;
+		}
+		return $array;
+
+	}
+
+	public function graphRequerimientosSeg($desde,$hasta,$tipo){
+		$this->db->select(
+			"
+			req.requerimiento as requerimiento,
+			t.tipo as tipo,
+			COUNT(*) as cantidad,
+			");
+		$this->db->from('rop as r');
+		$this->db->join('rop_mantenedor_requerimientos as req', 'req.id = r.id_requerimiento','left');
+		$this->db->join('rop_tipos as t', 't.id = req.id_tipo','left');
+
+		if($desde!="" and $hasta!=""){
+			$this->db->where("r.fecha_ingreso BETWEEN '".$desde."' AND '".$hasta."'");	
+		}
+
+		if($tipo!=""){	
+			$this->db->where("req.id_tipo",$tipo);	
+		}
+
+		$this->db->group_by('req.id');
+		$this->db->order_by('cantidad', 'desc');
+		$res=$this->db->get();
+
+		$array = array();
+		$array[]= array(
+			"requerimiento",
+			"cantidad",
+		);
+		if($res->num_rows()>0){
+			foreach($res->result_array() as $key){
+				$temp = array();
+				$temp[] = $key['requerimiento'];
+				$temp[] = (int) $key['cantidad'];
+				$array[] = $temp;
+			}
+		}
+		else{
+			$temp = array();
+			$temp[] = "";
+			$temp[] = 0;
+			$array[] = $temp;
+		}
+		return $array;
+
+	}
 }

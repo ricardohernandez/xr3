@@ -90,6 +90,19 @@
       });
     });
 
+    $(document).off('click', '#menu_resumen_syr').on('click', '#menu_resumen_syr',function(event) {
+      event.preventDefault();
+      $("#menu_resumen_syr").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_resumen_syr").addClass('menuActivo');  
+
+      $.get(base_url+"getResumenSyr", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_resumen_syr").removeClass('disabled_sub');
+      });
+    });
+
   })
 </script>
 
@@ -105,7 +118,8 @@
       <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
        <li id="menu_rop" class="active"><a> <i class="fa fa-list-alt"></i>  Listado requerimientos</a></li>   
-       <li id="menu_mantenedor_rop" class="active"><a> <i class="fa fa-list-alt"></i>  Mantenedor requerimientos</a></li>   
+       <li id="menu_mantenedor_rop" class="active"><a> <i class="fa fa-list-alt"></i>  Mantenedor requerimientos</a></li> 
+       <li id="menu_resumen_syr" class="active"><a> <i class="fa fa-list-alt"></i>  Resumen requerimientos</a></li>     
       </ul>  
       </div> 
     </div> 
