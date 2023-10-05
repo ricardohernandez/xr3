@@ -540,5 +540,17 @@
 	$route['eliminaCargamasiva'] = "back_end/carga_masiva/eliminaCargamasiva";
 	$route['descargarTemplate'] = "back_end/carga_masiva/descargarTemplate";
 
+/************ RCDC - REGISTRO CENTRO DE COMANDO *****************/
+
+	$route['rcdc'] = "back_end/rcdc/index";
+	$route['getRcdcInicio'] = "back_end/rcdc/getRcdcInicio";
+	$route['getRcdcList'] = "back_end/rcdc/getRcdcList";
+
+	$route['formRcdc'] = "back_end/rcdc/formRcdc";
+	$route['eliminaRcdc'] = "back_end/rcdc/eliminaRcdc";
+	$route['getDataRcdc'] = "back_end/rcdc/getDataRcdc";
+
+	$route['excelrcdc/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/rcdc/excelrcdc/$1/$2/$3/$4/$5/$6";
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

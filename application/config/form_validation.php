@@ -705,6 +705,58 @@ $config = array(
                         'label'   => 'Fecha de registro',
                         'rules'   => 'trim|required'
                   ),
-             )        
+             ) , 
+             'formRcdc' => array(
+                  array(
+                        'field'   => 'fecha_inspeccion',
+                        'label'   => 'Fecha',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tramo',
+                        'label'   => 'Tramo',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'zona',
+                        'label'   => 'Zona',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'comuna',
+                        'label'   => 'Comuna',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'id_tecnico',
+                        'label'   => 'Tecnico',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'id_coordinador',
+                        'label'   => 'Coordinador',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'codigo',
+                        'label'   => 'Codigo OT/IBS',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tipo',
+                        'label'   => 'Tipo',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'estado',
+                        'label'   => 'Estado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'costo',
+                        'label'   => 'Costo',
+                        'rules'   => 'trim|required'
+                  ),
+             )       
  );
 
