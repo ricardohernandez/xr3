@@ -478,11 +478,13 @@ $config = array(
                         'label'   => 'Horas estimadas',
                         'rules'   => 'trim|required'
                   ),
+                  /*
                   array(
                         'field'   => 'responsable1',
                         'label'   => 'Responsable 1',
                         'rules'   => 'trim|required'
                   ),
+                  */
             ),
 
             'formIngresoPrevencionModulos' => array(
@@ -708,12 +710,12 @@ $config = array(
              ) , 
              'formRcdc' => array(
                   array(
-                        'field'   => 'fecha_inspeccion',
+                        'field'   => 'fecha',
                         'label'   => 'Fecha',
                         'rules'   => 'trim|required'
                   ),
                   array(
-                        'field'   => 'tramo',
+                        'field'   => 'id_tramo',
                         'label'   => 'Tramo',
                         'rules'   => 'trim|required'
                   ),
@@ -743,7 +745,7 @@ $config = array(
                         'rules'   => 'trim|required'
                   ),
                   array(
-                        'field'   => 'tipo',
+                        'field'   => 'id_tipo',
                         'label'   => 'Tipo',
                         'rules'   => 'trim|required'
                   ),

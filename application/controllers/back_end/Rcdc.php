@@ -65,6 +65,8 @@ class Rcdc extends CI_Controller {
 					'comunas' => $this->Rcdcmodel->listaComunas(),
 					'zonas' => $this->Rcdcmodel->listaZonas(),
 					'proyectos' => $this->Rcdcmodel->listaProyectos(),
+					'tramos' => $this->Rcdcmodel->listaTramos(),
+					'tipos' => $this->Rcdcmodel->listaTipos(),
 				);
 				$this->load->view('back_end/rcdc/rcdc',$datos);
 			}
@@ -87,15 +89,15 @@ class Rcdc extends CI_Controller {
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_detalle")));
-				$fecha_inspeccion = $this->security->xss_clean(strip_tags($this->input->post("fecha_inspeccion")));
-				$tramo = $this->security->xss_clean(strip_tags($this->input->post("tramo")));
+				$fecha = $this->security->xss_clean(strip_tags($this->input->post("fecha")));
+				$id_tramo = $this->security->xss_clean(strip_tags($this->input->post("id_tramo")));
 				$zona = $this->security->xss_clean(strip_tags($this->input->post("zona")));
 				$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna")));
 				$id_tecnico = $this->security->xss_clean(strip_tags($this->input->post("id_tecnico")));
 				$id_coordinador = $this->security->xss_clean(strip_tags($this->input->post("id_coordinador")));
 				$proyecto = $this->security->xss_clean(strip_tags($this->input->post("proyecto")));
 				$codigo = $this->security->xss_clean(strip_tags($this->input->post("codigo")));
-				$tipo = $this->security->xss_clean(strip_tags($this->input->post("tipo")));
+				$id_tipo = $this->security->xss_clean(strip_tags($this->input->post("id_tipo")));
 				$estado = $this->security->xss_clean(strip_tags($this->input->post("estado")));
 				$costo = $this->security->xss_clean(strip_tags($this->input->post("costo")));
 				$observacion = $this->security->xss_clean(strip_tags($this->input->post("observacion")));
@@ -107,15 +109,15 @@ class Rcdc extends CI_Controller {
 					if($hash==""){
 						$data = array(
 							'fecha_ingreso' => date("Y-m-d G:i:s"),
-							'fecha_inspeccion' => $fecha_inspeccion,
-							'tramo' => $tramo,
+							'fecha' => $fecha,
+							'id_tramo' => $id_tramo,
 							'id_zona' => $zona,
 							'id_comuna' => $comuna,
 							'id_tecnico' => $id_tecnico,
 							'id_coordinador' => $id_coordinador,
 							'id_proyecto' => $proyecto,
 							'codigo' => $codigo,
-							'tipo' => $tipo,
+							'id_tipo' => $id_tipo,
 							'estado' => $estado,
 							'observacion' => $observacion,
 							'costo_instalacion' => $costo,
@@ -129,15 +131,15 @@ class Rcdc extends CI_Controller {
 					}else{
 						$data_mod = array(
 							'fecha_ingreso' => date("Y-m-d G:i:s"),
-							'fecha_inspeccion' => $fecha_inspeccion,
-							'tramo' => $tramo,
+							'fecha' => $fecha,
+							'id_tramo' => $id_tramo,
 							'id_zona' => $zona,
 							'id_comuna' => $comuna,
 							'id_tecnico' => $id_tecnico,
 							'id_coordinador' => $id_coordinador,
 							'id_proyecto' => $proyecto,
 							'codigo' => $codigo,
-							'tipo' => $tipo,
+							'id_tipo' => $id_tipo,
 							'estado' => $estado,
 							'observacion' => $observacion,
 							'costo_instalacion' => $costo,
@@ -221,15 +223,15 @@ class Rcdc extends CI_Controller {
 					<tr style="background-color:#F9F9F9">
 						<th class="head">ID</th>    
 						<th class="head">Registro a sistema</th>    
-						<th class="head">Fecha inspeccion</th>  
-						<th class="head">Tramo</th>   
+						<th class="head">Fecha</th>  
+						<th class="head">tramo</th>   
 						<th class="head">Zona</th> 
 						<th class="head">Comuna </th> 
 						<th class="head">Nombre t&eacute;cnico</th> 
 						<th class="head">Nombre coordinador</th> 
 						<th class="head">Proyecto</th> 
 						<th class="head">C&oacute;digo OT /IBS</th> 
-						<th class="head">Tipo</th> 
+						<th class="head">tipo</th> 
 						<th class="head">Estado orden </th> 
 						<th class="head">Observaci&oacute;n</th> 
 						<th class="head">Costo de instalaci&oacute;n</th> 
@@ -244,7 +246,7 @@ class Rcdc extends CI_Controller {
 								<tr>
 									<td><?php echo utf8_decode($d["id"]); ?></td>
 									<td><?php echo utf8_decode($d["fecha_ingreso"]); ?></td>
-									<td><?php echo utf8_decode($d["fecha_inspeccion"]); ?></td>
+									<td><?php echo utf8_decode($d["fecha"]); ?></td>
 									<td><?php echo utf8_decode($d["tramo"]); ?></td>
 									<td><?php echo utf8_decode($d["zona"]); ?></td>
 									<td><?php echo utf8_decode($d["comuna"]); ?></td>
@@ -267,4 +269,26 @@ class Rcdc extends CI_Controller {
 			<?php
 			}
 		}
+
+	
+	/**************** MANTENEDOR ***************/
+
+	public function getMantenedorRcdc(){
+		if($this->input->is_ajax_request()){
+			$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
+			$hasta = date('Y-m-d');
+			$datos = array(
+				'desde' => $desde,
+				'hasta' => $hasta,
+				'usuarios' => $this->Rcdcmodel->listaTrabajadores(),
+				'comunas' => $this->Rcdcmodel->listaComunas(),
+				'zonas' => $this->Rcdcmodel->listaZonas(),
+				'proyectos' => $this->Rcdcmodel->listaProyectos(),
+				'tramos' => $this->Rcdcmodel->listaTramos(),
+				'tipos' => $this->Rcdcmodel->listaTipos(),
+			);
+			$this->load->view('back_end/rcdc/mantenedor',$datos);
+		}
+	}
+	
 }

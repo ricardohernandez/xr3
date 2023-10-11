@@ -27,6 +27,7 @@
 <script type="text/javascript">
   $(function(){
     var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
+    var user="<?php echo $this->session->userdata('id'); ?>";
     const base = "<?php echo base_url() ?>";
 
     var desde="<?php echo $desde; ?>";
@@ -65,12 +66,15 @@
             "class":"centered margen-td","width" : "30px","data": function(row,type,val,meta){
                 btn = "";
                 btn  =`<center><a  href="#!"   data-hash="${row.hash}"  title="Estado" class="btn_editar" style="font-size:14px!important;"><i class="fas fa-edit"></i> </a>`;
-                btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar rojo"><i class="fa fa-trash"></i></a></center>';
+                if(perfil==1){
+                  btn+='<a href="#!" title="Eliminar" data-hash="'+row.hash+'" class="btn_eliminar rojo"><i class="fa fa-trash"></i></a>';
+                }
+                btn+='</center>';
                 return btn;
             }
           },
           { "data": "fecha_ingreso" ,"class":"margen-td centered"},
-          { "data": "fecha_inspeccion" ,"class":"margen-td centered"},
+          { "data": "fecha" ,"class":"margen-td centered"},
           { "data": "tramo" ,"class":"margen-td centered"},
           { "data": "zona" ,"class":"margen-td centered"},
           { "data": "comuna" ,"class":"margen-td centered"},
@@ -146,6 +150,8 @@
         $(".cierra_modal_rcdc").attr("disabled", false);
         $('#formRcdc')[0].reset();
         $("#hash_detalle").val("");
+        $("#id_coordinador").val(user);
+        document.getElementById("label_codigo").textContent = "Codigo";
         $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", false);
     });     
 
@@ -259,8 +265,8 @@
 
             for(dato in data.datos){
               $("#hash_detalle").val(data.datos[dato].hash);
-              $("#fecha_inspeccion").val(data.datos[dato].fecha_inspeccion);
-              $('#tramo').val(data.datos[dato].tramo).trigger('change');
+              $("#fecha").val(data.datos[dato].fecha);
+              $('#id_tramo').val(data.datos[dato].id_tramo).trigger('change');
               $('#zona').val(data.datos[dato].id_zona).trigger('change');
               $('#comuna').val(data.datos[dato].id_comuna).trigger('change');
 
@@ -269,7 +275,7 @@
               $('#proyecto').val(data.datos[dato].id_proyecto).trigger('change');
               $("#codigo").val(data.datos[dato].codigo);
 
-              $('#tipo').val(data.datos[dato].tipo).trigger('change');
+              $('#id_tipo').val(data.datos[dato].id_tipo).trigger('change');
               $('#estado').val(data.datos[dato].estado).trigger('change');
               $('#costo').val(data.datos[dato].costo_instalacion).trigger('change');
 
@@ -432,6 +438,16 @@
 
   })
 
+  $(document).off('keydown', '.numbersOnly').on('keydown', '.numbersOnly',function(e) {
+      if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 188]) !== -1 ||
+          (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+          (e.keyCode >= 35 && e.keyCode <= 40)) { 
+               return;
+      }
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+          e.preventDefault();
+      }
+    });
 
 </script>
 
@@ -544,7 +560,7 @@
           <tr>  
             <th class="centered">Acciomes</th>   
             <th class="centered">Fecha ingreso</th> 
-            <th class="centered">Fecha inspección</th> 
+            <th class="centered">Fecha</th> 
             <th class="centered">Tramo</th> 
             <th class="centered">Zona</th> 
             <th class="centered">Comuna</th> 
@@ -582,8 +598,8 @@
               <div class="col-12 col-lg-3">
                   <div class="form-group">
                     <div class="input-group">
-                    <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Fecha de inspección </label>
-                       <input type="date" placeholder="Fecha inicio" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha_inspeccion" id="fecha_inspección">
+                    <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Fecha</label>
+                       <input type="date" placeholder="Fecha" class="form-control form-control-sm"  value="<?php echo date('Y-m-d')?>" name="fecha" id="fecha">
                     </div>
                   </div>
               </div>
@@ -591,12 +607,15 @@
               <div class="col-lg-3">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tramo </label>
-                  <select id="tramo" name="tramo" class="custom-select custom-select-sm">
+                  <select id="id_tramo" name="id_tramo" class="custom-select custom-select-sm">
                     <option value="" selected>Seleccione </option>
-                    <option value="Bloque 1" >Bloque 1 </option>
-                    <option value="Bloque 2" >Bloque 2 </option>
-                    <option value="Bloque 3" >Bloque 3 </option>
-                    <option value="Bloque 4" >Bloque 4 </option>
+                    <?php 
+                      foreach($tramos as $t){
+                        ?>
+                          <option value="<?php echo $t["id"]; ?>"><?php echo $t["tramo"]?></option>
+                        <?php
+                      }
+                    ?>
                   </select>
                 </div>
               </div>
@@ -684,22 +703,22 @@
               <div class="col-lg-3 codigo"> 
                 <div class="form-group">
                   <label id="label_codigo" for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Código</label>
-                  <input readonly type="text" placeholder="Ingrese código" name="codigo"  id="codigo" size="8" maxlength="8" class="form-control form-control-sm" autocomplete="off"/>
+                  <input readonly type="text" placeholder="Ingrese código" name="codigo"  id="codigo" size="9" maxlength="9" class="form-control form-control-sm" autocomplete="off"/>
                 </div>
               </div>
 
               <div class="col-lg-3">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo </label>
-                  <select id="tipo" name="tipo" class="custom-select custom-select-sm">
+                  <select id="id_tipo" name="id_tipo" class="custom-select custom-select-sm">
                     <option value="" selected>Seleccione </option>
-                    <option value="Anillo">Anillo</option>
-                    <option value="Venta Propia">Venta Propia</option>
-                    <option value="Venta Cruzada">Venta Cruzada</option>
-                    <option value="Instalación">Instalación</option>
-                    <option value="Modificación">Modificación</option>
-                    <option value="Reparación">Reparación</option>
-                    <option value="Retiro">Retiro</option>
+                    <?php 
+                      foreach($tipos as $t){
+                        ?>
+                          <option value="<?php echo $t["id"]; ?>"><?php echo $t["tipo"]?></option>
+                        <?php
+                      }
+                    ?>
                   </select>
                 </div>
               </div>
@@ -721,11 +740,7 @@
               <div class="col-lg-3">  
                 <div class="form-group">
                 <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Costo de instalación </label>
-                  <select id="costo" name="costo" class="custom-select custom-select-sm">
-                    <option value="" selected>Seleccione </option>
-                    <option value="OK">OK</option>
-                    <option value="no OK">no OK</option>
-                  </select>
+                  <input type="text" autocomplete="off" placeholder="" value="" class="form-control form-control-sm numbersOnly"  name="costo" id="costo">        
                 </div>
               </div>
 

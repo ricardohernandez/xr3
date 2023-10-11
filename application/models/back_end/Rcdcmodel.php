@@ -23,11 +23,14 @@ class Rcdcmodel extends CI_Model {
 				CONCAT(SUBSTRING_INDEX(u2.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u2.apellidos, ' ', '-2'), ' ', '1')) as nombre_coordinador,
                 a.area as zona,
 				p.proyecto as proyecto,
+				tr.tramo as tramo,
+				ti.tipo as tipo,
 				r.*,
-				
 			");
 
 			$this->db->join('comunas as c', 'c.id = r.id_comuna', 'left');
+			$this->db->join('rcdc_tramos as tr', 'tr.id = r.id_tramo', 'left');
+			$this->db->join('rcdc_tipos as ti', 'ti.id = r.id_tipo', 'left');
 			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
 			$this->db->join('usuarios as u2', 'r.id_coordinador = u2.id', 'left');
 			$this->db->join('usuarios_areas as a', 'r.id_zona = a.id', 'left');
@@ -142,5 +145,27 @@ class Rcdcmodel extends CI_Model {
 		return FALSE;
 	}
 
+	public function listaTramos(){
+		$this->db->order_by('tramo', 'asc');
+		$res=$this->db->get('rcdc_tramos');
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
 
+	public function listaTipos(){
+		$this->db->order_by('tipo', 'asc');
+		$res=$this->db->get('rcdc_tipos');
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
+
+	/**********MANTENEDOR*************/
+
+
+
+	
 }

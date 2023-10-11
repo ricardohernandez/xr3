@@ -72,6 +72,19 @@
       });
     });
 
+    $(document).off('click', '#menu_mantenedor').on('click', '#menu_mantenedor',function(event) {
+      event.preventDefault();
+      $("#menu_mantenedor").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_mantenedor").addClass('menuActivo');  
+
+      $.get("getMantenedorRcdc", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_mantenedor").removeClass('disabled_sub');
+      });
+    });
+
 
   })
 </script>
@@ -88,6 +101,7 @@
      <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_detalle" class="active"><a> <i class="fa fa-list-alt"></i> Detalle </a></li>   
+        <li id="menu_mantenedor" class="active"><a> <i class="fa fa-list-alt"></i> Mantenedor </a></li>  
       </ul>  
       </div> 
     </div> 

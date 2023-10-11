@@ -552,5 +552,19 @@
 
 	$route['excelrcdc/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/rcdc/excelrcdc/$1/$2/$3/$4/$5/$6";
 
+	/************ RCDC - MANTENEDOR *****************/
+
+	$route['getMantenedorRcdc'] = "back_end/rcdc/getMantenedorRcdc";
+
+	$route['getTramosRcdcList'] = "back_end/rcdc/getTramosRcdcList";
+	$route['formTramosRcdc'] = "back_end/rcdc/formTramosRcdc";
+	$route['eliminaTramosRcdc'] = "back_end/rcdc/eliminaTramosRcdc";
+	$route['getDataTramosRcdc'] = "back_end/rcdc/getDataTramosRcdc";
+
+	$route['getTiposRcdcList'] = "back_end/rcdc/getTiposRcdcList";
+	$route['formTiposRcdc'] = "back_end/rcdc/formTiposRcdc";
+	$route['eliminaTiposRcdc'] = "back_end/rcdc/eliminaTiposRcdc";
+	$route['getDataTiposRcdc'] = "back_end/rcdc/getDataTiposRcdc";
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

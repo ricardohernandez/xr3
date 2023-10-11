@@ -43,11 +43,19 @@ class Rop extends CI_Controller {
 		$this->visitas("Rop");
     	$this->acceso();
 
+		$perfil= $this->session->userdata('id_perfil');
+		$tipos = $this->Ropmodel->listaTipos();
+		foreach($tipos as $key => $tipo){
+			if($perfil >= 4 && $tipo['id'] == 9){
+					unset($tipos[$key]);
+			}
+		}
+
 	    $datos = array(
 	        'titulo' => "SYR (Solicitudes y requerimientos)",
 	        'contenido' => "rop/inicio",
 	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
-	        'tipos' => $this->Ropmodel->listaTipos()
+	        'tipos' => $tipos,
 		);  
 
 		$this->load->view('plantillas/plantilla_back_end',$datos);
@@ -59,12 +67,19 @@ class Rop extends CI_Controller {
 			if($this->input->is_ajax_request()){
 				$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
 				$hasta = date('Y-m-d');
+				$perfil= $this->session->userdata('id_perfil');
+				$tipos = $this->Ropmodel->listaTipos();
 
+				foreach($tipos as $key => $tipo){
+					if($perfil >= 4 && $tipo['id'] == 9){
+							unset($tipos[$key]);
+					}
+				}
 				
 				$datos = array(
 					'desde' => $desde,
 					'hasta' => $hasta,
-					'tipos' => $this->Ropmodel->listaTipos()
+					'tipos' => $tipos,
 				);
 				
 				$this->load->view('back_end/rop/rop',$datos);
@@ -609,11 +624,12 @@ class Rop extends CI_Controller {
 			if($this->input->is_ajax_request()){
 				$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
 				$hasta = date('Y-m-d');
+				$tipos = $this->Ropmodel->listaTipos();
 
 				$datos = array(
 					'desde' => $desde,
 					'hasta' => $hasta,
-					'tipos' => $this->Ropmodel->listaTipos()
+					'tipos' => $tipos
 				);
 				
 				$this->load->view('back_end/rop/mantenedor_requerimientos',$datos);
@@ -787,11 +803,20 @@ class Rop extends CI_Controller {
 	public function getResumenSyr(){
 		$desde=date('Y-m-d', strtotime('-35 day', strtotime(date("d-m-Y"))));
 		$hasta=date('Y-m-d');
+		$perfil= $this->session->userdata('id_perfil');
+		$tipos = $this->Ropmodel->listaTipos();
+
+		foreach($tipos as $key => $tipo){
+			if($perfil >= 4 && $tipo['id'] == 9){
+					unset($tipos[$key]);
+			}
+		}
+
 		if($this->input->is_ajax_request()){
 			$datos=array(	
 				'desde' => $desde,
 				'hasta' => $hasta,
-				'tipos' => $this->Ropmodel->listaTipos(),			
+				'tipos' => $tipos,			
 			);
 			$this->load->view('back_end/rop/resumen',$datos);
 		}
