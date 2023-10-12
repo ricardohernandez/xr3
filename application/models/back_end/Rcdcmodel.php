@@ -165,7 +165,98 @@ class Rcdcmodel extends CI_Model {
 
 	/**********MANTENEDOR*************/
 
+	/**** TRAMOS ****/
 
+		public function getTramosRcdcList(){
+			$this->db->select(
+				"sha1(r.id) as hash,
+				r.*,
+			");
 
-	
+			$this->db->order_by('r.tramo', 'desc');
+			$res = $this->db->get('rcdc_tramos as r');
+			return $res->result_array();
+		}
+
+		public function getDataTramosRcdc($hash){
+			$this->db->select('
+				sha1(r.id) as hash,
+				r.*,
+			');
+			$this->db->where('sha1(r.id)', $hash);
+			$res=$this->db->get('rcdc_tramos as r');
+			return $res->result_array();
+		}
+
+		public function formActualizarTramo($id,$data){
+			$this->db->where('sha1(id)', $id);
+			if($this->db->update('rcdc_tramos', $data)){
+				
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function formIngresoTramo($data){
+			if($this->db->insert('rcdc_tramos', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
+		
+		public function eliminaTramosRcdc($hash){
+			$this->db->where('sha1(id)', $hash);
+			if($this ->db->delete('rcdc_tramos')){
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+	/***** TIPOS *****/
+
+		public function getTiposRcdcList(){
+			$this->db->select(
+				"sha1(r.id) as hash,
+				r.*,
+			");
+
+			$this->db->order_by('r.tipo', 'desc');
+			$res = $this->db->get('rcdc_tipos as r');
+			return $res->result_array();
+		}
+
+		public function getDataTiposRcdc($hash){
+			$this->db->select('
+				sha1(r.id) as hash,
+				r.*,
+			');
+			$this->db->where('sha1(r.id)', $hash);
+			$res=$this->db->get('rcdc_tipos as r');
+			return $res->result_array();
+		}
+
+		public function formActualizarTipo($id,$data){
+			$this->db->where('sha1(id)', $id);
+			if($this->db->update('rcdc_tipos', $data)){
+				
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function formIngresoTipo($data){
+			if($this->db->insert('rcdc_tipos', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
+		
+		public function eliminaTiposRcdc($hash){
+			$this->db->where('sha1(id)', $hash);
+			if($this ->db->delete('rcdc_tipos')){
+				return TRUE;
+			}
+			return FALSE;
+		}
+
 }

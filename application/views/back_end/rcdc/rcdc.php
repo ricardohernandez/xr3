@@ -549,7 +549,7 @@
         </div>
       </div>
       
-      </div>            
+    </div>            
 
 <!-- LISTADO -->
 
@@ -558,7 +558,7 @@
       <table id="lista_rcdc" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
           <tr>  
-            <th class="centered">Acciomes</th>   
+            <th class="centered">Acciones</th>   
             <th class="centered">Fecha ingreso</th> 
             <th class="centered">Fecha</th> 
             <th class="centered">Tramo</th> 

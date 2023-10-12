@@ -759,6 +759,21 @@ $config = array(
                         'label'   => 'Costo',
                         'rules'   => 'trim|required'
                   ),
-             )       
+             ),
+             'formTramosRcdc' => array(
+                  array(
+                        'field'   => 'tramo',
+                        'label'   => 'Tramo',
+                        'rules'   => 'trim|required'
+                  ),
+             ),
+             'formTiposRcdc' => array(
+                  array(
+                        'field'   => 'tipo',
+                        'label'   => 'Tipo',
+                        'rules'   => 'trim|required'
+                  ),
+             ),
+              
  );
 

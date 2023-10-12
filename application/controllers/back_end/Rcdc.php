@@ -290,5 +290,134 @@ class Rcdc extends CI_Controller {
 			$this->load->view('back_end/rcdc/mantenedor',$datos);
 		}
 	}
+
+		/***** TRAMO *****/
+
+		public function getTramosRcdcList(){
+			echo json_encode($this->Rcdcmodel->getTramosRcdcList());
+		}
+
+		public function formTramosRcdc(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_detalle")));
+				$tramo = $this->security->xss_clean(strip_tags($this->input->post("tramo")));
+
+				if ($this->form_validation->run("formTramosRcdc") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
+				}else{	
+					if($hash==""){
+						$data = array(
+							'tramo' => $tramo,
+						);
+						if($this->Rcdcmodel->formIngresoTramo($data)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+					}else{
+						$data_mod = array(
+							'tramo' => $tramo,
+						);
+						if($this->Rcdcmodel->formActualizarTramo($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
+						}
+					}
+				}
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function eliminaTramosRcdc(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			if($this->Rcdcmodel->eliminaTramosRcdc($hash)){
+			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{
+			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+			}
+		}
+
+		public function getDataTramosRcdc(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+				$data=$this->Rcdcmodel->getDataTramosRcdc($hash);
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}else{
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}	
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		/***** TIPO *****/
+		public function getTiposRcdcList(){
+			echo json_encode($this->Rcdcmodel->getTiposRcdcList());
+		}
+
+		public function formTiposRcdc(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_detalle")));
+				$tipo = $this->security->xss_clean(strip_tags($this->input->post("tipo")));
+
+				if ($this->form_validation->run("formTiposRcdc") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
+				}else{	
+					if($hash==""){
+						$data = array(
+							'tipo' => $tipo,
+						);
+						if($this->Rcdcmodel->formIngresoTipo($data)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+					}else{
+						$data_mod = array(
+							'tipo' => $tipo,
+						);
+						if($this->Rcdcmodel->formActualizarTipo($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
+						}
+					}
+				}
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function eliminaTiposRcdc(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			if($this->Rcdcmodel->eliminaTiposRcdc($hash)){
+			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{
+			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+			}
+		}
+
+		public function getDataTiposRcdc(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+				$data=$this->Rcdcmodel->getDataTiposRcdc($hash);
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}else{
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}	
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
 	
 }
