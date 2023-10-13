@@ -56,7 +56,7 @@
             param.desde = $("#desde_f").val();
             param.hasta = $("#hasta_f").val();
             param.coordinador = $("#f_coordinador").val();
-            param.comuna = $("#f_comuna").val();
+            param.plaza = $("#f_plaza").val();
             param.zona = $("#f_zona").val();
             param.empresa = $("#f_empresa").val();
           }
@@ -77,7 +77,7 @@
           { "data": "fecha" ,"class":"margen-td centered"},
           { "data": "tramo" ,"class":"margen-td centered"},
           { "data": "zona" ,"class":"margen-td centered"},
-          { "data": "comuna" ,"class":"margen-td centered"},
+          { "data": "plaza" ,"class":"margen-td centered"},
           { "data": "nombre_tecnico" ,"class":"margen-td centered"},
           { "data": "nombre_coordinador" ,"class":"margen-td centered"},
           { "data": "proyecto" ,"class":"margen-td centered"},
@@ -268,7 +268,7 @@
               $("#fecha").val(data.datos[dato].fecha);
               $('#id_tramo').val(data.datos[dato].id_tramo).trigger('change');
               $('#zona').val(data.datos[dato].id_zona).trigger('change');
-              $('#comuna').val(data.datos[dato].id_comuna).trigger('change');
+              $('#plaza').val(data.datos[dato].id_plaza).trigger('change');
 
               $('#id_tecnico').val(data.datos[dato].id_tecnico).trigger('change');
               $('#id_coordinador').val(data.datos[dato].id_coordinador).trigger('change');
@@ -355,14 +355,19 @@
         if(proyecto==""){ // NULL
           label.textContent = "Codigo";
           $("#codigo").attr("readonly", true)
+          $("#costo").attr("readonly", true)
+          $("#costo").val("")
         }
         else if(proyecto=="3"){ //DIRECTV
           label.textContent = "IBS";
           $("#codigo").attr("readonly", false)
+          $("#costo").attr("readonly", false)
         }
         else{ //CLARO VTR
           label.textContent = "OT";
           $("#codigo").attr("readonly", false)
+          $("#costo").attr("readonly", true)
+          $("#costo").val("")
         }
   })
 
@@ -412,15 +417,15 @@
       }
 
       var coordinador = $("#f_coordinador").val();  
-      var comuna = $("#f_comuna").val();  
+      var plaza = $("#f_plaza").val();  
       var zona = $("#f_zona").val();  
       var empresa = $("#f_empresa").val(); 
 
       if(coordinador==""){
         coordinador = "-"
       }
-      if(comuna==""){
-        comuna = "-"
+      if(plaza==""){
+        plaza = "-"
       }
       if(zona==""){
         zona = "-"
@@ -429,10 +434,10 @@
         empresa = "-"
       }
 
-      window.location="excelrcdc/"+desde+"/"+hasta+"/"+coordinador+"/"+comuna+"/"+zona+"/"+empresa;
+      window.location="excelrcdc/"+desde+"/"+hasta+"/"+coordinador+"/"+plaza+"/"+zona+"/"+empresa;
     });
 
-    $(document).off('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa').on('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa', function(event) {
+    $(document).off('change', '#desde_f , #hasta_f ,#f_coordinador , #f_plaza , #f_zona, #f_empresa').on('change', '#desde_f , #hasta_f ,#f_coordinador , #f_plaza , #f_zona, #f_empresa', function(event) {
       lista_rcdc.ajax.reload()
     }); 
 
@@ -492,12 +497,12 @@
 
       <div class="col-12 col-lg-1">  
         <div class="form-group">
-          <select id="f_comuna" name="f_comuna" class="custom-select custom-select-sm" style="width:100%!important;">
-              <option value="">Seleccione comuna | Todos</option>
+          <select id="f_plaza" name="f_plaza" class="custom-select custom-select-sm" style="width:100%!important;">
+              <option value="">Seleccione plaza | Todos</option>
               <?php 
-                foreach($comunas as $c){
+                foreach($plazas as $p){
                   ?>
-                    <option value="<?php echo $c["id"]; ?>"><?php echo $c["titulo"]?></option>
+                    <option value="<?php echo $p["id"]; ?>"><?php echo $p["plaza"]?></option>
                   <?php
                 }
               ?>
@@ -563,7 +568,7 @@
             <th class="centered">Fecha</th> 
             <th class="centered">Tramo</th> 
             <th class="centered">Zona</th> 
-            <th class="centered">Comuna</th> 
+            <th class="centered">Plaza</th> 
             <th class="centered">Nombre técnico</th>
             <th class="centered">Nombre coordinador</th> 
             <th class="centered">Proyecto</th>  
@@ -638,13 +643,13 @@
 
               <div class="col-lg-3">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Comuna </label>
-                  <select id="comuna" name="comuna" class="custom-select custom-select-sm">
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Plaza </label>
+                  <select id="plaza" name="plaza" class="custom-select custom-select-sm">
                     <option value="" selected>Seleccione </option>
                     <?php 
-                      foreach($comunas as $c){
+                      foreach($plazas as $p){
                         ?>
-                          <option value="<?php echo $c["id"]; ?>"><?php echo $c["titulo"]?></option>
+                          <option value="<?php echo $p["id"]; ?>"><?php echo $p["plaza"]?></option>
                         <?php
                       }
                     ?>

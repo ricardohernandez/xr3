@@ -15,10 +15,10 @@ class Rcdcmodel extends CI_Model {
 	
 	/**********RCDC*************/
 
-		public function getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa){
+		public function getRcdcList($desde,$hasta,$coordinador,$plaza,$zona,$empresa){
 			$this->db->select(
 				"sha1(r.id) as hash,
-				c.titulo as comuna,
+				pl.plaza as plaza,
 				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as nombre_tecnico,
 				CONCAT(SUBSTRING_INDEX(u2.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u2.apellidos, ' ', '-2'), ' ', '1')) as nombre_coordinador,
                 a.area as zona,
@@ -28,7 +28,7 @@ class Rcdcmodel extends CI_Model {
 				r.*,
 			");
 
-			$this->db->join('comunas as c', 'c.id = r.id_comuna', 'left');
+			$this->db->join('usuarios_plazas as pl', 'pl.id = r.id_plaza', 'left');
 			$this->db->join('rcdc_tramos as tr', 'tr.id = r.id_tramo', 'left');
 			$this->db->join('rcdc_tipos as ti', 'ti.id = r.id_tipo', 'left');
 			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
@@ -42,8 +42,8 @@ class Rcdcmodel extends CI_Model {
 			if($coordinador!=""){
 				$this->db->where('r.id_coordinador',$coordinador);
 			}
-			if($comuna!=""){
-				$this->db->where('r.id_comuna',$comuna);
+			if($plaza!=""){
+				$this->db->where('r.id_plaza',$plaza);
 			}
 			if($zona!=""){
 				$this->db->where('r.id_zona',$zona);
@@ -157,6 +157,16 @@ class Rcdcmodel extends CI_Model {
 	public function listaTipos(){
 		$this->db->order_by('tipo', 'asc');
 		$res=$this->db->get('rcdc_tipos');
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
+
+	public function listaPlazas(){
+		$this->db->select('*');
+		$this->db->order_by('plaza', 'asc');
+		$res=$this->db->get('usuarios_plazas');
 		if($res->num_rows()>0){
 			return $res->result_array();
 		}

@@ -63,6 +63,7 @@ class Rcdc extends CI_Controller {
 					'hasta' => $hasta,
 					'usuarios' => $this->Rcdcmodel->listaTrabajadores(),
 					'comunas' => $this->Rcdcmodel->listaComunas(),
+					'plazas' => $this->Rcdcmodel->listaPlazas(),
 					'zonas' => $this->Rcdcmodel->listaZonas(),
 					'proyectos' => $this->Rcdcmodel->listaProyectos(),
 					'tramos' => $this->Rcdcmodel->listaTramos(),
@@ -76,13 +77,13 @@ class Rcdc extends CI_Controller {
 			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
 			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
 			$coordinador=$this->security->xss_clean(strip_tags($this->input->get_post("coordinador")));
-			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			$plaza=$this->security->xss_clean(strip_tags($this->input->get_post("plaza")));
 			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 			$empresa=$this->security->xss_clean(strip_tags($this->input->get_post("empresa")));
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
 
-			echo json_encode($this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa));
+			echo json_encode($this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$plaza,$zona,$empresa));
 		}
 
 		public function formRcdc(){
@@ -92,7 +93,7 @@ class Rcdc extends CI_Controller {
 				$fecha = $this->security->xss_clean(strip_tags($this->input->post("fecha")));
 				$id_tramo = $this->security->xss_clean(strip_tags($this->input->post("id_tramo")));
 				$zona = $this->security->xss_clean(strip_tags($this->input->post("zona")));
-				$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna")));
+				$plaza = $this->security->xss_clean(strip_tags($this->input->post("plaza")));
 				$id_tecnico = $this->security->xss_clean(strip_tags($this->input->post("id_tecnico")));
 				$id_coordinador = $this->security->xss_clean(strip_tags($this->input->post("id_coordinador")));
 				$proyecto = $this->security->xss_clean(strip_tags($this->input->post("proyecto")));
@@ -112,7 +113,7 @@ class Rcdc extends CI_Controller {
 							'fecha' => $fecha,
 							'id_tramo' => $id_tramo,
 							'id_zona' => $zona,
-							'id_comuna' => $comuna,
+							'id_plaza' => $plaza,
 							'id_tecnico' => $id_tecnico,
 							'id_coordinador' => $id_coordinador,
 							'id_proyecto' => $proyecto,
@@ -134,7 +135,7 @@ class Rcdc extends CI_Controller {
 							'fecha' => $fecha,
 							'id_tramo' => $id_tramo,
 							'id_zona' => $zona,
-							'id_comuna' => $comuna,
+							'id_plaza' => $plaza,
 							'id_tecnico' => $id_tecnico,
 							'id_coordinador' => $id_coordinador,
 							'id_proyecto' => $proyecto,
@@ -186,17 +187,17 @@ class Rcdc extends CI_Controller {
 			$desde = $this->uri->segment(2);
 			$hasta = $this->uri->segment(3);
 			$coordinador = $this->uri->segment(4);
-			$comuna = $this->uri->segment(5);
+			$plaza = $this->uri->segment(5);
 			$zona = $this->uri->segment(6);
 			$empresa = $this->uri->segment(7);
 
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}
 			if($coordinador=="-"){$coordinador="";}
-			if($comuna=="-"){$comuna="";}
+			if($plaza=="-"){$plaza="";}
 			if($zona=="-"){$zona="";}
 			if($empresa=="-"){$empresa="";}
-			$data = $this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa);
+			$data = $this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$plaza,$zona,$empresa);
 
 			if(!$data){
 				return FALSE;
@@ -212,9 +213,6 @@ class Rcdc extends CI_Controller {
 						background-color:#233294;color:#fff;
 					}
 					.head{font-size:13px;height: 30px; background-color:#1D7189;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
-					.finde{
-						font-size:13px;height: 30px; background-color:#1D7189;color:red; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;
-					}
 					td{font-size:12px;text-align:center;   vertical-align:middle;}
 				</style>
 
@@ -226,7 +224,7 @@ class Rcdc extends CI_Controller {
 						<th class="head">Fecha</th>  
 						<th class="head">tramo</th>   
 						<th class="head">Zona</th> 
-						<th class="head">Comuna </th> 
+						<th class="head">Plaza </th> 
 						<th class="head">Nombre t&eacute;cnico</th> 
 						<th class="head">Nombre coordinador</th> 
 						<th class="head">Proyecto</th> 
@@ -249,7 +247,7 @@ class Rcdc extends CI_Controller {
 									<td><?php echo utf8_decode($d["fecha"]); ?></td>
 									<td><?php echo utf8_decode($d["tramo"]); ?></td>
 									<td><?php echo utf8_decode($d["zona"]); ?></td>
-									<td><?php echo utf8_decode($d["comuna"]); ?></td>
+									<td><?php echo utf8_decode($d["plaza"]); ?></td>
 									<td><?php echo utf8_decode($d["nombre_tecnico"]); ?></td>
 									<td><?php echo utf8_decode($d["nombre_coordinador"]); ?></td>
 									<td><?php echo utf8_decode($d["proyecto"]); ?></td>
@@ -282,6 +280,7 @@ class Rcdc extends CI_Controller {
 				'hasta' => $hasta,
 				'usuarios' => $this->Rcdcmodel->listaTrabajadores(),
 				'comunas' => $this->Rcdcmodel->listaComunas(),
+				'plazas' => $this->Rcdcmodel->listaPlazas(),
 				'zonas' => $this->Rcdcmodel->listaZonas(),
 				'proyectos' => $this->Rcdcmodel->listaProyectos(),
 				'tramos' => $this->Rcdcmodel->listaTramos(),

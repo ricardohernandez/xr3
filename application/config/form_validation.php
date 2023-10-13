@@ -725,8 +725,8 @@ $config = array(
                         'rules'   => 'trim|required'
                   ),
                   array(
-                        'field'   => 'comuna',
-                        'label'   => 'Comuna',
+                        'field'   => 'plaza',
+                        'label'   => 'Plaza',
                         'rules'   => 'trim|required'
                   ),
                   array(
@@ -752,11 +752,6 @@ $config = array(
                   array(
                         'field'   => 'estado',
                         'label'   => 'Estado',
-                        'rules'   => 'trim|required'
-                  ),
-                  array(
-                        'field'   => 'costo',
-                        'label'   => 'Costo',
                         'rules'   => 'trim|required'
                   ),
              ),
