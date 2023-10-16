@@ -624,6 +624,7 @@ class Rop extends CI_Controller {
 			if($this->input->is_ajax_request()){
 				$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
 				$hasta = date('Y-m-d');
+				$perfil= $this->session->userdata('id_perfil');
 				$tipos = $this->Ropmodel->listaTipos();
 
 				foreach($tipos as $key => $tipo){
