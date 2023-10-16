@@ -626,6 +626,12 @@ class Rop extends CI_Controller {
 				$hasta = date('Y-m-d');
 				$tipos = $this->Ropmodel->listaTipos();
 
+				foreach($tipos as $key => $tipo){
+					if($perfil >= 4 && $tipo['id'] == 9){
+							unset($tipos[$key]);
+					}
+				}
+
 				$datos = array(
 					'desde' => $desde,
 					'hasta' => $hasta,
