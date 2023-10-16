@@ -487,6 +487,14 @@ $config = array(
                   */
             ),
 
+            'formMantenedorReqTipo' => array(
+                  array(
+                        'field'   => 'tipo',
+                        'label'   => 'Tipo',
+                        'rules'   => 'trim|required'
+                  ),
+            ),
+
             'formIngresoPrevencionModulos' => array(
                   array(
                         'field'   => 'titulo',

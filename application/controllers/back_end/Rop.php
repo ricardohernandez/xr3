@@ -798,6 +798,80 @@ class Rop extends CI_Controller {
 			}
 		}
 
+		/********** TIPO **********/
+		public function getMantenedorReqTipoList(){ 
+ 			echo json_encode($this->Ropmodel->getMantenedorReqTipoList());
+		}
+
+		public function formMantenedorReqTipo(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_tipo")));
+				$tipo = $this->security->xss_clean(strip_tags($this->input->post("tipo")));
+
+
+				if ($this->form_validation->run("formMantenedorReqTipo") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
+				}else{	
+
+					if($hash==""){
+						$data = array(
+							'tipo' => $tipo,);
+  
+						$insert_id=$this->Ropmodel->formIngresoMantenedorReqTipo($data);
+						if($insert_id!=FALSE){
+ 
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+
+					}else{
+					
+						$data_mod = array(
+							'tipo' => $tipo,);
+					   
+						if($this->Ropmodel->formActualizarMantenedorReqTipo($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
+						}
+					}
+				}
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function eliminaMantenedorReqTipo(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			if($this->Ropmodel->eliminaMantenedorReqTipo($hash)){
+				echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{
+				echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+			}
+		}
+
+		public function getDataMantReqTipo(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+				$data=$this->Ropmodel->getDataMantReqTipo($hash);
+
+				if($data){
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}else{
+					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
+				}	
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
+
 	/******************* GRAFICOS *******************/
 
 	public function getResumenSyr(){

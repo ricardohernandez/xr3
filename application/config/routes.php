@@ -378,6 +378,8 @@
 	$route['listaResponsables'] = "back_end/rop/listaResponsables";
 	$route['solicitudesVencidas'] = "back_end/rop/solicitudesVencidas";
 	$route['excel_rop/(:any)/(:any)/(:any)/(:any)'] = "back_end/rop/excel_rop/$1/$2/$3/$4";
+
+	/******************MANTENEDOR******************/
 	
 	$route['getMantenedorReq'] = "back_end/rop/getMantenedorReq";
 	$route['getMantenedorReqList'] = "back_end/rop/getMantenedorReqList";
@@ -386,12 +388,16 @@
 	$route['getDataMantReq'] = "back_end/rop/getDataMantReq";
 	$route['excelMantReq/(:any)'] = "back_end/rop/excelMantReq/$1";
 
+	$route['getMantenedorReqTipoList'] = "back_end/rop/getMantenedorReqTipoList";
+	$route['formMantenedorReqTipo'] = "back_end/rop/formMantenedorReqTipo";
+	$route['eliminaMantenedorReqTipo'] = "back_end/rop/eliminaMantenedorReqTipo";
+	$route['getDataMantReqTipo'] = "back_end/rop/getDataMantReqTipo";
+
 	/******************RESUMEN******************/
 
-	$route['getResumenSyr'] = "back_end/rop/getResumenSyr"; //VISTA
-	$route['graphRequerimientos'] = "back_end/rop/graphRequerimientos"; // REQUERIMIENTOS CON UNA GRAFICA DE 35 DIAS MOVILES
-	$route['graphRequerimientosSeg'] = "back_end/rop/graphRequerimientosSeg"; // GRAFICA POR MES SERGMENTADO POR REQUERIMIENTO
-	// FILTRO DE AMBOS GRAFICOS DE TIPO CON OPCION POR DEFECTO TODOS
+	$route['getResumenSyr'] = "back_end/rop/getResumenSyr";
+	$route['graphRequerimientos'] = "back_end/rop/graphRequerimientos";
+	$route['graphRequerimientosSeg'] = "back_end/rop/graphRequerimientosSeg";
 
 /*****************TURNOS*******/
 	$route['cao'] = "back_end/cao/index";
@@ -519,7 +525,6 @@
 	$route['formMetasIgt'] = "back_end/mantenedores/metasIgt/formMetasIgt";
 	$route['eliminaMetasIgt'] = "back_end/mantenedores/metasIgt/eliminaMetasIgt";
 	$route['actualizarMetaActual'] = "back_end/mantenedores/metasIgt/actualizarMetaActual";
-
 
 	
 /******************LIQUIDACIONES*************************/
