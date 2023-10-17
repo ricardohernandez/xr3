@@ -115,6 +115,25 @@
           }
         }, 4000 ); 
 
+        $.getJSON(base + "listaPersonas" , function(data) {
+	       response = data;
+        }).done(function() {
+              $("#responsable1").select2({
+                placeholder: 'Seleccione responsable1',
+                data: response,
+                width: 'resolve',
+                allowClear:true,
+              });
+
+              $("#responsable2").select2({
+                placeholder: 'Seleccione responsable2',
+                data: response,
+                width: 'resolve',
+                allowClear:true,
+              });
+
+        });
+
     /*********INGRESO************/
 
       $(document).off('click', '.btn_nuevo_mant_req').on('click', '.btn_nuevo_mant_req', function(event) {
