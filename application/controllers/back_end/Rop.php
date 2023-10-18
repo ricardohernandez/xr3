@@ -303,6 +303,7 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
 					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_jefe_afectado"]) ? [$key["correo_jefe_afectado"]] : [];
 
 				}
 
@@ -315,6 +316,7 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_asignado"]) ? [$key["correo_asignado"]] : [];
 					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
+					$copias = !empty($key["correo_jefe_afectado"]) ? [$key["correo_jefe_afectado"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? array_merge($copias, [$key["correo_responsable1"]]) : $copias;
 
 				}
@@ -327,6 +329,7 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_jefe_afectado"]) ? [$key["correo_jefe_afectado"]] : [];
 					$copias = !empty($key["correo_responsable2"]) ? array_merge($copias, [$key["correo_responsable2"]]) : $copias;
 
 				}
@@ -339,6 +342,7 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_jefe_afectado"]) ? [$key["correo_jefe_afectado"]] : [];
 					$copias = !empty($key["correo_responsable2"]) ? array_merge($copias, [$key["correo_responsable2"]]) : $copias;
 
 				}
@@ -351,6 +355,7 @@ class Rop extends CI_Controller {
 
 					$para = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"]] : [];
 					$copias = !empty($key["correo_responsable1"]) ? [$key["correo_responsable1"]] : [];
+					$copias = !empty($key["correo_jefe_afectado"]) ? [$key["correo_jefe_afectado"]] : [];
 
 				}
 

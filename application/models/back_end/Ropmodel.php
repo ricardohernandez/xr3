@@ -137,6 +137,7 @@ class Ropmodel extends CI_Model {
 				CONCAT(us3.nombres," ",us3.apellidos) as solicitante,
 				CONCAT(usj.nombres," " ,usj.apellidos) as jefe_solicitante,
 				CONCAT(ust.nombres," " ,ust.apellidos) as tecnico,
+				usja.correo_empresa as correo_jefe_afectado,
 
 				IF(STR_TO_DATE(r.fecha_ingreso, "%Y-%m-%d") IS NOT NULL, DATE_FORMAT(r.fecha_ingreso,"%d-%m-%Y"),"") as fecha_ingreso,
 				
@@ -201,7 +202,10 @@ class Ropmodel extends CI_Model {
 			$this->db->join('usuarios as us', 'us.id = r.id_usuario_asignado', 'left');
 			$this->db->join('usuarios as us2', 'us2.id = r.id_validador_real', 'left');
 			$this->db->join('usuarios as us3', 'us3.id = r.id_solicitante', 'left');
-			$this->db->join('usuarios as ust', 'ust.id = r.id_tecnico', 'left');
+			$this->db->join('usuarios as ust', 'ust.id = r.id_tecnico', 'left'); //TECNICO AFECTADO -> OBTENER CORREO DEL JEFE
+
+			$this->db->join('usuarios_jefes uja', 'uja.id = ust.id_jefe', 'left');
+			$this->db->join('usuarios usja', 'usja.id = uja.id_jefe', 'left'); //JEFE DEL TECNICO AFECTADO
 
 			$this->db->join('usuarios_jefes uj', 'uj.id = us3.id_jefe', 'left');
 			$this->db->join('usuarios usj', 'usj.id = uj.id_jefe', 'left');
