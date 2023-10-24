@@ -19,7 +19,7 @@
 
   /*****DATATABLE*****/   
     var listaPlazas = $('#listaPlazas').DataTable({
-       "aaSorting" : [[1,"asc"]],
+       "aaSorting" : [[2,"asc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -45,7 +45,8 @@
                 return btn;
               }
             },
-          { "data": "plaza" ,"class":"margen-td centered"},
+            { "data": "id" ,"class":"margen-td centered"},
+            { "data": "plaza" ,"class":"margen-td centered"},
         ]
       }); 
   
@@ -277,6 +278,7 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
+            <th class="centered"  style="width: 50px;">ID</th> 
             <th class="centered">Plaza</th> 
              </tr>
         </thead>

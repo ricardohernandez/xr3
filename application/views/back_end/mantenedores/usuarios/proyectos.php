@@ -18,7 +18,7 @@
 
   /*****DATATABLE*****/   
     var listaProyectos = $('#listaProyectos').DataTable({
-       "aaSorting" : [[1,"asc"]],
+       "aaSorting" : [[2,"asc"]],
        "responsive" :false,
        "scrollY": "65vh",
        "scrollX": true,
@@ -37,14 +37,15 @@
           }
         },    
        "columns": [
-	    {
+	      {
 	       "class":"centered center margen-td","data": function(row,type,val,meta){
 	          btn='<center><a data-toggle="modal" href="#modal_proyecto" data-hash_proyecto="'+row.hash_proyecto+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar"></a>';
 	          btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_registro" data-hash_proyecto="'+row.hash_proyecto+'"></a></center>';
 	          return btn;
 	        }
 	      },
-	    { "data": "proyecto" ,"class":"margen-td centered"},
+        { "data": "id" ,"class":"margen-td centered"},
+        { "data": "proyecto" ,"class":"margen-td centered"},
          
         ]
       }); 
@@ -277,6 +278,7 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
+            <th class="centered" style="width: 50px;">ID</th> 
             <th class="centered">Proyecto</th> 
              </tr>
         </thead>

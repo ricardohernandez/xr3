@@ -19,7 +19,7 @@
 
   /*****DATATABLE*****/   
     var listaCargos = $('#listaCargos').DataTable({
-       "aaSorting" : [[1,"asc"]],
+       "aaSorting" : [[2,"asc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -45,6 +45,7 @@
               return btn;
             }
           },
+          { "data": "id" ,"class":"margen-td centered"},
           { "data": "cargo" ,"class":"margen-td centered"},
          
         ]
@@ -280,6 +281,7 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
+            <th class="centered"  style="width: 50px;">ID</th> 
             <th class="centered">Cargo</th> 
              </tr>
         </thead>

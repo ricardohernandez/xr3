@@ -18,7 +18,7 @@
 
   /*****DATATABLE*****/   
     var listaPerfiles = $('#listaPerfiles').DataTable({
-       "aaSorting" : [[1,"asc"]],
+       "aaSorting" : [[2,"asc"]],
        "scrollY": "65vh",
        "responsive" :false,
        "scrollX": true,
@@ -46,7 +46,8 @@
 	          return btn;
 	        }
 	      },
-	    { "data": "perfil" ,"class":"margen-td centered"},
+        { "data": "id" ,"class":"margen-td centered"},
+        { "data": "perfil" ,"class":"margen-td centered"},
          
         ]
       }); 
@@ -285,6 +286,7 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
+            <th class="centered"  style="width: 50px;">ID</th> 
             <th class="centered">Perfil</th> 
              </tr>
         </thead>

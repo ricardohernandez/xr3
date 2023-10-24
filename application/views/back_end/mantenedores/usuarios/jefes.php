@@ -279,7 +279,7 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
-            <th class="centered">ID</th> 
+            <th class="centered"  style="width: 50px;">ID</th> 
             <th class="centered">Jefe</th> 
              </tr>
         </thead>
