@@ -1,5 +1,58 @@
 <style type="text/css">
+  .DTFC_LeftBodyLiner {
+    overflow-x: hidden;
+  }
+  .avg{
+    border-radius: 10px;
+    margin: auto;
+  }
+  .avg_cm{
+    background-color: #395A7F;
+    color:white;
+  }
+  .avg_ca{
+    background-color: #6E9FC1;
+    color:white;
+  }
+  .avg_as{
+    background-color: #A3CAE9;
+    color:white;
+  }
+  .centered2{
+      text-align: center!important;
+  }
 
+  .table thead th , .table tfoot th  {
+    font-size: 12px!important;
+  }
+
+  .table tbody td {
+    font-size: 11px!important;
+  }
+
+  .table thead th ,.table tbody td , .table tfoot th  {
+    padding-left: 1rem!important;
+    padding-right: 1rem!important;
+  }
+
+  table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
+    bottom: 2px;
+    display: none!important;
+  }
+
+  table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
+    padding-right: 5px!important;
+  }
+  
+  .dataTables_wrapper {
+      clear: both;
+      min-height: 302px;
+      position: relative;
+  }
+
+  .fecha2_cont{
+    display: none;
+  }
 </style>
 
 <script>
@@ -67,7 +120,7 @@ const procesaDatatable = (reload) => {
               $(".tfoot_table").append('<th class="tfoot"></th>')
               columns.push({
                   data: columnNames[j]+"_"+avg[i],
-                  class : " ",
+                  class : avg[i],
                   title: ""+columnNames[j]+""
               })
             }
@@ -177,6 +230,14 @@ $(document).off('change', '#jefe,#anio').on('change', '#jefe,#anio', function(ev
     </select>
     </div>
   </div>
+
+    <div class="col-3 col-lg-1 avg avg_cm"> % producción</div>
+    <div class="col-3 col-lg-1 avg avg_ca"> % calidad</div>
+    <div class="col-3 col-lg-1 avg avg_as"> % asistencia </div>
+
+
+
+
 
 </div>   
 
