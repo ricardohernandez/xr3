@@ -380,7 +380,7 @@ class Usuariosmodel extends CI_Model {
 	//CARGOS
 
 		public function listaCargos(){
-			$this->db->select('sha1(id) as hash_cargo,cargo');
+			$this->db->select('sha1(id) as hash_cargo,id,cargo');
 			$this->db->order_by('cargo', 'asc');
 			$res=$this->db->get('usuarios_cargos');
 			if($res->num_rows()>0){
@@ -443,7 +443,7 @@ class Usuariosmodel extends CI_Model {
 	//PROYECTOS
 
 		public function listaProyectos(){
-			$this->db->select('sha1(id) as hash_proyecto,proyecto');
+			$this->db->select('sha1(id) as hash_proyecto,id,proyecto');
 			$this->db->order_by('proyecto', 'asc');
 			$res=$this->db->get('usuarios_proyectos');
 			if($res->num_rows()>0){
@@ -506,7 +506,7 @@ class Usuariosmodel extends CI_Model {
 	//AREAS
 
 		public function listaAreas(){
-			$this->db->select('sha1(id) as hash_area,area');
+			$this->db->select('sha1(id) as hash_area,id,area');
 			$this->db->order_by('area', 'asc');
 			$res=$this->db->get('usuarios_areas');
 			if($res->num_rows()>0){
@@ -569,7 +569,7 @@ class Usuariosmodel extends CI_Model {
 	//PLAZA
 
 		public function listaPlazas(){
-			$this->db->select('sha1(id) as hash_plaza,plaza');
+			$this->db->select('sha1(id) as hash_plaza,id,plaza');
 			$this->db->order_by('plaza', 'asc');
 			$res=$this->db->get('usuarios_plazas');
 			if($res->num_rows()>0){
@@ -715,7 +715,7 @@ class Usuariosmodel extends CI_Model {
 	//PERFILES
 
 		public function listaPerfiles(){
-			$this->db->select('sha1(id) as hash_perfil,perfil');
+			$this->db->select('sha1(id) as hash_perfil,id,perfil');
 			
 			if($this->session->userdata('id_perfil')<>1){
 				$this->db->where('id<>', 1);

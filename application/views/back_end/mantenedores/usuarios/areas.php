@@ -19,7 +19,7 @@
 
   /*****DATATABLE*****/   
     var listaAreas = $('#listaAreas').DataTable({
-       "aaSorting" : [[1,"asc"]],
+       "aaSorting" : [[2,"asc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -38,14 +38,15 @@
           }
         },    
        "columns": [
-	    {
-	       "class":"centered center margen-td","data": function(row,type,val,meta){
-	          btn='<center><a data-toggle="modal" href="#modal_area" data-hash_area="'+row.hash_area+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar"></a>';
-	          btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_registro" data-hash_area="'+row.hash_area+'"></a></center>';
-	          return btn;
-	        }
-	      },
-	    { "data": "area" ,"class":"margen-td centered"},
+        {
+          "class":"centered center margen-td","data": function(row,type,val,meta){
+              btn='<center><a data-toggle="modal" href="#modal_area" data-hash_area="'+row.hash_area+'" data-placement="top" data-toggle="tooltip" title="Modificar" class="fa fa-edit btn_modificar"></a>';
+              btn+='<a href="#" data-placement="top" data-toggle="tooltip" title="Eliminar" class="fa fa-trash borrar_registro" data-hash_area="'+row.hash_area+'"></a></center>';
+              return btn;
+            }
+          },
+          { "data": "id" ,"class":"margen-td centered"},
+          { "data": "area" ,"class":"margen-td centered"},
          
         ]
       }); 
@@ -278,8 +279,9 @@
         <thead>
           <tr>    
             <th class="centered" style="width: 50px;">Acciones</th>    
+            <th class="centered" style="width: 50px;">ID</th> 
             <th class="centered">Zona</th> 
-             </tr>
+          </tr>
         </thead>
       </table>
     </div>

@@ -324,8 +324,8 @@ class Dashboard_operaciones extends CI_Controller {
 
 					"cabeceras" => 
 						["mes", 
-							"PX HFC XR3", ['role' => 'annotation'], 
-							"PX HFC Alianza sur", ['role' => 'annotation'], 
+							"CA HFC XR3", ['role' => 'annotation'], 
+							"CA HFC Alianza sur", ['role' => 'annotation'], 
 						['role' => 'annotationText']
 						]
 				],
@@ -334,8 +334,8 @@ class Dashboard_operaciones extends CI_Controller {
 
 					"cabeceras" => 
 						["mes", 
-						"PX XR3 FTTH", ['role' => 'annotation'], 
-						"PX Alianza sur FTTH", ['role' => 'annotation'], 
+						"CA XR3 FTTH", ['role' => 'annotation'], 
+						"CA Alianza sur FTTH", ['role' => 'annotation'], 
 						['role' => 'annotationText']
 					]
 				]
