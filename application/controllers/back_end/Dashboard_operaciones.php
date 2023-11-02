@@ -390,6 +390,33 @@ class Dashboard_operaciones extends CI_Controller {
 			
 		}
 
+		public function cumpl_factura(){
+			$this->visitas("Productividad x comuna y eps",23);
+
+			$datos=array(
+				'anio' =>  date('Y'),
+				'anios' =>  $this->Dashboard_operacionesmodel->getAnioCumplimientoFacturacion(),
+				'jefes' => $this->Dashboard_operacionesmodel->getJefeCumplimientoFacturacion(),
+			);
+			$this->load->view('back_end/dashboard_operaciones/cumplimiento_facturacion',$datos);
+		}
+
+		public function graficoCumpFact(){
+			$anio=$this->security->xss_clean(strip_tags($this->input->get_post("anio")));
+			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+			$data = $this->Dashboard_operacionesmodel->getDataCumplimientoFacturacion($anio,$jefe);
+			echo json_encode(array("data" =>$data));exit;
+		}
+
+		public function getCabecerasCumplimientoFacturacion(){ //DESARROLLO
+			$data=json_decode(file_get_contents('php://input'),1);
+			$jefe=$data["jefe"];
+			$anio=$data["anio"];
+			$data = $this->Dashboard_operacionesmodel->getCabecerasCumplimientoFacturacion($anio,$jefe);
+
+			echo json_encode(array("data" => $data));
+		}
+
 
 		public function cargaDashboardProductividadXR3() {
 			$archivo = $_FILES['userfile']['tmp_name'];
@@ -675,6 +702,43 @@ class Dashboard_operaciones extends CI_Controller {
 
 					$this->Dashboard_operacionesmodel->formXComuna($datos);
 					$filas_px_comuna++;
+				}
+
+			//CUMPLIMIENTO DE FACTURACIÓN
+
+				$hoja_px_cumplimiento = $spreadsheet->getSheet(7);
+				$ultima_fila_px_cumplimiento  = $hoja_px_cumplimiento->getHighestRow();
+
+				$this->db->query("TRUNCATE TABLE dashboard_cumplimiento_facturacion");
+				$filas_px_cumplimiento= 0;
+
+				for ($fila = 2; $fila <= $ultima_fila_px_cumplimiento; $fila++) {
+					$datos = array();
+			
+					$columnas_px_comuna = ['px_as','px_cm','px_ca','jefe','tecnico','mes','anio'];
+
+					$mes = '';
+					$anio = '';
+
+					foreach ($columnas_px_comuna as $index => $columna) {
+						$valor = $hoja_px_cumplimiento->getCellByColumnAndRow($index+1 , $fila)->getFormattedValue();
+
+								if ($index === 5) {
+									$mes = obtenerNumeroMes(trim($valor));
+									$datos[$columna] = $mes;
+								}elseif ($index === 6) {
+									$anio = $valor;
+									$datos[$columna] = $valor;
+								}else{
+									$valor = $hoja_px_cumplimiento->getCellByColumnAndRow($index +1, $fila)->getFormattedValue();
+									$datos[$columna] = $valor;
+								}
+						
+
+					}	
+
+					$this->Dashboard_operacionesmodel->formCumpFact($datos);
+					$filas_px_cumplimiento++;
 				}
 
 			echo json_encode(array(
