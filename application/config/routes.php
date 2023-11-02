@@ -104,7 +104,7 @@
 	$route['dashboard/analisis_calidad'] = "back_end/Dashboard_operaciones/analisisCalidad";
 	$route['dashboard/prod_cal_claro'] = "back_end/Dashboard_operaciones/prodCalClaro";
 	$route['dashboard/prod_x_comuna'] = "back_end/Dashboard_operaciones/prodXComuna";
-	
+	$route['dashboard/cumpl_factura'] = "back_end/Dashboard_operaciones/cumpl_factura";
 	$route['dashboard/cargaDashboardProductividadXR3'] = "back_end/Dashboard_operaciones/cargaDashboardProductividadXR3";
 	$route['graficosProductividadXR3'] = "back_end/Dashboard_operaciones/graficosProductividadXR3";
 	$route['graficosProductividadEps'] = "back_end/Dashboard_operaciones/graficosProductividadEps";
@@ -112,6 +112,8 @@
 	$route['graficoAnalisisCalidad'] = "back_end/Dashboard_operaciones/graficoAnalisisCalidad";
 	$route['graficoProdxEps'] = "back_end/Dashboard_operaciones/graficoProdxEps";
 	$route['graficoXComuna'] = "back_end/Dashboard_operaciones/graficoXComuna";
+	$route['graficoCumpFact'] = "back_end/Dashboard_operaciones/graficoCumpFact";
+	$route['getCabecerasCumplimientoFacturacion'] = "back_end/Dashboard_operaciones/getCabecerasCumplimientoFacturacion";
  	
 	$route['dashboard/capacitacion'] = "back_end/documentacion/indexCapacitacion";
 	$route['getDataPrevencionModulos'] = "back_end/Prevencion_modulos/getData";

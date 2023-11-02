@@ -599,6 +599,169 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 			return $result;
 		}
+		
+		public function getDataCumplimientoFacturacion($anio,$jefe){
+			$this->db->select('d.tecnico,
+				d.mes,
+				ROUND(AVG(d.px_ca),0) as avg_ca,
+				ROUND(AVG(d.px_as),0) as avg_as,
+				SUM(d.px_cm) as avg_cm,
+			');
+			if($anio!=""){
+				$this->db->where('anio', $anio);
+			}
+			if($jefe!=""){
+				$this->db->where('jefe', $jefe);
+			}
+			
+			$this->db->group_by('tecnico, mes');
+			$res = $this->db->get('dashboard_cumplimiento_facturacion d');
+
+			$this->db->select('d2.jefe as tecnico,
+				d2.mes as mes,
+				ROUND(AVG(d2.px_ca),0) as avg_ca,
+				ROUND(AVG(d2.px_as),0) as avg_as,
+				SUM(d2.px_cm) as avg_cm,
+			');
+
+			if($anio!=""){
+				$this->db->where('anio', $anio);
+			}
+			if($jefe!=""){
+				$this->db->where('jefe', $jefe);
+			}
+			$this->db->group_by('mes');
+			$res2 = $this->db->get('dashboard_cumplimiento_facturacion d2');
+			$data = array_merge($res->result_array(),$res2->result_array());
+
+			$avgArray = array();
+			$monthsArray = array();
+
+			$nmes = array(
+				0 => 'Nulo',
+				1 => 'Enero',
+				2 => 'Febrero',
+				3 => 'Marzo',
+				4 => 'Abril',
+				5 => 'Mayo',
+				6 => 'Junio',
+				7 => 'Julio',
+				8 => 'Agosto',
+				9 => 'Septiembre',
+				10 => 'Octubre',
+				11 => 'Noviembre',
+				12 => 'Diciembre'
+			);
+
+			foreach ($data as $item) {
+				$tecnico = $item["tecnico"];
+				$mes = $nmes[$item["mes"]];
+				$avg_ca = $item["avg_ca"]; 
+				$avg_as = $item["avg_as"]; 
+				$avg_cm = $item["avg_cm"]; 
+
+				if (!isset($avgArray[$tecnico])) {
+					$avgArray[$tecnico] = [];
+				}
+				if (!in_array($mes, $monthsArray)) {
+					$monthsArray[] = $mes;
+				}
+				$avgArray[$tecnico]["tecnico"] = $tecnico;
+				$avgArray[$tecnico][$mes."_avg_ca"] = $avg_ca."%";
+				$avgArray[$tecnico][$mes."_avg_as"] = $avg_as."%";
+				$avgArray[$tecnico][$mes."_avg_cm"] = $avg_cm."%";
+			}
+
+			foreach ($monthsArray as $mes) {
+				foreach ($data as $item) {
+					$tecnico = $item["tecnico"];
+					$avg_ca = $item["avg_ca"]; 
+					$avg_as = $item["avg_as"]; 
+					$avg_cm = $item["avg_cm"]; 
+	
+					if (!isset($avgArray[$tecnico])) {
+						$avgArray[$tecnico] = [];
+					}
+					if (!isset($avgArray[$tecnico][$mes."_avg_as"])) {
+						$avgArray[$tecnico][$mes."_avg_as"] = "";
+					}
+					if (!isset($avgArray[$tecnico][$mes."_avg_cm"])) {
+						$avgArray[$tecnico][$mes."_avg_cm"] = "";
+					}
+					if (!isset($avgArray[$tecnico][$mes."_avg_ca"])) {
+						$avgArray[$tecnico][$mes."_avg_ca"] = "";
+					}
+				}
+			}
+
+			$array = array();
+
+			foreach ($avgArray as $data){
+				$temp = $data;
+				$array[]=$temp;
+			}
+			return $array;
+		}
+		
+		public function getCabecerasCumplimientoFacturacion($anio,$jefe){
+			$this->db->select('
+				DISTINCT(d.mes) as mes,
+			');
+			if($anio!=""){
+				$this->db->where('anio', $anio);
+			}
+			if($jefe!=""){
+				$this->db->where('jefe', $jefe);
+			}
+			$this->db->order_by('d.mes', 'asc');
+			$res = $this->db->get('dashboard_cumplimiento_facturacion d');
+
+
+			$mes = array(
+				0 => 'Nulo',
+				1 => 'Enero',
+				2 => 'Febrero',
+				3 => 'Marzo',
+				4 => 'Abril',
+				5 => 'Mayo',
+				6 => 'Junio',
+				7 => 'Julio',
+				8 => 'Agosto',
+				9 => 'Septiembre',
+				10 => 'Octubre',
+				11 => 'Noviembre',
+				12 => 'Diciembre'
+			);
+
+			$array = array();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $mes[$key['mes']];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
+		public function getJefeCumplimientoFacturacion(){
+			$this->db->distinct();
+			$this->db->select('jefe');
+			$res = $this->db->get('dashboard_cumplimiento_facturacion');
+			return $res->result_array();
+		}
+
+		public function getAnioCumplimientoFacturacion(){
+			$this->db->distinct();
+			$this->db->select('anio');
+			$res = $this->db->get('dashboard_cumplimiento_facturacion');
+			return $res->result_array();
+		}
 
 
 		public function getZonas(){
@@ -670,6 +833,29 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$this->db->select('zona');
 			$res=$this->db->get('dashboard_comparacion_comuna');
 			return $res->result_array();
+		}
+
+		public function listaJefes(){
+			$this->db->select("sha1(uj.id) as hash_jefes,
+				uj.id as id_jefe,
+				uj.id_jefe as id_usuario_jefe,
+				CONCAT(u.nombres,' ',u.apellidos)  'nombre_jefe'
+				");
+
+			$this->db->join('usuarios u', 'u.id = uj.id_jefe', 'left');
+
+			if($this->session->userdata('id_perfil')==3){
+				if($this->session->userdata('verificacionJefe')=="1"){
+					$this->db->where('uj.id', $this->session->userdata('id_jefe'));
+				}
+			}
+
+			$this->db->order_by('nombre_jefe', 'asc');
+			$res=$this->db->get('usuarios_jefes uj');
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
 		}
 
 
@@ -750,6 +936,13 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return FALSE;
 		} 
 
+		public function formCumpFact($data){
+			if($this->db->insert('dashboard_cumplimiento_facturacion', $data)){
+				return $this->db->insert_id();
+			}
+			return FALSE;
+		} 
+
 		
 		public function eliminaCapacitacion($hash){
 			$this->db->where('sha1(id)', $hash);
@@ -758,8 +951,5 @@ class Dashboard_operacionesmodel extends CI_Model {
 			}
 			return FALSE;
 		}
-
-	
-	
 
 }

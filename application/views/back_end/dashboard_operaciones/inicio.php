@@ -83,6 +83,11 @@
       vistaProdXComuna()
     });
 
+    $(document).off('click', '#cump_fact').on('click', '#cump_fact',function(event) {
+      event.preventDefault();
+      vistaCumpFact()
+    });
+
     function vistaProductividadCalidadXr3(){
       $("#menu_prod_cal_xr3").addClass('disabled_sub');
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
@@ -164,6 +169,19 @@
      /*  window.history.replaceState('statedata', 'title', 'dashboard_operaciones'); */
     }
 
+    function vistaCumpFact(){
+      $("#cump_fact").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x' ></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#cump_fact").addClass('menuActivo');  
+
+      $.get(base_url+"dashboard/cumpl_factura", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#cump_fact").removeClass('disabled_sub');
+      });
+
+    }
+
 
   })
 </script>
@@ -184,7 +202,8 @@
        <li id="menu_dotacion" class="active"><a> <i class="fa fa-chart-line"></i> Dotacion FTE </a></li>   
        <li id="menu_analisis_calidad" class="active"><a> <i class="fa fa-chart-line"></i> Analisis Calidad </a></li>   
        <li id="prod_cal_claro" class="active"><a> <i class="fa fa-chart-line"></i> Producción y calidad CLARO  </a></li>   
-       <li id="prod_x_comuna" class="active"><a> <i class="fa fa-chart-line"></i> Producción por comuna y empresa  </a></li>   
+       <li id="prod_x_comuna" class="active"><a> <i class="fa fa-chart-line"></i> Producción por comuna y empresa  </a></li>  
+       <li id="cump_fact" class="active"><a> <i class="fa fa-chart-line"></i> % Cumplimiento de facturación </a></li> 
       </ul>  
       </div> 
       </div> 

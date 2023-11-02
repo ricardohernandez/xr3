@@ -19,7 +19,7 @@ class Rop extends CI_Controller {
 	
 	public function acceso(){
 		if($this->session->userdata('id')){
-	      	if($this->session->userdata('id_perfil')>3){
+	      	if($this->session->userdata('id_perfil')>4){
 	      		redirect("./login");
 	      	}
 	      }else{
