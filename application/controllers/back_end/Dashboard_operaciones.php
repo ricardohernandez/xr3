@@ -391,11 +391,12 @@ class Dashboard_operaciones extends CI_Controller {
 		}
 
 		public function cumpl_factura(){
-			$this->visitas("Productividad x comuna y eps",23);
+			$this->visitas("Cumplimieno Facturacion",23);
 
 			$datos=array(
 				'anio' =>  date('Y'),
 				'anios' =>  $this->Dashboard_operacionesmodel->getAnioCumplimientoFacturacion(),
+				'meses' =>  $this->Dashboard_operacionesmodel->getMesesCumplimientoFacturacion(),
 				'jefes' => $this->Dashboard_operacionesmodel->getJefeCumplimientoFacturacion(),
 			);
 			$this->load->view('back_end/dashboard_operaciones/cumplimiento_facturacion',$datos);
@@ -404,7 +405,8 @@ class Dashboard_operaciones extends CI_Controller {
 		public function graficoCumpFact(){
 			$anio=$this->security->xss_clean(strip_tags($this->input->get_post("anio")));
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-			$data = $this->Dashboard_operacionesmodel->getDataCumplimientoFacturacion($anio,$jefe);
+			$mes=$this->security->xss_clean(strip_tags($this->input->get_post("mes")));
+			$data = $this->Dashboard_operacionesmodel->getDataCumplimientoFacturacion($anio,$jefe,$mes);
 			echo json_encode(array("data" =>$data));exit;
 		}
 
@@ -412,7 +414,8 @@ class Dashboard_operaciones extends CI_Controller {
 			$data=json_decode(file_get_contents('php://input'),1);
 			$jefe=$data["jefe"];
 			$anio=$data["anio"];
-			$data = $this->Dashboard_operacionesmodel->getCabecerasCumplimientoFacturacion($anio,$jefe);
+			$mes=$data["mes"];
+			$data = $this->Dashboard_operacionesmodel->getCabecerasCumplimientoFacturacion($anio,$jefe,$mes);
 
 			echo json_encode(array("data" => $data));
 		}
@@ -706,7 +709,7 @@ class Dashboard_operaciones extends CI_Controller {
 
 			//CUMPLIMIENTO DE FACTURACIÓN
 
-				$hoja_px_cumplimiento = $spreadsheet->getSheet(7);
+				$hoja_px_cumplimiento = $spreadsheet->getSheet(8);
 				$ultima_fila_px_cumplimiento  = $hoja_px_cumplimiento->getHighestRow();
 
 				$this->db->query("TRUNCATE TABLE dashboard_cumplimiento_facturacion");
@@ -751,7 +754,8 @@ class Dashboard_operaciones extends CI_Controller {
 				'.$filas_analisis_cal.' filas de analisis de calidad insertadas,
 				'.$filas_prod_cal_claro.' filas de prod. y calidad claro insertadas,
 				'.$filas_px_ciudad_claro.' filas de px x ciudad claro insertadas,
-				'.$filas_px_comuna.' filas de px x comuna insertadas,'
+				'.$filas_px_comuna.' filas de px x comuna insertadas,
+				'.$filas_px_cumplimiento.' filas de cumplimiento de facturación,'
 				
 			));
 

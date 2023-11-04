@@ -600,7 +600,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $result;
 		}
 		
-		public function getDataCumplimientoFacturacion($anio,$jefe){
+		public function getDataCumplimientoFacturacion($anio,$jefe,$mes){
 			$this->db->select('d.tecnico,
 				d.mes,
 				ROUND(AVG(d.px_ca),0) as avg_ca,
@@ -630,6 +630,9 @@ class Dashboard_operacionesmodel extends CI_Model {
 			if($jefe!=""){
 				$this->db->where('jefe', $jefe);
 			}
+			if($mes!=""){
+				$this->db->where('mes', $mes);
+			}
 			$this->db->group_by('mes');
 			$res2 = $this->db->get('dashboard_cumplimiento_facturacion d2');
 			$data = array_merge($res->result_array(),$res2->result_array());
@@ -638,19 +641,19 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$monthsArray = array();
 
 			$nmes = array(
-				0 => 'Nulo',
-				1 => 'Enero',
-				2 => 'Febrero',
-				3 => 'Marzo',
-				4 => 'Abril',
-				5 => 'Mayo',
-				6 => 'Junio',
-				7 => 'Julio',
-				8 => 'Agosto',
-				9 => 'Septiembre',
-				10 => 'Octubre',
-				11 => 'Noviembre',
-				12 => 'Diciembre'
+				"0" => 'Nulo',
+				"01" => 'Enero',
+				"02" => 'Febrero',
+				"03" => 'Marzo',
+				"04" => 'Abril',
+				"05" => 'Mayo',
+				"06" => 'Junio',
+				"07" => 'Julio',
+				"08" => 'Agosto',
+				"09" => 'Septiembre',
+				"10" => 'Octubre',
+				"11" => 'Noviembre',
+				"12" => 'Diciembre'
 			);
 
 			foreach ($data as $item) {
@@ -703,7 +706,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 			return $array;
 		}
 		
-		public function getCabecerasCumplimientoFacturacion($anio,$jefe){
+		public function getCabecerasCumplimientoFacturacion($anio,$jefe,$mes){
 			$this->db->select('
 				DISTINCT(d.mes) as mes,
 			');
@@ -713,24 +716,27 @@ class Dashboard_operacionesmodel extends CI_Model {
 			if($jefe!=""){
 				$this->db->where('jefe', $jefe);
 			}
+			if($mes!=""){
+				$this->db->where('mes', $mes);
+			}
 			$this->db->order_by('d.mes', 'asc');
 			$res = $this->db->get('dashboard_cumplimiento_facturacion d');
 
 
 			$mes = array(
-				0 => 'Nulo',
-				1 => 'Enero',
-				2 => 'Febrero',
-				3 => 'Marzo',
-				4 => 'Abril',
-				5 => 'Mayo',
-				6 => 'Junio',
-				7 => 'Julio',
-				8 => 'Agosto',
-				9 => 'Septiembre',
-				10 => 'Octubre',
-				11 => 'Noviembre',
-				12 => 'Diciembre'
+				"0" => 'Nulo',
+				"01" => 'Enero',
+				"02" => 'Febrero',
+				"03" => 'Marzo',
+				"04" => 'Abril',
+				"05" => 'Mayo',
+				"06" => 'Junio',
+				"07" => 'Julio',
+				"08" => 'Agosto',
+				"09" => 'Septiembre',
+				"10" => 'Octubre',
+				"11" => 'Noviembre',
+				"12" => 'Diciembre'
 			);
 
 			$array = array();
@@ -760,9 +766,42 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$this->db->distinct();
 			$this->db->select('anio');
 			$res = $this->db->get('dashboard_cumplimiento_facturacion');
+
 			return $res->result_array();
 		}
+		public function getMesesCumplimientoFacturacion(){
+			$this->db->distinct();
+			$this->db->select('mes');
+			$this->db->order_by('mes', 'asc');
+			$res = $this->db->get('dashboard_cumplimiento_facturacion');
 
+			
+			$mes = array(
+				"0" => 'Nulo',
+				"01" => 'Enero',
+				"02" => 'Febrero',
+				"03" => 'Marzo',
+				"04" => 'Abril',
+				"05" => 'Mayo',
+				"06" => 'Junio',
+				"07" => 'Julio',
+				"08" => 'Agosto',
+				"09" => 'Septiembre',
+				"10" => 'Octubre',
+				"11" => 'Noviembre',
+				"12" => 'Diciembre'
+			);
+
+			$array = array();
+			
+			foreach($res->result_array() as $key){
+				$temp = array();
+				$temp["mes"] = $mes[$key['mes']];
+				$temp["id"] = $key['mes'];
+				$array[] = $temp;
+			}
+			return $array;
+		}
 
 		public function getZonas(){
 			$this->db->distinct();

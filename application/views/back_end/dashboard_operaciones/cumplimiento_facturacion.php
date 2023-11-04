@@ -65,6 +65,7 @@
 const procesaDatatable = (reload) => {
   var jefe = $("#jefe").val()
   var anio = $("#anio").val()
+  var mes = $("#mes").val()
 
   async function enviaDatos(url = '', data = {}) {
       const response = await fetch(url, {
@@ -88,9 +89,9 @@ const procesaDatatable = (reload) => {
 
       jefe:jefe,
       anio:anio,
+      mes:mes,
     })
     .then(data => {
-      $(".btn_filtro_turnos").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled",false);
       if(data.data.length!=0){
          if(reload){
             $('#tabla_cumplimiento').html("");
@@ -112,18 +113,23 @@ const procesaDatatable = (reload) => {
                 class : " ",
                 title: "Usuario"
           })
-
           header = ["% Producción","% Calidad","% Asistencia"]
           avg = ["avg_cm","avg_ca","avg_as"]
-          for (var i in avg) { 
-            for (var j in columnNames) {
-              $(".tfoot_table").append('<th class="tfoot"></th>')
-              columns.push({
-                  data: columnNames[j]+"_"+avg[i],
-                  class : avg[i],
-                  title: ""+columnNames[j]+""
-              })
+          console.log(columnNames[0]);
+          if(columnNames[0] != ""){
+            for (var i in avg) { 
+              for (var j in columnNames) {
+                $(".tfoot_table").append('<th class="tfoot"></th>')
+                columns.push({
+                    data: columnNames[j]+"_"+avg[i],
+                    class : avg[i],
+                    title: ""+columnNames[j]+""
+                })
+              }
             }
+          }
+          else{
+            console.log("nulo");
           }
 
          var tabla_cumplimiento = $('#tabla_cumplimiento').DataTable({
@@ -148,8 +154,10 @@ const procesaDatatable = (reload) => {
                data: function(param){
                 var jefe =$("#jefe").val()
                 var anio =$("#anio").val()
+                var mes =$("#mes").val()
                 param.jefe = jefe;
                 param.anio = anio;
+                param.mes = mes;
              }
           },    
         });
@@ -176,7 +184,6 @@ const procesaDatatable = (reload) => {
       }else{
         $("#tabla_cumplimiento").DataTable().clear().draw()
         $(".tfoot_table").html("");
-        // $("#tabla_cumplimiento tfoot").html('')
       }
     
     $(".btn_filtro_turnos").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled",false);
@@ -186,7 +193,7 @@ const procesaDatatable = (reload) => {
 procesaDatatable(false)
 
 
-$(document).off('change', '#jefe,#anio').on('change', '#jefe,#anio', function(event) {
+$(document).off('change', '#jefe,#anio,#mes').on('change', '#jefe,#anio,#mes', function(event) {
    procesaDatatable(true)
 }); 
 
@@ -218,6 +225,21 @@ $(document).off('change', '#jefe,#anio').on('change', '#jefe,#anio', function(ev
 
   <div class="col-12 col-lg-2">
     <div class="form-group">
+    <select id="mes" name="mes" class="custom-select custom-select-sm">
+      <option value="">Seleccione mes</option>
+      <?php 
+        foreach($meses as $m){
+          ?>
+           <option value="<?php echo $m["id"]?>"><?php echo $m["mes"]?></option>
+          <?php
+        }
+      ?>
+    </select>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-2">
+    <div class="form-group">
     <select id="jefe" name="jefe" class="custom-select custom-select-sm">
       <option value="">Seleccione jefe</option>
       <?php 
@@ -231,9 +253,9 @@ $(document).off('change', '#jefe,#anio').on('change', '#jefe,#anio', function(ev
     </div>
   </div>
 
-    <div class="col-3 col-lg-1 avg avg_cm"> % producción</div>
-    <div class="col-3 col-lg-1 avg avg_ca"> % calidad</div>
-    <div class="col-3 col-lg-1 avg avg_as"> % asistencia </div>
+  <div class="col-3 col-lg-1 avg avg_cm"> % producción</div>
+  <div class="col-3 col-lg-1 avg avg_ca"> % calidad</div>
+  <div class="col-3 col-lg-1 avg avg_as"> % asistencia </div>
 
 
 
