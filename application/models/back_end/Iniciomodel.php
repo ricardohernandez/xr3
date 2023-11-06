@@ -252,11 +252,11 @@ class InicioModel extends CI_Model {
 			return FALSE;
 		}
 
-
 		public function infoUsuario($hash){
 			$this->db->query("SET lc_time_names = 'es_CL'");
 			$this->db->select("
 			    CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
+				CONCAT(u.nombres,'  ',u.apellidos) as 'nombre_completo',
 				u.foto as imagen,
 				DATE_FORMAT(u.fecha_nacimiento, '%e %M')  as fecha_nacimiento,
 				u.fecha_ingreso as fecha_ingreso,
@@ -264,6 +264,12 @@ class InicioModel extends CI_Model {
 				c.cargo as cargo,
 				p.proyecto as proyecto,
 				CONCAT(u2.nombres,' ',u2.apellidos)  'jefe',
+				u.rut,
+				u.correo_empresa as 'correo',
+				u.celular_empresa as 'telefono',
+				pl.plaza as 'plaza',
+
+
 			");
 			$this->db->from('usuarios as u');
 			$this->db->join('usuarios_areas as a', 'a.id = u.id_area', 'left');
@@ -271,11 +277,35 @@ class InicioModel extends CI_Model {
 			$this->db->join('usuarios_proyectos as p', 'p.id = u.id_proyecto', 'left');
 			$this->db->join('usuarios_jefes uj', 'uj.id = u.id_jefe', 'left');
 			$this->db->join('usuarios u2', 'u2.id = uj.id_jefe', 'left');
+			$this->db->join('usuarios_plazas pl', 'pl.id = u.id_plaza', 'left');
 
 			$this->db->where('sha1(u.id)', $hash);
 			$res=$this->db->get();
 			if ($res->num_rows()>0) {
 				return $res->result_array();
+			}
+			return FALSE;
+		}
+
+		public function listaUsuarios(){
+			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+				empresa,sha1(id) as 'id',rut,
+			    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
+			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto'");
+
+			$this->db->where('estado',"1");
+
+			$this->db->order_by('nombres', 'asc');
+			$res=$this->db->get("usuarios");
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["id"];
+					$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_completo"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}

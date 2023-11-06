@@ -372,6 +372,10 @@ class Inicio extends CI_Controller {
 		        echo json_encode(array("res" => "error","msg" => "No se han encontrado resultados"));exit;
 			}
 		}
+
+		public function listaUsuarios(){
+			 echo $this->Iniciomodel->listaUsuarios();exit;
+		}
 		
 
 		public function verComo(){

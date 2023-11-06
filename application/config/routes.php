@@ -17,6 +17,7 @@
 	$route['cargaCategorias'] = "inicio/cargaCategorias";
 	$route['cargaIngresos'] = "inicio/cargaIngresos";
 	$route['infoUsuario'] = "inicio/infoUsuario";
+	$route['listaUsuariosInicio'] = "inicio/listaUsuarios";
 	$route['cambiarPass'] = "inicio/cambiarPass";
 	$route['verComo'] = "inicio/verComo";
 	$route['recuperarPass'] = "inicio/recuperarPass";

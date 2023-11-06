@@ -1,5 +1,8 @@
 <script type="text/javascript">
    $(function(){
+
+      const base = "<?php echo base_url() ?>";
+
    	$(".btn_modal_pass").click(function(event) {
    	    $("#modal_pass").modal('toggle'); 
    	    $(".cont_mensajes").html();
@@ -61,6 +64,88 @@
           }
         },"json");
      });
+
+     $.getJSON(base + "listaUsuariosInicio",{}, function(data) {
+      response = data;
+      console.log(response);
+      }).done(function() {
+         $("#usuario").select2({
+            placeholder: 'Buscador de usuario',
+            data: response,
+            width: 'resolve',
+            allowClear:true,
+         });
+      });
+
+      $(document).off('change', '#usuario').on('change', '#usuario', function(event) {
+         event.preventDefault();
+         hash=$("#usuario").val(); 
+         $("#modal_user").modal('toggle'); 
+   	   $("#cierra_modal").attr("disabled", false);
+         $("#usuario").val(null);
+         $('#formusuario')[0].reset()
+         $("#formusuario input,#formusuario select,#formusuario button,#formusuario").prop("disabled", true)
+         $.ajax({
+            url: base+"infoUsuario"+"?"+$.now(),  
+            type: 'POST',
+            cache: false,
+            tryCount : 0,
+            retryLimit : 3,
+            data:{hash:hash},
+            dataType:"json",
+            beforeSend:function(){
+               $(".btn_guardar_detalle").prop("disabled",true); 
+               $("#cierra_modal").prop("disabled",true); 
+            },
+            success: function (data) {
+               if(data.res=="ok"){
+                  for(dato in data.usuario){
+                  $("#usuario_nombre").val(data.usuario[dato].nombre_completo);
+                  $("#usuario_rut").val(data.usuario[dato].rut);
+                  $("#usuario_fono_contacto").val(data.usuario[dato].telefono);
+                  $("#usuario_correo").val(data.usuario[dato].correo);
+                  $("#usuario_cargo").val(data.usuario[dato].cargo);
+                  $("#usuario_proyecto").val(data.usuario[dato].proyecto);
+                  $("#usuario_plaza").val(data.usuario[dato].plaza);
+                  }
+                  $("#cierra_modal").prop("disabled", false);
+                  $(".btn_guardar_detalle").prop("disabled", false);
+
+               }else if(data.res == "sess"){
+                  window.location="../";
+               }
+               $(".btn_guardar_detalle").prop("disabled",false); 
+               $("#cierra_modal").prop("disabled",false); 
+            },
+            error : function(xhr, textStatus, errorThrown ) {
+               if (textStatus == 'timeout') {
+                  this.tryCount++;
+                  if (this.tryCount <= this.retryLimit) {
+                        $.notify("Reintentando...", {
+                        className:'info',
+                        globalPosition: 'top right'
+                        });
+                        $.ajax(this);
+                        return;
+                  } else{
+                        $.notify("Problemas en el servidor, intente nuevamente.", {
+                        className:'warn',
+                        globalPosition: 'top right'
+                        });     
+                        $('#modal_nuevo_usuario').modal("toggle");
+                  }    
+                  return;
+               }
+               if (xhr.status == 500) {
+                  $.notify("Problemas en el servidor, intente más tarde.", {
+                     className:'warn',
+                     globalPosition: 'top right'
+                  });
+                  $('#modal_rcdc').modal("toggle");
+               }
+            } , timeout:35000
+         })   
+      }); 
    })
 </script>
 <style type="text/css">
@@ -72,10 +157,16 @@
       .modal_pass{
          width:45%!important;
       }
+      .modal_user{
+         width:45%!important;
+      }
    }
 
    @media (max-width: 1024px) {
       .modal_pass{
+         width:95%!important;
+      }
+      .modal_user{
          width:95%!important;
       }
    }
@@ -448,9 +539,29 @@
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
                      </ul>
                   </li>
+
                   <?php
                      }
                      ?>
+
+                   <li class="nav__dropdown ">
+                     <a href="#">Buscador de usuarios</a>
+                     <ul class="nav__dropdown-menu">
+                     <?php  
+                     if($perfil==1 || $perfil==2){
+                     ?>
+                     <li>                  
+                        <select id="usuario" name="usuario" >
+                           <option value="">Buscador de usuario</option>
+                        </select> 
+                     </li>
+                     <?php
+                        }
+                     ?>
+                     </ul>
+                  </li>
+
+
                </ul>
             </nav>
             <!-- MENU DERECHA -->
@@ -580,4 +691,59 @@
          </div>
       </div>
    </div>
+</div>
+
+<div class="modal fade" id="modal_user" tabindex="-1"  data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="" aria-hidden="true">
+   <div class="modal-dialog modal_user" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <p class="title_section">Información de usuario</p>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            </button>
+         </div>
+         <?php echo form_open_multipart("formusuario",array("id"=>"formusuario","class"=>"formusuario"))?>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col">
+                  <input type="hidden" value="" name="hash" id="hash">
+                  <div class="form-row">
+                     <div class="form-group col-md-12">
+                        <label for="">Nombre de usuario</label>
+                        <input  id="usuario_nombre" name="usuario_nombre"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Rut</label>
+                        <input  id="usuario_rut" name="usuario_rut"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Número de contacto</label>
+                        <input  id="usuario_fono_contacto" name="usuario_fono_contacto"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Correo electrónico</label>
+                        <input  id="usuario_correo" name="usuario_correo"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Cargo</label>
+                        <input  id="usuario_cargo" name="usuario_cargo"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Proyecto</label>
+                        <input  id="usuario_proyecto" name="usuario_proyecto"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Plaza</label>
+                        <input  id="usuario_plaza" name="usuario_plaza"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cierra_modal"><i class="fa fa-window-close icono_btn"></i> Cerrar</button>
+            </div>
+            <?php echo form_close(); ?>
+         </div>
+      </div>
+   </div>
+   
 </div>
