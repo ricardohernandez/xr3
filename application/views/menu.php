@@ -101,7 +101,6 @@
                if(data.res=="ok"){
                   for(dato in data.usuario){
                   $("#usuario_nombre").val(data.usuario[dato].nombre_completo);
-                  $("#usuario_rut").val(data.usuario[dato].rut);
                   $("#usuario_fono_contacto").val(data.usuario[dato].telefono);
                   $("#usuario_correo").val(data.usuario[dato].correo);
                   $("#usuario_cargo").val(data.usuario[dato].cargo);
@@ -710,10 +709,6 @@
                      <div class="form-group col-md-12">
                         <label for="">Nombre de usuario</label>
                         <input  id="usuario_nombre" name="usuario_nombre"  type="text" class="form-control form-control-sm" placeholder=""> 
-                     </div>
-                     <div class="form-group col-md-12">
-                        <label for="">Rut</label>
-                        <input  id="usuario_rut" name="usuario_rut"  type="text" class="form-control form-control-sm" placeholder=""> 
                      </div>
                      <div class="form-group col-md-12">
                         <label for="">Número de contacto</label>

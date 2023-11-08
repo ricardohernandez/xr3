@@ -302,7 +302,7 @@ class InicioModel extends CI_Model {
 				foreach($res->result_array() as $key){
 					$temp=array();
 					$temp["id"]=$key["id"];
-					$temp["text"]=$key["rut_format"]."  |  ".$key["nombre_completo"];
+					$temp["text"]=$key["nombre_completo"];
 					$array[]=$temp;
 				}
 				return json_encode($array);
