@@ -604,8 +604,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$this->db->select('d.tecnico,
 				d.mes,
 				ROUND(AVG(d.px_ca),0) as avg_ca,
-				ROUND(AVG(d.px_as),0) as avg_as,
-				SUM(d.px_cm) as avg_cm,
+				ROUND(SUM(d.px_as),0) as avg_as,
+				ROUND(AVG(d.px_cm),0) as avg_cm,
 			');
 			if($anio!=""){
 				$this->db->where('anio', $anio);
@@ -620,8 +620,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$this->db->select('d2.jefe as tecnico,
 				d2.mes as mes,
 				ROUND(AVG(d2.px_ca),0) as avg_ca,
-				ROUND(AVG(d2.px_as),0) as avg_as,
-				SUM(d2.px_cm) as avg_cm,
+				ROUND(SUM(d2.px_as),0) as avg_as,
+				ROUND(AVG(d2.px_cm),0) as avg_cm,
 			');
 
 			if($anio!=""){
@@ -777,7 +777,6 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 			
 			$mes = array(
-				"0" => 'Nulo',
 				"01" => 'Enero',
 				"02" => 'Febrero',
 				"03" => 'Marzo',

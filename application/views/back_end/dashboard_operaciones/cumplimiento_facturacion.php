@@ -19,7 +19,7 @@
     color:white;
   }
   .centered2{
-      text-align: center!important;
+    text-align: center!important;
   }
 
   .table thead th , .table tfoot th  {
@@ -115,14 +115,13 @@ const procesaDatatable = (reload) => {
           })
           header = ["% Producción","% Calidad","% Asistencia"]
           avg = ["avg_cm","avg_ca","avg_as"]
-          console.log(columnNames[0]);
           if(columnNames[0] != ""){
             for (var i in avg) { 
               for (var j in columnNames) {
                 $(".tfoot_table").append('<th class="tfoot"></th>')
                 columns.push({
                     data: columnNames[j]+"_"+avg[i],
-                    class : avg[i],
+                    class :avg[i],
                     title: ""+columnNames[j]+""
                 })
               }

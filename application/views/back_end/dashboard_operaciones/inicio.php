@@ -203,7 +203,7 @@
        <li id="menu_analisis_calidad" class="active"><a> <i class="fa fa-chart-line"></i> Analisis Calidad </a></li>   
        <li id="prod_cal_claro" class="active"><a> <i class="fa fa-chart-line"></i> Producción y calidad CLARO  </a></li>   
        <li id="prod_x_comuna" class="active"><a> <i class="fa fa-chart-line"></i> Producción por comuna y empresa  </a></li>  
-       <li id="cump_fact" class="active"><a> <i class="fa fa-chart-line"></i> % Cumplimiento de facturación </a></li> 
+       <li id="cump_fact" class="active"><a> <i class="fa fa-chart-line"></i> Evolutivo técnico </a></li> 
       </ul>  
       </div> 
       </div> 

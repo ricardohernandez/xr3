@@ -722,26 +722,36 @@ class Dashboard_operaciones extends CI_Controller {
 
 					$mes = '';
 					$anio = '';
+					$flag = false;
 
 					foreach ($columnas_px_comuna as $index => $columna) {
 						$valor = $hoja_px_cumplimiento->getCellByColumnAndRow($index+1 , $fila)->getFormattedValue();
 
-								if ($index === 5) {
+								if ($index === 5) { //MES
+									if($valor == ""){$flag=true;}
 									$mes = obtenerNumeroMes(trim($valor));
 									$datos[$columna] = $mes;
-								}elseif ($index === 6) {
+								}elseif ($index === 6) { //AÑO
+									if($valor == ""){$flag=true;}
+									$anio = $valor;
+									$datos[$columna] = $valor;
+								}elseif ($index === 3) { //JEFE
+									if($valor == ""){$flag=true;}
+									$anio = $valor;
+									$datos[$columna] = $valor;
+								}elseif ($index === 4) { //TECNICO
+									if($valor == ""){$flag=true;}
 									$anio = $valor;
 									$datos[$columna] = $valor;
 								}else{
 									$valor = $hoja_px_cumplimiento->getCellByColumnAndRow($index +1, $fila)->getFormattedValue();
 									$datos[$columna] = $valor;
 								}
-						
-
 					}	
-
+					if(!$flag){
 					$this->Dashboard_operacionesmodel->formCumpFact($datos);
 					$filas_px_cumplimiento++;
+					}
 				}
 
 			echo json_encode(array(
