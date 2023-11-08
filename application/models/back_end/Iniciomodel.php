@@ -291,6 +291,7 @@ class InicioModel extends CI_Model {
 			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
 				empresa,sha1(id) as 'id',rut,
 			    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
+				foto,
 			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto'");
 
 			$this->db->where('estado',"1");
@@ -303,6 +304,7 @@ class InicioModel extends CI_Model {
 					$temp=array();
 					$temp["id"]=$key["id"];
 					$temp["text"]=$key["nombre_completo"];
+					$temp["image"]=$key["foto"];
 					$array[]=$temp;
 				}
 				return json_encode($array);

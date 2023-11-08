@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
    $(function(){
 
       const base = "<?php echo base_url() ?>";
@@ -74,8 +75,28 @@
             data: response,
             width: 'resolve',
             allowClear:true,
+            templateResult: formatUsuarioOption,
          });
       });
+
+      function formatUsuarioOption(data) {
+         if (!data.id) {
+            return data.text;
+         }
+         // Crea un elemento `<span>` que incluye la imagen y el texto del usuario
+         if(data.image !=""){
+            var $usuarioOption = $(
+            '<span><img src="' +base+'fotos_usuarios/'+ data.image + '" class="user-image" /> ' + data.text + '</span>'
+            );
+         }else{
+            var $usuarioOption = $(
+            '<span><i class="fas fa-user-circle user-image nofoto lazyload"></i> ' + data.text + '</span>'
+            );
+         }
+         
+
+         return $usuarioOption;
+      }
 
       $(document).off('change', '#usuario').on('change', '#usuario', function(event) {
          event.preventDefault();
@@ -151,7 +172,13 @@
    .modo_noche, .modo_dia{
       cursor:pointer;
    }
-
+   .user-image{
+      height: 32px!important;
+      text-align: center!important;
+      margin: 0 auto!important;
+      width: 32px!important;
+      border-radius: 50%!important;
+   }
    @media (min-width: 1024px) {
       .modal_pass{
          width:45%!important;
@@ -692,13 +719,12 @@
    </div>
 </div>
 
+<!-- MODAL USUARIO-->
 <div class="modal fade" id="modal_user" tabindex="-1"  data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="" aria-hidden="true">
    <div class="modal-dialog modal_user" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <p class="title_section">Información de usuario</p>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            </button>
+            <p class="title_section" style="margin: auto;">Información de usuario</p>
          </div>
          <?php echo form_open_multipart("formusuario",array("id"=>"formusuario","class"=>"formusuario"))?>
          <div class="modal-body">
