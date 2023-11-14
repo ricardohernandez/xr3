@@ -7,16 +7,19 @@
     margin: auto;
   }
   .avg_cm{
-    background-color: #395A7F;
-    color:white;
+    background-color: #395A7F!important;;
+    color:white!important;;
+    text-align: center!important;
   }
   .avg_ca{
-    background-color: #6E9FC1;
-    color:white;
+    background-color: #6E9FC1!important;;
+    color:white!important;;
+    text-align: center!important;
   }
   .avg_as{
-    background-color: #A3CAE9;
-    color:white;
+    background-color: #A3CAE9!important;;
+    color:white!important;;
+    text-align: center!important;
   }
   .centered2{
     text-align: center!important;
@@ -92,98 +95,100 @@ const procesaDatatable = (reload) => {
       mes:mes,
     })
     .then(data => {
-      if(data.data.length!=0){
-         if(reload){
-            $('#tabla_cumplimiento').html("");
-            $('#tabla_cumplimiento').DataTable().clear().destroy();
-            $("#tabla_cumplimiento tbody").html("");
-            $("#tabla_cumplimiento thead").html("");
-            $("#tabla_cumplimiento tfoot").html("");
-            $("#tabla_cumplimiento tfoot").html('<tr class="tfoot_table"></tr>')
-          }else{
-            $("#tabla_cumplimiento").append('<tfoot><tr class="tfoot_table"></tr></tfoot>')
-          }
-          
-          columns = [];
-          columnNames = (data.data);
-
-          $(".tfoot_table").append('<th class="tfoot"></th>')
-            columns.push({
-                data: "tecnico",
-                class : " ",
-                title: "Usuario"
-          })
-          header = ["% Producción","% Calidad","% Asistencia"]
-          avg = ["avg_cm","avg_ca","avg_as"]
-          if(columnNames[0] != ""){
-            for (var i in avg) { 
-              for (var j in columnNames) {
-                $(".tfoot_table").append('<th class="tfoot"></th>')
-                columns.push({
-                    data: columnNames[j]+"_"+avg[i],
-                    class :avg[i],
-                    title: ""+columnNames[j]+""
-                })
+          if(data.data.length!=0){
+            if(reload){
+                $('#tabla_cumplimiento').html("");
+                $('#tabla_cumplimiento').DataTable().clear().destroy();
+                $("#tabla_cumplimiento tbody").html("");
+                $("#tabla_cumplimiento thead").html("");
+                $("#tabla_cumplimiento tbody").html('<tr class="tfoot_table"></tr>');
+                $("#tabla_cumplimiento tfoot").html("");
+                //$("#tabla_cumplimiento tfoot").html('<tr class="tfoot_table"></tr>')
+              }else{
+                $("#tabla_cumplimiento").append('<tbody><tr class="tfoot_table"></tr></tbody>')
+                //$("#tabla_cumplimiento").append('<tfoot><tr class="tfoot_table"></tr></tfoot>')
               }
-            }
+              
+              columns = [];
+              columnNames = (data.data);
+
+              $(".tfoot_table").append('<th class="tbody"></th>')
+                columns.push({
+                    data: "tecnico",
+                    class : " ",
+                    title: "Usuario"
+              })
+              header = ["% Producción","% Calidad","% Asistencia"]
+              avg = ["avg_cm","avg_ca","avg_as"]
+              if(columnNames[0] != ""){
+                for (var i in avg) { 
+                  for (var j in columnNames) {
+                    $(".tfoot_table").append('<th class="tbody"></th>')
+                    columns.push({
+                        data: columnNames[j]+"_"+avg[i],
+                        class :avg[i],
+                        title: ""+columnNames[j]+""
+                    })
+                  }
+                }
+              }
+              else{
+                console.log("nulo");
+              }
+
+            var tabla_cumplimiento = $('#tabla_cumplimiento').DataTable({
+                columns: columns,
+                info:false, 
+                destroy: true,
+                processing: true,  
+                aaSorting : [[0,"asc"]],
+                scrollY: "65vh",
+                scrollX: true,
+                select:true,
+                bSort: true,
+                scrollCollapse: true,
+                paging:false,
+                responsive:false,
+                oLanguage: { 
+                  sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
+                },
+                "ajax": {
+                  "url":"<?php echo base_url();?>graficoCumpFact",
+                  "dataSrc": "data",
+                  data: function(param){
+                    var jefe =$("#jefe").val()
+                    var anio =$("#anio").val()
+                    var mes =$("#mes").val()
+                    param.jefe = jefe;
+                    param.anio = anio;
+                    param.mes = mes;
+                }
+              },    
+            });
+
+          setTimeout( function () {
+              var tabla_cumplimiento = $.fn.dataTable.fnTables(true);
+              if ( tabla_cumplimiento.length > 0 ) {
+                  $(tabla_cumplimiento).dataTable().fnAdjustColumnSizing();
+            }}, 200 ); 
+
+            setTimeout( function () {
+              var tabla_cumplimiento = $.fn.dataTable.fnTables(true);
+              if ( tabla_cumplimiento.length > 0 ) {
+                  $(tabla_cumplimiento).dataTable().fnAdjustColumnSizing();
+            }}, 2000 ); 
+
+            setTimeout( function () {
+              var tabla_cumplimiento = $.fn.dataTable.fnTables(true);
+              if ( tabla_cumplimiento.length > 0 ) {
+                  $(tabla_cumplimiento).dataTable().fnAdjustColumnSizing();
+              }
+            }, 4000 ); 
+
+          }else{
+            $("#tabla_cumplimiento").DataTable().clear().draw()
+            $(".tfoot_table").html("");
           }
-          else{
-            console.log("nulo");
-          }
-
-         var tabla_cumplimiento = $('#tabla_cumplimiento').DataTable({
-            columns: columns,
-            info:false, 
-            destroy: true,
-            processing: true,  
-            aaSorting : [[0,"asc"]],
-            scrollY: "65vh",
-            scrollX: true,
-            select:true,
-            bSort: true,
-            scrollCollapse: true,
-            paging:false,
-            responsive:false,
-            oLanguage: { 
-              sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
-            },
-            "ajax": {
-              "url":"<?php echo base_url();?>graficoCumpFact",
-              "dataSrc": "data",
-               data: function(param){
-                var jefe =$("#jefe").val()
-                var anio =$("#anio").val()
-                var mes =$("#mes").val()
-                param.jefe = jefe;
-                param.anio = anio;
-                param.mes = mes;
-             }
-          },    
-        });
-
-       setTimeout( function () {
-          var tabla_cumplimiento = $.fn.dataTable.fnTables(true);
-          if ( tabla_cumplimiento.length > 0 ) {
-              $(tabla_cumplimiento).dataTable().fnAdjustColumnSizing();
-        }}, 200 ); 
-
-        setTimeout( function () {
-          var tabla_cumplimiento = $.fn.dataTable.fnTables(true);
-          if ( tabla_cumplimiento.length > 0 ) {
-              $(tabla_cumplimiento).dataTable().fnAdjustColumnSizing();
-        }}, 2000 ); 
-
-        setTimeout( function () {
-          var tabla_cumplimiento = $.fn.dataTable.fnTables(true);
-          if ( tabla_cumplimiento.length > 0 ) {
-              $(tabla_cumplimiento).dataTable().fnAdjustColumnSizing();
-          }
-        }, 4000 ); 
-
-      }else{
-        $("#tabla_cumplimiento").DataTable().clear().draw()
-        $(".tfoot_table").html("");
-      }
     
     $(".btn_filtro_turnos").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled",false);
   });
@@ -252,9 +257,9 @@ $(document).off('change', '#jefe,#anio,#mes').on('change', '#jefe,#anio,#mes', f
     </div>
   </div>
 
-  <div class="col-3 col-lg-1 avg avg_cm"> % producción</div>
-  <div class="col-3 col-lg-1 avg avg_ca"> % calidad</div>
-  <div class="col-3 col-lg-1 avg avg_as"> % asistencia </div>
+  <div class="col-3 col-lg-1 avg avg_cm"> % Producción</div>
+  <div class="col-3 col-lg-1 avg avg_ca"> % Calidad</div>
+  <div class="col-3 col-lg-1 avg avg_as"> % Asistencia </div>
 
 
 

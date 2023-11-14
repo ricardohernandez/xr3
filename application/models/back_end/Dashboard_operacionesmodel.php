@@ -604,7 +604,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$this->db->select('d.tecnico,
 				d.mes,
 				ROUND(AVG(d.px_ca),0) as avg_ca,
-				ROUND(SUM(d.px_as),0) as avg_as,
+				ROUND(AVG(d.px_as),0) as avg_as,
 				ROUND(AVG(d.px_cm),0) as avg_cm,
 			');
 			if($anio!=""){
@@ -617,10 +617,10 @@ class Dashboard_operacionesmodel extends CI_Model {
 			$this->db->group_by('tecnico, mes');
 			$res = $this->db->get('dashboard_cumplimiento_facturacion d');
 
-			$this->db->select('d2.jefe as tecnico,
+			$this->db->select('CONCAT(" ",d2.jefe) as tecnico,
 				d2.mes as mes,
 				ROUND(AVG(d2.px_ca),0) as avg_ca,
-				ROUND(SUM(d2.px_as),0) as avg_as,
+				ROUND(AVG(d2.px_as),0) as avg_as,
 				ROUND(AVG(d2.px_cm),0) as avg_cm,
 			');
 
