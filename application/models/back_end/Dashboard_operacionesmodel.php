@@ -613,6 +613,9 @@ class Dashboard_operacionesmodel extends CI_Model {
 			if($jefe!=""){
 				$this->db->where('jefe', $jefe);
 			}
+			if($mes!=""){
+				$this->db->where('mes', $mes);
+			}
 			
 			$this->db->group_by('tecnico, mes');
 			$res = $this->db->get('dashboard_cumplimiento_facturacion d');
@@ -681,19 +684,22 @@ class Dashboard_operacionesmodel extends CI_Model {
 					$avg_ca = $item["avg_ca"]; 
 					$avg_as = $item["avg_as"]; 
 					$avg_cm = $item["avg_cm"]; 
+
+					if($avg_ca !="" || $avg_as !="" || $avg_cm !=""){
+						if (!isset($avgArray[$tecnico])) {
+							$avgArray[$tecnico] = [];
+						}
+						if (!isset($avgArray[$tecnico][$mes."_avg_as"])) {
+							$avgArray[$tecnico][$mes."_avg_as"] = "";
+						}
+						if (!isset($avgArray[$tecnico][$mes."_avg_cm"])) {
+							$avgArray[$tecnico][$mes."_avg_cm"] = "";
+						}
+						if (!isset($avgArray[$tecnico][$mes."_avg_ca"])) {
+							$avgArray[$tecnico][$mes."_avg_ca"] = "";
+						}
+					}
 	
-					if (!isset($avgArray[$tecnico])) {
-						$avgArray[$tecnico] = [];
-					}
-					if (!isset($avgArray[$tecnico][$mes."_avg_as"])) {
-						$avgArray[$tecnico][$mes."_avg_as"] = "";
-					}
-					if (!isset($avgArray[$tecnico][$mes."_avg_cm"])) {
-						$avgArray[$tecnico][$mes."_avg_cm"] = "";
-					}
-					if (!isset($avgArray[$tecnico][$mes."_avg_ca"])) {
-						$avgArray[$tecnico][$mes."_avg_ca"] = "";
-					}
 				}
 			}
 
