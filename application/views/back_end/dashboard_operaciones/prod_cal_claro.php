@@ -44,10 +44,12 @@
           $(".body").fadeIn(500)
           crearGrafico('prod_ciudad', response.prod_ciudad, 'column','Suma de PX');
           crearGrafico('prod_general', response.prod_general, 'column','PX XR3,PX RED CELL,PX ALIANZA SUR');
+          crearGrafico('prod_zona_eps', response.prod_zona_eps, 'column','PX NORTE,PX SUR,CA NORTE,CA SUR');
+          crearGrafico('cal_zona_eps', response.cal_zona_eps, 'column','PX NORTE,PX SUR,CA NORTE,CA SUR');
           crearGrafico('prod_hfc', response.prod_hfc, 'column','PX XR3 HFC,PX HFC RED CELL,PX HFC ALIANZA SUR');
           crearGrafico('prod_ftth', response.prod_ftth, 'column','PX XR3 FTTH,PX FTTH RED CELL,PX FTTH ALIANZA SUR');
-          crearGrafico('calidad_hfc_eps', response.calidad_hfc, 'line','CA XR3 HFC,CA HFC ALIANZA SUR');
-          crearGrafico('calidad_ftth_eps', response.calidad_ftth, 'line','CA XR3 HFC,CA HFC ALIANZA SUR');
+          crearGrafico('calidad_hfc_eps', response.calidad_hfc, 'line','CA XR3 HFC,CA HFC ALIANZA SUR,CA HFC RED CELL');
+          crearGrafico('calidad_ftth_eps', response.calidad_ftth, 'line','CA XR3 FTTH,CA FTTH ALIANZA SUR, CA FTTH RED CELL');
         },
         error: function (error) {
             console.log(error);
@@ -65,10 +67,8 @@
       return
     }
     
-
     var data = google.visualization.arrayToDataTable(data);
 
-  
     const options = {
       fontName: 'ubuntu',
       curveType: 'function',
@@ -76,8 +76,8 @@
       backgroundColor: { fill: 'transparent' },
       
       colors: (tipoGrafico === 'column') ? 
-      ['#12239E', '#E66C37', '#118DFF'] : 
-      ['#12239E', '#E66C37'],
+      ['#12239E', '#E66C37', '#118DFF','#89272A'] : 
+      ['#12239E', '#E66C37','#118DFF'],
 
       chartArea: {
         left: 70,
@@ -233,6 +233,7 @@
 
 <div class="body">
   <div class="form-row mt-2 contenedor_graficos">
+
     <div class="col-12">
       <div class="card">
         <div class="col-12">
@@ -242,7 +243,25 @@
         </div>
     </div>
 
-    <div class="col-12 mt-2">
+    <div class="col-12">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico"> Producción X zona </p>
+            <div id="prod_zona_eps"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6 mt-2">
+      <div class="card">
+        <div class="col-12">
+            <p class="titulo_grafico"> Calidad X zona X EPS </p>
+            <div id="cal_zona_eps"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6 mt-2">
       <div class="card">
         <div class="col-12">
             <p class="titulo_grafico"> Producción por EPS </p>
@@ -250,7 +269,6 @@
           </div>
         </div>
     </div>
-
 
     <div class="col-12 col-lg-6 mt-2">
       <div class="card">

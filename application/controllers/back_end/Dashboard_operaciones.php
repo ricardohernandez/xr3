@@ -140,69 +140,102 @@ class Dashboard_operaciones extends CI_Controller {
 
 			$campos = [
 				"nac" => [
-					"campos" => ['xr3_x_eps', 'jr_x_eps', 'emetel_x_eps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps', 'jr_x_eps', 'emetel_x_eps','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'],'Meta',['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 				"hfc" => [
-					"campos" => ['xr3_x_eps_hfc', 'jr_x_eps_hfc', 'emetel_x_eps_hfc'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_hfc', 'jr_x_eps_hfc', 'emetel_x_eps_hfc','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 				"ftth" => [
-					"campos" => ['xr3_x_eps_ftth', 'jr_x_eps_ftth', 'emetel_x_eps_ftth'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_ftth', 'jr_x_eps_ftth', 'emetel_x_eps_ftth','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 
 				"nor" => [
-					"campos" => ['xr3_x_eps_nor', 'jr_x_eps_nor', 'emetel_x_eps_nor'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_nor', 'jr_x_eps_nor', 'emetel_x_eps_nor','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 				"hfcnor" => [
-					"campos" => ['xr3_x_eps_hfc_nor', 'jr_x_eps_hfc_nor', 'emetel_x_eps_hfc_nor'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_hfc_nor', 'jr_x_eps_hfc_nor', 'emetel_x_eps_hfc_nor','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 				"ftthnor" => [
-					"campos" => ['xr3_x_eps_ftth_nor', 'jr_x_eps_ftth_nor', 'emetel_x_eps_ftth_nor'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_ftth_nor', 'jr_x_eps_ftth_nor', 'emetel_x_eps_ftth_nor','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
-
 				"sur" => [
-					"campos" => ['xr3_x_eps_sur', 'jr_x_eps_sur', 'emetel_x_eps_sur'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_sur', 'jr_x_eps_sur', 'emetel_x_eps_sur','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 				"hfcsur" => [
-					"campos" => ['xr3_x_eps_hfc_sur', 'jr_x_eps_hfc_sur', 'emetel_x_eps_hfc_sur'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_hfc_sur', 'jr_x_eps_hfc_sur', 'emetel_x_eps_hfc_sur','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
 				"ftthsur" => [
-					"campos" => ['xr3_x_eps_ftth_sur', 'jr_x_eps_ftth_sur', 'emetel_x_eps_ftth_sur'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"campos" => ['xr3_x_eps_ftth_sur', 'jr_x_eps_ftth_sur', 'emetel_x_eps_ftth_sur','meta'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
 				],
-				
+				"cal_nac" => [
+					"campos" => ['xr3_x_eps', 'jr_x_eps', 'emetel_x_eps','meta_px_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'],'Meta',['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_hfc" => [
+					"campos" => ['xr3_x_eps_hfc', 'jr_x_eps_hfc', 'emetel_x_eps_hfc','meta_hfc_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_ftth" => [
+					"campos" => ['xr3_x_eps_ftth', 'jr_x_eps_ftth', 'emetel_x_eps_ftth','meta_ftth_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_nor" => [
+					"campos" => ['xr3_x_eps_nor', 'jr_x_eps_nor', 'emetel_x_eps_nor','meta_px_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_hfcnor" => [
+					"campos" => ['xr3_x_eps_hfc_nor', 'jr_x_eps_hfc_nor', 'emetel_x_eps_hfc_nor','meta_hfc_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_ftthnor" => [
+					"campos" => ['xr3_x_eps_ftth_nor', 'jr_x_eps_ftth_nor', 'emetel_x_eps_ftth_nor','meta_ftth_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_sur" => [
+					"campos" => ['xr3_x_eps_sur', 'jr_x_eps_sur', 'emetel_x_eps_sur','meta_px_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_hfcsur" => [
+					"campos" => ['xr3_x_eps_hfc_sur', 'jr_x_eps_hfc_sur', 'emetel_x_eps_hfc_sur','meta_hfc_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
+				"cal_ftthsur" => [
+					"campos" => ['xr3_x_eps_ftth_sur', 'jr_x_eps_ftth_sur', 'emetel_x_eps_ftth_sur','meta_ftth_epps'],
+					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+				],
 			 
-			];
-
+			];	
 			
 			$datos = array(
 				'productividadnacional' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["nac"], $mes_inicio, $mes_termino),
 				'productividadHFC' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["hfc"], $mes_inicio, $mes_termino),
 				'productividadFTTH' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["ftth"], $mes_inicio, $mes_termino),
-				'calidadnacional' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["nac"], $mes_inicio, $mes_termino),
-				'calidadHFC' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["hfc"], $mes_inicio, $mes_termino),
-				'calidadFTTH' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["ftth"], $mes_inicio, $mes_termino),
+				'calidadnacional' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_nac"], $mes_inicio, $mes_termino),
+				'calidadHFC' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_hfc"], $mes_inicio, $mes_termino),
+				'calidadFTTH' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_ftth"], $mes_inicio, $mes_termino),
 
 				'productividadnor' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["nor"], $mes_inicio, $mes_termino),
 				'productividadHFCnor' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["hfcnor"], $mes_inicio, $mes_termino),
 				'productividadFTTHnor' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["ftthnor"], $mes_inicio, $mes_termino),
-				'calidadnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["nor"], $mes_inicio, $mes_termino),
-				'calidadHFCnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["hfcnor"], $mes_inicio, $mes_termino),
-				'calidadFTTHnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["ftthnor"], $mes_inicio, $mes_termino),
+				'calidadnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_nor"], $mes_inicio, $mes_termino),
+				'calidadHFCnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_hfcnor"], $mes_inicio, $mes_termino),
+				'calidadFTTHnor' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_ftthnor"], $mes_inicio, $mes_termino),
 
 				'productividadsur' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["sur"], $mes_inicio, $mes_termino),
 				'productividadHFCsur' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["hfcsur"], $mes_inicio, $mes_termino),
 				'productividadFTTHsur' => $this->Dashboard_operacionesmodel->getDataProductividadEPS($campos["ftthsur"], $mes_inicio, $mes_termino),
-				'calidadsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["sur"], $mes_inicio, $mes_termino),
-				'calidadHFCsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["hfcsur"], $mes_inicio, $mes_termino),
-				'calidadFTTHsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["ftthsur"], $mes_inicio, $mes_termino),
+				'calidadsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_sur"], $mes_inicio, $mes_termino),
+				'calidadHFCsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_hfcsur"], $mes_inicio, $mes_termino),
+				'calidadFTTHsur' => $this->Dashboard_operacionesmodel->getDataCalidadEPS($campos["cal_ftthsur"], $mes_inicio, $mes_termino),
 
 			);
 			echo json_encode($datos);
@@ -297,6 +330,26 @@ class Dashboard_operaciones extends CI_Controller {
 						['role' => 'annotationText']
 						]
 				],
+				"prod_zona_eps" => [
+					"campos" => ['px_norte_xr3','px_sur_xr3'],
+					"cabeceras" => 
+						["mes", 
+						"PX NORTE", ['role' => 'annotation'], 
+						"PX SUR", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+					]
+				],
+				"cal_zona_eps" => [
+					"campos" => ['ca_norte_xr3','ca_norte_red_cell','ca_sur_xr3','ca_sur_red_cell'],
+					"cabeceras" => 
+						["mes", 
+						"PX NORTE XR3", ['role' => 'annotation'], 
+						"PX NORTE RED CELL", ['role' => 'annotation'], 
+						"PX SUR XR3", ['role' => 'annotation'], 
+						"PX SUR RED CELL", ['role' => 'annotation'], 
+						['role' => 'annotationText']
+					]
+				],
 				"hfc" => [
 					"campos" => ['px_hfc_xr3', 'px_hfc_alianza_sur', 'px_hfc_red_cell'],
 
@@ -320,30 +373,34 @@ class Dashboard_operaciones extends CI_Controller {
 						]
 				],
 				"ca_hfc" => [
-					"campos" => ['ca_hfc_xr3', 'ca_hfc_alianza_sur'],
+					"campos" => ['ca_hfc_xr3', 'ca_hfc_alianza_sur', 'ca_hfc_red_cell'],
 
 					"cabeceras" => 
 						["mes", 
 							"CA HFC XR3", ['role' => 'annotation'], 
 							"CA HFC Alianza sur", ['role' => 'annotation'], 
+							"CA HFC Red Cell", ['role' => 'annotation'], 
 						['role' => 'annotationText']
 						]
 				],
 				"ca_ftth" => [
-					"campos" => ['ca_ftth_xr3', 'ca_ftth_alianza_sur'],
+					"campos" => ['ca_ftth_xr3', 'ca_ftth_alianza_sur', 'ca_ftth_red_cell'],
 
 					"cabeceras" => 
 						["mes", 
-						"CA XR3 FTTH", ['role' => 'annotation'], 
-						"CA Alianza sur FTTH", ['role' => 'annotation'], 
+						"CA FTTH XR3", ['role' => 'annotation'], 
+						"CA FTTH Alianza sur", ['role' => 'annotation'], 
+						"CA FTTH Red Cell", ['role' => 'annotation'], 
 						['role' => 'annotationText']
 					]
-				]
+				],
 			];
 	
 			$datos = array(
 				'prod_ciudad' =>$this->Dashboard_operacionesmodel->graficoProdxCiudad($comuna,$supervisor,$tecnologia,$mes_inicio, $mes_termino),
 				'prod_general' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["general"], $mes_inicio, $mes_termino),
+				'prod_zona_eps' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["prod_zona_eps"], $mes_inicio, $mes_termino),
+				'cal_zona_eps' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["cal_zona_eps"], $mes_inicio, $mes_termino),
 				'prod_hfc' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["hfc"], $mes_inicio, $mes_termino),
 				'prod_ftth' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["ftth"], $mes_inicio, $mes_termino),
 				'calidad_hfc' =>$this->Dashboard_operacionesmodel->graficoProdxEps($campos["ca_hfc"], $mes_inicio, $mes_termino),
@@ -410,7 +467,7 @@ class Dashboard_operaciones extends CI_Controller {
 			echo json_encode(array("data" =>$data));exit;
 		}
 
-		public function getCabecerasCumplimientoFacturacion(){ //DESARROLLO
+		public function getCabecerasCumplimientoFacturacion(){
 			$data=json_decode(file_get_contents('php://input'),1);
 			$jefe=$data["jefe"];
 			$anio=$data["anio"];
@@ -484,7 +541,7 @@ class Dashboard_operaciones extends CI_Controller {
 						"xr3_x_eps_ftth", "jr_x_eps_ftth", "emetel_x_eps_ftth", "xr3_x_eps_nor", "jr_x_eps_nor", "emetel_x_eps_nor",
 						"xr3_x_eps_hfc_nor", "jr_x_eps_hfc_nor", "emetel_x_eps_hfc_nor", "xr3_x_eps_ftth_nor", "jr_x_eps_ftth_nor",
 						"emetel_x_eps_ftth_nor", "xr3_x_eps_sur", "jr_x_eps_sur", "emetel_x_eps_sur", "xr3_x_eps_hfc_sur", "jr_x_eps_hfc_sur",
-						"emetel_x_eps_hfc_sur", "xr3_x_eps_ftth_sur", "jr_x_eps_ftth_sur", "emetel_x_eps_ftth_sur", "meta"
+						"emetel_x_eps_hfc_sur", "xr3_x_eps_ftth_sur", "jr_x_eps_ftth_sur", "emetel_x_eps_ftth_sur", "meta","meta_hfc_epps","meta_ftth_epps","meta_px_epps"
 					];
 			
 					$mes = '';
@@ -497,7 +554,10 @@ class Dashboard_operaciones extends CI_Controller {
 						} elseif ($index === 1) {
 							$anio = $hoja_calidad->getCellByColumnAndRow($index + 1, $fila)->getValue();
 							$datos[$columna] = $anio;
-						} else {
+						} 
+						elseif ($index === 40 || $index === 41 || $index === 42 ) {
+						} 
+						else {
 							$datos[$columna] = str_replace('%', '', $hoja_calidad->getCellByColumnAndRow($index + 1, $fila)->getFormattedValue());
 						}
 					}
@@ -508,7 +568,7 @@ class Dashboard_operaciones extends CI_Controller {
 					$filas_calidad++;
 				}
 
-			/* 	print_r($datos);exit; */
+				/* 	print_r($datos);exit; */
 
 				
 			//DOTACION 
@@ -560,7 +620,7 @@ class Dashboard_operaciones extends CI_Controller {
 				for ($fila = 2; $fila <= $ultima_fila_analisis_cal; $fila++) {
 					$datos = array();
 			
-					$columnas_analisis_cal= ["anio", "mes", "orden_mes", "zona", "supervisor", "comuna", "ftth", "hfc", "total_general", "tecnologia"];
+					$columnas_analisis_cal= ["anio", "mes", "orden_mes", "zona", "supervisor", "comuna", "ftth", "hfc", "total_general", "tecnologia","meta"];
 			
 					$mes = '';
 					$anio = '';
@@ -595,7 +655,15 @@ class Dashboard_operaciones extends CI_Controller {
 				for ($fila = 2; $fila <= $ultima_fila_prod_cal_claro; $fila++) {
 					$datos = array();
 			
-					$columnas_prod_cal_claro = ['anio','mes','orden_mes', 'px_xr3', 'px_hfc_xr3', 'px_ftth_xr3', 'px_alianza_sur', 'px_hfc_alianza_sur', 'px_ftth_alianza_sur', 'px_red_cell', 'px_hfc_red_cell', 'px_ftth_red_cell', 'ca_hfc_xr3', 'ca_ftth_xr3', 'ca_hfc_alianza_sur', 'ca_ftth_alianza_sur', 'meta_ca_ftth', 'meta_ca_hfc', 'meta_px_hfc', 'meta_px_ftth'];
+					$columnas_prod_cal_claro = [
+					'anio','mes','orden_mes', 'px_xr3', 'px_hfc_xr3', 'px_ftth_xr3',
+					'px_norte_xr3','px_sur_xr3',
+					'px_alianza_sur', 'px_hfc_alianza_sur', 'px_ftth_alianza_sur', 'px_red_cell', 'px_hfc_red_cell', 'px_ftth_red_cell', 'ca_hfc_xr3', 'ca_ftth_xr3',
+					'ca_norte_xr3','ca_sur_xr3', 
+					'ca_hfc_alianza_sur','ca_ftth_alianza_sur', 
+					'ca_hfc_red_cell','ca_ftth_red_cell','ca_norte_red_cell','ca_sur_red_cell',
+					'meta_ca_ftth','meta_ca_hfc', 'meta_px_hfc', 'meta_px_ftth'
+					];
 
 					$mes = '';
 					$anio = '';

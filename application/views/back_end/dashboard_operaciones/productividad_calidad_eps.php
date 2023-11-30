@@ -88,7 +88,7 @@
 
   function contieneElementoProd(array) {
     for (let i = 0; i < array.length; i++) {
-      if (array[i].includes("productividad")) {
+      if (array[i].includes("prod")) {
         return true;  
       }
     }
@@ -97,13 +97,13 @@
 
 
   function crearGraficoEps(divId, data, tipoGrafico) {
-   /*  console.log(data) */
+
     var contieneMeta = contieneElementoMeta(data);
     var contieneCalidad = contieneElementoCalidad(data);
     var contieneProd = contieneElementoProd(data);
 
     var data = google.visualization.arrayToDataTable(data);
-    data.sort([{ column: 8, desc: false }]);
+    data.sort([{ column: 10, desc: false }]);
 
     const options = {
       fontName: 'ubuntu',
@@ -181,7 +181,6 @@
           viewWindowMode:'explicit',
           viewWindow: {
             min: 0,
-            max: 10
           },
         },
         1: 
@@ -190,7 +189,6 @@
             gridlines: {color:'#808080', count:0},
             viewWindow: {
               min: 0,
-            max: 10
             },
           }
      },
@@ -198,7 +196,7 @@
 
       options.seriesType = 'bars'; 
       options.series = {
-        1: {
+        3: {
           type: 'line',
           lineDashStyle: [4, 4], 
           color: 'grey',
@@ -240,7 +238,7 @@
     if(contieneMeta && contieneProd){
       
       options.series = {
-        1: {
+        3: {
           type: 'line',
           lineDashStyle: [4, 4], 
           color: '#808080',
@@ -282,9 +280,9 @@
     var chart;
     
     if (tipoGrafico === 'line') {
-      chart = new google.visualization.LineChart(document.getElementById(divId));
+      chart = new google.visualization.ComboChart(document.getElementById(divId));
     } else if (tipoGrafico === 'column') {
-      chart = new google.visualization.ColumnChart(document.getElementById(divId));
+      chart = new google.visualization.ComboChart(document.getElementById(divId));
     }
 
     chart.draw(data, options);

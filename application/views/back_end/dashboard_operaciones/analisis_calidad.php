@@ -74,9 +74,38 @@
       }
   });
   }
+
+  function contieneElementoMeta(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes("meta")) {
+        return true;  
+      }
+    }
+    return false;
+  }
+
+  
+  function contieneElementoCalidad(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes("calidad")) {
+        return true;  
+      }
+    }
+    return false;
+  }
+
+  function contieneElementoProd(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes("productividad")) {
+        return true;  
+      }
+    }
+    return false;
+  }
  
   function crearGraficoAnalisisCalidad(data) {
     let size = Object.keys(data).length
+    var contieneMeta = contieneElementoMeta(data);
 
     if(size==1){
       $("#graficoXComuna").html('<p class="no_data_found">Sin datos encontrados</p>')
@@ -92,6 +121,8 @@
       fontColor: '#32477C',
       backgroundColor: { fill: 'transparent' },
       colors: ['#F48432', '#2f81f7'],
+      seriesType: 'bars',
+      series: {1: {type: 'line'}},
       /*   bar: {groupWidth: "50%"}, */
       chartArea: {
         left: 60,
@@ -185,8 +216,45 @@
           }
       },
     };
-  
-    chart = new google.visualization.ColumnChart(document.getElementById("analisis_calidad"));
+
+    if(contieneMeta){
+      
+      options.vAxes ={
+        1: 
+        {
+          textStyle:{color: '#808080',bold:false,fontSize: 12},
+            gridlines: {color:'#808080', count:0},
+            viewWindow: {
+              min: 0,
+            max: 10
+            },
+          }
+     },
+
+
+      options.seriesType = 'bars'; 
+      options.series = {
+        1: {
+          type: 'line',
+          lineDashStyle: [4, 4], 
+          color: 'grey',
+          curveType: 'function',
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'square',
+          targetAxisIndex: 0,
+          annotations: {
+            stem: {
+              length: 4
+            },
+            
+          }
+        },
+      };
+
+    }
+
+    chart = new google.visualization.ComboChart(document.getElementById("analisis_calidad"));
     chart.draw(data, options);
   }
 
@@ -194,6 +262,9 @@
   function crearGraficoAnalisisCalidadTotal(data) {
     let size = Object.keys(data).length
     console.log(size)
+
+    var contieneMeta = contieneElementoMeta(data);
+
     switch (true) {
       case size < 10:
         cant = 0;
@@ -327,8 +398,45 @@
           }
       },
     };
+
+    if(contieneMeta){
+      
+      options.vAxes ={
+        1: 
+        {
+          textStyle:{color: '#808080',bold:false,fontSize: 12},
+            gridlines: {color:'#808080', count:0},
+            viewWindow: {
+              min: 0,
+            max: 10
+            },
+          }
+     },
+
+
+      options.seriesType = 'bars'; 
+      options.series = {
+        1: {
+          type: 'line',
+          lineDashStyle: [4, 4], 
+          color: 'grey',
+          curveType: 'function',
+          lineWidth: 2,
+          pointSize: 5,
+          pointShape: 'square',
+          targetAxisIndex: 0,
+          annotations: {
+            stem: {
+              length: 4
+            },
+            
+          }
+        },
+      };
+
+    }
   
-    chart = new google.visualization.ColumnChart(document.getElementById("analisis_calidad_total"));
+    chart = new google.visualization.ComboChart(document.getElementById("analisis_calidad_total"));
     chart.draw(data, options);
   }
 

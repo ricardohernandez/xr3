@@ -84,7 +84,6 @@
 
 
   function crearGrafico(divId, data, tipoGrafico) {
-    console.log(data)
     var contieneMeta = contieneElementoMeta(data);
     var contieneCalidad = contieneElementoCalidad(data);
     var contieneProd = contieneElementoProd(data);
@@ -301,7 +300,6 @@
   }
 
   function crearGraficoNac(divId, data, tipoGrafico) {
-    console.log(data)
     var contieneCalidad = contieneElementoCalidad(data);
     var contieneProd = contieneElementoProd(data);
 

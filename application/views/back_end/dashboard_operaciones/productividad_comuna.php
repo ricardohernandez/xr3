@@ -160,7 +160,7 @@
       avoidOverlappingGridLines: true,
       legend: {
         position: 'top',
-        alignment: 'center',
+        alignment: 'start',
         textStyle: {
           fontSize: 14,
           bold: true,
@@ -188,6 +188,35 @@
        },
 
     };
+
+    if(title == "EMETEL"){
+      options.series = 
+      {
+        0: {
+          lineDashStyle: [4, 4], 
+          color: '#E66C37',
+           lineWidth: 1,
+          pointSize: 1,
+          pointShape: 'square',
+          targetAxisIndex: 1,
+
+        }
+      }
+      
+    }
+    else if(title == "XR3"){
+      options.series =
+      {
+        0: {
+          lineDashStyle: [4, 4], 
+          color: '#12239E',
+           lineWidth: 1,
+          pointSize: 1,
+          pointShape: 'square',
+          targetAxisIndex: 1,
+        }
+      }
+    }
 
     var chart = new google.visualization.ColumnChart(document.getElementById("graficoXComuna"));
 
@@ -285,7 +314,7 @@
       <div class="card">
         <div class="col-12">
             <p class="titulo_grafico"> Comparación de producción por comuna y empresa </p>
-            <div id="graficoXComuna"></div>
+              <div id="graficoXComuna"></div>
           </div>
         </div>
     </div>

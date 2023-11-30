@@ -82,6 +82,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 				
 				$temp[] = strtotime($key["fecha"]);
 				$temp[] = "calidad";
+				
 				$array[] = $temp;
 			}
 		
@@ -127,7 +128,6 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 
 		public function getDataCalidadEPS($tipo,$mes_inicio,$mes_termino) {
-			
 			$campos = $tipo['campos'];
 			$cabeceras = $tipo['cabeceras'];
 		
@@ -341,7 +341,6 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 			
 			$res = $this->db->get('dashboard_analisis_calidad');
-
 			$array = [];
 
 			if ($tecnologia === "HFC") {
@@ -359,6 +358,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 			}
 
 			$cabeceras[] = ['role' => 'annotationText'];
+			$cabeceras[] = "meta";
 
 			$array[] = $cabeceras;
 
@@ -377,6 +377,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 				}
 				
 				$temp[] = strtotime($key["fecha"]);
+				$temp[] = ($key["meta"] != 0) ? (float)round($key["meta"],0) : NULL;
 				$array[] = $temp;
 			}
 		
@@ -410,7 +411,8 @@ class Dashboard_operacionesmodel extends CI_Model {
 				"comuna",
 				"Total",
 				['role' => 'annotation'],
-				['role' => 'annotationText']
+				['role' => 'annotationText'],
+				"meta"
 			];
 
 			$array[] = $cabeceras;
@@ -422,6 +424,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : NULL;
 				$temp[] = ($key["total_general"] != 0) ? (float)round($key["total_general"],1) : NULL;
 				$temp[] = strtotime($key["fecha"]);
+				$temp[] = ($key["meta"] != 0) ? (float)round($key["meta"],1) : NULL;
 				$array[] = $temp;
 			}
 			
