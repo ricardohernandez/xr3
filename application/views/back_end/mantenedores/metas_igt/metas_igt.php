@@ -306,6 +306,12 @@
   
   <div class="form-row">
 
+    <div class="col-4 col-lg-2">  
+      <button type="button"  class="btn-block btn btn-sm btn-primary btn_nuevo_metas_igt btn_xr3">
+      <i class="fa fa-plus"></i> Nuevo
+      </button>
+    </div>
+
     <div class="col-12 col-lg-4">  
       <div class="form-group">
       <input type="text" placeholder="Busqueda" id="buscador_metas_igt" class="buscador_metas_igt form-control form-control-sm">

@@ -62,18 +62,31 @@ class Igt extends CI_Controller {
          	
             while (($d = fgetcsv($handle, 9999, ";")) !== FALSE) {
             	$mes_string = explode('-', $d[0]);
+				
             	$mes_numero = mesesTextoaNumero($mes_string[1]);
-
             	if($mes_numero=="0"){
         			echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => " Formato fecha inválido,debe ser año-mes(texto 3 primeros caracteres), ejemplo : dic-2022"));exit;
             	}
 
             	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
-				$proyecto = $d[19];
 
-	    	  	if($this->Igtmodel->existeMes($mes_completo,$proyecto)){
-	    	  		$this->Igtmodel->borrarMesActual($mes_completo,$proyecto);
-	    	  	}
+				$rut=str_replace('-', '', $d[1]);
+				$u = $this->Igtmodel->getIdTecnico($rut);
+            	$p = $this->Igtmodel->getProyectoTecnico($u);
+
+				if($p != 3){
+					$proyecto = $d[19];
+
+					if($this->Igtmodel->existeMes($mes_completo,$proyecto)){
+						$this->Igtmodel->borrarMesActual($mes_completo,$proyecto);
+					}
+				}
+				else{
+					if($this->Igtmodel->existeMesDTV($mes_completo)){
+						$this->Igtmodel->borrarMesActualDTV($mes_completo);
+					}
+				}
+
             }
          	
          	fclose($handle); 
@@ -90,35 +103,54 @@ class Igt extends CI_Controller {
 
             	  	$rut=str_replace('-', '', $data[1]);
             	    $id_tecnico = $this->Igtmodel->getIdTecnico($rut);
+            	    $proyecto = $this->Igtmodel->getProyectoTecnico($id_tecnico);
 
             	    if($id_tecnico!=FALSE){
 
-            	    	$arr=array(
-					    	"id_tecnico"=>$id_tecnico,
- 					    	"mes"=>$mes_completo,
-					    	"q_ftth"=>str_replace('%', '', $data[2]),
-					    	"fallas_ftth"=>str_replace('%', '', $data[3]),
-					    	"calidad_ftth"=>str_replace('%', '', $data[4]),
-					    	"q_hfc"=>str_replace('%', '', $data[5]),
-					    	"fallas_hfc"=>str_replace('%', '', $data[6]),
-					    	"calidad_hfc"=>str_replace('%', '', $data[7]),
-					    	"cumplimiento_ot"=>str_replace('%', '', $data[8]),
-					    	"prom_ot_ftth"=>str_replace('%', '', $data[9]),
-					    	"dias_produccion_ftth"=>str_replace('%', '', $data[10]),
-					    	"promedio_puntos_hfc"=>str_replace('%', '', $data[11]),
-					    	"dias_produccion_hfc"=>str_replace('%', '', $data[12]),
-					    	"porcentaje_produccion_hfc"=>str_replace('%', '', $data[13]),
-					    	"porcentaje_calidad_hfc"=>str_replace('%', '', $data[14]),
-					    	"porcentaje_produccion_ftth"=>str_replace('%', '', $data[15]),
-					    	"porcentaje_calidad_ftth"=>str_replace('%', '', $data[16]),
-					    	"indice_asistencia"=>str_replace('%', '', $data[17]),
-					    	"derivaciones"=>str_replace('%', '', $data[18]),
-					    	"proyecto"=> $data[19]
-						);	
+						if($proyecto == 3){ //DTV
+							$arr=array(
+								"id_tecnico"=>$id_tecnico,
+								"mes"=>$mes_completo,
+								"work_orden"=>str_replace('%', '', $data[2]),
+								"calidad_sin_30"=>str_replace('%', '', $data[3]),
+								"encuesta_3_3"=>str_replace('%', '', $data[4]),
+								"cicle_time"=>str_replace('%', '', $data[5]),
+								"optimus"=>str_replace('%', '', $data[6]),
+							);	
+						}
+						else{
+							$arr=array(
+								"id_tecnico"=>$id_tecnico,
+								"mes"=>$mes_completo,
+								"q_ftth"=>str_replace('%', '', $data[2]),
+								"fallas_ftth"=>str_replace('%', '', $data[3]),
+								"calidad_ftth"=>str_replace('%', '', $data[4]),
+								"q_hfc"=>str_replace('%', '', $data[5]),
+								"fallas_hfc"=>str_replace('%', '', $data[6]),
+								"calidad_hfc"=>str_replace('%', '', $data[7]),
+								"cumplimiento_ot"=>str_replace('%', '', $data[8]),
+								"prom_ot_ftth"=>str_replace('%', '', $data[9]),
+								"dias_produccion_ftth"=>str_replace('%', '', $data[10]),
+								"promedio_puntos_hfc"=>str_replace('%', '', $data[11]),
+								"dias_produccion_hfc"=>str_replace('%', '', $data[12]),
+								"porcentaje_produccion_hfc"=>str_replace('%', '', $data[13]),
+								"porcentaje_calidad_hfc"=>str_replace('%', '', $data[14]),
+								"porcentaje_produccion_ftth"=>str_replace('%', '', $data[15]),
+								"porcentaje_calidad_ftth"=>str_replace('%', '', $data[16]),
+								"indice_asistencia"=>str_replace('%', '', $data[17]),
+								"derivaciones"=>str_replace('%', '', $data[18]),
+								"proyecto"=> $data[19]
+							);
+						}
 
-					    $this->Igtmodel->insertarIgt($arr);
-					    $i++;
-				  	 	$arr=array();
+						if($proyecto == 3){ //DTV
+							$this->Igtmodel->insertarIgtDTV($arr);
+						}
+						else{
+							$this->Igtmodel->insertarIgt($arr);
+						}
+						$i++;
+						$arr=array();
             	    }
 	            }
             }
@@ -235,8 +267,8 @@ class Igt extends CI_Controller {
 		$perfil_tecnico = $this->Igtmodel->getPerfilTecnico($trabajador);
 
 		$rut=str_replace('-', '', $trabajador);
-        $id_tecnico = $this->Igtmodel->getIdTecnico($rut);
-		
+        $id_tecnico = $this->Igtmodel->getIdTecnico($rut);	
+
    		$array_data = array();
 
 		/***********PRODUCTIVIDAD PROM FTTH *********************/
@@ -482,13 +514,96 @@ class Igt extends CI_Controller {
 
 			}
 
-			echo json_encode($array_data);
+		/***** DTV *****/
+		
+			/*******WORK ORDEN************/
 
-		}
+			$meta_work_orden = $this->Igtmodel->getMetaIndicador($perfil_tecnico,8,$periodo);
+
+			if($meta_work_orden!="0"){
+
+				$data_work_orden = $this->Igtmodel->dataWorkOrden(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
+				$porcentaje_work_orden = $this->Igtmodel->porcentajeWorkOrden(getPeriodo($periodo),$id_tecnico);
+
+				if($data_work_orden!=FALSE){
+					$array_data["data_work_orden"] = array("data" => $data_work_orden , "meta" => $meta_work_orden, "cumplimiento" => $porcentaje_work_orden);
+				}
+
+			}
+
+			/*******CALIDAD SIN 30************/
+
+			$meta_calidad_sin_30 = $this->Igtmodel->getMetaIndicador($perfil_tecnico,9,$periodo);
+
+			if($meta_calidad_sin_30!="0"){
+
+				$data_calidad_sin_30 = $this->Igtmodel->dataCalidadsin30(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
+				$porcentaje_calidad_sin_30 = $this->Igtmodel->porcentajeCalidadsin30(getPeriodo($periodo),$id_tecnico);
+				
+				if($data_calidad_sin_30!=FALSE){
+					$array_data["data_calidad_sin_30"] = array("data" => $data_calidad_sin_30 , "meta" => $meta_calidad_sin_30, "cumplimiento" => $porcentaje_calidad_sin_30);
+				
+				}
+
+			}
+
+			/*******ENCUESTA 3 DE 3************/
+
+			$meta_encuesta_3_3 = $this->Igtmodel->getMetaIndicador($perfil_tecnico,10,$periodo);
+
+			if($meta_encuesta_3_3!="0"){
+
+				$data_encuesta_3_3 = $this->Igtmodel->dataencuesta_3_3(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
+				$porcentaje_encuesta_3_3 = $this->Igtmodel->porcentajeEncuesta_3_3(getPeriodo($periodo),$id_tecnico);
+				
+				if($data_encuesta_3_3!=FALSE){
+					$array_data["data_encuesta_3_3"] = array("data" => $data_encuesta_3_3 , "meta" => $meta_encuesta_3_3, "cumplimiento" => $porcentaje_encuesta_3_3);
+				}
+
+			}
+
+			/*******CICLE TIME************/
+
+			$meta_cicle_time = $this->Igtmodel->getMetaIndicador($perfil_tecnico,11,$periodo);
+
+			if($meta_cicle_time!="0"){
+
+				$data_cicle_time = $this->Igtmodel->dataCicleTime(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
+				$porcentaje_cicle_time = $this->Igtmodel->porcentajeCicleTime(getPeriodo($periodo),$id_tecnico);
+				
+				if($data_cicle_time!=FALSE){
+					$array_data["data_cicle_time"] = array("data" => $data_cicle_time , "meta" => $meta_cicle_time, "cumplimiento" => $porcentaje_cicle_time);
+				}
+
+			}
+
+			/*******OPTIMUS************/
+
+			$meta_optimus = $this->Igtmodel->getMetaIndicador($perfil_tecnico,12,$periodo);
+
+			if($meta_optimus!="0"){
+
+				$data_optimus = $this->Igtmodel->dataOptimus(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
+				$porcentaje_optimus = $this->Igtmodel->porcentajeOptimus(getPeriodo($periodo),$id_tecnico);
+				
+				if($data_optimus!=FALSE){
+					$array_data["data_optimus"] = array("data" => $data_optimus , "meta" => $meta_optimus, "cumplimiento" => $porcentaje_optimus);
+				}
+
+			}
+
+		echo json_encode($array_data);
+
+	}
 
 		public function listaTrabajadoresIGT(){
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
 	 	    echo $this->Igtmodel->listaTrabajadoresIGT($jefe);exit;
+		}
+
+		public function getProyectoTecnicoRut(){
+			$rut=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+	 	    echo $this->Igtmodel->getProyectoTecnicoRut($rut);exit;
 		}
 
 

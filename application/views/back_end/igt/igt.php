@@ -106,7 +106,6 @@
     const r="<?php echo $this->session->userdata('rut'); ?>";
     const base = "<?php echo base_url() ?>";
     const base_url = "<?php echo base_url() ?>";
-
     $.getJSON(base + "listaTrabajadoresIGT", { jefe : $("#jefe_det").val() } , function(data) {
        response = data;
        }).done(function() {
@@ -135,9 +134,29 @@
       setTimeout( function () {
         $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
       }, 500 );
-
     }
-   
+
+    function proyectoUsuario(){
+      var trabajador = perfil <= 3 ? $("#trabajadores").val() : $("#trabajador").val(); 
+      $.ajax({
+          url: base_url+"getProyectoTecnicoRut"+"?"+$.now(),  
+          type: 'POST',
+          data:{trabajador:trabajador},
+          dataType:"json",
+          beforeSend:function(){
+          },
+          success: function (response) {
+            if(response == 3){
+              $("#tablas").hide()
+            }
+            else{
+              $("#tablas").show()
+            }
+            return response
+          }
+      })
+    }
+
     function dataGraficosIgt(){
       var periodo = $("#periodo_detalle").val();
       var trabajador = perfil <= 3 ? $("#trabajadores").val() : $("#trabajador").val();
@@ -1031,25 +1050,281 @@
                 $(".graficoPuntosProductividadDiario").hide()
                 $("#graficoPuntosProductividadDiario").text("").hide()
             }
+          
+          //DTV
+            //WORK ORDEN
+
+            if(json.hasOwnProperty("data_work_orden") && json.data_work_orden.meta!="0"){
+
+              $("#work_orden").text(json.data_work_orden.data.promedio).show()
+              $(".work_orden").show()
+
+              var data_prom_periodo = google.visualization.arrayToDataTable(json.data_work_orden.data);
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_work_orden.meta*6/5,
+                redFrom:json.data_work_orden.meta*2/5,
+                redTo:json.data_work_orden.meta*3/5,
+                yellowFrom:json.data_work_orden.meta*3/5,
+                yellowTo: json.data_work_orden.meta,
+                greenFrom: json.data_work_orden.meta,
+                greenTo:json.data_work_orden.meta*6/5,
+                minorTicks: 5,
+              };
+
+              const value = json.data_work_orden.data[1][1]
+              const meta = json.data_work_orden.meta
+              const cumplimiento = json.data_work_orden.cumplimiento
+
+              /* $(".meta_work_orden").html(` Meta : ${json.data_work_orden.meta}`)   */
+              $(".meta_work_orden_green").html(`${cumplimiento} <i class="fa-solid"></i>`).show()
+
+             /* const diff = Math.abs(meta-value)
+
+              $(".meta_work_orden").html(` Meta : ${json.data_work_orden.meta}`)
+              if(value>=meta){
+                $(".meta_work_orden_green").html(`+${diff.toFixed(1)} <i class="fa-solid fa-up-long"></i>`).show()
+                $(".meta_work_orden_red").html("").hide()
+              }else{
+                $(".meta_work_orden_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
+                $(".meta_work_orden_green").html("").hide()
+              }*/
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_work_orden'));
+              chart.draw(data_prom_periodo, options);
+              $(".work_orden").show()
+            }else{
+              $(".work_orden").hide()
+              
+             /* $("#grafico_work_orden").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
+              $(".meta_work_orden_red").html("")
+              $(".meta_work_orden_green ").html("")*/
+            }
+
+            //CALIDAD SIN 30
+
+            if(json.hasOwnProperty("data_calidad_sin_30") && json.data_calidad_sin_30.meta!="0"){
+
+              $("#calidad_sin_30").text(json.data_calidad_sin_30.data.promedio).show()
+              $(".calidad_sin_30").show()
+
+              var data_prom_periodo = google.visualization.arrayToDataTable(json.data_calidad_sin_30.data);
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_calidad_sin_30.meta*6/5,
+                redFrom:json.data_calidad_sin_30.meta*2/5,
+                redTo:json.data_calidad_sin_30.meta*3/5,
+                yellowFrom:json.data_calidad_sin_30.meta*3/5,
+                yellowTo: json.data_calidad_sin_30.meta,
+                greenFrom: json.data_calidad_sin_30.meta,
+                greenTo:json.data_calidad_sin_30.meta*6/5,
+                minorTicks: 5,
+              };
+
+              const value = json.data_calidad_sin_30.data[1][1]
+              const meta = json.data_calidad_sin_30.meta
+              const cumplimiento = json.data_calidad_sin_30.cumplimiento
+
+              /* $(".meta_calidad_sin_30").html(` Meta : ${json.data_calidad_sin_30.meta}`)   */
+              $(".meta_calidad_sin_30_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+              /* const diff = Math.abs(meta-value)
+
+              $(".meta_calidad_sin_30").html(` Meta : ${json.data_calidad_sin_30.meta}`)
+              if(value>=meta){
+                $(".meta_calidad_sin_30_green").html(`+${diff.toFixed(1)} <i class="fa-solid fa-up-long"></i>`).show()
+                $(".meta_calidad_sin_30_red").html("").hide()
+              }else{
+                $(".meta_calidad_sin_30_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
+                $(".meta_calidad_sin_30_green").html("").hide()
+              }*/
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_calidad_sin_30'));
+              chart.draw(data_prom_periodo, options);
+              $(".calidad_sin_30").show()
+            }else{
+              $(".calidad_sin_30").hide()
+
+              /* $("#grafico_calidad_sin_30").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
+              $(".meta_calidad_sin_30_red").html("")
+              $(".meta_calidad_sin_30_green ").html("")*/
+            }
+
+            //ENCUESTA 3 DE 3
+
+            if(json.hasOwnProperty("data_encuesta_3_3") && json.data_encuesta_3_3.meta!="0"){
+
+              $("#encuesta_3_3").text(json.data_encuesta_3_3.data.promedio).show()
+              $(".encuesta_3_3").show()
+
+              var data_prom_periodo = google.visualization.arrayToDataTable(json.data_encuesta_3_3.data);
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_encuesta_3_3.meta*6/5,
+                redFrom:json.data_encuesta_3_3.meta*2/5,
+                redTo:json.data_encuesta_3_3.meta*3/5,
+                yellowFrom:json.data_encuesta_3_3.meta*3/5,
+                yellowTo: json.data_encuesta_3_3.meta,
+                greenFrom: json.data_encuesta_3_3.meta,
+                greenTo:json.data_encuesta_3_3.meta*6/5,
+                minorTicks: 5,
+              };
+
+              const value = json.data_encuesta_3_3.data[1][1]
+              const meta = json.data_encuesta_3_3.meta
+              const cumplimiento = json.data_encuesta_3_3.cumplimiento
+
+              /* $(".meta_encuesta_3_3").html(` Meta : ${json.data_encuesta_3_3.meta}`)   */
+              $(".meta_encuesta_3_3_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+              /* const diff = Math.abs(meta-value)
+
+              $(".meta_encuesta_3_3").html(` Meta : ${json.data_encuesta_3_3.meta}`)
+              if(value>=meta){
+                $(".meta_encuesta_3_3_green").html(`+${diff.toFixed(1)} <i class="fa-solid fa-up-long"></i>`).show()
+                $(".meta_encuesta_3_3_red").html("").hide()
+              }else{
+                $(".meta_encuesta_3_3_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
+                $(".meta_encuesta_3_3_green").html("").hide()
+              }*/
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_encuesta_3_3'));
+              chart.draw(data_prom_periodo, options);
+              $(".encuesta_3_3").show()
+            }else{
+              $(".encuesta_3_3").hide()
+
+              /* $("#grafico_encuesta_3_3").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
+              $(".meta_encuesta_3_3_red").html("")
+              $(".meta_encuesta_3_3_green ").html("")*/
+            }
+
+            //CICLE TIME
+
+            if(json.hasOwnProperty("data_cicle_time") && json.data_cicle_time.meta!="0"){
+
+              $("#cicle_time").text(json.data_cicle_time.data.promedio).show()
+              $(".cicle_time").show()
+
+              var data_prom_periodo = google.visualization.arrayToDataTable(json.data_cicle_time.data);
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_cicle_time.meta*6/5,
+                redFrom:json.data_cicle_time.meta*2/5,
+                redTo:json.data_cicle_time.meta*3/5,
+                yellowFrom:json.data_cicle_time.meta*3/5,
+                yellowTo: json.data_cicle_time.meta,
+                greenFrom: json.data_cicle_time.meta,
+                greenTo:json.data_cicle_time.meta*6/5,
+                minorTicks: 5,
+              };
+
+              const value = json.data_cicle_time.data[1][1]
+              const meta = json.data_cicle_time.meta
+              const cumplimiento = json.data_cicle_time.cumplimiento
+
+              /* $(".meta_cicle_time").html(` Meta : ${json.data_cicle_time.meta}`)   */
+              $(".meta_cicle_time_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+              /* const diff = Math.abs(meta-value)
+
+              $(".meta_cicle_time").html(` Meta : ${json.data_cicle_time.meta}`)
+              if(value>=meta){
+                $(".meta_cicle_time_green").html(`+${diff.toFixed(1)} <i class="fa-solid fa-up-long"></i>`).show()
+                $(".meta_cicle_time_red").html("").hide()
+              }else{
+                $(".meta_cicle_time_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
+                $(".meta_cicle_time_green").html("").hide()
+              }*/
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_cicle_time'));
+              chart.draw(data_prom_periodo, options);
+              $(".cicle_time").show()
+            }else{
+              $(".cicle_time").hide()
+
+              /* $("#grafico_cicle_time").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
+              $(".meta_cicle_time_red").html("")
+              $(".meta_cicle_time_green ").html("")*/
+            }
+
+            //OPTIMUS
+
+            if(json.hasOwnProperty("data_optimus") && json.data_optimus.meta!="0"){
+
+              $("#optimus").text(json.data_optimus.data.promedio).show()
+              $(".optimus").show()
+
+              var data_prom_periodo = google.visualization.arrayToDataTable(json.data_optimus.data);
+              var options = {
+                height: 130,
+                min: 0,
+                max: json.data_optimus.meta*6/5,
+                redFrom:json.data_optimus.meta*2/5,
+                redTo:json.data_optimus.meta*3/5,
+                yellowFrom:json.data_optimus.meta*3/5,
+                yellowTo: json.data_optimus.meta,
+                greenFrom: json.data_optimus.meta,
+                greenTo:json.data_optimus.meta*6/5,
+                minorTicks: 5,
+              };
+
+              const value = json.data_optimus.data[1][1]
+              const meta = json.data_optimus.meta
+              const cumplimiento = json.data_optimus.cumplimiento
+
+              /* $(".meta_optimus").html(` Meta : ${json.data_optimus.meta}`)   */
+              $(".meta_optimus_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
+
+              /* const diff = Math.abs(meta-value)
+
+              $(".meta_optimus").html(` Meta : ${json.data_optimus.meta}`)
+              if(value>=meta){
+                $(".meta_optimus_green").html(`+${diff.toFixed(1)} <i class="fa-solid fa-up-long"></i>`).show()
+                $(".meta_optimus_red").html("").hide()
+              }else{
+                $(".meta_optimus_red").html(`-${diff.toFixed(1)} <i class="fa-solid fa-down-long"></i>`).show()
+                $(".meta_optimus_green").html("").hide()
+              }*/
+
+              var chart = new google.visualization.Gauge(document.getElementById('grafico_optimus'));
+              chart.draw(data_prom_periodo, options);
+              $(".optimus").show()
+            }else{
+              $(".optimus").hide()
+
+              /* $("#grafico_optimus").html("<span class='title_section'><span class='title_section'>No aplica</span></span>")
+              $(".meta_optimus_red").html("")
+              $(".meta_optimus_green ").html("")*/
+            } 
+
           }
       })
     }
     
     $(document).off('change', '#periodo_detalle').on('change', '#periodo_detalle', function(event) {
       if($("#trabajadores").val()!=""){
-        lista_detalle_calidad.ajax.reload()
-        lista_detalle_productividad.ajax.reload()
-        lista_detalle_ots_drive.ajax.reload()
         dataGraficosIgt()
+        if(proyectoUsuario() != 3){
+          lista_detalle_calidad.ajax.reload()
+          lista_detalle_productividad.ajax.reload()
+          lista_detalle_ots_drive.ajax.reload()
+        }
       }
     }); 
 
     $(document).off('change', '#trabajadores').on('change', '#trabajadores', function(event) {
       if($("#trabajadores").val()!=""){
-        lista_detalle_calidad.ajax.reload()
-        lista_detalle_productividad.ajax.reload()
-        lista_detalle_ots_drive.ajax.reload()
         dataGraficosIgt()
+        if(proyectoUsuario() != 3){
+          lista_detalle_calidad.ajax.reload()
+          lista_detalle_productividad.ajax.reload()
+          lista_detalle_ots_drive.ajax.reload()
+        }
       }
     }); 
 
@@ -1485,6 +1760,7 @@
       })
 
       actualizacionProductividad()
+      proyectoUsuario()
 
       function actualizacionProductividad(){
         $.ajax({
@@ -1651,7 +1927,7 @@
 
   </div>       
 
-<center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
+  <center><i id='load' class='fa-solid fa-circle-notch fa-spin fa-8x text-center'  style='margin-top:170px;color:#32477C;opacity: .8;margin-bottom: 800px;'></i></center>
   <!-- body style="display: none;" -->
   <div class="body">
     <div class="form-row">
@@ -1808,6 +2084,83 @@
         </div>
       </div>
 
+      <!-- DTV -->
+
+      <div class="col-6 col-lg work_orden mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           WORK ORDEN <span class="meta_work_orden"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_work_orden" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_work_orden_green green" style="displaycalidad_sin_30: none;"></span> 
+            <span class="meta_work_orden_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg calidad_sin_30 mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           CALIDAD SIN 30 <span class="meta_calidad_sin_30"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_calidad_sin_30" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_calidad_sin_30_green green" style="display: none;"></span> 
+            <span class="meta_calidad_sin_30_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg encuesta_3_3 mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           ENCUESTA 3 DE 3 <span class="meta_encuesta_3_3"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_encuesta_3_3" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_encuesta_3_3_green green" style="display: none;"></span> 
+            <span class="meta_encuesta_3_3_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg cicle_time mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           CICLE TIME <span class="meta_cicle_time"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_cicle_time" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_cicle_time_green green" style="display: none;"></span> 
+            <span class="meta_cicle_time_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg optimus mb-2">
+        <div class="card text-center">
+          <div class="card-header card_dash">
+           OPTIMUS <span class="meta_optimus"></span>
+          </div>
+          <div class="card-body">
+            <center><div id="grafico_optimus" class="gauge"></div></center>
+          </div>
+          <div class="card-footer card_dash">
+            <span class="meta_optimus_green green" style="display: none;"></span> 
+            <span class="meta_optimus_red red2" style="display: none;"> </span> 
+          </div>
+        </div>
+      </div>
+
       <!-- <div class="col-6 col-lg foto_tecnico" style="display:none;">
         <div class="card text-center">
           <div class="card-body">
@@ -1819,204 +2172,207 @@
       </div> -->
     </div>
  
+    <div id="tablas">
+      <div class="form-row p-1">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header card_dash">
+              <div class="form-row">
+                <div class="col-12 col-lg-4">
+                  <span class="title_section">Detalle calidad</span>
+                </div>
 
-    <div class="form-row p-1">
-      <div class="col-12 col-lg-6">
-        <div class="card">
-          <div class="card-header card_dash">
+                <div class="col-8 col-lg-6">  
+                  <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
+                </div>
+
+                <div class="col-4 col-lg-2">  
+                  <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
+                  <i class="fa fa-save"></i> Excel
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div class="form-row">
-              <div class="col-12 col-lg-4">
-                 <span class="title_section">Detalle calidad</span>
+              <div class="col-12 text-center d-none d-sm-block">
+                <span class="titulo_fecha_actualizacion_dias">
+                  <div class="alert alert-primary  actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                </span>
               </div>
 
-              <div class="col-8 col-lg-6">  
-                <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
-              </div>
-
-              <div class="col-4 col-lg-2">  
-                 <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
-                 <i class="fa fa-save"></i> Excel
-                 </button>
+              <div class="col-lg-12 px-3">
+                <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                  <thead>
+                    <tr>    
+                      <th class="centered">Técnico</th> 
+                      <th class="centered">RUT</th> 
+                      <th class="centered">Comuna</th> 
+                      <th class="centered">Orden</th> 
+                      <th class="centered">Fecha</th> 
+                      <th class="centered">Descripción</th> 
+                      <th class="centered">Cierre</th> 
+                      <th class="centered">Orden 2da vis.</th> 
+                      <th class="centered">Fecha 2da vis.</th> 
+                      <th class="centered">Descripción 2da vis.</th> 
+                      <th class="centered">Cierre 2da vis.</th> 
+                      <th class="centered">Diferencia Días</th> 
+                      <th class="centered">Tipo red</th> 
+                      <th class="centered">Falla</th> 
+                      <th class="centered">Última actualización</th>   
+                    </tr>
+                  </thead>
+                </table>
               </div>
             </div>
           </div>
+        </div>   
 
-          <div class="form-row">
-            <div class="col-12 text-center d-none d-sm-block">
-               <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary  actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-              </span>
-            </div>
-
-            <div class="col-lg-12 px-3">
-              <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                <thead>
-                  <tr>    
-                    <th class="centered">Técnico</th> 
-                    <th class="centered">RUT</th> 
-                    <th class="centered">Comuna</th> 
-                    <th class="centered">Orden</th> 
-                    <th class="centered">Fecha</th> 
-                    <th class="centered">Descripción</th> 
-                    <th class="centered">Cierre</th> 
-                    <th class="centered">Orden 2da vis.</th> 
-                    <th class="centered">Fecha 2da vis.</th> 
-                    <th class="centered">Descripción 2da vis.</th> 
-                    <th class="centered">Cierre 2da vis.</th> 
-                    <th class="centered">Diferencia Días</th> 
-                    <th class="centered">Tipo red</th> 
-                    <th class="centered">Falla</th> 
-                    <th class="centered">Última actualización</th>   
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>   
-
-      <div class="col-12 col-lg-6">
-        <div class="card">
-          <div class="form-row">
-            
-            <div class="col-lg-6 graficoHFC">
-              <div class="card-header card_dash" style="padding:10px!important;">
-                <span class="title_section">Calidad HFC Últimos 3 periodos</span>
-              </div>
-              <div id="graficoHFC"></div>
-            </div>
-
-            <div class="col-lg-6 graficoFTTH">
-              <div class="card-header card_dash" style="padding:10px!important;">
-                <span class="title_section">Calidad FTTH Últimos 3 periodos</span>
-              </div>
-              <div id="graficoFTTH"></div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-row p-1">
-
-      <div class="col-12 col-lg-6">
-        <div class="card">
-          <div class="card-header card_dash">
+        <div class="col-12 col-lg-6">
+          <div class="card">
             <div class="form-row">
-              <div class="col-12 col-lg-4">
-                 <span class="title_section">Detalle productividad</span>
+              
+              <div class="col-lg-6 graficoHFC">
+                <div class="card-header card_dash" style="padding:10px!important;">
+                  <span class="title_section">Calidad HFC Últimos 3 periodos</span>
+                </div>
+                <div id="graficoHFC"></div>
               </div>
 
-              <div class="col-8 col-lg-6">  
-                <input type="text" placeholder="Busqueda" id="buscador_productividad" class="buscador_productividad form-control form-control-sm">
+              <div class="col-lg-6 graficoFTTH">
+                <div class="card-header card_dash" style="padding:10px!important;">
+                  <span class="title_section">Calidad FTTH Últimos 3 periodos</span>
+                </div>
+                <div id="graficoFTTH"></div>
               </div>
 
-              <div class="col-4 col-lg-2">  
-                 <button type="button"  class="btn-block btn btn-sm btn-primary excel_productividad btn_xr3">
-                 <i class="fa fa-save"></i> Excel
-                 </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="col-12 text-center d-none d-sm-block">
-               <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-              </span>
-            </div>
-
-            <div class="col-lg-12 px-3">
-              <table id="lista_detalle_productividad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                <thead>
-                  <tr>    
-                    <th class="centered">Técnico</th> 
-                    <th class="centered">Fecha</th> 
-                    <th class="centered">Dirección</th> 
-                    <th class="centered">Tipo actividad</th> 
-                    <th class="centered">Comuna</th> 
-                    <th class="centered">Estado</th> 
-                    <th class="centered">Derivado</th> 
-                    <th class="centered">Puntaje</th> 
-                    <th class="centered">Orden de Trabajo</th> 
-                    <th class="centered">Digitalizacion OT</th>   
-                    <th class="centered">Categoría</th> 
-                    <th class="centered">Equivalente</th> 
-                    <th class="centered">Técnologia</th> 
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-
-        </div>
-      </div>   
-      
-      <div class="col-12 col-lg-6">
-        <div class="card">
-          <div class="form-row">
-            <div class="col-12">
-              <div class="card-header card_dash" style="padding:10px!important;">
-               <span class="title_section">Productividad diario</span>
-              </div>
-              <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
             </div>
           </div>
         </div>
       </div>
 
-    </div>
+      <div class="form-row p-1">
 
-    <div class="row p-1">
-      <div class="col-12 col-lg-12">
-        <div class="card">
-          <div class="card-header card_dash">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-header card_dash">
+              <div class="form-row">
+                <div class="col-12 col-lg-4">
+                  <span class="title_section">Detalle productividad</span>
+                </div>
+
+                <div class="col-8 col-lg-6">  
+                  <input type="text" placeholder="Busqueda" id="buscador_productividad" class="buscador_productividad form-control form-control-sm">
+                </div>
+
+                <div class="col-4 col-lg-2">  
+                  <button type="button"  class="btn-block btn btn-sm btn-primary excel_productividad btn_xr3">
+                  <i class="fa fa-save"></i> Excel
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div class="form-row">
-              <div class="col-12 col-lg-4">
-                 <span class="title_section">Detalle OTS no detectadas en TQW</span>
+              <div class="col-12 text-center d-none d-sm-block">
+                <span class="titulo_fecha_actualizacion_dias">
+                  <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                </span>
               </div>
 
-              <div class="col-8 col-lg-6">  
-                <input type="text" placeholder="Busqueda" id="buscador_ots_drive" class="buscador_ots_drive form-control form-control-sm">
+              <div class="col-lg-12 px-3">
+                <table id="lista_detalle_productividad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                  <thead>
+                    <tr>    
+                      <th class="centered">Técnico</th> 
+                      <th class="centered">Fecha</th> 
+                      <th class="centered">Dirección</th> 
+                      <th class="centered">Tipo actividad</th> 
+                      <th class="centered">Comuna</th> 
+                      <th class="centered">Estado</th> 
+                      <th class="centered">Derivado</th> 
+                      <th class="centered">Puntaje</th> 
+                      <th class="centered">Orden de Trabajo</th> 
+                      <th class="centered">Digitalizacion OT</th>   
+                      <th class="centered">Categoría</th> 
+                      <th class="centered">Equivalente</th> 
+                      <th class="centered">Técnologia</th> 
+                    </tr>
+                  </thead>
+                </table>
               </div>
+            </div>
 
-              <div class="col-4 col-lg-2">  
-                 <button type="button"  class="btn-block btn btn-sm btn-primary excel_drive btn_xr3">
-                 <i class="fa fa-save"></i> Excel
-                 </button>
+          </div>
+        </div>   
+        
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="form-row">
+              <div class="col-12">
+                <div class="card-header card_dash" style="padding:10px!important;">
+                <span class="title_section">Productividad diario</span>
+                </div>
+                <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="form-row">
+      </div>
 
-            <div class="col-12 text-center d-none d-sm-block">
-               <span class="titulo_fecha_actualizacion_dias">
-                <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-              </span>
+      <div class="row p-1">
+        <div class="col-12 col-lg-12">
+          <div class="card">
+            <div class="card-header card_dash">
+              <div class="form-row">
+                <div class="col-12 col-lg-4">
+                  <span class="title_section">Detalle OTS no detectadas en TQW</span>
+                </div>
+
+                <div class="col-8 col-lg-6">  
+                  <input type="text" placeholder="Busqueda" id="buscador_ots_drive" class="buscador_ots_drive form-control form-control-sm">
+                </div>
+
+                <div class="col-4 col-lg-2">  
+                  <button type="button"  class="btn-block btn btn-sm btn-primary excel_drive btn_xr3">
+                  <i class="fa fa-save"></i> Excel
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div class="col-lg-12 px-3">
-              <table id="lista_detalle_ots_drive" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                <thead>
-                  <tr>    
-                    <th class="centered">Técnico</th> 
-                    <th class="centered">Fecha</th> 
-                    <th class="centered">Dirección</th> 
-                    <th class="centered">Tipo actividad</th> 
-                    <th class="centered">Comuna</th> 
-                    <th class="centered">Estado</th> 
-                    <th class="centered">Derivado</th> 
-                    <th class="centered">Puntaje</th> 
-                    <th class="centered">Orden de Trabajo</th> 
-                    <th class="centered">Digitalizacion OT</th>   
-                  </tr>
-                </thead>
-              </table>
+            <div class="form-row">
+
+              <div class="col-12 text-center d-none d-sm-block">
+                <span class="titulo_fecha_actualizacion_dias">
+                  <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                </span>
+              </div>
+
+              <div class="col-lg-12 px-3">
+                <table id="lista_detalle_ots_drive" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                  <thead>
+                    <tr>    
+                      <th class="centered">Técnico</th> 
+                      <th class="centered">Fecha</th> 
+                      <th class="centered">Dirección</th> 
+                      <th class="centered">Tipo actividad</th> 
+                      <th class="centered">Comuna</th> 
+                      <th class="centered">Estado</th> 
+                      <th class="centered">Derivado</th> 
+                      <th class="centered">Puntaje</th> 
+                      <th class="centered">Orden de Trabajo</th> 
+                      <th class="centered">Digitalizacion OT</th>   
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
-          </div>
-      </div>   
+        </div>   
+      </div>
     </div>
+
+
   </div>
 </div>

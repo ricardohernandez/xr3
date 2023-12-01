@@ -24,6 +24,17 @@ class Igtmodel extends CI_Model {
 		}
 		return FALSE;
 	}
+	public function getProyectoTecnicoRut($rut){
+		$this->db->select('id_proyecto');
+		$this->db->where('estado', 1);
+		$this->db->where('rut', $rut);
+		$res = $this->db->get('usuarios');
+		if($res->num_rows()>0){
+			$row = $res->row_array();
+			return $row["id_proyecto"];
+		}
+		return FALSE;
+	}
 
 	public function getFotoTecnico($rut){
 		$this->db->select('foto');
@@ -55,6 +66,23 @@ class Igtmodel extends CI_Model {
 		return TRUE;
 	}
 
+	public function existeMesDTV($mes){
+		$this->db->where('mes', $mes);
+		$res = $this->db->get('tecnicos_indicadores_dtv');
+
+		if($res->num_rows()>0){
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	public function borrarMesActualDTV($mes){
+		$this->db->where('mes', $mes);
+		$res = $this->db->delete('tecnicos_indicadores_dtv');
+		return TRUE;
+	}
+
 	public function getIdTecnico($rut){
 		$this->db->select('id');
 		$this->db->where('rut', $rut);
@@ -69,8 +97,29 @@ class Igtmodel extends CI_Model {
 		return FALSE;
 	}
 
+	public function getProyectoTecnico($id){
+		$this->db->select('id_proyecto');
+		$this->db->where('id', $id);
+		$this->db->where('estado', 1);
+		$res = $this->db->get('usuarios');
+	
+		if($res->num_rows()>0){
+
+			$row = $res->row_array();
+			return $row["id_proyecto"];
+		}
+		return FALSE;
+	}
+
 	public function insertarIgt($data){
 		if($this->db->insert('tecnicos_indicadores', $data)){
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	public function insertarIgtDTV($data){
+		if($this->db->insert('tecnicos_indicadores_dtv', $data)){
 			return TRUE;
 		}
 		return FALSE;
@@ -781,6 +830,209 @@ class Igtmodel extends CI_Model {
 			}
 		}
 
+	
+
+	/********** INDICADORES DTV ************/
+
+		/**** WORK ORDEN ****/
+			public function dataWorkOrden($mes,$trabajador){
+				$this->db->select('work_orden');
+				$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					
+					foreach($res->result_array() as $key){
+						
+						if($key["work_orden"]==0){
+							return FALSE;
+						}
+
+						$temp = array();
+						$temp[] = array("Label","Value"); 
+						$temp[] = array("",(float)$key["work_orden"]); 
+						$filas = $temp;
+					}
+
+					return $filas;
+			
+				}else{						
+					return FALSE;
+				}
+			}
+
+			public function porcentajeWorkOrden($mes,$trabajador){
+				$this->db->select('
+					ROUND(AVG(work_orden),2) as work_orden
+				');
+				//$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);	
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					$row = $res->row_array();
+					return $row["work_orden"];
+				}
+				return FALSE;
+			}
+		/**** CALIDAD SIN 30 ****/
+
+			public function dataCalidadsin30($mes,$trabajador){
+				$this->db->select('calidad_sin_30');
+				$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					
+					foreach($res->result_array() as $key){
+						
+						if($key["calidad_sin_30"]==0){
+							return FALSE;
+						}
+
+						$temp = array();
+						$temp[] = array("Label","Value"); 
+						$temp[] = array("",(float)$key["calidad_sin_30"]); 
+						$filas = $temp;
+					}
+
+					return $filas;
+			
+				}else{						
+					return FALSE;
+				}
+			}
+
+			public function porcentajeCalidadsin30($mes,$trabajador){
+				$this->db->select('
+				ROUND(AVG(calidad_sin_30),2) AS calidad_sin_30');
+				//$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);	
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					$row = $res->row_array();
+					return $row["calidad_sin_30"];
+				}
+				return FALSE;
+			}
+		/**** ENCUESTA 3 DE 3 ****/
+			public function dataEncuesta_3_3($mes,$trabajador){
+				$this->db->select('encuesta_3_3');
+				$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					
+					foreach($res->result_array() as $key){
+						
+						if($key["encuesta_3_3"]==0){
+							return FALSE;
+						}
+
+						$temp = array();
+						$temp[] = array("Label","Value"); 
+						$temp[] = array("",(float)$key["encuesta_3_3"]); 
+						$filas = $temp;
+					}
+
+					return $filas;
+			
+				}else{						
+					return FALSE;
+				}
+			}
+
+			public function porcentajeEncuesta_3_3($mes,$trabajador){
+				$this->db->select('
+				ROUND(AVG(encuesta_3_3),2) AS encuesta_3_3');
+				//$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);	
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					$row = $res->row_array();
+					return $row["encuesta_3_3"];
+				}
+				return FALSE;
+			}
+
+		/**** CICLE TIME ****/
+			public function dataCicleTime($mes,$trabajador){
+				$this->db->select('cicle_time');
+				$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					
+					foreach($res->result_array() as $key){
+						
+						if($key["cicle_time"]==0){
+							return FALSE;
+						}
+
+						$temp = array();
+						$temp[] = array("Label","Value"); 
+						$temp[] = array("",(float)$key["cicle_time"]); 
+						$filas = $temp;
+					}
+
+					return $filas;
+			
+				}else{						
+					return FALSE;
+				}
+			}
+
+			public function porcentajeCicleTime($mes,$trabajador){
+				$this->db->select('
+				ROUND(AVG(cicle_time),2) AS cicle_time');
+				//$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);	
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					$row = $res->row_array();
+					return $row["cicle_time"];
+				}
+				return FALSE;
+			}
+		/**** OPTIMUS ****/
+
+			public function dataOptimus($mes,$trabajador){
+				$this->db->select('optimus');
+				$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					
+					foreach($res->result_array() as $key){
+						
+						if($key["optimus"]==0){
+							return FALSE;
+						}
+
+						$temp = array();
+						$temp[] = array("Label","Value"); 
+						$temp[] = array("",(float)$key["optimus"]); 
+						$filas = $temp;
+					}
+
+					return $filas;
+			
+				}else{						
+					return FALSE;
+				}
+			}
+
+			public function porcentajeOptimus($mes,$trabajador){
+				$this->db->select('
+				ROUND(AVG(optimus),2) AS optimus');
+				//$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('mes', $mes);	
+				$res = $this->db->get('tecnicos_indicadores_dtv');
+				if($res->num_rows()>0){
+					$row = $res->row_array();
+					return $row["optimus"];
+				}
+				return FALSE;
+			}
 
 	public function listaTrabajadoresIGT($jefe){
 		$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
