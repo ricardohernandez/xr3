@@ -861,18 +861,38 @@ class Igtmodel extends CI_Model {
 				}
 			}
 
-			public function porcentajeWorkOrden($mes,$trabajador){
+			public function porcentajeWorkOrden($mes,$trabajador,$periodo){
 				$this->db->select('
-					ROUND(AVG(work_orden),2) as work_orden
+					ROUND(work_orden,2) as work_orden,
+					u.id_nivel_tecnico as nivel,
 				');
-				//$this->db->where('id_tecnico', $trabajador);
+				$this->db->where('id_tecnico', $trabajador);
 				$this->db->where('mes', $mes);	
+				$this->db->join('usuarios u', 'u.id = id_tecnico', 'left');
+
 				$res = $this->db->get('tecnicos_indicadores_dtv');
-				if($res->num_rows()>0){
-					$row = $res->row_array();
-					return $row["work_orden"];
+				if($res->num_rows()==0){
+					return FALSE;
 				}
-				return FALSE;
+				$row = $res->row_array();
+
+				if($periodo=="actual"){
+					$this->db->select('meta_actual as meta');
+				}elseif($periodo=="anterior"){
+					$this->db->select('meta_anterior as meta');
+				}elseif($periodo=="anterior_2"){
+					$this->db->select('meta_anterior as meta');
+				}
+				$this->db->where('id_nivel', $row["nivel"]);	
+				$this->db->where('id_indicador', 8);	
+				$res2 = $this->db->get('usuarios_tecnicos_niveles_metas');
+				if($res2->num_rows()==0){
+					return FALSE;
+				}
+				$row2 = $res2->row_array();
+				$porcentaje = round($row["work_orden"]*100/$row2["meta"],2);
+				return $porcentaje;
+				
 			}
 		/**** CALIDAD SIN 30 ****/
 
@@ -902,17 +922,37 @@ class Igtmodel extends CI_Model {
 				}
 			}
 
-			public function porcentajeCalidadsin30($mes,$trabajador){
+			public function porcentajeCalidadsin30($mes,$trabajador,$periodo){
 				$this->db->select('
-				ROUND(AVG(calidad_sin_30),2) AS calidad_sin_30');
-				//$this->db->where('id_tecnico', $trabajador);
+					ROUND(calidad_sin_30,2) AS calidad_sin_30,
+					u.id_nivel_tecnico as nivel,
+				');
+				$this->db->where('id_tecnico', $trabajador);
 				$this->db->where('mes', $mes);	
+				$this->db->join('usuarios u', 'u.id = id_tecnico', 'left');
+
 				$res = $this->db->get('tecnicos_indicadores_dtv');
-				if($res->num_rows()>0){
-					$row = $res->row_array();
-					return $row["calidad_sin_30"];
+				if($res->num_rows()==0){
+					return FALSE;
 				}
-				return FALSE;
+				$row = $res->row_array();
+
+				if($periodo=="actual"){
+					$this->db->select('meta_actual as meta');
+				}elseif($periodo=="anterior"){
+					$this->db->select('meta_anterior as meta');
+				}elseif($periodo=="anterior_2"){
+					$this->db->select('meta_anterior as meta');
+				}
+				$this->db->where('id_nivel', $row["nivel"]);	
+				$this->db->where('id_indicador', 9);	
+				$res2 = $this->db->get('usuarios_tecnicos_niveles_metas');
+				if($res2->num_rows()==0){
+					return FALSE;
+				}
+				$row2 = $res2->row_array();
+				$porcentaje = round($row["calidad_sin_30"]*100/$row2["meta"],2);
+				return $porcentaje;
 			}
 		/**** ENCUESTA 3 DE 3 ****/
 			public function dataEncuesta_3_3($mes,$trabajador){
@@ -941,17 +981,37 @@ class Igtmodel extends CI_Model {
 				}
 			}
 
-			public function porcentajeEncuesta_3_3($mes,$trabajador){
+			public function porcentajeEncuesta_3_3($mes,$trabajador,$periodo){
 				$this->db->select('
-				ROUND(AVG(encuesta_3_3),2) AS encuesta_3_3');
-				//$this->db->where('id_tecnico', $trabajador);
+					ROUND(encuesta_3_3,2) AS encuesta_3_3,
+					u.id_nivel_tecnico as nivel,
+				');
+				$this->db->where('id_tecnico', $trabajador);
 				$this->db->where('mes', $mes);	
+				$this->db->join('usuarios u', 'u.id = id_tecnico', 'left');
+
 				$res = $this->db->get('tecnicos_indicadores_dtv');
-				if($res->num_rows()>0){
-					$row = $res->row_array();
-					return $row["encuesta_3_3"];
+				if($res->num_rows()==0){
+					return FALSE;
 				}
-				return FALSE;
+				$row = $res->row_array();
+
+				if($periodo=="actual"){
+					$this->db->select('meta_actual as meta');
+				}elseif($periodo=="anterior"){
+					$this->db->select('meta_anterior as meta');
+				}elseif($periodo=="anterior_2"){
+					$this->db->select('meta_anterior as meta');
+				}
+				$this->db->where('id_nivel', $row["nivel"]);	
+				$this->db->where('id_indicador', 10);	
+				$res2 = $this->db->get('usuarios_tecnicos_niveles_metas');
+				if($res2->num_rows()==0){
+					return FALSE;
+				}
+				$row2 = $res2->row_array();
+				$porcentaje = round($row["encuesta_3_3"]*100/$row2["meta"],2);
+				return $porcentaje;
 			}
 
 		/**** CICLE TIME ****/
@@ -981,17 +1041,37 @@ class Igtmodel extends CI_Model {
 				}
 			}
 
-			public function porcentajeCicleTime($mes,$trabajador){
+			public function porcentajeCicleTime($mes,$trabajador,$periodo){
 				$this->db->select('
-				ROUND(AVG(cicle_time),2) AS cicle_time');
-				//$this->db->where('id_tecnico', $trabajador);
+					ROUND(cicle_time,2) AS cicle_time,
+					u.id_nivel_tecnico as nivel,
+				');
+				$this->db->where('id_tecnico', $trabajador);
 				$this->db->where('mes', $mes);	
+				$this->db->join('usuarios u', 'u.id = id_tecnico', 'left');
+
 				$res = $this->db->get('tecnicos_indicadores_dtv');
-				if($res->num_rows()>0){
-					$row = $res->row_array();
-					return $row["cicle_time"];
+				if($res->num_rows()==0){
+					return FALSE;
 				}
-				return FALSE;
+				$row = $res->row_array();
+
+				if($periodo=="actual"){
+					$this->db->select('meta_actual as meta');
+				}elseif($periodo=="anterior"){
+					$this->db->select('meta_anterior as meta');
+				}elseif($periodo=="anterior_2"){
+					$this->db->select('meta_anterior as meta');
+				}
+				$this->db->where('id_nivel', $row["nivel"]);	
+				$this->db->where('id_indicador', 11);	
+				$res2 = $this->db->get('usuarios_tecnicos_niveles_metas');
+				if($res2->num_rows()==0){
+					return FALSE;
+				}
+				$row2 = $res2->row_array();
+				$porcentaje = round($row["cicle_time"]*100/$row2["meta"],2);
+				return $porcentaje;
 			}
 		/**** OPTIMUS ****/
 
@@ -1021,17 +1101,37 @@ class Igtmodel extends CI_Model {
 				}
 			}
 
-			public function porcentajeOptimus($mes,$trabajador){
+			public function porcentajeOptimus($mes,$trabajador,$periodo){
 				$this->db->select('
-				ROUND(AVG(optimus),2) AS optimus');
-				//$this->db->where('id_tecnico', $trabajador);
+					ROUND(optimus,2) AS optimus,
+					u.id_nivel_tecnico as nivel,
+				');
+				$this->db->where('id_tecnico', $trabajador);
 				$this->db->where('mes', $mes);	
+				$this->db->join('usuarios u', 'u.id = id_tecnico', 'left');
+
 				$res = $this->db->get('tecnicos_indicadores_dtv');
-				if($res->num_rows()>0){
-					$row = $res->row_array();
-					return $row["optimus"];
+				if($res->num_rows()==0){
+					return FALSE;
 				}
-				return FALSE;
+				$row = $res->row_array();
+
+				if($periodo=="actual"){
+					$this->db->select('meta_actual as meta');
+				}elseif($periodo=="anterior"){
+					$this->db->select('meta_anterior as meta');
+				}elseif($periodo=="anterior_2"){
+					$this->db->select('meta_anterior as meta');
+				}
+				$this->db->where('id_nivel', $row["nivel"]);	
+				$this->db->where('id_indicador', 12);	
+				$res2 = $this->db->get('usuarios_tecnicos_niveles_metas');
+				if($res2->num_rows()==0){
+					return FALSE;
+				}
+				$row2 = $res2->row_array();
+				$porcentaje = round($row["optimus"]*100/$row2["meta"],2);
+				return $porcentaje;
 			}
 
 	public function listaTrabajadoresIGT($jefe){

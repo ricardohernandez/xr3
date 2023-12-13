@@ -1063,13 +1063,13 @@
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_work_orden.meta*6/5,
+                max: json.data_work_orden.meta,
                 redFrom:json.data_work_orden.meta*2/5,
                 redTo:json.data_work_orden.meta*3/5,
                 yellowFrom:json.data_work_orden.meta*3/5,
-                yellowTo: json.data_work_orden.meta,
-                greenFrom: json.data_work_orden.meta,
-                greenTo:json.data_work_orden.meta*6/5,
+                yellowTo: json.data_work_orden.meta*4/5,
+                greenFrom: json.data_work_orden.meta*4/5,
+                greenTo:json.data_work_orden.meta,
                 minorTicks: 5,
               };
 
@@ -1078,7 +1078,7 @@
               const cumplimiento = json.data_work_orden.cumplimiento
 
               /* $(".meta_work_orden").html(` Meta : ${json.data_work_orden.meta}`)   */
-              $(".meta_work_orden_green").html(`${cumplimiento} <i class="fa-solid"></i>`).show()
+              $(".meta_work_orden_green").html(`${cumplimiento} <i class="fa-solid"></i>%`).show()
 
              /* const diff = Math.abs(meta-value)
 
@@ -1113,13 +1113,13 @@
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_calidad_sin_30.meta*6/5,
+                max: json.data_calidad_sin_30.meta,
                 redFrom:json.data_calidad_sin_30.meta*2/5,
                 redTo:json.data_calidad_sin_30.meta*3/5,
                 yellowFrom:json.data_calidad_sin_30.meta*3/5,
-                yellowTo: json.data_calidad_sin_30.meta,
-                greenFrom: json.data_calidad_sin_30.meta,
-                greenTo:json.data_calidad_sin_30.meta*6/5,
+                yellowTo: json.data_calidad_sin_30.meta*4/5,
+                greenFrom: json.data_calidad_sin_30.meta*4/5,
+                greenTo:json.data_calidad_sin_30.meta,
                 minorTicks: 5,
               };
 
@@ -1163,13 +1163,13 @@
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_encuesta_3_3.meta*6/5,
+                max: json.data_encuesta_3_3.meta,
                 redFrom:json.data_encuesta_3_3.meta*2/5,
                 redTo:json.data_encuesta_3_3.meta*3/5,
                 yellowFrom:json.data_encuesta_3_3.meta*3/5,
-                yellowTo: json.data_encuesta_3_3.meta,
-                greenFrom: json.data_encuesta_3_3.meta,
-                greenTo:json.data_encuesta_3_3.meta*6/5,
+                yellowTo: json.data_encuesta_3_3.meta*4/5,
+                greenFrom: json.data_encuesta_3_3.meta*4/5,
+                greenTo:json.data_encuesta_3_3.meta,
                 minorTicks: 5,
               };
 
@@ -1213,13 +1213,13 @@
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_cicle_time.meta*6/5,
+                max: json.data_cicle_time.meta,
                 redFrom:json.data_cicle_time.meta*2/5,
                 redTo:json.data_cicle_time.meta*3/5,
                 yellowFrom:json.data_cicle_time.meta*3/5,
-                yellowTo: json.data_cicle_time.meta,
-                greenFrom: json.data_cicle_time.meta,
-                greenTo:json.data_cicle_time.meta*6/5,
+                yellowTo: json.data_cicle_time.meta*4/5,
+                greenFrom: json.data_cicle_time.meta*4/5,
+                greenTo:json.data_cicle_time.meta,
                 minorTicks: 5,
               };
 
@@ -1263,13 +1263,13 @@
               var options = {
                 height: 130,
                 min: 0,
-                max: json.data_optimus.meta*6/5,
+                max: json.data_optimus.meta,
                 redFrom:json.data_optimus.meta*2/5,
                 redTo:json.data_optimus.meta*3/5,
                 yellowFrom:json.data_optimus.meta*3/5,
-                yellowTo: json.data_optimus.meta,
-                greenFrom: json.data_optimus.meta,
-                greenTo:json.data_optimus.meta*6/5,
+                yellowTo: json.data_optimus.meta*4/5,
+                greenFrom: json.data_optimus.meta*4/5,
+                greenTo:json.data_optimus.meta,
                 minorTicks: 5,
               };
 

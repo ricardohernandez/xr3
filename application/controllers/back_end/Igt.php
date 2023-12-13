@@ -523,7 +523,7 @@ class Igt extends CI_Controller {
 			if($meta_work_orden!="0"){
 
 				$data_work_orden = $this->Igtmodel->dataWorkOrden(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
-				$porcentaje_work_orden = $this->Igtmodel->porcentajeWorkOrden(getPeriodo($periodo),$id_tecnico);
+				$porcentaje_work_orden = $this->Igtmodel->porcentajeWorkOrden(getPeriodo($periodo),$id_tecnico,$periodo);
 
 				if($data_work_orden!=FALSE){
 					$array_data["data_work_orden"] = array("data" => $data_work_orden , "meta" => $meta_work_orden, "cumplimiento" => $porcentaje_work_orden);
@@ -538,7 +538,7 @@ class Igt extends CI_Controller {
 			if($meta_calidad_sin_30!="0"){
 
 				$data_calidad_sin_30 = $this->Igtmodel->dataCalidadsin30(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
-				$porcentaje_calidad_sin_30 = $this->Igtmodel->porcentajeCalidadsin30(getPeriodo($periodo),$id_tecnico);
+				$porcentaje_calidad_sin_30 = $this->Igtmodel->porcentajeCalidadsin30(getPeriodo($periodo),$id_tecnico,$periodo);
 				
 				if($data_calidad_sin_30!=FALSE){
 					$array_data["data_calidad_sin_30"] = array("data" => $data_calidad_sin_30 , "meta" => $meta_calidad_sin_30, "cumplimiento" => $porcentaje_calidad_sin_30);
@@ -554,7 +554,7 @@ class Igt extends CI_Controller {
 			if($meta_encuesta_3_3!="0"){
 
 				$data_encuesta_3_3 = $this->Igtmodel->dataencuesta_3_3(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
-				$porcentaje_encuesta_3_3 = $this->Igtmodel->porcentajeEncuesta_3_3(getPeriodo($periodo),$id_tecnico);
+				$porcentaje_encuesta_3_3 = $this->Igtmodel->porcentajeEncuesta_3_3(getPeriodo($periodo),$id_tecnico,$periodo);
 				
 				if($data_encuesta_3_3!=FALSE){
 					$array_data["data_encuesta_3_3"] = array("data" => $data_encuesta_3_3 , "meta" => $meta_encuesta_3_3, "cumplimiento" => $porcentaje_encuesta_3_3);
@@ -569,7 +569,7 @@ class Igt extends CI_Controller {
 			if($meta_cicle_time!="0"){
 
 				$data_cicle_time = $this->Igtmodel->dataCicleTime(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
-				$porcentaje_cicle_time = $this->Igtmodel->porcentajeCicleTime(getPeriodo($periodo),$id_tecnico);
+				$porcentaje_cicle_time = $this->Igtmodel->porcentajeCicleTime(getPeriodo($periodo),$id_tecnico,$periodo);
 				
 				if($data_cicle_time!=FALSE){
 					$array_data["data_cicle_time"] = array("data" => $data_cicle_time , "meta" => $meta_cicle_time, "cumplimiento" => $porcentaje_cicle_time);
@@ -584,7 +584,7 @@ class Igt extends CI_Controller {
 			if($meta_optimus!="0"){
 
 				$data_optimus = $this->Igtmodel->dataOptimus(getPeriodo($periodo),$id_tecnico,$perfil_tecnico);
-				$porcentaje_optimus = $this->Igtmodel->porcentajeOptimus(getPeriodo($periodo),$id_tecnico);
+				$porcentaje_optimus = $this->Igtmodel->porcentajeOptimus(getPeriodo($periodo),$id_tecnico,$periodo);
 				
 				if($data_optimus!=FALSE){
 					$array_data["data_optimus"] = array("data" => $data_optimus , "meta" => $meta_optimus, "cumplimiento" => $porcentaje_optimus);
