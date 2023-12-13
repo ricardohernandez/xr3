@@ -65,7 +65,7 @@ class Igt extends CI_Controller {
 				
             	$mes_numero = mesesTextoaNumero($mes_string[1]);
             	if($mes_numero=="0"){
-        			echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => " Formato fecha inválido,debe ser año-mes(texto 3 primeros caracteres), ejemplo : dic-2022"));exit;
+        			echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => " Formato fecha inválido,debe ser año-mes(texto 3 primeros caracteres), ejemplo : 2022-dic"));exit;
             	}
 
             	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
