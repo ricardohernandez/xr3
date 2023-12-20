@@ -360,7 +360,6 @@
             <a href="#" class="sidenav__menu-url">Mantenedores</a>
             <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
             <ul class="sidenav__menu-dropdown">
-
                <?php  
                if($perfil==1 || $perfil==2){
                ?>
@@ -368,12 +367,17 @@
                <?php
                   }
                ?>
-
-               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Checklist Herramientas</a></li>
-               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_hfc"> Checklist HFC</a></li>
-               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_ftth"> Checklist HFC</a></li>
+               <li class="">
+                  <a class="sidenav__menu-url" href="#!">Mantenedores Checklist</a>
+                  <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                  <ul class="sidenav__menu-dropdown">
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_herramientas"> Checklist Herramientas</a></li>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_hfc"> Checklist HFC</a></li>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_checklist_ftth"> Checklist HFC</a></li>
+                     <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
+                  </ul>
+               </li>
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_metas_igt"> Metas IGT</a></li>
-               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
             </ul>
          </li>
          <?php
@@ -548,21 +552,23 @@
                   <li class="nav__dropdown ">
                      <a href="#">Mantenedores</a>
                      <ul class="nav__dropdown-menu">
-
-                     <?php  
-                     if($perfil==1 || $perfil==2){
-                     ?>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
-                     <?php
-                        }
-                     ?>
-
-                     
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas">Checklist Herramientas</a></li>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_hfc">Checklist HFC</a></li>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_ftth">Checklist FTTH</a></li>
+                        <?php  
+                        if($perfil==1 || $perfil==2){
+                        ?>
+                           <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_usuarios"> Usuarios</a></li>
+                        <?php
+                           }
+                        ?>
+                        <li class="nav__dropdown">
+                           <a class="menu_list" href="#!">Mantenedores Checklist</a>
+                           <ul class="nav__dropdown-menu">
+                              <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_herramientas">Checklist Herramientas</a></li>
+                              <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_hfc">Checklist HFC</a></li>
+                              <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_checklist_ftth">Checklist FTTH</a></li>
+                              <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
+                           </ul>
+                        </li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_metas_igt">Metas IGT</a></li>
-                        <li><a  class="menu_list" href="<?php echo base_url() ?>mantenedor_responsables_fallos"> Responsables fallos herramientas</a></li>
                      </ul>
                   </li>
 
