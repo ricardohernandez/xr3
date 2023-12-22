@@ -147,10 +147,12 @@
           },
           success: function (response) {
             if(response == 3){
-              $("#tablas").hide()
+              $("#general").hide();
+              $("#dtv").show();
             }
             else{
-              $("#tablas").show()
+              $("#dtv").hide();
+              $("#general").show();
             }
             return response
           }
@@ -1314,6 +1316,9 @@
           lista_detalle_productividad.ajax.reload()
           lista_detalle_ots_drive.ajax.reload()
         }
+        else{
+          lista_dtv.ajax.reload()
+        }
       }
     }); 
 
@@ -1324,6 +1329,9 @@
           lista_detalle_calidad.ajax.reload()
           lista_detalle_productividad.ajax.reload()
           lista_detalle_ots_drive.ajax.reload()
+        }
+        else{
+          lista_dtv.ajax.reload()
         }
       }
     }); 
@@ -1573,6 +1581,33 @@
 
       });
 
+      $(document).off('click', '.excel_dtv').on('click', '.excel_dtv',function(event) {
+         event.preventDefault();
+        // var hasta = $("#hasta_f").val();  
+        if(perfil==4){
+          trabajador = $("#trabajador").val()
+        }else{
+          trabajador = $("#trabajadores").val();
+        }
+
+        var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
+        jefe = jefe=="" ? "-" : jefe;
+
+        if(trabajador==""){
+           trabajador="-"
+        }
+
+        var periodo = $("#periodo_detalle").val();  
+
+        if(periodo==""){
+           periodo="actual"
+        }
+
+        // window.location="excel_detalle/"+desde+"/"+hasta+"/"+trabajador;
+        window.location="excel_dtv/"+periodo+"/"+trabajador+"/-";
+
+      })
+
     /*****DETALLE OTS DRIVE*****/   
 
       var lista_detalle_ots_drive = $('#lista_detalle_ots_drive').DataTable({
@@ -1658,7 +1693,6 @@
             $(lista_detalle_ots_drive).dataTable().fnAdjustColumnSizing();
         }
       }, 4000 ); 
-
 
 
       $(document).off('click', '.excel_drive').on('click', '.excel_drive',function(event) {
@@ -1759,9 +1793,6 @@
         });
       })
 
-      actualizacionProductividad()
-      proyectoUsuario()
-
       function actualizacionProductividad(){
         $.ajax({
             url: "actualizacionProductividad"+"?"+$.now(),  
@@ -1807,7 +1838,91 @@
       }
 
 
+      var lista_dtv = $('#lista_dtv').DataTable({
+       "responsive":false,
+       "aaSorting" : [[1,"desc"]],
+       "scrollY": "168px",
+       "scrollX": true,
+       "sAjaxDataProp": "result",        
+       "bDeferRender": true,
+       "select" : true,
+       // "columnDefs": [{ orderable: false, targets: 0 }  ],
+       "ajax": {
+          "url":"<?php echo base_url();?>listaDtv",
+          "dataSrc": function (json) {
+            var desde_actual="<?php echo $desde_actual_prod; ?>"
+            var hasta_actual="<?php echo $hasta_actual_prod; ?>"
+            var desde_anterior="<?php echo $desde_anterior_prod; ?>"
+            var hasta_anterior="<?php echo $hasta_anterior_prod; ?>"
+            var periodo =$("#periodo_detalle").val()
 
+           /* if(periodo=="actual"){
+              $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+            }else if(periodo=="anterior"){
+              $("#fecha_f").val(`${desde_actual.substring(0,5)} - ${hasta_actual.substring(0,5)}`);
+            }*/
+
+            if($("#trabajadores").val()!=""){
+              return json
+            }else{
+              return false
+            }
+          },       
+          data: function(param){
+            
+            param.periodo = $("#periodo_detalle").val();
+            param.jefe = $("#jefe_det").val();
+
+            if(perfil==4){
+              param.trabajador = $("#trabajador").val();
+            }else{
+              param.trabajador = $("#trabajadores").val();
+            }
+          }
+        },    
+       
+       "columns": [
+          { "data": "n_work_orden" ,"class":"margen-td centered"},
+          { "data": "rut_tecnico" ,"class":"margen-td centered"},
+          { "data": "nombre_tecnico" ,"class":"margen-td centered"},
+          { "data": "domicilio" ,"class":"margen-td centered"},
+          { "data": "ciudad" ,"class":"margen-td centered"},
+          { "data": "servicio" ,"class":"margen-td centered"},
+          { "data": "fecha_finalizacion" ,"class":"margen-td centered"},
+          { "data": "estado" ,"class":"margen-td centered"},
+        ]
+      });
+
+      
+      $(document).on('keyup paste', '#buscador_dtv', function() {
+              lista_dtv.search($(this).val().trim()).draw();
+      });
+
+      String.prototype.capitalize = function() {
+          return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+
+      setTimeout( function () {
+        var lista_dtv = $.fn.dataTable.fnTables(true);
+        if (lista_dtv.length > 0 ) {
+            $(lista_dtv).dataTable().fnAdjustColumnSizing();
+      }}, 200 ); 
+
+      setTimeout( function () {
+        var lista_dtv = $.fn.dataTable.fnTables(true);
+        if (lista_dtv.length > 0 ) {
+            $(lista_dtv).dataTable().fnAdjustColumnSizing();
+      }}, 2000 ); 
+
+      setTimeout( function () {
+        var lista_dtv = $.fn.dataTable.fnTables(true);
+        if (lista_dtv.length > 0 ) {
+            $( lista_dtv).dataTable().fnAdjustColumnSizing();
+        }
+      }, 4000 ); 
+
+      actualizacionProductividad()
+      proyectoUsuario()
   })  
 </script>
 
@@ -1818,7 +1933,7 @@
     <div class="col-12 col-sm-6 col-md-6 col-lg-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active" aria-current="page" ><a href=""">IGT - Indicadores de gestión del técnico</a></li>
+          <li class="breadcrumb-item active" aria-current="page" ><a href="">IGT - Indicadores de gestión del técnico</a></li>
         </ol>
       </nav>
     </div>
@@ -2172,205 +2287,261 @@
       </div> -->
     </div>
  
-    <div id="tablas">
-      <div class="form-row p-1">
-        <div class="col-12 col-lg-6">
-          <div class="card">
-            <div class="card-header card_dash">
+    <div id="tablas" >
+      <div id="general" >
+        <div class="form-row p-1">
+          <div class="col-12 col-lg-6">
+            <div class="card">
+              <div class="card-header card_dash">
+                <div class="form-row">
+                  <div class="col-12 col-lg-4">
+                    <span class="title_section">Detalle calidad</span>
+                  </div>
+
+                  <div class="col-8 col-lg-6">  
+                    <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
+                  </div>
+
+                  <div class="col-4 col-lg-2">  
+                    <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
+                    <i class="fa fa-save"></i> Excel
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <div class="form-row">
-                <div class="col-12 col-lg-4">
-                  <span class="title_section">Detalle calidad</span>
+                <div class="col-12 text-center d-none d-sm-block">
+                  <span class="titulo_fecha_actualizacion_dias">
+                    <div class="alert alert-primary  actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                  </span>
                 </div>
 
-                <div class="col-8 col-lg-6">  
-                  <input type="text" placeholder="Busqueda" id="buscador_calidad" class="buscador_calidad form-control form-control-sm">
-                </div>
-
-                <div class="col-4 col-lg-2">  
-                  <button type="button"  class="btn-block btn btn-sm btn-primary excel_calidad btn_xr3">
-                  <i class="fa fa-save"></i> Excel
-                  </button>
+                <div class="col-lg-12 px-3">
+                  <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                    <thead>
+                      <tr>    
+                        <th class="centered">Técnico</th> 
+                        <th class="centered">RUT</th> 
+                        <th class="centered">Comuna</th> 
+                        <th class="centered">Orden</th> 
+                        <th class="centered">Fecha</th> 
+                        <th class="centered">Descripción</th> 
+                        <th class="centered">Cierre</th> 
+                        <th class="centered">Orden 2da vis.</th> 
+                        <th class="centered">Fecha 2da vis.</th> 
+                        <th class="centered">Descripción 2da vis.</th> 
+                        <th class="centered">Cierre 2da vis.</th> 
+                        <th class="centered">Diferencia Días</th> 
+                        <th class="centered">Tipo red</th> 
+                        <th class="centered">Falla</th> 
+                        <th class="centered">Última actualización</th>   
+                      </tr>
+                    </thead>
+                  </table>
                 </div>
               </div>
             </div>
+          </div>   
 
-            <div class="form-row">
-              <div class="col-12 text-center d-none d-sm-block">
-                <span class="titulo_fecha_actualizacion_dias">
-                  <div class="alert alert-primary  actualizacion_calidad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-                </span>
-              </div>
-
-              <div class="col-lg-12 px-3">
-                <table id="lista_detalle_calidad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                  <thead>
-                    <tr>    
-                      <th class="centered">Técnico</th> 
-                      <th class="centered">RUT</th> 
-                      <th class="centered">Comuna</th> 
-                      <th class="centered">Orden</th> 
-                      <th class="centered">Fecha</th> 
-                      <th class="centered">Descripción</th> 
-                      <th class="centered">Cierre</th> 
-                      <th class="centered">Orden 2da vis.</th> 
-                      <th class="centered">Fecha 2da vis.</th> 
-                      <th class="centered">Descripción 2da vis.</th> 
-                      <th class="centered">Cierre 2da vis.</th> 
-                      <th class="centered">Diferencia Días</th> 
-                      <th class="centered">Tipo red</th> 
-                      <th class="centered">Falla</th> 
-                      <th class="centered">Última actualización</th>   
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>   
-
-        <div class="col-12 col-lg-6">
-          <div class="card">
-            <div class="form-row">
-              
-              <div class="col-lg-6 graficoHFC">
-                <div class="card-header card_dash" style="padding:10px!important;">
-                  <span class="title_section">Calidad HFC Últimos 3 periodos</span>
-                </div>
-                <div id="graficoHFC"></div>
-              </div>
-
-              <div class="col-lg-6 graficoFTTH">
-                <div class="card-header card_dash" style="padding:10px!important;">
-                  <span class="title_section">Calidad FTTH Últimos 3 periodos</span>
-                </div>
-                <div id="graficoFTTH"></div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row p-1">
-
-        <div class="col-12 col-lg-6">
-          <div class="card">
-            <div class="card-header card_dash">
+          <div class="col-12 col-lg-6">
+            <div class="card">
               <div class="form-row">
-                <div class="col-12 col-lg-4">
-                  <span class="title_section">Detalle productividad</span>
+                
+                <div class="col-lg-6 graficoHFC">
+                  <div class="card-header card_dash" style="padding:10px!important;">
+                    <span class="title_section">Calidad HFC Últimos 3 periodos</span>
+                  </div>
+                  <div id="graficoHFC"></div>
                 </div>
 
-                <div class="col-8 col-lg-6">  
-                  <input type="text" placeholder="Busqueda" id="buscador_productividad" class="buscador_productividad form-control form-control-sm">
+                <div class="col-lg-6 graficoFTTH">
+                  <div class="card-header card_dash" style="padding:10px!important;">
+                    <span class="title_section">Calidad FTTH Últimos 3 periodos</span>
+                  </div>
+                  <div id="graficoFTTH"></div>
                 </div>
 
-                <div class="col-4 col-lg-2">  
-                  <button type="button"  class="btn-block btn btn-sm btn-primary excel_productividad btn_xr3">
-                  <i class="fa fa-save"></i> Excel
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="col-12 text-center d-none d-sm-block">
-                <span class="titulo_fecha_actualizacion_dias">
-                  <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-                </span>
-              </div>
-
-              <div class="col-lg-12 px-3">
-                <table id="lista_detalle_productividad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                  <thead>
-                    <tr>    
-                      <th class="centered">Técnico</th> 
-                      <th class="centered">Fecha</th> 
-                      <th class="centered">Dirección</th> 
-                      <th class="centered">Tipo actividad</th> 
-                      <th class="centered">Comuna</th> 
-                      <th class="centered">Estado</th> 
-                      <th class="centered">Derivado</th> 
-                      <th class="centered">Puntaje</th> 
-                      <th class="centered">Orden de Trabajo</th> 
-                      <th class="centered">Digitalizacion OT</th>   
-                      <th class="centered">Categoría</th> 
-                      <th class="centered">Equivalente</th> 
-                      <th class="centered">Técnologia</th> 
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-            </div>
-
-          </div>
-        </div>   
-        
-        <div class="col-12 col-lg-6">
-          <div class="card">
-            <div class="form-row">
-              <div class="col-12">
-                <div class="card-header card_dash" style="padding:10px!important;">
-                <span class="title_section">Productividad diario</span>
-                </div>
-                <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
               </div>
             </div>
           </div>
         </div>
 
-      </div>
+        <div class="form-row p-1">
 
-      <div class="row p-1">
-        <div class="col-12 col-lg-12">
-          <div class="card">
-            <div class="card-header card_dash">
+          <div class="col-12 col-lg-6">
+            <div class="card">
+              <div class="card-header card_dash">
+                <div class="form-row">
+                  <div class="col-12 col-lg-4">
+                    <span class="title_section">Detalle productividad</span>
+                  </div>
+
+                  <div class="col-8 col-lg-6">  
+                    <input type="text" placeholder="Busqueda" id="buscador_productividad" class="buscador_productividad form-control form-control-sm">
+                  </div>
+
+                  <div class="col-4 col-lg-2">  
+                    <button type="button"  class="btn-block btn btn-sm btn-primary excel_productividad btn_xr3">
+                    <i class="fa fa-save"></i> Excel
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <div class="form-row">
-                <div class="col-12 col-lg-4">
-                  <span class="title_section">Detalle OTS no detectadas en TQW</span>
+                <div class="col-12 text-center d-none d-sm-block">
+                  <span class="titulo_fecha_actualizacion_dias">
+                    <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                  </span>
                 </div>
 
-                <div class="col-8 col-lg-6">  
-                  <input type="text" placeholder="Busqueda" id="buscador_ots_drive" class="buscador_ots_drive form-control form-control-sm">
+                <div class="col-lg-12 px-3">
+                  <table id="lista_detalle_productividad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                    <thead>
+                      <tr>    
+                        <th class="centered">Técnico</th> 
+                        <th class="centered">Fecha</th> 
+                        <th class="centered">Dirección</th> 
+                        <th class="centered">Tipo actividad</th> 
+                        <th class="centered">Comuna</th> 
+                        <th class="centered">Estado</th> 
+                        <th class="centered">Derivado</th> 
+                        <th class="centered">Puntaje</th> 
+                        <th class="centered">Orden de Trabajo</th> 
+                        <th class="centered">Digitalizacion OT</th>   
+                        <th class="centered">Categoría</th> 
+                        <th class="centered">Equivalente</th> 
+                        <th class="centered">Técnologia</th> 
+                      </tr>
+                    </thead>
+                  </table>
                 </div>
+              </div>
 
-                <div class="col-4 col-lg-2">  
-                  <button type="button"  class="btn-block btn btn-sm btn-primary excel_drive btn_xr3">
-                  <i class="fa fa-save"></i> Excel
-                  </button>
+            </div>
+          </div>   
+          
+          <div class="col-12 col-lg-6">
+            <div class="card">
+              <div class="form-row">
+                <div class="col-12">
+                  <div class="card-header card_dash" style="padding:10px!important;">
+                  <span class="title_section">Productividad diario</span>
+                  </div>
+                  <div id="graficoPuntosProductividadDiario" class="mt-2"></div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="form-row">
+        </div>
 
-              <div class="col-12 text-center d-none d-sm-block">
-                <span class="titulo_fecha_actualizacion_dias">
-                  <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
-                </span>
+        <div class="row p-1">
+          <div class="col-12 col-lg-12">
+            <div class="card">
+              <div class="card-header card_dash">
+                <div class="form-row">
+                  <div class="col-12 col-lg-4">
+                    <span class="title_section">Detalle OTS no detectadas en TQW</span>
+                  </div>
+
+                  <div class="col-8 col-lg-6">  
+                    <input type="text" placeholder="Busqueda" id="buscador_ots_drive" class="buscador_ots_drive form-control form-control-sm">
+                  </div>
+
+                  <div class="col-4 col-lg-2">  
+                    <button type="button"  class="btn-block btn btn-sm btn-primary excel_drive btn_xr3">
+                    <i class="fa fa-save"></i> Excel
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div class="col-lg-12 px-3">
-                <table id="lista_detalle_ots_drive" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
-                  <thead>
-                    <tr>    
-                      <th class="centered">Técnico</th> 
-                      <th class="centered">Fecha</th> 
-                      <th class="centered">Dirección</th> 
-                      <th class="centered">Tipo actividad</th> 
-                      <th class="centered">Comuna</th> 
-                      <th class="centered">Estado</th> 
-                      <th class="centered">Derivado</th> 
-                      <th class="centered">Puntaje</th> 
-                      <th class="centered">Orden de Trabajo</th> 
-                      <th class="centered">Digitalizacion OT</th>   
-                    </tr>
-                  </thead>
-                </table>
+              <div class="form-row">
+
+                <div class="col-12 text-center d-none d-sm-block">
+                  <span class="titulo_fecha_actualizacion_dias">
+                    <div class="alert alert-primary  actualizacion_productividad" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                  </span>
+                </div>
+
+                <div class="col-lg-12 px-3">
+                  <table id="lista_detalle_ots_drive" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                    <thead>
+                      <tr>    
+                        <th class="centered">Técnico</th> 
+                        <th class="centered">Fecha</th> 
+                        <th class="centered">Dirección</th> 
+                        <th class="centered">Tipo actividad</th> 
+                        <th class="centered">Comuna</th> 
+                        <th class="centered">Estado</th> 
+                        <th class="centered">Derivado</th> 
+                        <th class="centered">Puntaje</th> 
+                        <th class="centered">Orden de Trabajo</th> 
+                        <th class="centered">Digitalizacion OT</th>   
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
               </div>
-            </div>
-        </div>   
+          </div>   
+        </div>
+
       </div>
+      </div>
+
+      <div id="dtv">
+        <div class="row p-1" >
+          <div class="col-12 col-lg-12">
+            <div class="card">
+              <div class="card-header card_dash">
+                <div class="form-row">
+                  <div class="col-12 col-lg-4">
+                    <span class="title_section">Detalle DTV</span>
+                  </div>
+
+                  <div class="col-8 col-lg-6">  
+                    <input type="text" placeholder="Busqueda" id="buscador_dtv" class="buscador_dtv form-control form-control-sm">
+                  </div>
+
+                  <div class="col-4 col-lg-2">  
+                    <button type="button"  class="btn-block btn btn-sm btn-primary excel_dtv btn_xr3">
+                    <i class="fa fa-save"></i> Excel
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+
+                <div class="col-12 text-center d-none d-sm-block">
+                  <span class="titulo_fecha_actualizacion_dtv">
+                    <div class="alert alert-primary  actualizacion_dtv" role="alert" style="padding: .15rem 1.25rem;margin-bottom: .1rem;"></div>
+                  </span>
+                </div>
+
+                <div class="col-lg-12 px-3">
+                  <table id="lista_dtv" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                    <thead>
+                      <tr>    
+                        <th class="centered">N° work orden</th> 
+                        <th class="centered">Rut tecnico</th> 
+                        <th class="centered">Nombre tecnico</th> 
+                        <th class="centered">Domicilio</th> 
+                        <th class="centered">Ciudad</th> 
+                        <th class="centered">Servicio</th> 
+                        <th class="centered">Fecha finalización</th> 
+                        <th class="centered">Estado</th> 
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+          </div>   
+        </div>
+      </div>
+    
     </div>
 
 

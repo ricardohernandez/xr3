@@ -1,5 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class Igt extends CI_Controller {
 
 	public function __construct(){
@@ -42,127 +47,183 @@ class Igt extends CI_Controller {
 		if($_FILES['userfile']['name']==""){
 		    echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
 		}
-		$fname = $_FILES['userfile']['name'];
-		if (strpos($fname, ".") == false) {
-	        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV válido."));exit;
-        }
-        $chk_ext = explode(".",$fname);
-
-        if($chk_ext[1]!="csv"){
-        	 echo json_encode(array('res'=>'error', "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo CSV."));exit;
-        }
-
         $fname = $_FILES['userfile']['name'];
         $chk_ext = explode(".",$fname);
 
-        if(strtolower(end($chk_ext)) == "csv")  {
-            $filename = $_FILES['userfile']['tmp_name'];
-            $handle = fopen($filename, "r");
-            $i=0;$z=0;$y=0;     
-         	
-            while (($d = fgetcsv($handle, 9999, ";")) !== FALSE) {
-            	$mes_string = explode('-', $d[0]);
-				
-            	$mes_numero = mesesTextoaNumero($mes_string[1]);
-            	if($mes_numero=="0"){
-        			echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => " Formato fecha inválido,debe ser año-mes(texto 3 primeros caracteres), ejemplo : 2022-dic"));exit;
-            	}
+        if(strtolower(end($chk_ext)) == "xlsx")  {
 
-            	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
 
-				$rut=str_replace('-', '', $d[1]);
-				$u = $this->Igtmodel->getIdTecnico($rut);
-            	$p = $this->Igtmodel->getProyectoTecnico($u);
+			$archivo = $_FILES['userfile']['tmp_name'];
+			$spreadsheet = IOFactory::load($archivo);
+			$i = 0;
 
-				if($p != 3){
-					$proyecto = $d[19];
+			//GENERAL
+				$hoja = $spreadsheet->getSheet(0);
+				$ultima_fila = $hoja->getHighestRow();
+				$filas_general = 0;
 
-					if($this->Igtmodel->existeMes($mes_completo,$proyecto)){
-						$this->Igtmodel->borrarMesActual($mes_completo,$proyecto);
-					}
-				}
-				else{
-					if($this->Igtmodel->existeMesDTV($mes_completo)){
-						$this->Igtmodel->borrarMesActualDTV($mes_completo);
-					}
-				}
+				$columnas = array(
+					'mes',
+					'id_tecnico',
+					'q_ftth',
+					'fallas_ftth',
+					'calidad_ftth',
+					'q_hfc',
+					'fallas_hfc',
+					'calidad_hfc',
+					'cumplimiento_ot',
+					'prom_ot_ftth',
+					'dias_produccion_ftth',
+					'promedio_puntos_hfc',
+					'dias_produccion_hfc',
+					'porcentaje_produccion_hfc',
+					'porcentaje_calidad_hfc',
+					'porcentaje_produccion_ftth',
+					'porcentaje_calidad_ftth',
+					'indice_asistencia',
+					'derivaciones',
+					'proyecto',
+				);
 
-            }
-         	
-         	fclose($handle); 
-
-         	$filename = $_FILES['userfile']['tmp_name'];
-            $handle = fopen($filename, "r");
-
-            while (($data = fgetcsv($handle, 9999, ";")) !== FALSE) {
-                if(!empty($data[0])){
-            	  	
-            	  	$mes_string = explode('-', $data[0]);
-	            	$mes_numero = mesesTextoaNumero($mes_string[1]);
-	            	$mes_completo = $mes_string[0]."-".$mes_numero."-01";
-
-            	  	$rut=str_replace('-', '', $data[1]);
-            	    $id_tecnico = $this->Igtmodel->getIdTecnico($rut);
-            	    $proyecto = $this->Igtmodel->getProyectoTecnico($id_tecnico);
-
-            	    if($id_tecnico!=FALSE){
-
-						if($proyecto == 3){ //DTV
-							$arr=array(
-								"id_tecnico"=>$id_tecnico,
-								"mes"=>$mes_completo,
-								"work_orden"=>str_replace('%', '', $data[2]),
-								"calidad_sin_30"=>str_replace('%', '', $data[3]),
-								"encuesta_3_3"=>str_replace('%', '', $data[4]),
-								"cicle_time"=>str_replace('%', '', $data[5]),
-								"optimus"=>str_replace('%', '', $data[6]),
-							);	
-						}
-						else{
-							$arr=array(
-								"id_tecnico"=>$id_tecnico,
-								"mes"=>$mes_completo,
-								"q_ftth"=>str_replace('%', '', $data[2]),
-								"fallas_ftth"=>str_replace('%', '', $data[3]),
-								"calidad_ftth"=>str_replace('%', '', $data[4]),
-								"q_hfc"=>str_replace('%', '', $data[5]),
-								"fallas_hfc"=>str_replace('%', '', $data[6]),
-								"calidad_hfc"=>str_replace('%', '', $data[7]),
-								"cumplimiento_ot"=>str_replace('%', '', $data[8]),
-								"prom_ot_ftth"=>str_replace('%', '', $data[9]),
-								"dias_produccion_ftth"=>str_replace('%', '', $data[10]),
-								"promedio_puntos_hfc"=>str_replace('%', '', $data[11]),
-								"dias_produccion_hfc"=>str_replace('%', '', $data[12]),
-								"porcentaje_produccion_hfc"=>str_replace('%', '', $data[13]),
-								"porcentaje_calidad_hfc"=>str_replace('%', '', $data[14]),
-								"porcentaje_produccion_ftth"=>str_replace('%', '', $data[15]),
-								"porcentaje_calidad_ftth"=>str_replace('%', '', $data[16]),
-								"indice_asistencia"=>str_replace('%', '', $data[17]),
-								"derivaciones"=>str_replace('%', '', $data[18]),
-								"proyecto"=> $data[19]
-							);
+				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+					$datos = array();
+					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+						$proyecto = $hoja->getCellByColumnAndRow(19, $fila)->getValue();
+						foreach ($columnas as $index => $columna) {
+							if ($index === 0) { //MES-AÑO
+								$mes_string = explode('-', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								$mes_numero = mesesTextoaNumero($mes_string[1]);
+								$mes_completo = $mes_string[0]."-".$mes_numero."-01";
+								$datos[$columna] = $mes_completo;
+							} elseif ($index === 1) { //RUT -> ID
+								$rut=str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								$id_tecnico = $this->Igtmodel->getIdTecnico($rut);
+								$datos[$columna] = $id_tecnico;
+							} else {
+								$datos[$columna] = str_replace('%', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+							}
 						}
 
-						if($proyecto == 3){ //DTV
-							$this->Igtmodel->insertarIgtDTV($arr);
+						if($this->Igtmodel->existeMes($mes_completo,$proyecto,$id_tecnico)){
+							$this->Igtmodel->borrarMesActual($mes_completo,$proyecto,$id_tecnico);
 						}
-						else{
-							$this->Igtmodel->insertarIgt($arr);
-						}
+
+						$this->Igtmodel->insertarIgt($datos);
+						$filas_general++;
 						$i++;
-						$arr=array();
-            	    }
-	            }
-            }
+					}
+				}
 
-            if($i==0){
-            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => $i." filas insertadas."));exit;
-            }
+			//DTV
+				$hoja = $spreadsheet->getSheet(1);
+				$ultima_fila = $hoja->getHighestRow();
+				$filas_dtv = 0;
+		
+				$columnas = array(
+					'mes',
+					'id_tecnico',
+					'work_orden',
+					'calidad_sin_30',
+					'encuesta_3_3',
+					'cicle_time',
+					'optimus',
+				);
+		
+				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+					$datos = array();
+					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+						foreach ($columnas as $index => $columna) {
+							
+							if ($index === 0) { //MES-AÑO
+								$mes_string = explode('-', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								$mes_numero = mesesTextoaNumero($mes_string[1]);
+								$mes_completo = $mes_string[0]."-".$mes_numero."-01";
+								$datos[$columna] = $mes_completo;
+							} elseif ($index === 1) { //RUT -> ID
+								$rut=str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								$id_tecnico = $this->Igtmodel->getIdTecnico($rut);
+								$datos[$columna] = $id_tecnico;
+							} else {
+								$datos[$columna] = str_replace('%', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+							}
+						}
 
-            fclose($handle); 
+						if($this->Igtmodel->existeMesDTV($mes_completo,$id_tecnico)){
+							$this->Igtmodel->borrarMesActualDTV($mes_completo,$id_tecnico);
+						}
+
+						$this->Igtmodel->insertarIgtDTV($datos);
+						$filas_dtv++;
+						$i++;
+					}
+				}
+			
+			//TABLA DTV
+				$hoja = $spreadsheet->getSheet(2);
+				$ultima_fila = $hoja->getHighestRow();
+				$filas_tabla_dtv = 0;
+		
+				$columnas = array(
+					'n_work_orden',
+					'id_tecnico',
+					'nombre_tecnico',
+					'domicilio',
+					'ciudad',
+					'servicio',
+					'fecha_finalizacion',
+					'estado',
+				);
+		
+				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+					$datos = array();
+					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+						foreach ($columnas as $index => $columna) {
+							if ($index === 1) { //RUT -> ID
+								$rut=str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								$id_tecnico = $this->Igtmodel->getIdTecnico($rut);
+								$datos[$columna] = $id_tecnico;
+							}
+							else if ($index === 0) { //NUMERO WORK ORDEN
+								$n_work_orden = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+								$datos[$columna] = $n_work_orden;
+							}
+							else if ($index === 2) { //nombre_tecnico
+							}
+							else if ($index === 6) { //fecha
+								$fecha=$hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+								$fecha = ($fecha - 25569) * 86400;
+								$fecha = new DateTime("@$fecha");
+								$fecha = $fecha->format('Y-m-d');
+								$datos[$columna] = $fecha;
+							}
+							else{
+								$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+							}
+						}
+
+						if($this->Igtmodel->existeMesTablaDTV($n_work_orden,$id_tecnico)){
+							$this->Igtmodel->borrarMesActualTablaDTV($n_work_orden,$id_tecnico);
+						}
+
+						$this->Igtmodel->insertarTablaIgtDTV($datos);
+						$filas_tabla_dtv++;
+						$i++;
+					}
+				}
+
+				echo json_encode(array(
+					'res' => 'ok',
+					'tipo' => 'success',
+					'msg' => 'Archivo cargado con éxito.
+					'.$filas_general.' filas generales insertadas,
+					'.$filas_dtv.' filas de dtv insertadas,
+					'.$filas_tabla_dtv.' filas de tabla dtv insertadas'
+					
+				));exit;
+
            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
         }else{
-        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
+        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo inválido."));exit;
         }   
 	}
 
@@ -1022,6 +1083,135 @@ class Igt extends CI_Controller {
 			    <?php
 			}
 		}
+
+	/****** DTV ********/
+
+	public function listaDtv(){
+		$periodo=$this->security->xss_clean(strip_tags($this->input->get_post("periodo")));
+		$trabajador=$this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
+		$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
+
+		if(date("d")>"24"){
+
+			if($periodo=="actual"){
+				$desde = date('Y-m-d', strtotime(date('Y-m-25')));
+				$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
+			}elseif($periodo=="anterior"){
+				$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+			}elseif($periodo=="anterior_2"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
+
+		}else{
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}elseif($periodo=="anterior_2"){
+				$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+			}
+		}
+
+		echo json_encode($this->Igtmodel->listaDtv($desde,$hasta,$trabajador,$jefe));
+	}	
+
+	public function excel_dtv(){
+		$periodo=$this->uri->segment(2);
+		$trabajador=$this->uri->segment(3);
+		$jefe=$this->uri->segment(4);
+		
+		if($trabajador=="-"){
+			$trabajador="";
+		}
+
+		if($jefe=="-"){
+			$jefe="";
+		}
+
+		if(date("d")>"24"){
+			if($periodo=="actual"){
+				$desde = date('Y-m-d', strtotime(date('Y-m-25')));
+				$hasta = date('Y-m-d', strtotime('+1 month', strtotime(date('Y-m-24'))));
+			}elseif($periodo=="anterior"){
+				$desde = date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime(date('Y-m-24')));
+			}elseif($periodo=="anterior_2"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}
+			
+		}else{
+			if($periodo=="actual"){
+				$desde= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d');
+			}elseif($periodo=="anterior"){
+				$desde= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-1 month', strtotime(date('Y-m-24'))));
+			}elseif($periodo=="anterior_2"){
+				$desde= date('Y-m-d', strtotime('-3 month', strtotime(date('Y-m-25'))));
+				$hasta= date('Y-m-d', strtotime('-2 month', strtotime(date('Y-m-24'))));
+			}
+		}
+
+
+		$data=$this->Igtmodel->listaDtv($desde,$hasta,$trabajador,$jefe);
+
+		if(!$data){
+			echo "Sin datos disponibles.";
+			return FALSE;
+		}else{
+
+			$nombre="reporte-dtv".date("d-m-Y",strtotime($desde))."-".date("d-m-Y",strtotime($hasta)).".xls";
+			header("Content-type: application/vnd.ms-excel;  charset=utf-8");
+			header("Content-Disposition: attachment; filename=$nombre");
+			?>
+			<style type="text/css">
+			.head{font-size:13px;height: 30px; background-color:#32477C;color:#fff; font-weight:bold;padding:10px;margin:10px;vertical-align:middle;}
+			td{font-size:12px;text-align:center;   vertical-align:middle;}
+			
+			</style>
+			<h3>Reporte DTV <?php echo date("d-m-Y",strtotime($desde)); ?> - <?php echo date("d-m-Y",strtotime($hasta)); ?></h3>
+				<table align='center' border="1"> 
+					<tr style="background-color:#F9F9F9">
+						<th class="head">N° Work orden</th> 
+						<th class="head">Rut</th> 
+						<th class="head">Nombre T&eacute;cnico</th> 
+						<th class="head">Domicilio</th> 
+						<th class="head">Ciudad</th> 
+						<th class="head">Servicio</th> 
+						<th class="head">Fecha finalizaci&oacute;n</th> 
+						<th class="head">Estado</th>  
+					</tr>
+					</thead>	
+					<tbody>
+					<?php 
+						if($data !=FALSE){
+							  foreach($data as $d){
+							  ?>
+							   <tr>
+								 <td><?php echo utf8_decode($d["n_work_orden"]); ?></td>
+								 <td><?php echo utf8_decode($d["rut_tecnico"]); ?></td>
+								 <td><?php echo utf8_decode($d["nombre_tecnico"]); ?></td>
+								 <td><?php echo utf8_decode($d["domicilio"]); ?></td>
+								 <td><?php echo utf8_decode($d["ciudad"]); ?></td>
+								 <td><?php echo utf8_decode($d["servicio"]); ?></td>
+								 <td><?php echo utf8_decode($d["fecha_finalizacion"]); ?></td>
+								 <td><?php echo utf8_decode($d["estado"]); ?></td>
+							 </tr>
+							  <?php
+							  }
+						  }
+					  ?>
+					</tbody>
+				</table>
+			<?php
+		}
+	}
 
 
 }

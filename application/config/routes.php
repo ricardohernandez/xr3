@@ -46,6 +46,8 @@
 	$route['excel_detalle_prod_igt/(:any)/(:any)/(:any)'] = "back_end/igt/excel_detalle_prod_igt/$1/$2/$3";
 	$route['listaDetalleOtsDrive'] = "back_end/igt/listaDetalleOtsDrive";
 	$route['excel_detalle_ots_drive/(:any)/(:any)/(:any)'] = "back_end/igt/excel_detalle_ots_drive/$1/$2/$3";
+	$route['listaDtv'] = "back_end/igt/listaDtv";
+	$route['excel_dtv/(:any)/(:any)/(:any)'] = "back_end/igt/excel_dtv/$1/$2/$3";
 	$route['dataIgt'] = "back_end/igt/dataIgt";
 	$route['graficoProductividad'] = "back_end/igt/graficoProductividad";
 	$route['listaTrabajadoresIGT'] = "back_end/igt/listaTrabajadoresIGT";

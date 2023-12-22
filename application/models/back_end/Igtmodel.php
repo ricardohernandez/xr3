@@ -47,9 +47,10 @@ class Igtmodel extends CI_Model {
 		return FALSE;
 	}
 
-	public function existeMes($mes,$proyecto){
+	public function existeMes($mes,$proyecto,$id_tecnico){
 		$this->db->where('mes', $mes);
 		$this->db->where('proyecto', $proyecto);
+		$this->db->where('id_tecnico', $id_tecnico);
 		$res = $this->db->get('tecnicos_indicadores');
 
 		if($res->num_rows()>0){
@@ -59,15 +60,17 @@ class Igtmodel extends CI_Model {
 		return FALSE;
 	}
 
-	public function borrarMesActual($mes,$proyecto){
+	public function borrarMesActual($mes,$proyecto,$id_tecnico){
 		$this->db->where('mes', $mes);
 		$this->db->where('proyecto', $proyecto);
+		$this->db->where('id_tecnico', $id_tecnico);
 		$res = $this->db->delete('tecnicos_indicadores');
 		return TRUE;
 	}
 
-	public function existeMesDTV($mes){
+	public function existeMesDTV($mes,$id_tecnico){
 		$this->db->where('mes', $mes);
+		$this->db->where('id_tecnico', $id_tecnico);
 		$res = $this->db->get('tecnicos_indicadores_dtv');
 
 		if($res->num_rows()>0){
@@ -77,9 +80,26 @@ class Igtmodel extends CI_Model {
 		return FALSE;
 	}
 
-	public function borrarMesActualDTV($mes){
+	public function borrarMesActualDTV($mes,$id_tecnico){
 		$this->db->where('mes', $mes);
+		$this->db->where('id_tecnico', $id_tecnico);
 		$res = $this->db->delete('tecnicos_indicadores_dtv');
+		return TRUE;
+	}
+	public function existeMesTablaDTV($n_work_orden,$id_tecnico){
+		$this->db->where('n_work_orden', $n_work_orden);
+		$this->db->where('id_tecnico', $id_tecnico);
+		$res = $this->db->get('tecnicos_tabla_dtv');
+
+		if($res->num_rows()>0){
+			return TRUE;
+		}
+		return FALSE;
+	}
+	public function borrarMesActualTablaDTV($n_work_orden,$id_tecnico){
+		$this->db->where('n_work_orden', $n_work_orden);
+		$this->db->where('id_tecnico', $id_tecnico);
+		$res = $this->db->delete('tecnicos_tabla_dtv');
 		return TRUE;
 	}
 
@@ -124,6 +144,15 @@ class Igtmodel extends CI_Model {
 		}
 		return FALSE;
 	}
+
+	public function insertarTablaIgtDTV($data){
+		if($this->db->insert('tecnicos_tabla_dtv', $data)){
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	
 
 	
 	public function getDataPorPerfilTecnico($nivel,$indicador){
@@ -1228,6 +1257,36 @@ class Igtmodel extends CI_Model {
 		$this->db->join('usuarios u', 'u.rut = p.rut_tecnico', 'left');
 		$this->db->order_by('p.fecha', 'desc');
 		$res=$this->db->get('productividad p');
+		// echo $this->db->last_query();
+		if($res->num_rows()>0){
+			return $res->result_array();
+		}
+		return FALSE;
+	}
+
+	public function listaDtv($desde,$hasta,$trabajador,$jefe){
+		$this->db->select("sha1(p.id) as hash,
+			p.*,
+			concat(substr(replace(u.rut,'-',''),1,char_length(replace(u.rut,'-',''))-1),'-',substr(replace(u.rut,'-',''),char_length(replace(u.rut,'-','')))) as 'rut_tecnico',
+			CONCAT(u.nombres,' ',u.apellidos) as 'nombre_tecnico',
+		");
+
+
+		if($desde!="" and $hasta!=""){
+			$this->db->where("p.fecha_finalizacion BETWEEN '".$desde."' AND '".$hasta."'");	
+		}
+
+		if($trabajador!=""){
+			$this->db->where('u.rut', $trabajador);
+		}
+
+		if($jefe!=""){
+			$this->db->where('u.id_jefe', $jefe);
+		}
+
+		$this->db->join('usuarios u', 'u.id = p.id_tecnico', 'left');
+		$this->db->order_by('p.fecha_finalizacion', 'desc');
+		$res=$this->db->get('tecnicos_tabla_dtv p');
 		// echo $this->db->last_query();
 		if($res->num_rows()>0){
 			return $res->result_array();
