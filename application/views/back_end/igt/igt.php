@@ -1311,28 +1311,23 @@
     $(document).off('change', '#periodo_detalle').on('change', '#periodo_detalle', function(event) {
       if($("#trabajadores").val()!=""){
         dataGraficosIgt()
-        if(proyectoUsuario() != 3){
+        proyectoUsuario()
           lista_detalle_calidad.ajax.reload()
           lista_detalle_productividad.ajax.reload()
           lista_detalle_ots_drive.ajax.reload()
-        }
-        else{
           lista_dtv.ajax.reload()
-        }
       }
     }); 
 
     $(document).off('change', '#trabajadores').on('change', '#trabajadores', function(event) {
       if($("#trabajadores").val()!=""){
         dataGraficosIgt()
-        if(proyectoUsuario() != 3){
+        proyectoUsuario()
           lista_detalle_calidad.ajax.reload()
           lista_detalle_productividad.ajax.reload()
           lista_detalle_ots_drive.ajax.reload()
-        }
-        else{
           lista_dtv.ajax.reload()
-        }
+
       }
     }); 
 

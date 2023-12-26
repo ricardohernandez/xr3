@@ -215,7 +215,7 @@
         0: {
           type: 'bars',
           color: '#2F81F7',
-          targetAxisIndex: 1,
+          targetAxisIndex: 0,
           annotations: {
             style: 'line',
             textStyle: {
@@ -232,7 +232,6 @@
           }
         }
       };
-
     }
 
     if(contieneMeta && contieneProd){
@@ -256,7 +255,7 @@
         0: {
           type: 'line',
           color: '#2F81F7',
-          targetAxisIndex: 1,
+          targetAxisIndex: 0,
           annotations: {
             style: 'line',
             textStyle: {

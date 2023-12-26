@@ -1271,17 +1271,16 @@ class Igtmodel extends CI_Model {
 			CONCAT(u.nombres,' ',u.apellidos) as 'nombre_tecnico',
 		");
 
-
-		if($desde!="" and $hasta!=""){
-			$this->db->where("p.fecha_finalizacion BETWEEN '".$desde."' AND '".$hasta."'");	
-		}
-
 		if($trabajador!=""){
 			$this->db->where('u.rut', $trabajador);
 		}
 
 		if($jefe!=""){
 			$this->db->where('u.id_jefe', $jefe);
+		}
+
+		if($desde!="" and $hasta!=""){
+			$this->db->where("p.fecha_finalizacion BETWEEN '".$desde."' AND '".$hasta."'");	
 		}
 
 		$this->db->join('usuarios u', 'u.id = p.id_tecnico', 'left');
