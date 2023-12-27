@@ -48,6 +48,7 @@ class Igtmodel extends CI_Model {
 	}
 
 	public function existeMes($mes,$proyecto,$id_tecnico){
+
 		$this->db->where('mes', $mes);
 		$this->db->where('proyecto', $proyecto);
 		$this->db->where('id_tecnico', $id_tecnico);
@@ -61,8 +62,8 @@ class Igtmodel extends CI_Model {
 	}
 
 	public function borrarMesActual($mes,$proyecto,$id_tecnico){
-		$this->db->where('mes', $mes);
 		$this->db->where('proyecto', $proyecto);
+		$this->db->where('mes', $mes);
 		$this->db->where('id_tecnico', $id_tecnico);
 		$res = $this->db->delete('tecnicos_indicadores');
 		return TRUE;

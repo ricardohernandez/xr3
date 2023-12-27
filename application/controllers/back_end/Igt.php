@@ -86,9 +86,9 @@ class Igt extends CI_Controller {
 				);
 
 				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
-					$datos = array();
 					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
-						$proyecto = $hoja->getCellByColumnAndRow(19, $fila)->getValue();
+						$datos = array();
+						$proyecto = $hoja->getCellByColumnAndRow(20, $fila)->getValue();
 						foreach ($columnas as $index => $columna) {
 							if ($index === 0) { //MES-AÑO
 								$mes_string = explode('-', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
