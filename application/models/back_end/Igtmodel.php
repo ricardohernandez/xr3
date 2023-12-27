@@ -1443,5 +1443,54 @@ class Igtmodel extends CI_Model {
 		
 	}
 
+	public function puntosPorFechasDTV($desde,$hasta,$trabajador,$jefe){
+		$this->db->select("
+			if(p.fecha_finalizacion!='0000-00-00', DATE_FORMAT(p.fecha_finalizacion,'%d-%m-%Y'),'') as 'fecha_finalizacion',
+			if(p.fecha_finalizacion!='0000-00-00', DATE_FORMAT(p.fecha_finalizacion,'%d-%m'),'') as 'fecha_str',
+		 	COUNT(*) as puntos", FALSE);
+		$this->db->join('usuarios u', 'u.id = p.id_tecnico', 'left');
+		if($desde!="" and $hasta!=""){
+			$this->db->where("fecha_finalizacion BETWEEN '".$desde."' AND '".$hasta."'");	
+		}
+		if($trabajador!=""){
+			$this->db->where('u.rut', $trabajador);
+		}
+
+		if($jefe!=""){
+			$this->db->where('u.id_jefe', $jefe);
+		}
+
+		$this->db->group_by('(fecha_finalizacion)');
+		$this->db->order_by('fecha_finalizacion', 'asc');
+		$res=$this->db->get("tecnicos_tabla_dtv p");
+		
+		if($res->num_rows()>0){
+
+			$array = array();
+		
+			$array[]= array(
+				"Fecha",
+				"Puntos",
+				array('role'=> 'annotation'),
+				array('role'=> 'annotationText'),
+			);
+
+			foreach($res->result_array() as $key){
+				$temp = array();
+			    $temp[] = (string)$key["fecha_str"]; 
+			    $temp[] = (float) $key['puntos'];
+		 	    $temp[] = (string) $v = ($key['puntos']==0) ? null: round($key['puntos'],2);
+		 	    $temp[] = strtotime($key["fecha_finalizacion"]);
+
+			    $array[] = $temp;
+			}
+			return $array;
+
+		}else{
+			return FALSE;
+		}
+		
+	}
+
 
 }

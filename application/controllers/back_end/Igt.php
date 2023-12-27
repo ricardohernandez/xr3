@@ -653,6 +653,14 @@ class Igt extends CI_Controller {
 
 			}
 
+			/*******GRAFICO PRODUCTIVIDAD DIARIO DTV************/
+
+			$data_puntos_prod_diario_dtv = $this->Igtmodel->puntosPorFechasDTV(getFechasPeriodo($periodo)["desde_prod"],getFechasPeriodo($periodo)["hasta_prod"],$trabajador,"");
+			if($data_puntos_prod_diario_dtv!=FALSE){
+				$array_data["data_puntos_prod_diario_dtv"] = array("data" => $data_puntos_prod_diario_dtv);
+			}
+
+
 		echo json_encode($array_data);
 
 	}

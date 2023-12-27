@@ -1304,6 +1304,100 @@
               $(".meta_optimus_green ").html("")*/
             } 
 
+            // PRODUCTIVIDAD DIARIO DTV
+
+            if(json.hasOwnProperty("data_puntos_prod_diario_dtv")){
+
+              $("#graficoPuntosProductividadDiarioDTV").show()
+              $(".graficoPuntosProductividadDiarioDTV").show()
+
+              var graficoPuntosProductividadDiarioDTV = google.visualization.arrayToDataTable(json.data_puntos_prod_diario_dtv.data);
+              graficoPuntosProductividadDiarioDTV.sort([{column: 3, desc: true}])
+              var options = {
+                title: '',
+                width: "100%",
+                height: 335,
+                is3D:true,
+                colors:["#1A56DB"],
+                fontName: 'ubuntu',
+                bar: {groupWidth: "50%"},
+
+                annotations: {
+                  textStyle: {
+                    fontSize: 12,
+                    color: '#808080',
+                    auraColor: 'transparent'
+                  },
+                  alwaysOutside: false,  
+                  stem:{
+                    color: 'transparent',
+                    length: 28
+                  },   
+                },
+
+                chartArea:{
+                 left:50,
+                 right:10,
+                 bottom:50,
+                 top:20,
+                 width:"100%",
+                 height:"100%",
+                },
+
+                backgroundColor: 'transparent',
+
+                titleTextStyle: {
+                 color: '#808080',
+                 fontSize: 12, 
+                 fontWidth: 'normal',
+                 bold:false
+                },
+
+                legend: {
+                 'position':'right',
+                }, 
+
+                hAxis: {
+                  direction: -1, 
+                  slantedText: false, 
+                  slantedTextAngle: 90,
+
+                  textStyle:{
+                    color: '#808080', 
+                    fontSize: 12,
+                    bold:false,
+                  },
+
+                  gridlines: {
+                   count:0
+                  },
+
+                },
+
+                vAxis: {
+                  textStyle:{
+                    color: '#808080',
+                    bold:false,
+                    fontSize: 12
+                  },
+                  gridlines: {
+                   count:0,
+                   color:"#808080"
+                 },
+                  
+                },
+
+                tooltip:{textStyle:{fontSize:12},isHtml: false},
+              };
+
+              var chart = new google.visualization.ColumnChart(document.getElementById('graficoPuntosProductividadDiarioDTV'));
+              chart.draw(graficoPuntosProductividadDiarioDTV, options);
+
+            }else{
+                $(".graficoPuntosProductividadDiarioDTV").hide()
+                $("#graficoPuntosProductividadDiarioDTV").text("").hide()
+            }
+
           }
       })
     }
@@ -2533,8 +2627,25 @@
                   </table>
                 </div>
               </div>
-          </div>   
+          </div> 
+
+          <div class="col-12 col-lg-12">
+            <div class="card">
+              <div class="form-row">
+                <div class="col-12">
+                  <div class="card-header card_dash" style="padding:10px!important;">
+                  <span class="title_section">Productividad WO diario</span>
+                  </div>
+                  <div id="graficoPuntosProductividadDiarioDTV" class="mt-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
         </div>
+
+
       </div>
     
     </div>
