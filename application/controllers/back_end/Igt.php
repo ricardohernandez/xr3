@@ -99,7 +99,10 @@ class Igt extends CI_Controller {
 								$rut=str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
 								$id_tecnico = $this->Igtmodel->getIdTecnico($rut);
 								$datos[$columna] = $id_tecnico;
-							} else {
+							} elseif ($index === 4 or $index === 7 or $index === 13 or $index === 14 or $index === 15 or $index === 16 or $index === 17 or $index === 18) {
+								$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()*100;
+							}
+							else {
 								$datos[$columna] = str_replace('%', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
 							}
 						}
