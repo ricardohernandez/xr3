@@ -231,7 +231,7 @@ class Flota extends CI_Controller {
 	}
 
 	public function index(){
-		$this->acceso();
+		//$this->acceso();
 	    $datos = array(
 	        'titulo' => "Flota - Indicadores de gestión de flota",
 	        'contenido' => "flota/inicio",

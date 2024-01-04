@@ -1,95 +1,9 @@
 <style type="text/css">
-  .actualizacion_calidad,.actualizacion_productividad{
-      display: inline-block;
-      font-size: 13px;
+  .centered {
+    text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según tu preferencia */
   }
-  .file_cs{
-    display: none;
-  }
-  div.dataTables_info {
-    padding-top: 0.05em!important;
-  }
-
-  div.dataTables_paginate {
-    margin-top:1px!important;
-    margin-bottom:10px!important;
-  }
-
-  .titulo{
-      display: inline-block;
-      font-size: 13px;
-  }
-  .red2{
-    color: #F05252;
-  }
-  .green{
-    color: #0E9F6E;
-  }
-  
-  .s2{
-    font-size:1rem!important;
-  }
-    /* for gauge indicators text */
-  .gauge svg g text {
-    font-size: 12px;
-  }
-  /* for middle text */
-  .gauge svg g g text {
-    font-size: 14px;
-    font-weight: bold!important;
-    color: red!important;
-  }
-  /* .card-header{
-    font-size: 14px; 
-    color:#32477C!important;
-    background-color: #E9ECEF!important;
-  }
-
-  .card-footer{
-    font-size: 14px; 
-    color:#32477C!important;
-    background-color: #E9ECEF!important;
-  } */
-
-  .card_dash{
-    /* background-color: #32477C!important;*/
-    /* color:#fff!important;*/
-    /* border-top: none!important;
-     border-bottom: none!important;*/
-     border: none!important;
-     border-top: none!important;
-     border-bottom: none!important
-   /*  background-color: #fff!important;*/
-     color:#32477C!important;
-     padding: 0.25rem 0.75rem!important;
-     font-size: 14px;
-     font-weight: bold;
-  }
-
-  .card_dash.title_section{
-   /*  margin-top:10px!important; */
-    font-size:0.9rem;
-  }
-
-  .card-body{
-   /* background-color: #F7F7F7!important;*/
-    padding: 0.15rem!important;
-  }
-  hr {
-    margin-top: 1rem!important;
-    margin-bottom: 1rem!important;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .dataTables_paginate .paginate_button {
-    margin-top: 3px!important;
-    padding: 2px 4px!important;
-    text-decoration: none;
-    font-size: 12px!important; 
-    color: #fff!important; 
-    background-color: #32477C!important; 
-    cursor: pointer;
+  .margen-td {
+  text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según lo que necesites */
   }
 </style>
 
@@ -147,7 +61,7 @@
               param.hasta = $("#hasta_t").val();
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
-              param.vehiculo = $("#vehiculo").val();
+              param.patente = $("#patente").val();
               param.gps = $("#gps").val();
             },
           },    
@@ -186,7 +100,7 @@
         var lista_detalle = $('#lista_detalle').DataTable({
         "responsive":false,
         "aaSorting" : [[1,"desc"]],
-        "scrollY": "240px",
+        "scrollY": "300px",
         "scrollX": true,
         "sAjaxDataProp": "result",        
         "bDeferRender": true,
@@ -203,7 +117,7 @@
               param.hasta = $("#hasta_t").val();
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
-              param.vehiculo = $("#vehiculo").val();
+              param.patente = $("#patente").val();
               param.gps = $("#gps").val();
             },
           },    
@@ -248,7 +162,7 @@
                 hasta:$("#hasta_t").val(),
                 chofer:$("#chofer").val(),
                 supervisor:$("#supervisor").val(),
-                vehiculo:$("#vehiculo").val(),
+                patente:$("#patente").val(),
                 gps:$("#gps").val(),
               },
               dataType:"json",
@@ -265,7 +179,7 @@
           });
         }
 
-      $(document).off('change', '#desde,#hasta,#chofer,#supervisor,#vehiculo,#comuna').on('change', '#desde,#hasta,#chofer,#supervisor,#vehiculo,#comuna',function(event) {
+      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna',function(event) {
         listaTotal();
         Actualizar();
         lista_infractor.ajax.reload();
@@ -383,7 +297,7 @@
 
   <div class="body">
     <div class="form-row mt-2">
-      <div class="col-12">
+      <div class="col-12 col-lg-6 mt-2">
         <div class="card">
           <div class="col-12">
             <span class="title_section">Infractor</span>
@@ -405,14 +319,6 @@
       <div class="col-12 col-lg-6 mt-2">
         <div class="card">
           <div class="col-12">
-              <span class="title_section">Infracciones por patente</span>
-              <div id="listaTotal"></div>
-            </div>
-          </div>
-      </div>
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="card">
-          <div class="col-12">
               <span class="title_section">Detalle de infracciones</span>
               <table id="lista_detalle" class="table table-striped table-hover table-bordered dt-responsive" style="width:100%">
                 <thead>
@@ -427,6 +333,15 @@
             </div>
           </div>
       </div>
+      <div class="col-12 col-lg-12 mt-2">
+        <div class="card">
+          <div class="col-12">
+              <span class="title_section">Infracciones por patente</span>
+              <div id="listaTotal"></div>
+            </div>
+          </div>
+      </div>
+
     </div>
   </div>
 

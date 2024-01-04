@@ -3,6 +3,12 @@
   .file_cs{
     display: none;
   }
+  .centered {
+    text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según tu preferencia */
+  }
+  .margen-td {
+  text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según lo que necesites */
+  }
 
 </style>
 
@@ -126,7 +132,7 @@
               param.hasta = $("#hasta_t").val();
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
-              param.vehiculo = $("#vehiculo").val();
+              param.patente = $("#patente").val();
               param.comuna = $("#comuna").val();
             },
           },    
@@ -188,7 +194,7 @@
               param.hasta = $("#hasta_t").val();
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
-              param.vehiculo = $("#vehiculo").val();
+              param.patente = $("#patente").val();
               param.comuna = $("#comuna").val();
             },
           },    
@@ -232,7 +238,7 @@
                 hasta:$("#hasta_t").val(),
                 chofer:$("#chofer").val(),
                 supervisor:$("#supervisor").val(),
-                vehiculo:$("#vehiculo").val(),
+                patente:$("#patente").val(),
                 comuna:$("#comuna").val(),
               },
               dataType:"json",
@@ -307,7 +313,7 @@
           });
         }
 
-      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#vehiculo,#comuna').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#vehiculo,#comuna',function(event) {
+      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna',function(event) {
         ListaCarga();
         Actualizar();
         lista_flota.ajax.reload();
@@ -485,9 +491,9 @@
                 <thead>
                   <tr>    
                     <th class="centered">Patente</th> 
-                    <th class="centered">Fecha</th> 
-                    <th class="centered">Hora</th> 
-                    <th class="centered">MAX</th> 
+                    <th class="centered">Fecha de carga</th> 
+                    <th class="centered">Hora de carga</th> 
+                    <th class="centered">Odómetro</th> 
                   </tr>
                 </thead>
               </table>

@@ -39,9 +39,9 @@ class Flotamodel extends CI_Model {
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.*,
-			FORMAT(SUM(f.volumen) OVER (ORDER BY f.fecha), 0) AS litros_cargados,
-			FORMAT(SUM(f.kms_recorridos) OVER (ORDER BY f.fecha), 0) AS kms_recorridos_total,
-			FORMAT(SUM(f.monto) OVER (ORDER BY f.fecha), 0) AS monto_total,
+			FORMAT(SUM(f.volumen),0) AS litros_cargados,
+			FORMAT(SUM(f.kms_recorridos),0) AS kms_recorridos_total,
+			FORMAT(SUM(f.monto),0) AS monto_total,
 			FORMAT(f.meta_monto, 0) as meta_monto,
 			");
 
@@ -50,8 +50,6 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-
-			$this->db->limit(10);
 			$res=$this->db->group_by('f.patente');
 			$res=$this->db->get('flota_combustible as f');
 			if($res->num_rows()>0){
@@ -254,7 +252,7 @@ class Flotamodel extends CI_Model {
 			$this->db->select(
 				"
 				f.patente as 'patente',
-				COUNT(f.velocidad) as 'velocidad',
+				COUNT(f.velocidad) as 'infracciones',
 			");
 			$this->db->from('flota_gps as f');
 			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
@@ -264,19 +262,20 @@ class Flotamodel extends CI_Model {
 			if($gps!=""){	$this->db->where('f.gps', $gps);}
 
 			$this->db->group_by('patente');
-			$this->db->order_by('velocidad', 'desc');
+			$this->db->order_by('infracciones', 'desc');
+			$this->db->limit(40);
 			$res=$this->db->get();
 
 			$array = array();
 			$array[]= array(
 				"patente",
-				"velocidad",
+				"infracciones",
 			);
 			if($res->num_rows()>0){
 				foreach($res->result_array() as $key){
 					$temp = array();
 					$temp[] = $key['patente'];
-					$temp[] = (int) $key['velocidad'];
+					$temp[] = (int) $key['infracciones'];
 					$array[] = $temp;
 				}
 			}
@@ -308,6 +307,7 @@ class Flotamodel extends CI_Model {
 			$this->db->distinct();
 			$this->db->select('patente');
 			$res = $this->db->get('flota_gps');
+			$this->db->order_by('patente', 'asc');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
@@ -317,6 +317,7 @@ class Flotamodel extends CI_Model {
 			$this->db->distinct();
 			$this->db->select('nombre_supervisor');
 			$res = $this->db->get('flota_gps');
+			$this->db->order_by('nombre_supervisor', 'asc');
 			if($res->num_rows()>0){
 				return $res->result_array();
 			}
