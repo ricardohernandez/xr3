@@ -137,6 +137,7 @@ class Flotamodel extends CI_Model {
 				$temp = array();
 				$temp[] = "";
 				$temp[] = 0;
+				$temp[] = 0;
 				$array[] = $temp;
 			}
 
