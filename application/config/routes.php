@@ -55,6 +55,25 @@
 	$route['getProyectoTecnicoRut'] = "back_end/igt/getProyectoTecnicoRut";
 	$route['dataGraficosIgt'] = "back_end/igt/dataGraficosIgt";
 	$route['formCargaMasivaIgt'] = "back_end/igt/formCargaMasivaIgt";
+
+/*******FLOTA*******/
+
+	$route['flota'] = "back_end/flota/index";
+
+	$route['getFlotaInicio'] = "back_end/flota/getFlotaInicio";
+	$route['getActualizacionCombustible'] = "back_end/flota/getActualizacionCombustible";
+	$route['listaCombustible'] = "back_end/flota/listaCombustible";
+	$route['listaCarga'] = "back_end/flota/listaCarga";
+	$route['listaMax'] = "back_end/flota/listaMax";
+
+
+	$route['getGPSInicio'] = "back_end/flota/getGPSInicio";
+	$route['getActualizacionGPS'] = "back_end/flota/getActualizacionGPS";
+	$route['listaGPS'] = "back_end/flota/listaGPS";
+	$route['listaDetalleFlota'] = "back_end/flota/listaDetalleFlota";
+	$route['listaTotal'] = "back_end/flota/listaTotal";
+
+	$route['formCargaMasivaFlota'] = "back_end/flota/formCargaMasivaFlota";
 	
 /*******DOCUMENTACION*******/
 
