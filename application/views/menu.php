@@ -327,7 +327,8 @@
                   if($perfil<=3){
                    ?>
                <li><a class="sidenav__menu-url" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
-               <li><a  class="menu_list" href="<?php echo base_url() ?>rcdc"> RCDC - Registro centro de comando</a></li>
+               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>rcdc"> RCDC - Registro centro de comando</a></li>
+               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>flota"> RF - Registro de Flota</a></li>
                <?php
                   }
                ?>
@@ -512,6 +513,7 @@
                             ?>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>cao"> CAO - Control de asistencia operacional</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>rcdc"> RCDC - Registro centro de comando</a></li>
+                        <li><a  class="menu_list" href="<?php echo base_url() ?>flota"> RF - Registro de Flota</a></li>
                         <?php
                            }
                            ?>
