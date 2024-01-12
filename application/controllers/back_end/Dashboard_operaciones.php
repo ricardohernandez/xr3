@@ -141,76 +141,75 @@ class Dashboard_operaciones extends CI_Controller {
 			$campos = [
 				"nac" => [
 					"campos" => ['xr3_x_eps', 'jr_x_eps', 'emetel_x_eps','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'],'Meta',['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"hfc" => [
 					"campos" => ['xr3_x_eps_hfc', 'jr_x_eps_hfc', 'emetel_x_eps_hfc','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"ftth" => [
 					"campos" => ['xr3_x_eps_ftth', 'jr_x_eps_ftth', 'emetel_x_eps_ftth','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
-
 				"nor" => [
 					"campos" => ['xr3_x_eps_nor', 'jr_x_eps_nor', 'emetel_x_eps_nor','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"hfcnor" => [
 					"campos" => ['xr3_x_eps_hfc_nor', 'jr_x_eps_hfc_nor', 'emetel_x_eps_hfc_nor','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"ftthnor" => [
 					"campos" => ['xr3_x_eps_ftth_nor', 'jr_x_eps_ftth_nor', 'emetel_x_eps_ftth_nor','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"sur" => [
 					"campos" => ['xr3_x_eps_sur', 'jr_x_eps_sur', 'emetel_x_eps_sur','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"hfcsur" => [
 					"campos" => ['xr3_x_eps_hfc_sur', 'jr_x_eps_hfc_sur', 'emetel_x_eps_hfc_sur','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"ftthsur" => [
 					"campos" => ['xr3_x_eps_ftth_sur', 'jr_x_eps_ftth_sur', 'emetel_x_eps_ftth_sur','meta'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_nac" => [
 					"campos" => ['xr3_x_eps', 'jr_x_eps', 'emetel_x_eps','meta_px_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'],'Meta',['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_hfc" => [
 					"campos" => ['xr3_x_eps_hfc', 'jr_x_eps_hfc', 'emetel_x_eps_hfc','meta_hfc_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_ftth" => [
 					"campos" => ['xr3_x_eps_ftth', 'jr_x_eps_ftth', 'emetel_x_eps_ftth','meta_ftth_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_nor" => [
 					"campos" => ['xr3_x_eps_nor', 'jr_x_eps_nor', 'emetel_x_eps_nor','meta_px_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_hfcnor" => [
 					"campos" => ['xr3_x_eps_hfc_nor', 'jr_x_eps_hfc_nor', 'emetel_x_eps_hfc_nor','meta_hfc_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_ftthnor" => [
 					"campos" => ['xr3_x_eps_ftth_nor', 'jr_x_eps_ftth_nor', 'emetel_x_eps_ftth_nor','meta_ftth_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_sur" => [
 					"campos" => ['xr3_x_eps_sur', 'jr_x_eps_sur', 'emetel_x_eps_sur','meta_px_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_hfcsur" => [
 					"campos" => ['xr3_x_eps_hfc_sur', 'jr_x_eps_hfc_sur', 'emetel_x_eps_hfc_sur','meta_hfc_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 				"cal_ftthsur" => [
 					"campos" => ['xr3_x_eps_ftth_sur', 'jr_x_eps_ftth_sur', 'emetel_x_eps_ftth_sur','meta_ftth_epps'],
-					"cabeceras" => ["mes", "XR3", ['role' => 'annotation'], "JR", ['role' => 'annotation'], "EMETEL", ['role' => 'annotation'], "Meta", ['role' => 'annotation'], ['role' => 'annotationText'],['role' => 'annotationText']]
+					"cabeceras" => ["mes", "XR3", "JR", "EMETEL", "Meta"]
 				],
 			 
 			];	

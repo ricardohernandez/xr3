@@ -104,7 +104,7 @@ class Igt extends CI_Controller {
 									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()*100;
 								}
 								else{
-									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+									$datos[$columna] = str_replace('%', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
 								}
 							}
 							else {
@@ -156,7 +156,7 @@ class Igt extends CI_Controller {
 									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()*100;
 								}
 								else{
-									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+									$datos[$columna] = str_replace('%', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
 								}
 							}
 							else {

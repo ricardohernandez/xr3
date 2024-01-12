@@ -114,10 +114,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 				
 				foreach ($campos as $campo) {
 					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
-					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
 				}
-				
-				$temp[] = strtotime($key["fecha"]);
 				$temp[] = "prod";
 				$array[] = $temp;
 			}
@@ -151,10 +148,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 				
 				foreach ($campos as $campo) {
 					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
-					$temp[] = ($key[$campo] != 0) ? (float)$key[$campo] : 0;
 				}
-				
-				$temp[] = strtotime($key["fecha"]);
 				$temp[] = "calidad";
 				$array[] = $temp;
 			}

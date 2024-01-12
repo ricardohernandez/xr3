@@ -6,8 +6,19 @@
   .body{
     display: none;
   }
+
+  .canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+
  </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script>
+  
   const base_url = "<?php echo base_url() ?>"
   const mes_inicio_eps = "<?php echo $mes_inicio ?>"
   $("#mes_inicio_eps").val(mes_inicio_eps) 
@@ -43,23 +54,24 @@
         crearGraficoEps('productividadnacional', response.productividadnacional, 'line');
         crearGraficoEps('productividadHFC', response.productividadHFC, 'line');
         crearGraficoEps('productividadFTTH', response.productividadFTTH, 'line');
-        crearGraficoEps('calidadnacional', response.calidadnacional, 'column');
-        crearGraficoEps('calidadHFC', response.calidadHFC, 'column');
-        crearGraficoEps('calidadFTTH', response.calidadFTTH, 'column');
+        crearGraficoEps('calidadnacional', response.calidadnacional, 'bar');
+        crearGraficoEps('calidadHFC', response.calidadHFC, 'bar');
+        crearGraficoEps('calidadFTTH', response.calidadFTTH, 'bar');
 
         crearGraficoEps('productividadnor', response.productividadnor, 'line');
         crearGraficoEps('productividadHFCnor', response.productividadHFCnor, 'line');
         crearGraficoEps('productividadFTTHnor', response.productividadFTTHnor, 'line');
-        crearGraficoEps('calidadnor', response.calidadnor, 'column');
-        crearGraficoEps('calidadHFCnor', response.calidadHFCnor, 'column');
-        crearGraficoEps('calidadFTTHnor', response.calidadFTTHnor, 'column');
+        crearGraficoEps('calidadnor', response.calidadnor, 'bar');
+        crearGraficoEps('calidadHFCnor', response.calidadHFCnor, 'bar');
+        crearGraficoEps('calidadFTTHnor', response.calidadFTTHnor, 'bar');
 
         crearGraficoEps('productividadsur', response.productividadsur, 'line');
         crearGraficoEps('productividadHFCsur', response.productividadHFCsur, 'line');
         crearGraficoEps('productividadFTTHsur', response.productividadFTTHsur, 'line');
-        crearGraficoEps('calidadsur', response.calidadsur, 'column');
-        crearGraficoEps('calidadHFCsur', response.calidadHFCsur, 'column');
-        crearGraficoEps('calidadFTTHsur', response.calidadFTTHsur, 'column');
+        
+        crearGraficoEps('calidadsur', response.calidadsur, 'bar');
+        crearGraficoEps('calidadHFCsur', response.calidadHFCsur, 'bar');
+        crearGraficoEps('calidadFTTHsur', response.calidadFTTHsur, 'bar');
       },
       error: function (error) {
           console.log(error);
@@ -95,199 +107,78 @@
     return false;
   }
 
+  function crearGraficoEps(divId, datos, tipoGrafico){
 
-  function crearGraficoEps(divId, data, tipoGrafico) {
+    var ctx = document.getElementById(divId);
+    largo = datos[1].length
+    tipo = datos[1][largo-1];
 
-    var contieneMeta = contieneElementoMeta(data);
-    var contieneCalidad = contieneElementoCalidad(data);
-    var contieneProd = contieneElementoProd(data);
+    const existingChart = Chart.getChart(ctx);
+    if (existingChart) {
+        existingChart.destroy();
+    }
+    const labels = datos.slice(1).map(row => row[0]);
+    const datasets = [];
 
-    var data = google.visualization.arrayToDataTable(data);
-    data.sort([{ column: 10, desc: false }]);
 
-    const options = {
-      fontName: 'ubuntu',
-      curveType: 'function',
-      fontColor: '#32477C',
-      backgroundColor: { fill: 'transparent' },
-      colors: ['#118DFF','#12239E', '#F48432'],
-      chartArea: {
-        left: 40,
-        right: 40,
-        bottom: 40,
-        top: 40,
-      },
-      height: 230,
-      width:"100%",
-      hAxis: {
-        title: '',
-        minValue: 0,
-        textStyle: {
-          fontSize: 13,
-          bold: false,
-          color: '#808080'
-        },
-        gridlines: {
-          color: '',
-          count: 0
+    for (let i = 1; i < datos[0].length; i++) {
+        const datasetLabel = datos[0][i];
+        const datasetData = datos.slice(1).map(row => row[i]);
+      if(tipo == "prod"){
+          datasets.push({
+            label: datasetLabel,
+            data: datasetData.map(parseFloat),
+            borderWidth: 1,
+            type: 'line',
+          });
+      }
+      else{
+        if(datasetLabel != "Meta"){
+          datasets.push({
+            label: datasetLabel,
+            data: datasetData.map(parseFloat),
+            borderWidth: 1,
+            type: 'bar',
+          });
         }
-      },
-      vAxis: {
-        title: '',
-        textStyle: {
-          fontSize: 13,
-          bold: false,
-          color: '#808080'
-        },
-        gridlines: {
-          color: '',
-          count: 0
-        },
-      },
-      annotations: {
-        alwaysOutside: false,
-        textStyle: {
-          fontSize: 13,
-          color: '#808080',
-          auraColor: 'none'
+        else{
+          datasets.push({
+            label: datasetLabel,
+            data: datasetData.map(parseFloat),
+            borderWidth: 1,
+            type: 'line',
+          });
         }
-      },
-      avoidOverlappingGridLines: true,
+      }
+    }
 
-      legend: {
-        position: 'top',
-        alignment: 'center',
-        textStyle: {
-          fontSize: 14,
-          bold: true,
-          color: '#808080'
-        }
+    new Chart(ctx, {
+      type: tipoGrafico,
+      data: {
+        labels: labels,
+        datasets: datasets,
       },
-      tooltip: {
-        textStyle: {
-          color: '#ffffff96',
-          fontSize: 13
-        }
-      },
-    };
-
-    if(contieneMeta && contieneCalidad){
-      
-      options.vAxes ={
-       0: 
-        {
-        textStyle:{color: '#808080',bold:false,fontSize: 12},
-          gridlines: {color:'#808080', count:0},
-          viewWindowMode:'explicit',
-          viewWindow: {
-            min: 0,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: false
           },
         },
-        1: 
-        {
-          textStyle:{color: '#808080',bold:false,fontSize: 12},
-            gridlines: {color:'#808080', count:0},
-            viewWindow: {
-              min: 0,
-            },
-          }
-     },
-
-
-      options.seriesType = 'bars'; 
-      options.series = {
-        3: {
-          type: 'line',
-          lineDashStyle: [4, 4], 
-          color: 'grey',
-          curveType: 'function',
-          lineWidth: 2,
-          pointSize: 5,
-          pointShape: 'square',
-          targetAxisIndex: 0,
-          annotations: {
-            stem: {
-              length: 4
-            },
-            
-          }
-        },
-        0: {
-          type: 'bars',
-          color: '#2F81F7',
-          targetAxisIndex: 0,
-          annotations: {
-            style: 'line',
-            textStyle: {
-              fontSize: 12,
-              color: 'black',
-              strokeSize: 1,
-              auraColor: 'transparent'
-            },
-            alwaysOutside: false,
-            stem: {
-              color: 'transparent',
-              length: 8
+        plugins: {
+                datalabels: {
+                    display: true,
+                    color: 'black',
+                    font: {
+                        weight: 'bold'
+                    },
+                    formatter: function(value, context) {
+                        return value; // Mostrar el valor del punto
+                    }
+                }
             }
-          }
-        }
-      };
-    }
-
-    if(contieneMeta && contieneProd){
-      
-      options.series = {
-        3: {
-          type: 'line',
-          lineDashStyle: [4, 4], 
-          color: '#808080',
-          curveType: 'function',
-          lineWidth: 2,
-          pointSize: 5,
-          pointShape: 'square',
-          targetAxisIndex: 0,
-          annotations: {
-            stem: {
-              length: 4
-            }
-          }
-        },
-        0: {
-          type: 'line',
-          color: '#2F81F7',
-          targetAxisIndex: 0,
-          annotations: {
-            style: 'line',
-            textStyle: {
-              fontSize: 12,
-              color: '#808080',
-              strokeSize: 1,
-              auraColor: 'transparent'
-            },
-            alwaysOutside: false,
-            stem: {
-              color: 'transparent',
-              length: 8
-            }
-          }
-        }
-      };
-
-
-    }
-
-    var chart;
-    
-    if (tipoGrafico === 'line') {
-      chart = new google.visualization.ComboChart(document.getElementById(divId));
-    } else if (tipoGrafico === 'column') {
-      chart = new google.visualization.ComboChart(document.getElementById(divId));
-    }
-
-    chart.draw(data, options);
-
+      }
+    });
   }
-  
 
   $(document).off('change', '#mes_inicio_eps, #mes_termino_eps, #zona_prod_eps, #tecnologia_prod_eps').on('change', '#mes_inicio_eps, #mes_termino_eps, #zona_prod_eps, #tecnologia_prod_eps', function (event) {
     if ($(this).attr('id') === 'zona_prod_eps') {
@@ -359,7 +250,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Productividad nacional X EPS</p>
-              <div id="productividadnacional"></div>
+               <canvas class="canvas "  id="productividadnacional"></canvas>
             </div>
           </div>
         </div>
@@ -368,7 +259,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Calidad nacional X EPS</p>
-              <div id="calidadnacional"></div>
+              <canvas id="calidadnacional"></canvas>
             </div>
           </div>
         </div>
@@ -377,7 +268,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Productividad HFC X EPS</p>
-              <div id="productividadHFC"></div>
+               <canvas class="canvas "  id="productividadHFC"></canvas>
             </div>
           </div>
         </div>
@@ -386,7 +277,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Calidad HFC X EPS</p>
-              <div id="calidadHFC"></div>
+              <canvas id="calidadHFC"></canvas>
             </div>
           </div>
         </div>
@@ -395,7 +286,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Productividad FTTH X EPS</p>
-              <div id="productividadFTTH"></div>
+               <canvas class="canvas "  id="productividadFTTH"></canvas>
             </div>
           </div>
         </div>
@@ -404,7 +295,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Calidad FTTH X EPS</p>
-              <div id="calidadFTTH"></div>
+              <canvas id="calidadFTTH"></canvas>
             </div>
           </div>
         </div>
@@ -413,7 +304,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Productividad norte X EPS</p>
-              <div id="productividadnor"></div>
+               <canvas class="canvas "  id="productividadnor"></canvas>
             </div>
           </div>
         </div>
@@ -422,7 +313,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Calidad norte X EPS</p>
-              <div id="calidadnor"></div>
+              <canvas id="calidadnor"></canvas>
             </div>
           </div>
         </div>
@@ -431,7 +322,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Productividad HFC norte X EPS</p>
-                <div id="productividadHFCnor"></div>
+                 <canvas class="canvas "  id="productividadHFCnor"></canvas>
               </div>
             </div>
         </div>
@@ -440,7 +331,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Calidad HFC norte X EPS</p>
-                <div id="calidadHFCnor"></div>
+                <canvas id="calidadHFCnor"></canvas>
               </div>
             </div>
         </div>
@@ -449,7 +340,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Productividad FTTH norte X EPS</p>
-                <div id="productividadFTTHnor"></div>
+                 <canvas class="canvas "  id="productividadFTTHnor"></canvas>
               </div>
             </div>
         </div>
@@ -458,7 +349,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Calidad FTTH norte X EPS</p>
-                <div id="calidadFTTHnor"></div>
+                <canvas id="calidadFTTHnor"></canvas>
               </div>
             </div>
         </div>
@@ -468,7 +359,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Productividad  sur X EPS</p>
-              <div id="productividadsur"></div>
+               <canvas class="canvas "  id="productividadsur"></canvas>
             </div>
           </div>
         </div>
@@ -477,7 +368,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Calidad  sur X EPS</p>
-                <div id="calidadsur"></div>
+                <canvas id="calidadsur"></canvas>
             </div>
           </div>
         </div>
@@ -486,7 +377,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Productividad HFC sur X EPS</p>
-                <div id="productividadHFCsur"></div>
+                 <canvas class="canvas "  id="productividadHFCsur"></canvas>
               </div>
             </div>
         </div>
@@ -495,7 +386,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Calidad HFC sur X EPS</p>
-                <div id="calidadHFCsur"></div>
+                <canvas id="calidadHFCsur"></canvas>
               </div>
             </div>
         </div>
@@ -504,7 +395,7 @@
           <div class="card">
             <div class="col-12">
                 <p class="titulo_grafico">Productividad FTTH sur X EPS</p>
-                <div id="productividadFTTHsur"></div>
+                 <canvas class="canvas "  id="productividadFTTHsur"></canvas>
               </div>
             </div>
         </div>
@@ -513,7 +404,7 @@
           <div class="card">
             <div class="col-12">
               <p class="titulo_grafico">Calidad FTTH sur X EPS</p>
-              <div id="calidadFTTHsur"></div>
+              <canvas id="calidadFTTHsur"></canvas>
             </div>
           </div>
         </div>
