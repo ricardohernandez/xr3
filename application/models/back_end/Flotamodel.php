@@ -35,7 +35,7 @@ class Flotamodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function listaCombustible($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
+		public function listaCombustible($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.*,
@@ -43,6 +43,8 @@ class Flotamodel extends CI_Model {
 			FORMAT(SUM(f.kms_recorridos),0) AS kms_recorridos_total,
 			FORMAT(SUM(f.monto),0) AS monto_total,
 			FORMAT(f.meta_monto, 0) as meta_monto,
+			FORMAT((SUM(f.kms_recorridos)/SUM(f.volumen)), 0) as km_lt,
+			FORMAT((SUM(f.monto)/SUM(f.volumen)), 0) as clp_lt,
 			");
 
 			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
@@ -50,6 +52,8 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
 			$res=$this->db->group_by('f.patente');
 			$res=$this->db->get('flota_combustible as f');
 			if($res->num_rows()>0){
@@ -59,7 +63,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaMax($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
+		public function listaMax($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.patente,
@@ -73,6 +77,8 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
 
 			$res=$this->db->get('flota_combustible as f');
 			if($res->num_rows()>0){
@@ -82,7 +88,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaCarga($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
+		public function listaCarga($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
 			$this->db->select(
 				"
 				MONTH(f.fecha) as 'mes',
@@ -95,6 +101,8 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){$this->db->where('f.region', $comuna);}
+			if($zona!=""){$this->db->where('f.zona', $zona);}
+			if($area!=""){$this->db->where('f.area', $area);}
 
 			$this->db->group_by('mes');
 			$this->db->order_by('mes', 'asc');
@@ -118,9 +126,9 @@ class Flotamodel extends CI_Model {
 
 			$array = array();
 			$array[]= array(
-				"mes",
-				"monto",
-				"carga",
+				"Mes",
+				"Monto (\$CLP)",
+				"Carga (Litros)",
 			);
 			if($res->num_rows()>0){
 				foreach($res->result_array() as $key){
@@ -135,6 +143,263 @@ class Flotamodel extends CI_Model {
 				$temp = array();
 				$temp[] = "";
 				$temp[] = 0;
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+
+			return $array;
+		}
+
+		public function GastoRegion($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
+			$this->db->select(
+				"
+				f.region as 'region',
+				SUM(f.monto) as 'monto',
+			");
+			$this->db->from('flota_combustible as f');
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
+
+			$this->db->group_by('region');
+			$this->db->order_by('region', 'asc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Región",
+				"Monto (\$CLP)",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['region'];
+					$temp[] = (int) $key['monto'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+
+			return $array;
+		}
+
+		public function GastoZona($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
+			$this->db->select(
+				"
+				f.zona as 'zona',
+				SUM(f.monto) as 'monto',
+			");
+			$this->db->from('flota_combustible as f');
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
+
+			$this->db->group_by('zona');
+			$this->db->order_by('zona', 'asc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Zona",
+				"Monto (\$CLP)",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['zona'];
+					$temp[] = (int) $key['monto'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+
+			return $array;
+		}
+
+		public function GastoSemana($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
+			$this->db->select(
+				"
+				DATE_FORMAT(MIN(fecha), '%m-%d') as inicio_semana, 
+				DATE_FORMAT(MAX(fecha), '%m-%d') as fin_semana,
+				WEEK(f.fecha) as 'semana',
+				SUM(f.monto) as 'monto',
+			");
+			$this->db->from('flota_combustible as f');
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
+
+			$this->db->group_by('WEEK(f.fecha)');
+			$this->db->order_by('WEEK(f.fecha)', 'asc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Semana",
+				"Monto (\$CLP)",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = "Semana ".$key['semana'];
+					$temp[] = (int) $key['monto'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+
+			return $array;
+		}
+		public function GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
+			$this->db->select(
+				"
+				f.region as 'region',
+				SUM(f.volumen) as 'volumen',
+			");
+			$this->db->from('flota_combustible as f');
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
+
+			$this->db->group_by('region');
+			$this->db->order_by('region', 'asc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Región",
+				"Combustible (Litros)",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['region'];
+					$temp[] = (int) $key['volumen'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+
+			return $array;
+		}
+
+		public function GastoCombustibleZona($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
+			$this->db->select(
+				"
+				f.zona as 'zona',
+				SUM(f.volumen) as 'volumen',
+			");
+			$this->db->from('flota_combustible as f');
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
+
+			$this->db->group_by('zona');
+			$this->db->order_by('zona', 'asc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Zona",
+				"Combustible (Litros)",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['zona'];
+					$temp[] = (int) $key['volumen'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+
+			return $array;
+		}
+
+		public function GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona,$area){
+			$this->db->select(
+				"
+				DATE_FORMAT(MIN(fecha), '%m-%d') as inicio_semana, 
+				DATE_FORMAT(MAX(fecha), '%m-%d') as fin_semana,
+				WEEK(f.fecha) as 'semana',
+				SUM(f.volumen) as 'volumen',
+			");
+			$this->db->from('flota_combustible as f');
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.region', $comuna);}
+			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			if($area!=""){	$this->db->where('f.area', $area);}
+
+			$this->db->group_by('WEEK(f.fecha)');
+			$this->db->order_by('WEEK(f.fecha)', 'asc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Semana",
+				"Combustible (Litros)",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = "Semana ".$key['semana'];
+					$temp[] = (int) $key['volumen'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
 				$temp[] = 0;
 				$array[] = $temp;
 			}
@@ -161,7 +426,14 @@ class Flotamodel extends CI_Model {
 			$res = $this->db->get('flota_combustible');
 			$this->db->order_by('patente', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["patente"];
+					$temp["text"]=$key["patente"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}
@@ -171,7 +443,14 @@ class Flotamodel extends CI_Model {
 			$res = $this->db->get('flota_combustible');
 			$this->db->order_by('nombre_supervisor', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["nombre_supervisor"];
+					$temp["text"]=$key["nombre_supervisor"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}
@@ -181,17 +460,65 @@ class Flotamodel extends CI_Model {
 			$res = $this->db->get('flota_combustible');
 			$this->db->order_by('nombre_chofer', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["nombre_chofer"];
+					$temp["text"]=$key["nombre_chofer"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}
-		public function getComunaCombustible(){
+		public function getZonaCombustible(){
+			$this->db->distinct();
+			$this->db->select('zona');
+			$res = $this->db->get('flota_combustible');
+			$this->db->order_by('zona', 'asc');
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["zona"];
+					$temp["text"]=$key["zona"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
+		}
+		public function getAreaCombustible(){
+			$this->db->distinct();
+			$this->db->select('area');
+			$res = $this->db->get('flota_combustible');
+			$this->db->order_by('area', 'asc');
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["area"];
+					$temp["text"]=$key["area"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
+		}
+		public function getRegionCombustible(){
 			$this->db->distinct();
 			$this->db->select('region');
 			$res = $this->db->get('flota_combustible');
 			$this->db->order_by('region', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["region"];
+					$temp["text"]=$key["region"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}
@@ -205,7 +532,7 @@ class Flotamodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function listaGPS($desde,$hasta,$asignacion,$supervisor,$vehiculo,$gps){
+		public function listaGPS($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
 			$this->db->select("
 			f.*,
 			sha1(f.id) as hash,
@@ -216,6 +543,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($asignacion!=""){	$this->db->where('f.nombre_chofer', $asignacion);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.comuna', $comuna);}
 			if($gps!=""){	$this->db->where('f.gps', $gps);}
 
 			$this->db->group_by('f.patente');
@@ -228,7 +556,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaDetalleFlota($desde,$hasta,$asignacion,$supervisor,$vehiculo,$gps){
+		public function listaDetalleFlota($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.*");
@@ -237,6 +565,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($asignacion!=""){	$this->db->where('f.nombre_chofer', $asignacion);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.comuna', $comuna);}
 			if($gps!=""){	$this->db->where('f.gps', $gps);}
 
 			$this->db->order_by('velocidad', 'desc');
@@ -248,7 +577,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaTotal($desde,$hasta,$asignacion,$supervisor,$vehiculo,$gps){
+		public function listaTotal($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
 			$this->db->select(
 				"
 				f.patente as 'patente',
@@ -259,6 +588,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($asignacion!=""){	$this->db->where('f.nombre_chofer', $asignacion);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.comuna', $comuna);}
 			if($gps!=""){	$this->db->where('f.gps', $gps);}
 
 			$this->db->group_by('patente');
@@ -303,33 +633,75 @@ class Flotamodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function getPatenteGPS(){
+		public function getPatenteGPS($gps){
 			$this->db->distinct();
 			$this->db->select('patente');
+			if($gps!=""){	$this->db->where('gps', $gps);}
 			$res = $this->db->get('flota_gps');
 			$this->db->order_by('patente', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["patente"];
+					$temp["text"]=$key["patente"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}
-		public function getSupervisorGPS(){
+		public function getSupervisorGPS($gps){
 			$this->db->distinct();
 			$this->db->select('nombre_supervisor');
+			if($gps!=""){	$this->db->where('gps', $gps);}
 			$res = $this->db->get('flota_gps');
 			$this->db->order_by('nombre_supervisor', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["nombre_supervisor"];
+					$temp["text"]=$key["nombre_supervisor"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}
-		public function getChoferGPS(){
+		public function getChoferGPS($gps){
 			$this->db->distinct();
 			$this->db->select('nombre_chofer');
+			if($gps!=""){	$this->db->where('gps', $gps);}
 			$res = $this->db->get('flota_gps');
 			$this->db->order_by('nombre_chofer', 'asc');
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["nombre_chofer"];
+					$temp["text"]=$key["nombre_chofer"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
+		}
+		public function getComunaGPS($gps){
+			$this->db->distinct();
+			$this->db->select('comuna');
+			if($gps!=""){	$this->db->where('gps', $gps);}
+			$res = $this->db->get('flota_gps');
+			$this->db->order_by('comuna', 'asc');
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["comuna"];
+					$temp["text"]=$key["comuna"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
 			}
 			return FALSE;
 		}

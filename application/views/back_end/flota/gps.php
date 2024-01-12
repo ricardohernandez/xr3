@@ -17,6 +17,34 @@
     //$("#hasta_t").val(hasta);
     $("#gps").val(gps);
 
+    $("#patente").select2({
+            placeholder: 'Seleccione Patente | Todas',
+            data: <?php echo $patentes; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
+      $("#supervisor").select2({
+            placeholder: 'Seleccione Supervisor | Todos',
+            data: <?php echo $supervisores; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
+      $("#chofer").select2({
+            placeholder: 'Seleccione Conductor | Todos',
+            data: <?php echo $choferes; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
+      $("#comuna").select2({
+            placeholder: 'Seleccione Comuna | Todos',
+            data: <?php echo $comunas; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
       String.prototype.capitalize = function() {
           return this.charAt(0).toUpperCase() + this.slice(1);
       }
@@ -62,6 +90,7 @@
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
+              param.comuna = $("#comuna").val();
               param.gps = $("#gps").val();
             },
           },    
@@ -118,6 +147,7 @@
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
+              param.comuna = $("#comuna").val();
               param.gps = $("#gps").val();
             },
           },    
@@ -163,6 +193,7 @@
                 chofer:$("#chofer").val(),
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
+                comuna:$("#comuna").val(),
                 gps:$("#gps").val(),
               },
               dataType:"json",
@@ -251,14 +282,7 @@
     <div class="col-6 col-lg-2">
       <div class="form-group">
         <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
-          <option selected value="" >Seleccione supervisor | Todos</option>
-          <?php  
-            foreach($supervisores as $s){
-              ?>
-                <option value="<?php echo $s["nombre_supervisor"]?>" ><?php echo $s["nombre_supervisor"]?> </option>
-              <?php
-            }
-          ?>
+          <option value="">Seleccione Supervisor | Todos</option>
         </select>
       </div>
     </div>
@@ -266,14 +290,7 @@
     <div class="col-6 col-lg-2">
       <div class="form-group">
         <select id="chofer" name="chofer" class="custom-select custom-select-sm">
-          <option selected value="" >Seleccione conductor | Todos</option>
-          <?php  
-            foreach($choferes as $c){
-              ?>
-                <option value="<?php echo $c["nombre_chofer"]?>" ><?php echo $c["nombre_chofer"]?> </option>
-              <?php
-            }
-          ?>
+        <option value="">Seleccione Conductor | Todos</option>
         </select>
       </div>
     </div>
@@ -281,14 +298,15 @@
     <div class="col-6 col-lg-2">
       <div class="form-group">
         <select id="patente" name="patente" class="custom-select custom-select-sm">
-        <option selected value="" >Seleccione vehículo | Todos</option>
-          <?php  
-            foreach($patentes as $p){
-              ?>
-                <option value="<?php echo $p["patente"]?>" ><?php echo $p["patente"]?> </option>
-              <?php
-            }
-          ?>
+          <option value="">Seleccione Patente | Todas</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-2">
+      <div class="form-group">
+        <select id="comuna" name="comuna" class="custom-select custom-select-sm">
+          <option value="">Seleccione Patente | Todas</option>
         </select>
       </div>
     </div>
@@ -344,10 +362,3 @@
 
     </div>
   </div>
-
-
-
-
-
-
-   

@@ -19,6 +19,48 @@
     var hasta="<?php echo $hasta; ?>";
     //$("#desde_t").val(desde);
     //$("#hasta_t").val(hasta);
+      
+
+      $("#patente").select2({
+            placeholder: 'Seleccione Patente | Todas',
+            data: <?php echo $patentes; ?>,
+            allowClear: true,
+      });
+
+      $("#supervisor").select2({
+            placeholder: 'Seleccione Supervisor | Todos',
+            allowClear: true,
+            data: <?php echo $supervisores; ?>,
+            width: 'resolve',
+      });
+
+      $("#chofer").select2({
+            placeholder: 'Seleccione Conductor | Todos',
+            data: <?php echo $choferes; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
+      $("#zona").select2({
+            placeholder: 'Seleccione Zona | Todas',
+            data: <?php echo $zonas; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
+      $("#area").select2({
+            placeholder: 'Seleccione Área | Todas',
+            data: <?php echo $areas; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
+
+      $("#region").select2({
+            placeholder: 'Seleccione Región | Todas',
+            data: <?php echo $regiones; ?>,
+            allowClear: true,
+            width: 'resolve',
+      });
 
 
       function Actualizar(){
@@ -133,7 +175,9 @@
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
-              param.comuna = $("#comuna").val();
+              param.region = $("#region").val();
+              param.zona = $("#zona").val();
+              param.area = $("#area").val();
             },
           },    
         "columns": [
@@ -149,6 +193,10 @@
             { "data": "kms_recorridos_total" ,"class":"margen-td centered"},
             { "data": "meta_monto" ,"class":"margen-td centered"},
             { "data": "monto_total" ,"class":"margen-td centered"},
+            { "data": "km_lt" ,"class":"margen-td centered"},
+            { "data": "clp_lt" ,"class":"margen-td centered"},
+            { "data": "zona" ,"class":"margen-td centered"},
+            { "data": "area" ,"class":"margen-td centered"},
           ],
         });
     
@@ -195,7 +243,9 @@
               param.chofer = $("#chofer").val();
               param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
-              param.comuna = $("#comuna").val();
+              param.region = $("#region").val();
+              param.zona = $("#zona").val();
+              param.area = $("#area").val();
             },
           },    
         "columns": [
@@ -239,7 +289,9 @@
                 chofer:$("#chofer").val(),
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
-                comuna:$("#comuna").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -313,9 +365,199 @@
           });
         }
 
-      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna',function(event) {
+        google.charts.setOnLoadCallback(GastoZona);
+
+        function GastoZona() {
+          $.ajax({
+              url: "<?php echo base_url();?>GastoZona",  
+              type: 'POST',
+              data: {
+                desde:$("#desde_t").val(),
+                hasta:$("#hasta_t").val(),
+                chofer:$("#chofer").val(),
+                supervisor:$("#supervisor").val(),
+                patente:$("#patente").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
+              },
+              dataType:"json",
+              success: function (datos) {
+                var data = google.visualization.arrayToDataTable(datos.data);
+                var options = {
+                  is3D:true,
+                  width: "100%",
+                  height: 300,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('GastoZona'));
+                chart.draw(data, options);
+              }
+          });
+        }
+
+        google.charts.setOnLoadCallback(GastoRegion);
+
+        function GastoRegion() {
+          $.ajax({
+              url: "<?php echo base_url();?>GastoRegion",  
+              type: 'POST',
+              data: {
+                desde:$("#desde_t").val(),
+                hasta:$("#hasta_t").val(),
+                chofer:$("#chofer").val(),
+                supervisor:$("#supervisor").val(),
+                patente:$("#patente").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
+              },
+              dataType:"json",
+              success: function (datos) {
+                var data = google.visualization.arrayToDataTable(datos.data);
+                var options = {
+                  is3D:true,
+                  width: "100%",
+                  height: 300,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('GastoRegion'));
+                chart.draw(data, options);
+              }
+          });
+        }
+        google.charts.setOnLoadCallback(GastoSemana);
+
+        function GastoSemana() {
+          $.ajax({
+              url: "<?php echo base_url();?>GastoSemana",  
+              type: 'POST',
+              data: {
+                desde:$("#desde_t").val(),
+                hasta:$("#hasta_t").val(),
+                chofer:$("#chofer").val(),
+                supervisor:$("#supervisor").val(),
+                patente:$("#patente").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
+              },
+              dataType:"json",
+              success: function (datos) {
+                var data = google.visualization.arrayToDataTable(datos.data);
+                var options = {
+                  is3D:true,
+                  width: "100%",
+                  height: 300,
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('GastoSemana'));
+                chart.draw(data, options);
+              }
+          });
+        }
+
+        google.charts.setOnLoadCallback(GastoCombustibleZona);
+
+        function GastoCombustibleZona() {
+          $.ajax({
+              url: "<?php echo base_url();?>GastoCombustibleZona",  
+              type: 'POST',
+              data: {
+                desde:$("#desde_t").val(),
+                hasta:$("#hasta_t").val(),
+                chofer:$("#chofer").val(),
+                supervisor:$("#supervisor").val(),
+                patente:$("#patente").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
+              },
+              dataType:"json",
+              success: function (datos) {
+                var data = google.visualization.arrayToDataTable(datos.data);
+                var options = {
+                  is3D:true,
+                  width: "100%",
+                  height: 300,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('GastoCombustibleZona'));
+                chart.draw(data, options);
+              }
+          });
+        }
+
+        google.charts.setOnLoadCallback(GastoCombustibleRegion);
+
+        function GastoCombustibleRegion() {
+          $.ajax({
+              url: "<?php echo base_url();?>GastoCombustibleRegion",  
+              type: 'POST',
+              data: {
+                desde:$("#desde_t").val(),
+                hasta:$("#hasta_t").val(),
+                chofer:$("#chofer").val(),
+                supervisor:$("#supervisor").val(),
+                patente:$("#patente").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
+              },
+              dataType:"json",
+              success: function (datos) {
+                var data = google.visualization.arrayToDataTable(datos.data);
+                var options = {
+                  is3D:true,
+                  width: "100%",
+                  height: 300,
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('GastoCombustibleRegion'));
+                chart.draw(data, options);
+              }
+          });
+        }
+        google.charts.setOnLoadCallback(GastoCombustibleSemana);
+
+        function GastoCombustibleSemana() {
+          $.ajax({
+              url: "<?php echo base_url();?>GastoCombustibleSemana",  
+              type: 'POST',
+              data: {
+                desde:$("#desde_t").val(),
+                hasta:$("#hasta_t").val(),
+                chofer:$("#chofer").val(),
+                supervisor:$("#supervisor").val(),
+                patente:$("#patente").val(),
+                region:$("#region").val(),
+                zona:$("#zona").val(),
+                area:$("#area").val(),
+              },
+              dataType:"json",
+              success: function (datos) {
+                var data = google.visualization.arrayToDataTable(datos.data);
+                var options = {
+                  is3D:true,
+                  width: "100%",
+                  height: 300,
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('GastoCombustibleSemana'));
+                chart.draw(data, options);
+              }
+          });
+        }
+
+      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region,#area').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region,#area',function(event) {
         ListaCarga();
         Actualizar();
+        GastoSemana();
+        GastoZona();
+        GastoRegion();
+        GastoCombustibleSemana();
+        GastoCombustibleZona();
+        GastoCombustibleRegion();
         lista_flota.ajax.reload();
         lista_max.ajax.reload();
       }); 
@@ -390,70 +632,58 @@
 
     <div class="col-6 col-lg-2">
       <div class="form-group">
-        <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
-          <option selected value="" >Seleccione supervisor | Todos</option>
-          <?php  
-            foreach($supervisores as $s){
-              ?>
-                <option value="<?php echo $s["nombre_supervisor"]?>" ><?php echo $s["nombre_supervisor"]?> </option>
-              <?php
-            }
-          ?>
+        <select id="supervisor" name="supervisor" class="custom-select custom-select-sm" style="width:100%!important;">
+        <option></option>
         </select>
       </div>
     </div>
 
     <div class="col-6 col-lg-2">
       <div class="form-group">
-        <select id="patente" name="patente" class="custom-select custom-select-sm">
-        <option selected value="" >Seleccione vehículo | Todos</option>
-          <?php  
-            foreach($patentes as $p){
-              ?>
-                <option value="<?php echo $p["patente"]?>" ><?php echo $p["patente"]?> </option>
-              <?php
-            }
-          ?>
+        <select id="patente" name="patente" class="custom-select custom-select-sm"style="width:100%!important;">
+        <option></option>
         </select>
       </div>
     </div>
 
     <div class="col-6 col-lg-2">
       <div class="form-group">
-        <select id="chofer" name="chofer" class="custom-select custom-select-sm">
-          <option selected value="" >Seleccione conductor | Todos</option>
-          <?php  
-            foreach($choferes as $c){
-              ?>
-                <option value="<?php echo $c["nombre_chofer"]?>" ><?php echo $c["nombre_chofer"]?> </option>
-              <?php
-            }
-          ?>
+        <select id="chofer" name="chofer" class="custom-select custom-select-sm"style="width:100%!important;">
+        <option></option>
         </select>
       </div>
     </div>
     <div class="col-6 col-lg-2">
       <div class="form-group">
-        <select id="comuna" name="comuna" class="custom-select custom-select-sm">
-          <option selected value="" >Seleccione region | Todos</option>
-          <?php  
-            foreach($comunas as $c){
-              ?>
-                <option value="<?php echo $c["region"]?>" ><?php echo $c["region"]?> </option>
-              <?php
-            }
-          ?>
+        <select id="zona" name="zona" class="custom-select custom-select-sm"style="width:100%!important;">
+        <option></option>
         </select>
       </div>
     </div>
+    <div class="col-6 col-lg-2">
+      <div class="form-group">
+        <select id="region" name="region" class="custom-select custom-select-sm"style="width:100%!important;">
+        <option></option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2">
+      <div class="form-group">
+        <select id="area" name="area" class="custom-select custom-select-sm"style="width:100%!important;">
+        <option></option>
+        </select>
+      </div>
+    </div>
+
   </div>       
 
   <div class="body">
     <div class="form-row mt-2">
+
       <div class="col-12">
         <div class="card">
           <div class="col-12">
-            <span class="title_section">TOP 10 de consumo máximo</span>
+            <span class="title_section">Tabla de consumo máximo</span>
             <table id="lista_flota" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
               <thead>
                 <tr>    
@@ -469,12 +699,17 @@
                   <th class="centered">Kms recorridos</th> 
                   <th class="centered">$ Meta</th> 
                   <th class="centered">$ Cargado</th> 
+                  <th class="centered">Kms/Lt</th> 
+                  <th class="centered">$CLP/Lt</th> 
+                  <th class="centered">Zona</th> 
+                  <th class="centered">Área</th> 
                 </tr>
               </thead>
             </table>
           </div>
         </div>
       </div>
+
       <div class="col-12 col-lg-6 mt-2">
         <div class="card">
           <div class="col-12">
@@ -483,10 +718,11 @@
             </div>
           </div>
       </div>
+
       <div class="col-12 col-lg-6 mt-2">
         <div class="card">
           <div class="col-12">
-              <span class="title_section">Detalle Max</span>
+              <span class="title_section">Detalle Odómetros</span>
               <table id="lista_max" class="table table-striped table-hover table-bordered dt-responsive" style="width:100%">
                 <thead>
                   <tr>    
@@ -500,6 +736,63 @@
             </div>
           </div>
       </div>
+
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="col-12">
+            <span class="title_section">Gastos $CLP por Semana</span>
+            <div id="GastoSemana"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="col-12">
+            <span class="title_section">Gastos Combustible por Semana</span>
+            <div id="GastoCombustibleSemana"></div>
+          </div>
+        </div>
+      </div>
+       
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="col-12">
+            <span class="title_section">Gastos $CLP por Zona</span>
+            <div id="GastoZona"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="col-12">
+            <span class="title_section">Gastos Combustible por Zona</span>
+            <div id="GastoCombustibleZona"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="col-12">
+            <span class="title_section">Gastos $CLP por Región</span>
+            <div id="GastoRegion"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6 mt-2">
+        <div class="card">
+          <div class="col-12">
+            <span class="title_section">Gastos Combustible por Región</span>
+            <div id="GastoCombustibleRegion"></div>
+          </div>
+        </div>
+      </div>
+
+
+
     </div>
   </div>
 

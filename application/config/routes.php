@@ -65,6 +65,12 @@
 	$route['listaCombustible'] = "back_end/flota/listaCombustible";
 	$route['listaCarga'] = "back_end/flota/listaCarga";
 	$route['listaMax'] = "back_end/flota/listaMax";
+	$route['GastoZona'] = "back_end/flota/GastoZona";
+	$route['GastoRegion'] = "back_end/flota/GastoRegion";
+	$route['GastoSemana'] = "back_end/flota/GastoSemana";
+	$route['GastoCombustibleRegion'] = "back_end/flota/GastoCombustibleRegion";
+	$route['GastoCombustibleZona'] = "back_end/flota/GastoCombustibleZona";
+	$route['GastoCombustibleSemana'] = "back_end/flota/GastoCombustibleSemana";
 
 
 	$route['getGPSInicio'] = "back_end/flota/getGPSInicio";
