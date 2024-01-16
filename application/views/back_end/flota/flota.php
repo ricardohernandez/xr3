@@ -48,20 +48,12 @@
             width: 'resolve',
       });
 
-      $("#area").select2({
-            placeholder: 'Seleccione Área | Todas',
-            data: <?php echo $areas; ?>,
-            allowClear: true,
-            width: 'resolve',
-      });
-
       $("#region").select2({
             placeholder: 'Seleccione Región | Todas',
             data: <?php echo $regiones; ?>,
             allowClear: true,
             width: 'resolve',
       });
-
 
       function Actualizar(){
         $.getJSON("<?php echo base_url();?>getActualizacionCombustible", {} , function(data) {
@@ -75,7 +67,6 @@
           }
         });
       }
-
 
       $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
         var myFormData = new FormData();
@@ -177,7 +168,6 @@
               param.patente = $("#patente").val();
               param.region = $("#region").val();
               param.zona = $("#zona").val();
-              param.area = $("#area").val();
             },
           },    
         "columns": [
@@ -187,6 +177,7 @@
             { "data": "nombre_chofer" ,"class":"margen-td centered"},
             { "data": "nombre_supervisor" ,"class":"margen-td centered"},
             { "data": "region" ,"class":"margen-td centered"},
+            { "data": "zona" ,"class":"margen-td centered"},
             { "data": "meta_litros_mensual" ,"class":"margen-td centered"},
             { "data": "litros_cargados" ,"class":"margen-td centered"},
             { "data": "meta_kms_mensual" ,"class":"margen-td centered"},
@@ -195,8 +186,6 @@
             { "data": "monto_total" ,"class":"margen-td centered"},
             { "data": "km_lt" ,"class":"margen-td centered"},
             { "data": "clp_lt" ,"class":"margen-td centered"},
-            { "data": "zona" ,"class":"margen-td centered"},
-            { "data": "area" ,"class":"margen-td centered"},
           ],
         });
     
@@ -245,7 +234,6 @@
               param.patente = $("#patente").val();
               param.region = $("#region").val();
               param.zona = $("#zona").val();
-              param.area = $("#area").val();
             },
           },    
         "columns": [
@@ -291,7 +279,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -379,7 +366,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -410,7 +396,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -440,7 +425,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -471,7 +455,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -502,7 +485,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -532,7 +514,6 @@
                 patente:$("#patente").val(),
                 region:$("#region").val(),
                 zona:$("#zona").val(),
-                area:$("#area").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -549,7 +530,7 @@
           });
         }
 
-      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region,#area').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region,#area',function(event) {
+      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region',function(event) {
         ListaCarga();
         Actualizar();
         GastoSemana();
@@ -667,13 +648,6 @@
         </select>
       </div>
     </div>
-    <div class="col-6 col-lg-2">
-      <div class="form-group">
-        <select id="area" name="area" class="custom-select custom-select-sm"style="width:100%!important;">
-        <option></option>
-        </select>
-      </div>
-    </div>
 
   </div>       
 
@@ -693,6 +667,7 @@
                   <th class="centered">Nombre conductor</th> 
                   <th class="centered">Nombre supervisor</th> 
                   <th class="centered">Región</th> 
+                  <th class="centered">Zona</th> 
                   <th class="centered">Meta litros mensual</th> 
                   <th class="centered">Litros cargados</th> 
                   <th class="centered">Meta kms mes</th> 
@@ -701,8 +676,6 @@
                   <th class="centered">$ Cargado</th> 
                   <th class="centered">Kms/Lt</th> 
                   <th class="centered">$CLP/Lt</th> 
-                  <th class="centered">Zona</th> 
-                  <th class="centered">Área</th> 
                 </tr>
               </thead>
             </table>

@@ -160,22 +160,17 @@
       },
       options: {
         scales: {
-          y: {
-            beginAtZero: false
+          y:{
+            grid:{
+              display: false
+            },
+          },
+          x:{
+            grid:{
+              display: false
+            },
           },
         },
-        plugins: {
-                datalabels: {
-                    display: true,
-                    color: 'black',
-                    font: {
-                        weight: 'bold'
-                    },
-                    formatter: function(value, context) {
-                        return value; // Mostrar el valor del punto
-                    }
-                }
-            }
       }
     });
   }
