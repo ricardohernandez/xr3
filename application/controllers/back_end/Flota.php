@@ -75,8 +75,6 @@ class Flota extends CI_Controller {
 					'fecha',
 					'hora',
 					'odometro',
-					'zona',
-					'area',
 				);
 
 				$this->db->query("TRUNCATE TABLE flota_combustible");
@@ -125,7 +123,6 @@ class Flota extends CI_Controller {
 					'nombre_chofer',
 					'nombre_supervisor',
 					'comuna',
-					'zona',
 					'num_semana',
 				);
 
@@ -173,7 +170,6 @@ class Flota extends CI_Controller {
 					'nombre_chofer',
 					'nombre_supervisor',
 					'comuna',
-					'zona',
 					'num_semana',
 				);
 
@@ -251,14 +247,12 @@ class Flota extends CI_Controller {
 			$supervisores= $this->Flotamodel->getSupervisorCombustible();
 			$choferes= $this->Flotamodel->getChoferCombustible();
 			$regiones= $this->Flotamodel->getRegionCombustible();
-			$zonas= $this->Flotamodel->getZonaCombustible();
 			$datos = array(	
 				'desde' => $desde,
 		        'hasta' => $hasta,
 		        'patentes' => $patentes,
 		        'supervisores' => $supervisores,
 		        'choferes' => $choferes,
-		        'zonas' => $zonas,
 		        'regiones' => $regiones,
 		    );
 			$this->load->view('back_end/flota/flota',$datos);
@@ -275,9 +269,9 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode($this->Flotamodel->listaCombustible($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona));
+		
+		echo json_encode($this->Flotamodel->listaCombustible($desde,$hasta,$chofer,$supervisor,$patente,$region));
 	}	
 
 	public function listaMax(){
@@ -287,9 +281,9 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode($this->Flotamodel->listaMax($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona));
+		
+		echo json_encode($this->Flotamodel->listaMax($desde,$hasta,$chofer,$supervisor,$patente,$region));
 	}	
 
 	public function listaCarga(){
@@ -299,9 +293,9 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->listaCarga($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
+		
+		echo json_encode(array("data"=>$this->Flotamodel->listaCarga($desde,$hasta,$chofer,$supervisor,$patente,$region)));
 	}
 
 	public function GastoRegion(){
@@ -311,21 +305,11 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoRegion($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
-	}
-	public function GastoZona(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoZona($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
+		echo json_encode(array("data"=>$this->Flotamodel->GastoRegion($desde,$hasta,$chofer,$supervisor,$patente,$region)));
 	}
+
 	public function GastoSemana(){
 		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
 		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
@@ -333,9 +317,9 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoSemana($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
+		
+		echo json_encode(array("data"=>$this->Flotamodel->GastoSemana($desde,$hasta,$chofer,$supervisor,$patente,$region)));
 	}
 	public function GastoCombustibleRegion(){
 		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
@@ -344,21 +328,11 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
-	}
-	public function GastoCombustibleZona(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleZona($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
+		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$patente,$region)));
 	}
+
 	public function GastoCombustibleSemana(){
 		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
 		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
@@ -366,9 +340,9 @@ class Flota extends CI_Controller {
 		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
 		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$patente,$region,$zona)));
+		
+		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$patente,$region)));
 	}
 
 	public function getActualizacionCombustible(){

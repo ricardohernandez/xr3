@@ -99,7 +99,6 @@
             { "data": "nombre_chofer" ,"class":"margen-td centered"},
             { "data": "nombre_supervisor" ,"class":"margen-td centered"},
             { "data": "comuna" ,"class":"margen-td centered"},
-            { "data": "zona" ,"class":"margen-td centered"},
             { "data": "infracciones" ,"class":"margen-td centered"},
           ],
         });
@@ -326,7 +325,6 @@
                   <th class="centered">Nombre conductor</th> 
                   <th class="centered">Nombre supervisor</th> 
                   <th class="centered">Comuna</th> 
-                  <th class="centered">Zona</th> 
                   <th class="centered">Num infracciones</th> 
                 </tr>
               </thead>

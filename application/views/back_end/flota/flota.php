@@ -41,13 +41,6 @@
             width: 'resolve',
       });
 
-      $("#zona").select2({
-            placeholder: 'Seleccione Zona | Todas',
-            data: <?php echo $zonas; ?>,
-            allowClear: true,
-            width: 'resolve',
-      });
-
       $("#region").select2({
             placeholder: 'Seleccione Región | Todas',
             data: <?php echo $regiones; ?>,
@@ -167,7 +160,6 @@
               param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
               param.region = $("#region").val();
-              param.zona = $("#zona").val();
             },
           },    
         "columns": [
@@ -177,7 +169,6 @@
             { "data": "nombre_chofer" ,"class":"margen-td centered"},
             { "data": "nombre_supervisor" ,"class":"margen-td centered"},
             { "data": "region" ,"class":"margen-td centered"},
-            { "data": "zona" ,"class":"margen-td centered"},
             { "data": "meta_litros_mensual" ,"class":"margen-td centered"},
             { "data": "litros_cargados" ,"class":"margen-td centered"},
             { "data": "meta_kms_mensual" ,"class":"margen-td centered"},
@@ -233,7 +224,6 @@
               param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
               param.region = $("#region").val();
-              param.zona = $("#zona").val();
             },
           },    
         "columns": [
@@ -278,7 +268,6 @@
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
                 region:$("#region").val(),
-                zona:$("#zona").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -352,36 +341,6 @@
           });
         }
 
-        google.charts.setOnLoadCallback(GastoZona);
-
-        function GastoZona() {
-          $.ajax({
-              url: "<?php echo base_url();?>GastoZona",  
-              type: 'POST',
-              data: {
-                desde:$("#desde_t").val(),
-                hasta:$("#hasta_t").val(),
-                chofer:$("#chofer").val(),
-                supervisor:$("#supervisor").val(),
-                patente:$("#patente").val(),
-                region:$("#region").val(),
-                zona:$("#zona").val(),
-              },
-              dataType:"json",
-              success: function (datos) {
-                var data = google.visualization.arrayToDataTable(datos.data);
-                var options = {
-                  is3D:true,
-                  width: "100%",
-                  height: 300,
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('GastoZona'));
-                chart.draw(data, options);
-              }
-          });
-        }
-
         google.charts.setOnLoadCallback(GastoRegion);
 
         function GastoRegion() {
@@ -395,7 +354,6 @@
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
                 region:$("#region").val(),
-                zona:$("#zona").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -424,7 +382,6 @@
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
                 region:$("#region").val(),
-                zona:$("#zona").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -436,36 +393,6 @@
                 };
 
                 var chart = new google.visualization.LineChart(document.getElementById('GastoSemana'));
-                chart.draw(data, options);
-              }
-          });
-        }
-
-        google.charts.setOnLoadCallback(GastoCombustibleZona);
-
-        function GastoCombustibleZona() {
-          $.ajax({
-              url: "<?php echo base_url();?>GastoCombustibleZona",  
-              type: 'POST',
-              data: {
-                desde:$("#desde_t").val(),
-                hasta:$("#hasta_t").val(),
-                chofer:$("#chofer").val(),
-                supervisor:$("#supervisor").val(),
-                patente:$("#patente").val(),
-                region:$("#region").val(),
-                zona:$("#zona").val(),
-              },
-              dataType:"json",
-              success: function (datos) {
-                var data = google.visualization.arrayToDataTable(datos.data);
-                var options = {
-                  is3D:true,
-                  width: "100%",
-                  height: 300,
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('GastoCombustibleZona'));
                 chart.draw(data, options);
               }
           });
@@ -484,7 +411,6 @@
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
                 region:$("#region").val(),
-                zona:$("#zona").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -513,7 +439,6 @@
                 supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
                 region:$("#region").val(),
-                zona:$("#zona").val(),
               },
               dataType:"json",
               success: function (datos) {
@@ -530,14 +455,12 @@
           });
         }
 
-      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#zona,#region',function(event) {
+      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#region').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#region',function(event) {
         ListaCarga();
         Actualizar();
         GastoSemana();
-        GastoZona();
         GastoRegion();
         GastoCombustibleSemana();
-        GastoCombustibleZona();
         GastoCombustibleRegion();
         lista_flota.ajax.reload();
         lista_max.ajax.reload();
@@ -636,13 +559,6 @@
     </div>
     <div class="col-6 col-lg-2">
       <div class="form-group">
-        <select id="zona" name="zona" class="custom-select custom-select-sm"style="width:100%!important;">
-        <option></option>
-        </select>
-      </div>
-    </div>
-    <div class="col-6 col-lg-2">
-      <div class="form-group">
         <select id="region" name="region" class="custom-select custom-select-sm"style="width:100%!important;">
         <option></option>
         </select>
@@ -667,7 +583,6 @@
                   <th class="centered">Nombre conductor</th> 
                   <th class="centered">Nombre supervisor</th> 
                   <th class="centered">Región</th> 
-                  <th class="centered">Zona</th> 
                   <th class="centered">Meta litros mensual</th> 
                   <th class="centered">Litros cargados</th> 
                   <th class="centered">Meta kms mes</th> 
@@ -724,24 +639,6 @@
           <div class="col-12">
             <span class="title_section">Gastos Combustible por Semana</span>
             <div id="GastoCombustibleSemana"></div>
-          </div>
-        </div>
-      </div>
-       
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="card">
-          <div class="col-12">
-            <span class="title_section">Gastos $CLP por Zona</span>
-            <div id="GastoZona"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6 mt-2">
-        <div class="card">
-          <div class="col-12">
-            <span class="title_section">Gastos Combustible por Zona</span>
-            <div id="GastoCombustibleZona"></div>
           </div>
         </div>
       </div>

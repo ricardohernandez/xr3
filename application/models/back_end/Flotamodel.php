@@ -35,7 +35,7 @@ class Flotamodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function listaCombustible($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function listaCombustible($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.*,
@@ -52,7 +52,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			
 			$res=$this->db->group_by('f.patente');
 			$res=$this->db->get('flota_combustible as f');
 			if($res->num_rows()>0){
@@ -62,7 +62,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaMax($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function listaMax($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.patente,
@@ -76,7 +76,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			
 
 			$res=$this->db->get('flota_combustible as f');
 			if($res->num_rows()>0){
@@ -86,7 +86,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaCarga($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function listaCarga($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select(
 				"
 				MONTH(f.fecha) as 'mes',
@@ -99,7 +99,6 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){$this->db->where('f.region', $comuna);}
-			if($zona!=""){$this->db->where('f.zona', $zona);}
 
 			$this->db->group_by('mes');
 			$this->db->order_by('mes', 'asc');
@@ -147,7 +146,7 @@ class Flotamodel extends CI_Model {
 			return $array;
 		}
 
-		public function GastoRegion($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function GastoRegion($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select(
 				"
 				f.region as 'region',
@@ -160,7 +159,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			
 
 			$this->db->group_by('region');
 			$this->db->order_by('region', 'asc');
@@ -189,48 +188,7 @@ class Flotamodel extends CI_Model {
 			return $array;
 		}
 
-		public function GastoZona($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
-			$this->db->select(
-				"
-				f.zona as 'zona',
-				SUM(f.monto) as 'monto',
-			");
-			$this->db->from('flota_combustible as f');
-			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
-			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
-			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
-			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
-			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
-
-			$this->db->group_by('zona');
-			$this->db->order_by('zona', 'asc');
-			$res=$this->db->get();
-
-			$array = array();
-			$array[]= array(
-				"Zona",
-				"Monto (\$CLP)",
-			);
-			if($res->num_rows()>0){
-				foreach($res->result_array() as $key){
-					$temp = array();
-					$temp[] = $key['zona'];
-					$temp[] = (int) $key['monto'];
-					$array[] = $temp;
-				}
-			}
-			else{
-				$temp = array();
-				$temp[] = "";
-				$temp[] = 0;
-				$array[] = $temp;
-			}
-
-			return $array;
-		}
-
-		public function GastoSemana($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function GastoSemana($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select(
 				"
 				DATE_FORMAT(MIN(fecha), '%m-%d') as inicio_semana, 
@@ -244,7 +202,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			
 
 			$this->db->group_by('WEEK(f.fecha)');
 			$this->db->order_by('WEEK(f.fecha)', 'asc');
@@ -272,7 +230,7 @@ class Flotamodel extends CI_Model {
 
 			return $array;
 		}
-		public function GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select(
 				"
 				f.region as 'region',
@@ -285,7 +243,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			
 
 			$this->db->group_by('region');
 			$this->db->order_by('region', 'asc');
@@ -314,48 +272,7 @@ class Flotamodel extends CI_Model {
 			return $array;
 		}
 
-		public function GastoCombustibleZona($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
-			$this->db->select(
-				"
-				f.zona as 'zona',
-				SUM(f.volumen) as 'volumen',
-			");
-			$this->db->from('flota_combustible as f');
-			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
-			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
-			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
-			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
-			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
-
-			$this->db->group_by('zona');
-			$this->db->order_by('zona', 'asc');
-			$res=$this->db->get();
-
-			$array = array();
-			$array[]= array(
-				"Zona",
-				"Combustible (Litros)",
-			);
-			if($res->num_rows()>0){
-				foreach($res->result_array() as $key){
-					$temp = array();
-					$temp[] = $key['zona'];
-					$temp[] = (int) $key['volumen'];
-					$array[] = $temp;
-				}
-			}
-			else{
-				$temp = array();
-				$temp[] = "";
-				$temp[] = 0;
-				$array[] = $temp;
-			}
-
-			return $array;
-		}
-
-		public function GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna,$zona){
+		public function GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$vehiculo,$comuna){
 			$this->db->select(
 				"
 				DATE_FORMAT(MIN(fecha), '%m-%d') as inicio_semana, 
@@ -369,7 +286,7 @@ class Flotamodel extends CI_Model {
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
 			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
 			if($comuna!=""){	$this->db->where('f.region', $comuna);}
-			if($zona!=""){	$this->db->where('f.zona', $zona);}
+			
 
 			$this->db->group_by('WEEK(f.fecha)');
 			$this->db->order_by('WEEK(f.fecha)', 'asc');
@@ -462,23 +379,7 @@ class Flotamodel extends CI_Model {
 			}
 			return FALSE;
 		}
-		public function getZonaCombustible(){
-			$this->db->distinct();
-			$this->db->select('zona');
-			$res = $this->db->get('flota_combustible');
-			$this->db->order_by('zona', 'asc');
-			if($res->num_rows()>0){
-				$array=array();
-				foreach($res->result_array() as $key){
-					$temp=array();
-					$temp["id"]=$key["zona"];
-					$temp["text"]=$key["zona"];
-					$array[]=$temp;
-				}
-				return json_encode($array);
-			}
-			return FALSE;
-		}
+
 		public function getRegionCombustible(){
 			$this->db->distinct();
 			$this->db->select('region');
