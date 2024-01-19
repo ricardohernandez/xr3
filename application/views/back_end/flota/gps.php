@@ -13,8 +13,8 @@
     var desde="<?php echo $desde; ?>";
     var hasta="<?php echo $hasta; ?>";
     var gps="<?php echo $gps; ?>";
-    //$("#desde_t").val(desde);
-    //$("#hasta_t").val(hasta);
+    $("#desde_t").val(desde);
+    $("#hasta_t").val(hasta);
     $("#gps").val(gps);
 
     $("#patente").select2({
@@ -52,17 +52,30 @@
       /************ACTUALIZACION*************/
 
       function Actualizar(){
-        $.getJSON("<?php echo base_url();?>getActualizacionGPS", { gps : $("#gps").val() } , function(data) {
+        $.getJSON("<?php echo base_url();?>getActualizacionGPS", { 
+          desde : $("#desde_t").val(),
+          hasta : $("#hasta_t").val(),
+          gps : $("#gps").val() ,
+        } , function(data) {
         response = data;
         }).done(function() {
-          if(response[0]["conteo_infracciones"] != 0){
+          if(response[0]["conteo_infracciones"] != 0 || response[0]["conteo_infracciones"] != null){
             $("#conteo_infracciones").val(response[0]["conteo_infracciones"]);
           }
-          if(response[0]["vehiculos_infractores"] != 0){
+          else{
+            $("#conteo_infracciones").val(0);
+          }
+          if(response[0]["vehiculos_infractores"] != 0 || response[0]["vehiculos_infractores"] != null){
             $("#conteo_vehiculos").val(response[0]["vehiculos_infractores"]);
           }
-          if(response[0]["max_velocidad"] != 0) {
+          else{
+            $("#conteo_vehiculos").val(0);
+          }
+          if(response[0]["max_velocidad"] != 0 || response[0]["max_velocidad"] != null) {
             $("#max_infractor").val(response[0]["max_velocidad"]);
+          }
+          else{
+            $("#max_infractor").val(0);
           }
         });
       }
@@ -222,7 +235,7 @@
 
   <div class="form-row">
 
-    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+    <div class="col-3 col-sm-3 col-md-3 col-lg-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item active" aria-current="page" ><a href="">Velocidades mayores a 120 kms x Hora</a></li>
@@ -232,38 +245,39 @@
 
     <input hidden type="text" disabled value="" class="form-control form-control-sm col-12 col-lg-4"  name="gps" id="gps">
 
-    <div class="col-12 col-lg-3">
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-car"></i> <span style="margin-left:5px;font-size:13px;">Vehículos infractores<span></span> 
+      <div class="col-12 col-lg-3">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-car"></i> <span style="margin-left:5px;font-size:13px;">Vehículos infractores<span></span> 
+            </div>
+            <input type="text" disabled value="" class=" form-control form-control-sm col-12 col-lg-4"  name="conteo_vehiculos" id="conteo_vehiculos">
           </div>
-          <input type="text" disabled value="" class=" form-control form-control-sm col-12 col-lg-4"  name="conteo_vehiculos" id="conteo_vehiculos">
         </div>
       </div>
-    </div>
 
-    <div class="col-12 col-lg-3">
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-circle-exclamation"></i> <span style="margin-left:5px;font-size:13px;">Conteo infracciones<span></span> 
+      <div class="col-12 col-lg-3">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-circle-exclamation"></i> <span style="margin-left:5px;font-size:13px;">Conteo infracciones<span></span> 
+            </div>
+            <input type="text" disabled value="" class=" form-control form-control-sm col-12 col-lg-4"  name="conteo_infracciones" id="conteo_infracciones">
           </div>
-          <input type="text" disabled value="" class=" form-control form-control-sm col-12 col-lg-4"  name="conteo_infracciones" id="conteo_infracciones">
         </div>
       </div>
-    </div>
 
-    <div class="col-12 col-lg-3">
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-gauge"></i> <span style="margin-left:5px;font-size:13px;">Máximo infractor kms/hora<span></span> 
+      <div class="col-12 col-lg-3">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-gauge"></i> <span style="margin-left:5px;font-size:13px;">Máximo infractor kms/hora<span></span> 
+            </div>
+            <input type="text" disabled value="" class=" form-control form-control-sm col-12 col-lg-4"  name="max_infractor" id="max_infractor">
           </div>
-          <input type="text" disabled value="" class=" form-control form-control-sm col-12 col-lg-4"  name="max_infractor" id="max_infractor">
         </div>
       </div>
-    </div>
+
 
     <div class="col-12 col-lg-3">
       <div class="form-group">

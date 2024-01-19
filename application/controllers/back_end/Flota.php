@@ -241,8 +241,8 @@ class Flota extends CI_Controller {
 	public function getFlotaInicio(){
 		$this->visitas("Inicio");
 		if($this->input->is_ajax_request()){
-			$desde=date('Y-m-01');
-			$hasta=date('Y-12-t');
+			$desde=date('Y-m-d', strtotime("-1 year"));
+			$hasta=date('Y-m-d');
 			$patentes= $this->Flotamodel->getPatenteCombustible();
 			$supervisores= $this->Flotamodel->getSupervisorCombustible();
 			$choferes= $this->Flotamodel->getChoferCombustible();
@@ -346,7 +346,9 @@ class Flota extends CI_Controller {
 	}
 
 	public function getActualizacionCombustible(){
-		echo json_encode($this->Flotamodel->getActualizacionCombustible());
+		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+		echo json_encode($this->Flotamodel->getActualizacionCombustible($desde, $hasta));
 	}	
 
 	/************** GPS *********************/
@@ -355,8 +357,8 @@ class Flota extends CI_Controller {
 		$this->visitas("Inicio");
 		if($this->input->is_ajax_request()){
 			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-			$desde=date('Y-m-01');
-			$hasta=date('Y-12-t');
+			$desde=date('Y-m-d', strtotime("-1 year"));
+			$hasta=date('Y-m-d');
 			$patentes= $this->Flotamodel->getPatenteGPS($gps);
 			$supervisores= $this->Flotamodel->getSupervisorGPS($gps);
 			$choferes= $this->Flotamodel->getChoferGPS($gps);
@@ -409,6 +411,8 @@ class Flota extends CI_Controller {
 	}	
 	public function getActualizacionGPS(){
 		$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-		echo json_encode($this->Flotamodel->getActualizacionGPS($gps));
+		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+		echo json_encode($this->Flotamodel->getActualizacionGPS($gps,$desde,$hasta));
 	}	
 }

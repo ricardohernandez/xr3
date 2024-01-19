@@ -106,15 +106,15 @@ class Flotamodel extends CI_Model {
 
 			$mes = array(
 				"0" => 'Nulo',
-				"01" => 'Ene',
-				"02" => 'Feb',
-				"03" => 'Mar',
-				"04" => 'Abr',
-				"05" => 'May',
-				"06" => 'Jun',
-				"07" => 'Jul',
-				"08" => 'Ago',
-				"09" => 'Sept',
+				"1" => 'Ene',
+				"2" => 'Feb',
+				"3" => 'Mar',
+				"4" => 'Abr',
+				"5" => 'May',
+				"6" => 'Jun',
+				"7" => 'Jul',
+				"8" => 'Ago',
+				"9" => 'Sept',
 				"10" => 'Oct',
 				"11" => 'Nov',
 				"12" => 'Dic'
@@ -193,6 +193,7 @@ class Flotamodel extends CI_Model {
 				"
 				DATE_FORMAT(MIN(fecha), '%m-%d') as inicio_semana, 
 				DATE_FORMAT(MAX(fecha), '%m-%d') as fin_semana,
+				YEAR(f.fecha) as 'anio',
 				WEEK(f.fecha) as 'semana',
 				SUM(f.monto) as 'monto',
 			");
@@ -216,7 +217,7 @@ class Flotamodel extends CI_Model {
 			if($res->num_rows()>0){
 				foreach($res->result_array() as $key){
 					$temp = array();
-					$temp[] = "Semana ".$key['semana'];
+					$temp[] = $key['anio']." - "."Semana ".intval($key['semana'])+1;
 					$temp[] = (int) $key['monto'];
 					$array[] = $temp;
 				}
@@ -277,6 +278,7 @@ class Flotamodel extends CI_Model {
 				"
 				DATE_FORMAT(MIN(fecha), '%m-%d') as inicio_semana, 
 				DATE_FORMAT(MAX(fecha), '%m-%d') as fin_semana,
+				YEAR(f.fecha) as 'anio',
 				WEEK(f.fecha) as 'semana',
 				SUM(f.volumen) as 'volumen',
 			");
@@ -300,7 +302,7 @@ class Flotamodel extends CI_Model {
 			if($res->num_rows()>0){
 				foreach($res->result_array() as $key){
 					$temp = array();
-					$temp[] = "Semana ".$key['semana'];
+					$temp[] = $key['anio']." - "."Semana ".intval($key['semana'])+1;
 					$temp[] = (int) $key['volumen'];
 					$array[] = $temp;
 				}
@@ -315,12 +317,12 @@ class Flotamodel extends CI_Model {
 			return $array;
 		}
 
-		public function getActualizacionCombustible(){
+		public function getActualizacionCombustible($desde,$hasta){
 			$this->db->select("
 				MAX(f.ultima_actualizacion) as ultima_actualizacion,
 				FORMAT(SUM(f.monto), 0) as total,
 			");
-
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
 			$res = $this->db->get('flota_combustible f');
 			if($res->num_rows()>0){
 				return $res->result_array();
@@ -494,13 +496,15 @@ class Flotamodel extends CI_Model {
 			return $array;
 		}
 
-		public function getActualizacionGPS($gps){
+		public function getActualizacionGPS($gps,$desde,$hasta){
 			$this->db->select("
 				FORMAT(MAX(velocidad), 0) as max_velocidad,
 				FORMAT(COUNT(*), 0) as conteo_infracciones,
 				FORMAT(COUNT(DISTINCT patente), 0) as vehiculos_infractores,
+				MAX(ultima_actualizacion) as ultima_actualizacion,
 			");
 			if($gps!=""){	$this->db->where('gps', $gps);}
+			if($desde!="" and $hasta!=""){$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");}
 			$res = $this->db->get('flota_gps');
 			if($res->num_rows()>0){
 				return $res->result_array();

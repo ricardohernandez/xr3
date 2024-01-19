@@ -17,8 +17,8 @@
 
     var desde="<?php echo $desde; ?>";
     var hasta="<?php echo $hasta; ?>";
-    //$("#desde_t").val(desde);
-    //$("#hasta_t").val(hasta);
+    $("#desde_t").val(desde);
+    $("#hasta_t").val(hasta);
       
 
       $("#patente").select2({
@@ -49,14 +49,24 @@
       });
 
       function Actualizar(){
-        $.getJSON("<?php echo base_url();?>getActualizacionCombustible", {} , function(data) {
+        $.getJSON("<?php echo base_url();?>getActualizacionCombustible", 
+        {
+          desde : $("#desde_t").val(),
+          hasta : $("#hasta_t").val(),
+        } , function(data) {
         response = data;
         }).done(function() {
-          if(response[0]["ultima_actualizacion"] != 0){
+          if(response[0]["ultima_actualizacion"] != 0 || response[0]["ultima_actualizacion"] != null){
             $("#ultima_actualizacion").val(response[0]["ultima_actualizacion"]);
           }
-          if(response[0]["total"] != 0){
+          else{
+            $("#ultima_actualizacion").val(0);
+          }
+          if(response[0]["total"] != 0 || response[0]["ultima_actualizacion"] != null){
             $("#total").val(response[0]["total"]);
+          }
+          else{
+            $("#total").val(0);
           }
         });
       }
