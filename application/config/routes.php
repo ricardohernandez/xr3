@@ -21,7 +21,9 @@
 	$route['cambiarPass'] = "inicio/cambiarPass";
 	$route['verComo'] = "inicio/verComo";
 	$route['recuperarPass'] = "inicio/recuperarPass";
-
+	$route['api_ctc'] = "back_end/Api_ctc/api";
+	$route['api_ctc2'] = "back_end/Api_ctc/api2";
+	
 /*************CRON******************/
 	
 	$route['saludoCumpleanios'] = "inicio/saludoCumpleanios";
