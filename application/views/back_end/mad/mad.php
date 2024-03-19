@@ -17,11 +17,16 @@
   .modal-ejemplo{
     width:60%!important;
   }
+  .centered {
+    text-align: left!important ;
+  }
 
   .actualizacion_productividad{
       display: inline-block;
       font-size: 11px;
   }
+
+
 </style>
 
 <script type="text/javascript">
@@ -35,26 +40,8 @@
     $("#desde_f").val(desde);
     $("#hasta_f").val(hasta);
 
-    function Actualizar($tipo){
-      $.getJSON(base + "listaMotivos", {tipo : $tipo,} ,function(data) {
-        $('#motivo').empty();
-        $('#motivo').append($('<option>', {
-            value: "",
-            text: "Seleccione un motivo"
-          }));
-        $.each(data, function(index, item) {
-          $('#motivo').append($('<option>', {
-            value: item.id,
-            text: item.motivo
-          }));
-        });
-      });
-    }
-
-    Actualizar();
-
   /*****DATATABLE*****/   
-    var lista_rcdc = $('#lista_rcdc').DataTable({
+    var lista_mad = $('#lista_mad').DataTable({
        "aaSorting" : [[1,"desc"]],
        "scrollY": "65vh",
        "scrollX": true,
@@ -64,7 +51,7 @@
        "responsive":false,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
-          "url":"<?php echo base_url();?>getRcdcList",
+          "url":"<?php echo base_url();?>getMadList",
           "dataSrc": function (json) {
             $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
             $(".btn_filtro_detalle").prop("disabled" , false);
@@ -98,10 +85,9 @@
           { "data": "nombre_tecnico" ,"class":"margen-td centered"},
           { "data": "nombre_coordinador" ,"class":"margen-td centered"},
           { "data": "tipo" ,"class":"margen-td centered"},
-          { "data": "motivo" ,"class":"margen-td centered"},
           { "data": "proyecto" ,"class":"margen-td centered"},
-          { "data": "codigo" ,"class":"margen-td centered"},
-          { "data": "duracion" ,"class":"margen-td centered"},
+          { "data": "cam_con" ,"class":"margen-td centered"},
+          { "data": "rssi" ,"class":"margen-td centered"},
           { "class":"margen-td centered", "data": function(row,type,val,meta){
             if(row.observacion!="" && row.observacion!=null){
                    if(row.observacion.length > 30) {
@@ -121,14 +107,14 @@
   
 
       $(document).on('keyup paste', '#buscador', function() {
-        lista_rcdc.search($(this).val().trim()).draw();
+        lista_mad.search($(this).val().trim()).draw();
       });
 
       $(document).off('click', '.btn_filtro_detalle').on('click', '.btn_filtro_detalle',function(event) {
         event.preventDefault();
          $(this).prop("disabled" , true);
          $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Filtrando');
-         lista_rcdc.ajax.reload();
+         lista_mad.ajax.reload();
       });
 
 
@@ -137,21 +123,21 @@
       }
 
       setTimeout( function () {
-        var lista_rcdc = $.fn.dataTable.fnTables(true);
-        if ( lista_rcdc.length > 0 ) {
-            $(lista_rcdc).dataTable().fnAdjustColumnSizing();
+        var lista_mad = $.fn.dataTable.fnTables(true);
+        if ( lista_mad.length > 0 ) {
+            $(lista_mad).dataTable().fnAdjustColumnSizing();
       }}, 200 ); 
 
       setTimeout( function () {
-        var lista_rcdc = $.fn.dataTable.fnTables(true);
-        if ( lista_rcdc.length > 0 ) {
-            $(lista_rcdc).dataTable().fnAdjustColumnSizing();
+        var lista_mad = $.fn.dataTable.fnTables(true);
+        if ( lista_mad.length > 0 ) {
+            $(lista_mad).dataTable().fnAdjustColumnSizing();
       }}, 2000 ); 
 
       setTimeout( function () {
-        var lista_rcdc = $.fn.dataTable.fnTables(true);
-        if ( lista_rcdc.length > 0 ) {
-            $(lista_rcdc).dataTable().fnAdjustColumnSizing();
+        var lista_mad = $.fn.dataTable.fnTables(true);
+        if ( lista_mad.length > 0 ) {
+            $(lista_mad).dataTable().fnAdjustColumnSizing();
         }
       }, 4000 ); 
 
@@ -160,24 +146,23 @@
 
   /*********INGRESO************/
 
-    $(document).off('click', '.btn_nuevo_rcdc').on('click', '.btn_nuevo_rcdc',function(event) {
-        $('#modal_rcdc').modal('toggle'); 
+    $(document).off('click', '.btn_nuevo_mad').on('click', '.btn_nuevo_mad',function(event) {
+        $('#modal_mad').modal('toggle'); 
         $(".btn_guardar_detalle").html('<i class="fa fa-save"></i> Guardar');
         $(".btn_guardar_detalle").attr("disabled", false);
-        $(".cierra_modal_rcdc").attr("disabled", false);
-        $('#formRcdc')[0].reset();
+        $(".cierra_modal_mad").attr("disabled", false);
+        $('#formMad')[0].reset();
         $("#hash_detalle").val("");
         $("#id_coordinador").val(user);
-        document.getElementById("label_codigo").textContent = "Codigo";
-        $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", false);
+        $("#formMad input,#formMad select,#formMad button,#formMad").prop("disabled", false);
     });     
 
-    $(document).off('submit', '#formRcdc').on('submit', '#formRcdc',function(event) {
+    $(document).off('submit', '#formMad').on('submit', '#formMad',function(event) {
       var url="<?php echo base_url()?>";
-      var formElement = document.querySelector("#formRcdc");
+      var formElement = document.querySelector("#formMad");
       var formData = new FormData(formElement);
         $.ajax({
-            url: $('#formRcdc').attr('action')+"?"+$.now(),  
+            url: $('#formMad').attr('action')+"?"+$.now(),  
             type: 'POST',
             data: formData,
             cache: false,
@@ -186,14 +171,14 @@
             contentType : false,
             beforeSend:function(){
               $(".btn_guardar_detalle").attr("disabled", true);
-              $(".cierra_modal_rcdc").attr("disabled", true);
-              $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", true);
+              $(".cierra_modal_mad").attr("disabled", true);
+              $("#formMad input,#formMad select,#formMad button,#formMad").prop("disabled", true);
             },
             success: function (data) {
              if(data.res == "error"){
 
                 $(".btn_guardar_detalle").attr("disabled", false);
-                $(".cierra_modal_rcdc").attr("disabled", false);
+                $(".cierra_modal_mad").attr("disabled", false);
 
                 $.notify(data.msg, {
                   className:'error',
@@ -201,11 +186,11 @@
                   autoHideDelay:5000,
                 });
 
-                $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", false);
+                $("#formMad input,#formMad select,#formMad button,#formMad").prop("disabled", false);
 
               }else if(data.res == "ok"){
                   $(".btn_guardar_detalle").attr("disabled", false);
-                  $(".cierra_modal_rcdc").attr("disabled", false);
+                  $(".cierra_modal_mad").attr("disabled", false);
 
                   $.notify("Datos ingresados correctamente.", {
                     className:'success',
@@ -213,13 +198,13 @@
                     autoHideDelay:5000,
                   });
                 
-                  $('#modal_rcdc').modal("toggle");
-                  lista_rcdc.ajax.reload();
+                  $('#modal_mad').modal("toggle");
+                  lista_mad.ajax.reload();
             }
 
             $(".btn_guardar_detalle").attr("disabled", false);
-            $(".cierra_modal_rcdc").attr("disabled", false);
-            $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", false);
+            $(".cierra_modal_mad").attr("disabled", false);
+            $("#formMad input,#formMad select,#formMad button,#formMad").prop("disabled", false);
           },
           error : function(xhr, textStatus, errorThrown ) {
             if (textStatus == 'timeout') {
@@ -236,7 +221,7 @@
                       className:'warn',
                       globalPosition: 'top right'
                     });     
-                    $('#modal_rcdc').modal("toggle");
+                    $('#modal_mad').modal("toggle");
                 }    
                 return;
             }
@@ -246,7 +231,7 @@
                   className:'warn',
                   globalPosition: 'top right'
                 });
-                $('#modal_rcdc').modal("toggle");
+                $('#modal_mad').modal("toggle");
             }
           },timeout:25000
         });
@@ -257,15 +242,15 @@
       event.preventDefault();
       $("#hash_detalle").val("")
       hash=$(this).data("hash")
-      $('#formRcdc')[0].reset()
+      $('#formMad')[0].reset()
       $("#hash_detalle").val(hash)
-      $('#modal_rcdc').modal('toggle')
-      $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", true)
+      $('#modal_mad').modal('toggle')
+      $("#formMad input,#formMad select,#formMad button,#formMad").prop("disabled", true)
       $(".btn_guardar_detalle").attr("disabled", true)
       $(".cierra_modal").attr("disabled", true)
 
       $.ajax({
-        url: base+"getDataRcdc"+"?"+$.now(),  
+        url: base+"getDataMad"+"?"+$.now(),  
         type: 'POST',
         cache: false,
         tryCount : 0,
@@ -289,18 +274,16 @@
               $('#id_tecnico').val(data.datos[dato].id_tecnico).trigger('change');
               $('#id_coordinador').val(data.datos[dato].id_coordinador).trigger('change');
               $('#tipo').val(data.datos[dato].id_tipo).trigger('change');
-              $('#motivo').val(data.datos[dato].id_motivo).trigger('change');
               $('#proyecto').val(data.datos[dato].id_proyecto).trigger('change');
-              $("#codigo").val(data.datos[dato].codigo);
-              $("#hora").val(data.datos[dato].hora);
-              $("#minuto").val(data.datos[dato].minuto);
+              $('#cam_con').val(data.datos[dato].cam_con).trigger('change');
+              $('#rssi').val(data.datos[dato].rssi).trigger('change');
 
               $("#observacion").val(data.datos[dato].observacion);
 
 
             }
           
-            $("#formRcdc input,#formRcdc select,#formRcdc button,#formRcdc").prop("disabled", false);
+            $("#formMad input,#formMad select,#formMad button,#formMad").prop("disabled", false);
             $(".cierra_modal").prop("disabled", false);
             $(".btn_guardar_detalle").prop("disabled", false);
 
@@ -335,7 +318,7 @@
                 className:'warn',
                 globalPosition: 'top right'
               });
-              $('#modal_rcdc').modal("toggle");
+              $('#modal_mad').modal("toggle");
           }
         } , timeout:35000
       }) 
@@ -344,14 +327,14 @@
     $(document).off('click', '.btn_eliminar').on('click', '.btn_eliminar',function(event) {
       hash=$(this).data("hash");
       if(confirm("¿Esta seguro que desea eliminar este registro?")){
-        $.post('eliminaRcdc'+"?"+$.now(),{"hash": hash}, function(data) {
+        $.post('eliminaMad'+"?"+$.now(),{"hash": hash}, function(data) {
 
           if(data.res=="ok"){
             $.notify(data.msg, {
               className:'success',
               globalPosition: 'top right'
             })
-            lista_rcdc.ajax.reload();
+            lista_mad.ajax.reload();
 
           }else{
             $.notify(data.msg, {
@@ -363,29 +346,6 @@
       }
     })
   /********OTROS**********/
-
-  $(document).off('change', '#proyecto').on('change', '#proyecto',function(event) {
-        event.preventDefault();
-        var proyecto=$(this).val();
-        var label = document.getElementById("label_codigo");
-        if(proyecto==""){ // NULL
-          label.textContent = "Codigo";
-          $("#codigo").attr("readonly", true)
-          $("#costo").attr("readonly", true)
-          $("#costo").val("")
-        }
-        else if(proyecto=="3"){ //DIRECTV
-          label.textContent = "IBS";
-          $("#codigo").attr("readonly", false)
-          $("#costo").attr("readonly", false)
-        }
-        else{ //CLARO VTR
-          label.textContent = "OT";
-          $("#codigo").attr("readonly", false)
-          $("#costo").attr("readonly", true)
-          $("#costo").val("")
-        }
-  })
 
   $(document).on('click', '.ver_obs_desp', function(event) { //Función de botón "Ver Texto" en tabla
       event.preventDefault();
@@ -411,7 +371,7 @@
       }
     });
     
-  $(document).off('click', '.excelrcdc').on('click', '.excelrcdc',function(event) {
+  $(document).off('click', '.excelmad').on('click', '.excelmad',function(event) {
       event.preventDefault();
       var desde = $("#desde_f").val();
       var hasta = $("#hasta_f").val(); 
@@ -450,18 +410,11 @@
         empresa = "-"
       }
 
-      window.location="excelrcdc/"+desde+"/"+hasta+"/"+coordinador+"/"+comuna+"/"+zona+"/"+empresa;
+      window.location="excelmad/"+desde+"/"+hasta+"/"+coordinador+"/"+comuna+"/"+zona+"/"+empresa;
     });
 
     $(document).off('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa').on('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa', function(event) {
-      lista_rcdc.ajax.reload()
-    }); 
-
-    $(document).off('change', '#tipo').on('change', '#tipo', function(event) {
-      var motivo = document.getElementById("motivo");
-      if(motivo.value != ""){
-        Actualizar($(this).val());
-      }
+      lista_mad.ajax.reload()
     }); 
 
   })
@@ -485,7 +438,7 @@
 
       <div class="col-12 col-lg-1">  
         <div class="form-group">
-           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_rcdc btn_xr3">
+           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_mad btn_xr3">
            <i class="fa fa-plus-circle"></i>  Crear
            </button>
         </div>
@@ -571,7 +524,7 @@
 
       <div class="col-6 col-lg-1">  
         <div class="form-group">
-         <button type="button"  class="btn-block btn btn-sm btn-primary excelrcdc btn_xr3">
+         <button type="button"  class="btn-block btn btn-sm btn-primary excelmad btn_xr3">
          <i class="fa fa-save"></i> Excel
          </button>
         </div>
@@ -583,7 +536,7 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <table id="lista_rcdc" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
+      <table id="lista_mad" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
         <thead>
           <tr>  
             <th class="centered">Acciones</th>   
@@ -594,10 +547,9 @@
             <th class="centered">Nombre técnico</th>
             <th class="centered">Nombre coordinador</th> 
             <th class="centered">Tipo</th> 
-            <th class="centered">Motivo</th> 
             <th class="centered">Proyecto</th>  
-            <th class="centered">Código</th> 
-            <th class="centered">Duración</th> 
+            <th class="centered">Cert. cambio conect.</th>  
+            <th class="centered">Cert. RSSI</th>  
             <th class="centered">Observación</th> 
             <th class="centered">Última actualización</th> 
           </tr>
@@ -608,10 +560,10 @@
 
 
 <!--  FORMULARIO-->
-  <div id="modal_rcdc" data-backdrop="static"  data-keyboard="false"   class="modal fade">
-   <?php echo form_open_multipart("formRcdc",array("id"=>"formRcdc","class"=>"formRcdc"))?>
+  <div id="modal_mad" data-backdrop="static"  data-keyboard="false"   class="modal fade">
+   <?php echo form_open_multipart("formMad",array("id"=>"formMad","class"=>"formMad"))?>
 
-    <div class="modal-dialog modal_rcdc modal-dialog-scrollable">
+    <div class="modal-dialog modal_mad modal-dialog-scrollable">
       <div class="modal-content">
 
         <div class="modal-body">
@@ -729,29 +681,23 @@
 
               <div class="col-lg-3">  
                 <div class="form-group">
-                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Motivo</label>
-                  <select id="motivo" name="motivo"  class="form-control custom-select custom-select-sm">
-                      <option value selected="">Seleccione tipo...</option>
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Certificación cambio de conectores</label>
+                  <select id="cam_con" name="cam_con" class="custom-select custom-select-sm">
+                    <option value="" selected>Seleccione </option>
+                    <option value="SI" >SI </option>
+                    <option value="NO" >NO </option>
                   </select>
                 </div>
               </div>
-                
+
               <div class="col-lg-3">  
                 <div class="form-group">
-                  <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Duración </label>
-                  <div class="col-s-6">  
-                    <input class="form-control form-control-sm" type="number" id="hora" name="hora" min="0" placeholder="Horas">
-                  </div>
-                  <div class="col-s-6">  
-                    <input class="form-control form-control-sm" type="number" id="minuto" name="minuto" min="0" max="59" step="1" placeholder="Minutos">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-3 codigo"> 
-                <div class="form-group">
-                  <label id="label_codigo" for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Código</label>
-                  <input readonly type="text" placeholder="Ingrese código" name="codigo"  id="codigo" size="9" maxlength="9" class="form-control form-control-sm" autocomplete="off"/>
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Certificación niveles RSSI</label>
+                  <select id="rssi" name="rssi" class="custom-select custom-select-sm">
+                    <option value="" selected>Seleccione </option>
+                    <option value="SI" >SI </option>
+                    <option value="NO" >NO </option>
+                  </select>
                 </div>
               </div>
 
@@ -778,7 +724,7 @@
                 </div>
 
                 <div class="col-4 col-lg-3">
-                  <button class="btn-block btn btn-sm btn-secondary cierra_modal_rcdc" data-dismiss="modal">
+                  <button class="btn-block btn btn-sm btn-secondary cierra_modal_mad" data-dismiss="modal">
                    <i class="fa fa-window-close"></i> Cerrar
                   </button>
                 </div>

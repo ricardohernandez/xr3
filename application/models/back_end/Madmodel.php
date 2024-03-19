@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Rcdcmodel extends CI_Model {
+class Madmodel extends CI_Model {
 
 		public function __construct(){
 		parent::__construct();
@@ -13,9 +13,9 @@ class Rcdcmodel extends CI_Model {
 		return FALSE;
 	}
 	
-	/**********RCDC*************/
+	/**********MAD*************/
 
-		public function getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa){
+		public function getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa){
 			$this->db->select(
 				"sha1(r.id) as hash,
 				pl.titulo as comuna,
@@ -24,14 +24,11 @@ class Rcdcmodel extends CI_Model {
                 a.area as zona,
 				p.proyecto as proyecto,
 				r.*,
-				CONCAT(r.hora,':',r.minuto) as duracion,
 				rt.tipo as tipo,
-				rm.motivo as motivo,
 			");
 
-			$this->db->join('comunas_rcdc as pl', 'pl.id = r.id_comuna', 'left');
-			$this->db->join('rcdc_tipos as rt', 'rt.id = r.id_tipo', 'left');
-			$this->db->join('rcdc_motivos as rm', 'rm.id = r.id_motivo', 'left');
+			$this->db->join('comunas_mad as pl', 'pl.id = r.id_comuna', 'left');
+			$this->db->join('mad_tipos as rt', 'rt.id = r.id_tipo', 'left');
 			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
 			$this->db->join('usuarios as u2', 'r.id_coordinador = u2.id', 'left');
 			$this->db->join('usuarios_areas as a', 'r.id_zona = a.id', 'left');
@@ -54,23 +51,23 @@ class Rcdcmodel extends CI_Model {
 			}
 
 			$this->db->order_by('r.fecha_ingreso', 'desc');
-			$res = $this->db->get('rcdc as r');
+			$res = $this->db->get('mad as r');
 			return $res->result_array();
 		}
 		
-		public function getDataRcdc($hash){
+		public function getDataMad($hash){
 			$this->db->select('
 				sha1(r.id) as hash,
                 r.*,
 			');
 			$this->db->where('sha1(r.id)', $hash);
-			$res=$this->db->get('rcdc as r');
+			$res=$this->db->get('mad as r');
 			return $res->result_array();
 		}
 
 		public function formActualizar($id,$data){
 			$this->db->where('sha1(id)', $id);
-			if($this->db->update('rcdc', $data)){
+			if($this->db->update('mad', $data)){
 				
 				return TRUE;
 			}
@@ -78,15 +75,15 @@ class Rcdcmodel extends CI_Model {
 		}
 
 		public function formIngreso($data){
-			if($this->db->insert('rcdc', $data)){
+			if($this->db->insert('mad', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
 		} 
 		
-		public function eliminaRcdc($hash){
+		public function eliminaMad($hash){
 			$this->db->where('sha1(id)', $hash);
-			if($this ->db->delete('rcdc')){
+			if($this ->db->delete('mad')){
 				return TRUE;
 			}
 			return FALSE;
@@ -96,7 +93,7 @@ class Rcdcmodel extends CI_Model {
 
 	public function listaComunas(){
 		$this->db->select('c.*');	
-		$this->db->from('comunas_rcdc as c');
+		$this->db->from('comunas_mad as c');
 		$this->db->order_by('titulo', 'asc');
 		$res=$this->db->get();
 		if($res->num_rows()>0){
@@ -148,7 +145,7 @@ class Rcdcmodel extends CI_Model {
 
 	public function listaTramos(){
 		$this->db->order_by('tramo', 'asc');
-		$res=$this->db->get('rcdc_tramos');
+		$res=$this->db->get('mad_tramos');
 		if($res->num_rows()>0){
 			return $res->result_array();
 		}
@@ -157,7 +154,7 @@ class Rcdcmodel extends CI_Model {
 
 	public function listaTipos(){
 		$this->db->order_by('tipo', 'asc');
-		$res=$this->db->get('rcdc_tipos');
+		$res=$this->db->get('mad_tipos');
 		if($res->num_rows()>0){
 			return $res->result_array();
 		}
@@ -169,7 +166,7 @@ class Rcdcmodel extends CI_Model {
 			$this->db->where('id_tipo', $tipo);
 		}
 		$this->db->order_by('motivo', 'asc');
-		$res=$this->db->get('rcdc_motivos');
+		$res=$this->db->get('mad_motivos');
 		if($res->num_rows()>0){
 			return $res->result_array();
 		}
@@ -190,30 +187,30 @@ class Rcdcmodel extends CI_Model {
 
 	/**** COMUNAS ****/
 
-		public function getComunasRcdcList(){
+		public function getComunasMadList(){
 			$this->db->select(
 				"sha1(r.id) as hash,
 				r.*,
 			");
 
 			$this->db->order_by('r.titulo', 'desc');
-			$res = $this->db->get('comunas_rcdc as r');
+			$res = $this->db->get('comunas_mad as r');
 			return $res->result_array();
 		}
 
-		public function getDataComunasRcdc($hash){
+		public function getDataComunasMad($hash){
 			$this->db->select('
 				sha1(r.id) as hash,
 				r.*,
 			');
 			$this->db->where('sha1(r.id)', $hash);
-			$res=$this->db->get('comunas_rcdc as r');
+			$res=$this->db->get('comunas_mad as r');
 			return $res->result_array();
 		}
 
 		public function formActualizarComuna($id,$data){
 			$this->db->where('sha1(id)', $id);
-			if($this->db->update('comunas_rcdc', $data)){
+			if($this->db->update('comunas_mad', $data)){
 				
 				return TRUE;
 			}
@@ -221,15 +218,15 @@ class Rcdcmodel extends CI_Model {
 		}
 
 		public function formIngresoComuna($data){
-			if($this->db->insert('comunas_rcdc', $data)){
+			if($this->db->insert('comunas_mad', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
 		} 
 		
-		public function eliminaComunasRcdc($hash){
+		public function eliminaComunasMad($hash){
 			$this->db->where('sha1(id)', $hash);
-			if($this ->db->delete('comunas_rcdc')){
+			if($this ->db->delete('comunas_mad')){
 				return TRUE;
 			}
 			return FALSE;
@@ -237,30 +234,30 @@ class Rcdcmodel extends CI_Model {
 
 	/***** TIPOS *****/
 
-		public function getTiposRcdcList(){
+		public function getTiposMadList(){
 			$this->db->select(
 				"sha1(r.id) as hash,
 				r.*,
 			");
 
 			$this->db->order_by('r.tipo', 'desc');
-			$res = $this->db->get('rcdc_tipos as r');
+			$res = $this->db->get('mad_tipos as r');
 			return $res->result_array();
 		}
 
-		public function getDataTiposRcdc($hash){
+		public function getDataTiposMad($hash){
 			$this->db->select('
 				sha1(r.id) as hash,
 				r.*,
 			');
 			$this->db->where('sha1(r.id)', $hash);
-			$res=$this->db->get('rcdc_tipos as r');
+			$res=$this->db->get('mad_tipos as r');
 			return $res->result_array();
 		}
 
 		public function formActualizarTipo($id,$data){
 			$this->db->where('sha1(id)', $id);
-			if($this->db->update('rcdc_tipos', $data)){
+			if($this->db->update('mad_tipos', $data)){
 				
 				return TRUE;
 			}
@@ -268,15 +265,15 @@ class Rcdcmodel extends CI_Model {
 		}
 
 		public function formIngresoTipo($data){
-			if($this->db->insert('rcdc_tipos', $data)){
+			if($this->db->insert('mad_tipos', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
 		} 
 		
-		public function eliminaTiposRcdc($hash){
+		public function eliminaTiposMad($hash){
 			$this->db->where('sha1(id)', $hash);
-			if($this ->db->delete('rcdc_tipos')){
+			if($this ->db->delete('mad_tipos')){
 				return TRUE;
 			}
 			return FALSE;
@@ -284,31 +281,31 @@ class Rcdcmodel extends CI_Model {
 
 		/***** TIPOS *****/
 
-		public function getMotivosRcdcList(){
+		public function getMotivosMadList(){
 			$this->db->select(
 				"sha1(r.id) as hash,
 				r.*,
 				t.tipo as tipo,
 			");
-			$this->db->join('rcdc_tipos t','r.id_tipo = t.id','left');
+			$this->db->join('mad_tipos t','r.id_tipo = t.id','left');
 			$this->db->order_by('r.id_tipo,r.motivo', 'desc');
-			$res = $this->db->get('rcdc_motivos as r');
+			$res = $this->db->get('mad_motivos as r');
 			return $res->result_array();
 		}
 
-		public function getDataMotivosRcdc($hash){
+		public function getDataMotivosMad($hash){
 			$this->db->select('
 				sha1(r.id) as hash,
 				r.*,
 			');
 			$this->db->where('sha1(r.id)', $hash);
-			$res=$this->db->get('rcdc_motivos as r');
+			$res=$this->db->get('mad_motivos as r');
 			return $res->result_array();
 		}
 
 		public function formActualizarMotivo($id,$data){
 			$this->db->where('sha1(id)', $id);
-			if($this->db->update('rcdc_motivos', $data)){
+			if($this->db->update('mad_motivos', $data)){
 				
 				return TRUE;
 			}
@@ -316,15 +313,15 @@ class Rcdcmodel extends CI_Model {
 		}
 
 		public function formIngresoMotivo($data){
-			if($this->db->insert('rcdc_motivos', $data)){
+			if($this->db->insert('mad_motivos', $data)){
 				return $this->db->insert_id();
 			}
 			return FALSE;
 		} 
 		
-		public function eliminaMotivosRcdc($hash){
+		public function eliminaMotivosMad($hash){
 			$this->db->where('sha1(id)', $hash);
-			if($this ->db->delete('rcdc_motivos')){
+			if($this ->db->delete('mad_motivos')){
 				return TRUE;
 			}
 			return FALSE;

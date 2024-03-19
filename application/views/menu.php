@@ -660,12 +660,14 @@
 
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>flota"> RF - Registro de Flota</a></li>
 
+               <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>mad"> MAD - Módulo auditoría despacho</a></li>
+
                <?php
 
                   }
 
                ?>
-
+               
 
 
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
@@ -1033,7 +1035,8 @@
                         <li><a  class="menu_list" href="<?php echo base_url() ?>rcdc"> RCDC - Registro centro de comando</a></li>
 
                         <li><a  class="menu_list" href="<?php echo base_url() ?>flota"> RF - Registro de Flota</a></li>
-
+                        
+                        <li><a  class="menu_list" href="<?php echo base_url() ?>mad"> MAD - Módulo auditoría despacho</a></li>
                         <?php
 
                            }

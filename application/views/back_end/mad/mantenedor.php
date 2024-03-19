@@ -31,7 +31,7 @@
     const base = "<?php echo base_url() ?>";
 
     function Actualizar(){
-        $.getJSON(base + "listaTipos", {} ,function(data) {
+        $.getJSON(base + "listaTiposMad", {} ,function(data) {
           $('#tipo_m').empty();
           $('#tipo_m').append($('<option>', {
               value: "",
@@ -61,7 +61,7 @@
         "responsive":false,
         // "columnDefs": [{ orderable: false, targets: 0 }  ],
         "ajax": {
-            "url":"<?php echo base_url();?>getComunasRcdcList",
+            "url":"<?php echo base_url();?>getComunasMadList",
             "dataSrc": function (json) {
               $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
               $(".btn_filtro_detalle").prop("disabled" , false);
@@ -133,17 +133,17 @@
           $(".btn_guardar_comuna").html('<i class="fa fa-save"></i> Guardar');
           $(".btn_guardar_comuna").attr("disabled", false);
           $(".cierra_modal_comunas").attr("disabled", false);
-          $('#formComunasRcdc')[0].reset();
+          $('#formComunasMad')[0].reset();
           $("#hash_comuna").val("");
-          $("#formComunasRcdc input,#formComunasRcdc select,#formComunasRcdc button,#formComunasRcdc").prop("disabled", false);
+          $("#formComunasMad input,#formComunasMad select,#formComunasMad button,#formComunasMad").prop("disabled", false);
       });     
 
-      $(document).off('submit', '#formComunasRcdc').on('submit', '#formComunasRcdc',function(event) {
+      $(document).off('submit', '#formComunasMad').on('submit', '#formComunasMad',function(event) {
         var url="<?php echo base_url()?>";
-        var formElement = document.querySelector("#formComunasRcdc");
+        var formElement = document.querySelector("#formComunasMad");
         var formData = new FormData(formElement);
           $.ajax({
-              url: $('#formComunasRcdc').attr('action')+"?"+$.now(),  
+              url: $('#formComunasMad').attr('action')+"?"+$.now(),  
               type: 'POST',
               data: formData,
               cache: false,
@@ -153,7 +153,7 @@
               beforeSend:function(){
                 $(".btn_guardar_comuna").attr("disabled", true);
                 $(".cierra_modal_comunas").attr("disabled", true);
-                $("#formComunasRcdc input,#formComunasRcdc select,#formComunasRcdc button,#formComunasRcdc").prop("disabled", true);
+                $("#formComunasMad input,#formComunasMad select,#formComunasMad button,#formComunasMad").prop("disabled", true);
               },
               success: function (data) {
               if(data.res == "error"){
@@ -167,7 +167,7 @@
                     autoHideDelay:5000,
                   });
 
-                  $("#formComunasRcdc input,#formComunasRcdc select,#formComunasRcdc button,#formComunasRcdc").prop("disabled", false);
+                  $("#formComunasMad input,#formComunasMad select,#formComunasMad button,#formComunasMad").prop("disabled", false);
 
                 }else if(data.res == "ok"){
                     $(".btn_guardar_comuna").attr("disabled", false);
@@ -185,7 +185,7 @@
 
               $(".btn_guardar_comuna").attr("disabled", false);
               $(".cierra_modal_comunas").attr("disabled", false);
-              $("#formComunasRcdc input,#formComunasRcdc select,#formComunasRcdc button,#formComunasRcdc").prop("disabled", false);
+              $("#formComunasMad input,#formComunasMad select,#formComunasMad button,#formComunasMad").prop("disabled", false);
             },
             error : function(xhr, textStatus, errorThrown ) {
               if (textStatus == 'timeout') {
@@ -223,15 +223,15 @@
         event.preventDefault();
         $("#hash_comuna").val("")
         hash=$(this).data("hash")
-        $('#formComunasRcdc')[0].reset()
+        $('#formComunasMad')[0].reset()
         $("#hash_comuna").val(hash)
         $('#modal_comunas').modal('toggle')
-        $("#formComunasRcdc input,#formComunasRcdc select,#formComunasRcdc button,#formComunasRcdc").prop("disabled", true)
+        $("#formComunasMad input,#formComunasMad select,#formComunasMad button,#formComunasMad").prop("disabled", true)
         $(".btn_guardar_comuna").attr("disabled", true)
         $(".cierra_modal").attr("disabled", true)
 
         $.ajax({
-          url: base+"getDataComunasRcdc"+"?"+$.now(),  
+          url: base+"getDataComunasMad"+"?"+$.now(),  
           type: 'POST',
           cache: false,
           tryCount : 0,
@@ -251,7 +251,7 @@
                 $("#comuna").val(data.datos[dato].titulo);
               }
             
-              $("#formComunasRcdc input,#formComunasRcdc select,#formComunasRcdc button,#formComunasRcdc").prop("disabled", false);
+              $("#formComunasMad input,#formComunasMad select,#formComunasMad button,#formComunasMad").prop("disabled", false);
               $(".cierra_modal").prop("disabled", false);
               $(".btn_guardar_comuna").prop("disabled", false);
 
@@ -295,7 +295,7 @@
       $(document).off('click', '.btn_eliminar_comuna').on('click', '.btn_eliminar_comuna',function(event) {
         hash=$(this).data("hash");
         if(confirm("¿Esta seguro que desea eliminar este registro?")){
-          $.post('eliminaComunasRcdc'+"?"+$.now(),{"hash": hash}, function(data) {
+          $.post('eliminaComunasMad'+"?"+$.now(),{"hash": hash}, function(data) {
 
             if(data.res=="ok"){
               $.notify(data.msg, {
@@ -326,7 +326,7 @@
        "responsive":false,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
-          "url":"<?php echo base_url();?>getTiposRcdcList",
+          "url":"<?php echo base_url();?>getTiposMadList",
           "dataSrc": function (json) {
             $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
             $(".btn_filtro_detalle").prop("disabled" , false);
@@ -398,17 +398,17 @@
           $(".btn_guardar_tipo").html('<i class="fa fa-save"></i> Guardar');
           $(".btn_guardar_tipo").attr("disabled", false);
           $(".cierra_modal_tipos").attr("disabled", false);
-          $('#formTiposRcdc')[0].reset();
+          $('#formTiposMad')[0].reset();
           $("#hash_tipo").val("");
-          $("#formTiposRcdc input,#formTiposRcdc select,#formTiposRcdc button,#formTiposRcdc").prop("disabled", false);
+          $("#formTiposMad input,#formTiposMad select,#formTiposMad button,#formTiposMad").prop("disabled", false);
       });     
 
-      $(document).off('submit', '#formTiposRcdc').on('submit', '#formTiposRcdc',function(event) {
+      $(document).off('submit', '#formTiposMad').on('submit', '#formTiposMad',function(event) {
         var url="<?php echo base_url()?>";
-        var formElement = document.querySelector("#formTiposRcdc");
+        var formElement = document.querySelector("#formTiposMad");
         var formData = new FormData(formElement);
           $.ajax({
-              url: $('#formTiposRcdc').attr('action')+"?"+$.now(),  
+              url: $('#formTiposMad').attr('action')+"?"+$.now(),  
               type: 'POST',
               data: formData,
               cache: false,
@@ -418,7 +418,7 @@
               beforeSend:function(){
                 $(".btn_guardar_tipo").attr("disabled", true);
                 $(".cierra_modal_tipos").attr("disabled", true);
-                $("#formTiposRcdc input,#formTiposRcdc select,#formTiposRcdc button,#formTiposRcdc").prop("disabled", true);
+                $("#formTiposMad input,#formTiposMad select,#formTiposMad button,#formTiposMad").prop("disabled", true);
               },
               success: function (data) {
               if(data.res == "error"){
@@ -432,7 +432,7 @@
                     autoHideDelay:5000,
                   });
 
-                  $("#formTiposRcdc input,#formTiposRcdc select,#formTiposRcdc button,#formTiposRcdc").prop("disabled", false);
+                  $("#formTiposMad input,#formTiposMad select,#formTiposMad button,#formTiposMad").prop("disabled", false);
 
                 }else if(data.res == "ok"){
                     $(".btn_guardar_tipo").attr("disabled", false);
@@ -451,7 +451,7 @@
 
               $(".btn_guardar_tipo").attr("disabled", false);
               $(".cierra_modal_tipos").attr("disabled", false);
-              $("#formTiposRcdc input,#formTiposRcdc select,#formTiposRcdc button,#formTiposRcdc").prop("disabled", false);
+              $("#formTiposMad input,#formTiposMad select,#formTiposMad button,#formTiposMad").prop("disabled", false);
             },
             error : function(xhr, textStatus, errorThrown ) {
               if (textStatus == 'timeout') {
@@ -489,15 +489,15 @@
         event.preventDefault();
         $("#hash_tipo").val("")
         hash=$(this).data("hash")
-        $('#formTiposRcdc')[0].reset()
+        $('#formTiposMad')[0].reset()
         $("#hash_tipo").val(hash)
         $('#modal_tipos').modal('toggle')
-        $("#formTiposRcdc input,#formTiposRcdc select,#formTiposRcdc button,#formTiposRcdc").prop("disabled", true)
+        $("#formTiposMad input,#formTiposMad select,#formTiposMad button,#formTiposMad").prop("disabled", true)
         $(".btn_guardar_tipo").attr("disabled", true)
         $(".cierra_modal").attr("disabled", true)
 
         $.ajax({
-          url: base+"getDataTiposRcdc"+"?"+$.now(),  
+          url: base+"getDataTiposMad"+"?"+$.now(),  
           type: 'POST',
           cache: false,
           tryCount : 0,
@@ -517,7 +517,7 @@
                 $("#tipo").val(data.datos[dato].tipo);
               }
             
-              $("#formTiposRcdc input,#formTiposRcdc select,#formTiposRcdc button,#formTiposRcdc").prop("disabled", false);
+              $("#formTiposMad input,#formTiposMad select,#formTiposMad button,#formTiposMad").prop("disabled", false);
               $(".cierra_modal").prop("disabled", false);
               $(".btn_guardar_tipo").prop("disabled", false);
 
@@ -561,7 +561,7 @@
       $(document).off('click', '.btn_eliminar_tipo').on('click', '.btn_eliminar_tipo',function(event) {
         hash=$(this).data("hash");
         if(confirm("¿Esta seguro que desea eliminar este registro?")){
-          $.post('eliminaTiposRcdc'+"?"+$.now(),{"hash": hash}, function(data) {
+          $.post('eliminaTiposMad'+"?"+$.now(),{"hash": hash}, function(data) {
 
             if(data.res=="ok"){
               $.notify(data.msg, {
@@ -592,7 +592,7 @@
        "responsive":false,
        // "columnDefs": [{ orderable: false, targets: 0 }  ],
        "ajax": {
-          "url":"<?php echo base_url();?>getMotivosRcdcList",
+          "url":"<?php echo base_url();?>getMotivosMadList",
           "dataSrc": function (json) {
             $(".btn_filtro_detalle").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar');
             $(".btn_filtro_detalle").prop("disabled" , false);
@@ -665,17 +665,17 @@
           $(".btn_guardar_motivo").html('<i class="fa fa-save"></i> Guardar');
           $(".btn_guardar_motivo").attr("disabled", false);
           $(".cierra_modal_motivos").attr("disabled", false);
-          $('#formMotivosRcdc')[0].reset();
+          $('#formMotivosMad')[0].reset();
           $("#hash_motivo").val("");
-          $("#formMotivosRcdc input,#formMotivosRcdc select,#formMotivosRcdc button,#formMotivosRcdc").prop("disabled", false);
+          $("#formMotivosMad input,#formMotivosMad select,#formMotivosMad button,#formMotivosMad").prop("disabled", false);
       });     
 
-      $(document).off('submit', '#formMotivosRcdc').on('submit', '#formMotivosRcdc',function(event) {
+      $(document).off('submit', '#formMotivosMad').on('submit', '#formMotivosMad',function(event) {
         var url="<?php echo base_url()?>";
-        var formElement = document.querySelector("#formMotivosRcdc");
+        var formElement = document.querySelector("#formMotivosMad");
         var formData = new FormData(formElement);
           $.ajax({
-              url: $('#formMotivosRcdc').attr('action')+"?"+$.now(),  
+              url: $('#formMotivosMad').attr('action')+"?"+$.now(),  
               type: 'POST',
               data: formData,
               cache: false,
@@ -685,7 +685,7 @@
               beforeSend:function(){
                 $(".btn_guardar_motivo").attr("disabled", true);
                 $(".cierra_modal_motivos").attr("disabled", true);
-                $("#formMotivosRcdc input,#formMotivosRcdc select,#formMotivosRcdc button,#formMotivosRcdc").prop("disabled", true);
+                $("#formMotivosMad input,#formMotivosMad select,#formMotivosMad button,#formMotivosMad").prop("disabled", true);
               },
               success: function (data) {
               if(data.res == "error"){
@@ -699,7 +699,7 @@
                     autoHideDelay:5000,
                   });
 
-                  $("#formMotivosRcdc input,#formMotivosRcdc select,#formMotivosRcdc button,#formMotivosRcdc").prop("disabled", false);
+                  $("#formMotivosMad input,#formMotivosMad select,#formMotivosMad button,#formMotivosMad").prop("disabled", false);
 
                 }else if(data.res == "ok"){
                     $(".btn_guardar_motivo").attr("disabled", false);
@@ -717,7 +717,7 @@
 
               $(".btn_guardar_motivo").attr("disabled", false);
               $(".cierra_modal_motivos").attr("disabled", false);
-              $("#formMotivosRcdc input,#formMotivosRcdc select,#formMotivosRcdc button,#formMotivosRcdc").prop("disabled", false);
+              $("#formMotivosMad input,#formMotivosMad select,#formMotivosMad button,#formMotivosMad").prop("disabled", false);
             },
             error : function(xhr, textStatus, errorThrown ) {
               if (textStatus == 'timeout') {
@@ -755,15 +755,15 @@
         event.preventDefault();
         $("#hash_motivo").val("")
         hash=$(this).data("hash")
-        $('#formMotivosRcdc')[0].reset()
+        $('#formMotivosMad')[0].reset()
         $("#hash_motivo").val(hash)
         $('#modal_motivos').modal('toggle')
-        $("#formMotivosRcdc input,#formMotivosRcdc select,#formMotivosRcdc button,#formMotivosRcdc").prop("disabled", true)
+        $("#formMotivosMad input,#formMotivosMad select,#formMotivosMad button,#formMotivosMad").prop("disabled", true)
         $(".btn_guardar_motivo").attr("disabled", true)
         $(".cierra_modal").attr("disabled", true)
 
         $.ajax({
-          url: base+"getDataMotivosRcdc"+"?"+$.now(),  
+          url: base+"getDataMotivosMad"+"?"+$.now(),  
           type: 'POST',
           cache: false,
           tryCount : 0,
@@ -784,7 +784,7 @@
                 $("#motivo").val(data.datos[dato].motivo);
               }
             
-              $("#formMotivosRcdc input,#formMotivosRcdc select,#formMotivosRcdc button,#formMotivosRcdc").prop("disabled", false);
+              $("#formMotivosMad input,#formMotivosMad select,#formMotivosMad button,#formMotivosMad").prop("disabled", false);
               $(".cierra_modal").prop("disabled", false);
               $(".btn_guardar_motivo").prop("disabled", false);
 
@@ -828,7 +828,7 @@
       $(document).off('click', '.btn_eliminar_motivo').on('click', '.btn_eliminar_motivo',function(event) {
         hash=$(this).data("hash");
         if(confirm("¿Esta seguro que desea eliminar este registro?")){
-          $.post('eliminaMotivosRcdc'+"?"+$.now(),{"hash": hash}, function(data) {
+          $.post('eliminaMotivosMad'+"?"+$.now(),{"hash": hash}, function(data) {
 
             if(data.res=="ok"){
               $.notify(data.msg, {
@@ -852,7 +852,7 @@
 
 <!-- LISTADO -->
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <center>
         <div class="col-lg-3">
           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_comuna btn_xr3">
@@ -871,7 +871,7 @@
       </table>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-6">
       <center>
         <div class="col-lg-3">
           <button type="button" class="btn btn-block btn-sm btn-primary btn_nuevo_tipo btn_xr3">
@@ -890,6 +890,7 @@
       </table>
     </div>
 
+    <!--
     <div class="col-lg-4">
       <center>
         <div class="col-lg-3">
@@ -909,11 +910,13 @@
         </thead>
       </table>
     </div>
+    -->
+
   </div>
 
 <!--  FORMULARIO-->
   <div id="modal_comunas" data-backdrop="static"  data-keyboard="false"   class="modal fade">
-   <?php echo form_open_multipart("formComunasRcdc",array("id"=>"formComunasRcdc","class"=>"formComunasRcdc"))?>
+   <?php echo form_open_multipart("formComunasMad",array("id"=>"formComunasMad","class"=>"formComunasMad"))?>
 
     <div class="modal-dialog modal_comunas modal-dialog-scrollable">
       <div class="modal-content">
@@ -958,7 +961,7 @@
   </div>
 
   <div id="modal_tipos" data-backdrop="static"  data-keyboard="false"   class="modal fade">
-   <?php echo form_open_multipart("formTiposRcdc",array("id"=>"formTiposRcdc","class"=>"formTiposRcdc"))?>
+   <?php echo form_open_multipart("formTiposMad",array("id"=>"formTiposMad","class"=>"formTiposMad"))?>
 
     <div class="modal-dialog modal_tipos modal-dialog-scrollable">
       <div class="modal-content">
@@ -1003,7 +1006,7 @@
   </div>
 
   <div id="modal_motivos" data-backdrop="static"  data-keyboard="false"   class="modal fade">
-   <?php echo form_open_multipart("formMotivosRcdc",array("id"=>"formMotivosRcdc","class"=>"formMotivosRcdc"))?>
+   <?php echo form_open_multipart("formMotivosMad",array("id"=>"formMotivosMad","class"=>"formMotivosMad"))?>
 
     <div class="modal-dialog modal_motivos modal-dialog-scrollable">
       <div class="modal-content">

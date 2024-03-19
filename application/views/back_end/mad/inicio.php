@@ -54,7 +54,7 @@
     $(".menu_lista li").removeClass('menuActivo');       
     $("#menu_detalle").addClass('menuActivo');  
 
-    $.get("getRcdcInicio", function( data ) {
+    $.get("getMadInicio", function( data ) {
       $(".contenedor_app").html(data);    
       $("#menu_detalle").removeClass('disabled_sub');
     });
@@ -66,7 +66,7 @@
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_detalle").addClass('menuActivo');  
 
-      $.get("getRcdcInicio", function( data ) {
+      $.get("getMadInicio", function( data ) {
         $(".contenedor_app").html(data);    
         $("#menu_detalle").removeClass('disabled_sub');
       });
@@ -79,7 +79,7 @@
       $(".menu_lista li").removeClass('menuActivo');       
       $("#menu_mantenedor").addClass('menuActivo');  
 
-      $.get("getMantenedorRcdc", function( data ) {
+      $.get("getMantenedorMad", function( data ) {
         $(".contenedor_app").html(data);    
         $("#menu_mantenedor").removeClass('disabled_sub');
       });

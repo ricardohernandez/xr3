@@ -1308,6 +1308,37 @@
 
 	$route['excel_es/(:any)/(:any)/(:any)/(:any)'] = "back_end/es/excel_es/$1/$2/$3/$4";
 
+/************ MAD - MODULO AUDITORIA DESPACHO *****************/
+
+	$route['mad'] = "back_end/mad/index";
+	$route['getMadInicio'] = "back_end/mad/getMadInicio";
+	$route['getMadList'] = "back_end/mad/getMadList";
+	$route['formMad'] = "back_end/mad/formMad";
+	$route['eliminaMad'] = "back_end/mad/eliminaMad";
+	$route['getDataMad'] = "back_end/mad/getDataMad";
+	$route['excelmad/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/mad/excelmad/$1/$2/$3/$4/$5/$6";
+
+	/************ MAD - MANTENEDOR *****************/
+
+		$route['getMantenedorMad'] = "back_end/mad/getMantenedorMad";
+
+		$route['getMotivosMadList'] = "back_end/mad/getMotivosMadList";
+		$route['formMotivosMad'] = "back_end/mad/formMotivosMad";
+		$route['eliminaMotivosMad'] = "back_end/mad/eliminaMotivosMad";
+		$route['getDataMotivosMad'] = "back_end/mad/getDataMotivosMad";
+
+		$route['getComunasMadList'] = "back_end/mad/getComunasMadList";
+		$route['formComunasMad'] = "back_end/mad/formComunasMad";
+		$route['eliminaComunasMad'] = "back_end/mad/eliminaComunasMad";
+		$route['getDataComunasMad'] = "back_end/mad/getDataComunasMad";
+
+		$route['getTiposMadList'] = "back_end/mad/getTiposMadList";
+		$route['formTiposMad'] = "back_end/mad/formTiposMad";
+		$route['eliminaTiposMad'] = "back_end/mad/eliminaTiposMad";
+		$route['getDataTiposMad'] = "back_end/mad/getDataTiposMad";	
+
+		$route['listaMotivosMad'] = "back_end/mad/listaMotivos";
+		$route['listaTiposMad'] = "back_end/mad/listaTipos";
 
 
 

@@ -1,10 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Rcdc extends CI_Controller {
+class Mad extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("back_end/Rcdcmodel");
+		$this->load->model("back_end/Madmodel");
 		$this->load->model("back_end/Iniciomodel");
 		$this->load->helper(array('fechas','str'));
 		$this->load->library('user_agent');
@@ -36,16 +36,16 @@ class Rcdc extends CI_Controller {
 	    	"navegador"=>"navegador :".$this->agent->browser()."\nversion :".$this->agent->version()."\nos :".$this->agent-> platform()."\nmovil :".$this->agent->mobile(),
 	    	"ip"=>$this->input->ip_address(),
     	);
-    	$this->Rcdcmodel->insertarVisita($data);
+    	$this->Madmodel->insertarVisita($data);
 	}
 
 	public function index(){
-		$this->visitas("Rcdc");
+		$this->visitas("Mad");
     	$this->acceso();
 
 	    $datos = array(
-	        'titulo' => "RCDC (Registro centro de comando)",
-	        'contenido' => "rcdc/inicio",
+	        'titulo' => "MAD (Módulo auditoría despacho)",
+	        'contenido' => "mad/inicio",
 	        'perfiles' => $this->Iniciomodel->listaPerfiles(),
 		);  
 
@@ -54,25 +54,25 @@ class Rcdc extends CI_Controller {
 
 	/********* RCDC ***********/
 
-		public function getRcdcInicio(){
+		public function getMadInicio(){
 			if($this->input->is_ajax_request()){
 				$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
 				$hasta = date('Y-m-d');
 				$datos = array(
 					'desde' => $desde,
 					'hasta' => $hasta,
-					'usuarios' => $this->Rcdcmodel->listaTrabajadores(),
-					'comunas' => $this->Rcdcmodel->listaComunas(),
-					'plazas' => $this->Rcdcmodel->listaPlazas(),
-					'zonas' => $this->Rcdcmodel->listaZonas(),
-					'proyectos' => $this->Rcdcmodel->listaProyectos(),
-					'tipos' => $this->Rcdcmodel->listaTipos(),
+					'usuarios' => $this->Madmodel->listaTrabajadores(),
+					'comunas' => $this->Madmodel->listaComunas(),
+					'plazas' => $this->Madmodel->listaPlazas(),
+					'zonas' => $this->Madmodel->listaZonas(),
+					'proyectos' => $this->Madmodel->listaProyectos(),
+					'tipos' => $this->Madmodel->listaTipos(),
 				);
-				$this->load->view('back_end/rcdc/rcdc',$datos);
+				$this->load->view('back_end/mad/mad',$datos);
 			}
 		}
 
-		public function getRcdcList(){
+		public function getMadList(){
 			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
 			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
 			$coordinador=$this->security->xss_clean(strip_tags($this->input->get_post("coordinador")));
@@ -82,10 +82,10 @@ class Rcdc extends CI_Controller {
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
 
-			echo json_encode($this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa));
+			echo json_encode($this->Madmodel->getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa));
 		}
 
-		public function formRcdc(){
+		public function formMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_detalle")));
@@ -95,15 +95,14 @@ class Rcdc extends CI_Controller {
 				$id_tecnico = $this->security->xss_clean(strip_tags($this->input->post("id_tecnico")));
 				$id_coordinador = $this->security->xss_clean(strip_tags($this->input->post("id_coordinador")));
 				$tipo = $this->security->xss_clean(strip_tags($this->input->post("tipo")));
-				$motivo = $this->security->xss_clean(strip_tags($this->input->post("motivo")));
 				$proyecto = $this->security->xss_clean(strip_tags($this->input->post("proyecto")));
+				$cam_con = $this->security->xss_clean(strip_tags($this->input->post("cam_con")));
+				$rssi = $this->security->xss_clean(strip_tags($this->input->post("rssi")));
 				$codigo = $this->security->xss_clean(strip_tags($this->input->post("codigo")));
-				$hora = $this->security->xss_clean(strip_tags($this->input->post("hora")));
-				$minuto = $this->security->xss_clean(strip_tags($this->input->post("minuto")));
 				$observacion = $this->security->xss_clean(strip_tags($this->input->post("observacion")));
 				$ultima_actualizacion = date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
 
-				if ($this->form_validation->run("formRcdc") == FALSE){
+				if ($this->form_validation->run("formMad") == FALSE){
 					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 				}else{	
 					if($hash==""){
@@ -115,15 +114,13 @@ class Rcdc extends CI_Controller {
 							'id_tecnico' => $id_tecnico,
 							'id_coordinador' => $id_coordinador,
 							'id_tipo' => $tipo,
-							'id_motivo' => $motivo,
 							'id_proyecto' => $proyecto,
-							'codigo' => $codigo,
-							'hora' => $hora,
-							'minuto' => $minuto,
+							'cam_con' => $cam_con,
+							'rssi' => $rssi,
 							'observacion' => $observacion,
 							'ultima_actualizacion' => $ultima_actualizacion,
                         );
-						if($this->Rcdcmodel->formIngreso($data)){
+						if($this->Madmodel->formIngreso($data)){
 							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
@@ -136,16 +133,14 @@ class Rcdc extends CI_Controller {
 							'id_comuna' => $comuna,
 							'id_tecnico' => $id_tecnico,
 							'id_coordinador' => $id_coordinador,
+							'cam_con' => $cam_con,
+							'rssi' => $rssi,
 							'id_tipo' => $tipo,
-							'id_motivo' => $motivo,
 							'id_proyecto' => $proyecto,
-							'codigo' => $codigo,
-							'hora' => $hora,
-							'minuto' => $minuto,
 							'observacion' => $observacion,
 							'ultima_actualizacion' => $ultima_actualizacion,
                         );
-						if($this->Rcdcmodel->formActualizar($hash,$data_mod)){
+						if($this->Madmodel->formActualizar($hash,$data_mod)){
 							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
@@ -158,20 +153,20 @@ class Rcdc extends CI_Controller {
 			}
 		}
 	 
-		public function eliminaRcdc(){
+		public function eliminaMad(){
 			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			if($this->Rcdcmodel->eliminaRcdc($hash)){
+			if($this->Madmodel->eliminaMad($hash)){
 			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 			}else{
 			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 			}
 		}
 
-		public function getDataRcdc(){
+		public function getDataMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-				$data=$this->Rcdcmodel->getDataRcdc($hash);
+				$data=$this->Madmodel->getDataMad($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{
@@ -182,7 +177,7 @@ class Rcdc extends CI_Controller {
 			}
 		}
 
-		public function excelrcdc(){
+		public function excelmad(){
 			$desde = $this->uri->segment(2);
 			$hasta = $this->uri->segment(3);
 			$coordinador = $this->uri->segment(4);
@@ -196,13 +191,13 @@ class Rcdc extends CI_Controller {
 			if($comuna=="-"){$comuna="";}
 			if($zona=="-"){$zona="";}
 			if($empresa=="-"){$empresa="";}
-			$data = $this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa);
+			$data = $this->Madmodel->getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa);
 
 			if(!$data){
 				return FALSE;
 			}else{
 
-				$nombre="reporte-rcdc.xls";
+				$nombre="reporte-mad.xls";
 				header("Content-type: application/vnd.ms-excel;  charset=utf-8");
 				header("Content-Disposition: attachment; filename=$nombre");
 				?>
@@ -215,7 +210,7 @@ class Rcdc extends CI_Controller {
 					td{font-size:12px;text-align:center;   vertical-align:middle;}
 				</style>
 
-				<h3>Reporte RCDC (Registro centro de comando)</h3>
+				<h3>Reporte MAD (Módulo auditoria )</h3>
 				<table align='center' border="1"> 
 					<tr style="background-color:#F9F9F9">
 						<th class="head">ID</th>    
@@ -226,10 +221,9 @@ class Rcdc extends CI_Controller {
 						<th class="head">Nombre t&eacute;cnico</th> 
 						<th class="head">Nombre coordinador</th> 
 						<th class="head">Tipo</th> 
-						<th class="head">Motivo</th> 
 						<th class="head">Proyecto</th> 
-						<th class="head">C&oacute;digo OT /IBS</th> 
-						<th class="head">Duraci&oacute;n</th> 
+						<th class="head">Cert. cambio conectores</th>  
+            			<th class="head">Cert. RSSI</th>   
 						<th class="head">Observaci&oacute;n</th> 
 						<th class="head">&Uacute;ltima actualizaci&oacute;n</th> 
 					</tr>
@@ -248,10 +242,9 @@ class Rcdc extends CI_Controller {
 									<td><?php echo utf8_decode($d["nombre_tecnico"]); ?></td>
 									<td><?php echo utf8_decode($d["nombre_coordinador"]); ?></td>
 									<td><?php echo utf8_decode($d["tipo"]); ?></td>
-									<td><?php echo utf8_decode($d["motivo"]); ?></td>
 									<td><?php echo utf8_decode($d["proyecto"]); ?></td>
-									<td><?php echo utf8_decode($d["codigo"]); ?></td>
-									<td><?php echo utf8_decode($d["duracion"]); ?></td>
+									<td><?php echo utf8_decode($d["cam_con"]); ?></td>
+									<td><?php echo utf8_decode($d["rssi"]); ?></td>
 									<td><?php echo utf8_decode($d["observacion"]); ?></td>
 									<td><?php echo utf8_decode($d["ultima_actualizacion"]); ?></td>
 								</tr>
@@ -268,7 +261,7 @@ class Rcdc extends CI_Controller {
 	
 	/**************** MANTENEDOR ***************/
 
-	public function getMantenedorRcdc(){
+	public function getMantenedorMad(){
 		if($this->input->is_ajax_request()){
 			$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
 			$hasta = date('Y-m-d');
@@ -276,7 +269,7 @@ class Rcdc extends CI_Controller {
 				'desde' => $desde,
 				'hasta' => $hasta,
 			);
-			$this->load->view('back_end/rcdc/mantenedor',$datos);
+			$this->load->view('back_end/mad/mantenedor',$datos);
 		}
 	}
 
@@ -284,24 +277,24 @@ class Rcdc extends CI_Controller {
 
 		/***** COMUNA *****/
 
-		public function getComunasRcdcList(){
-			echo json_encode($this->Rcdcmodel->getComunasRcdcList());
+		public function getComunasMadList(){
+			echo json_encode($this->Madmodel->getComunasMadList());
 		}
 
-		public function formComunasRcdc(){
+		public function formComunasMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_comuna")));
 				$comuna = $this->security->xss_clean(strip_tags($this->input->post("comuna")));
 
-				if ($this->form_validation->run("formComunasRcdc") == FALSE){
+				if ($this->form_validation->run("formComunasMad") == FALSE){
 					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 				}else{	
 					if($hash==""){
 						$data = array(
 							'titulo' => $comuna,
 						);
-						if($this->Rcdcmodel->formIngresoComuna($data)){
+						if($this->Madmodel->formIngresoComuna($data)){
 							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
@@ -310,7 +303,7 @@ class Rcdc extends CI_Controller {
 						$data_mod = array(
 							'titulo' => $comuna,
 						);
-						if($this->Rcdcmodel->formActualizarComuna($hash,$data_mod)){
+						if($this->Madmodel->formActualizarComuna($hash,$data_mod)){
 							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
@@ -323,20 +316,20 @@ class Rcdc extends CI_Controller {
 			}
 		}
 
-		public function eliminaComunasRcdc(){
+		public function eliminaComunasMad(){
 			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			if($this->Rcdcmodel->eliminaComunasRcdc($hash)){
+			if($this->Madmodel->eliminaComunasMad($hash)){
 			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 			}else{
 			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 			}
 		}
 
-		public function getDataComunasRcdc(){
+		public function getDataComunasMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-				$data=$this->Rcdcmodel->getDataComunasRcdc($hash);
+				$data=$this->Madmodel->getDataComunasMad($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{
@@ -348,28 +341,28 @@ class Rcdc extends CI_Controller {
 		}
 
 		/***** TIPO *****/
-		public function getTiposRcdcList(){
-			echo json_encode($this->Rcdcmodel->getTiposRcdcList());
+		public function getTiposMadList(){
+			echo json_encode($this->Madmodel->getTiposMadList());
 		}
 
 		public function listaTipos(){
-			echo json_encode($this->Rcdcmodel->listaTipos());
+			echo json_encode($this->Madmodel->listaTipos());
 		}
 
-		public function formTiposRcdc(){
+		public function formTiposMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_tipo")));
 				$tipo = $this->security->xss_clean(strip_tags($this->input->post("tipo")));
 
-				if ($this->form_validation->run("formTiposRcdc") == FALSE){
+				if ($this->form_validation->run("formTiposMad") == FALSE){
 					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 				}else{	
 					if($hash==""){
 						$data = array(
 							'tipo' => $tipo,
 						);
-						if($this->Rcdcmodel->formIngresoTipo($data)){
+						if($this->Madmodel->formIngresoTipo($data)){
 							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
@@ -378,7 +371,7 @@ class Rcdc extends CI_Controller {
 						$data_mod = array(
 							'tipo' => $tipo,
 						);
-						if($this->Rcdcmodel->formActualizarTipo($hash,$data_mod)){
+						if($this->Madmodel->formActualizarTipo($hash,$data_mod)){
 							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
@@ -391,20 +384,20 @@ class Rcdc extends CI_Controller {
 			}
 		}
 
-		public function eliminaTiposRcdc(){
+		public function eliminaTiposMad(){
 			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			if($this->Rcdcmodel->eliminaTiposRcdc($hash)){
+			if($this->Madmodel->eliminaTiposMad($hash)){
 			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 			}else{
 			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 			}
 		}
 
-		public function getDataTiposRcdc(){
+		public function getDataTiposMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-				$data=$this->Rcdcmodel->getDataTiposRcdc($hash);
+				$data=$this->Madmodel->getDataTiposMad($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{
@@ -416,23 +409,23 @@ class Rcdc extends CI_Controller {
 		}
 	
 		/***** MOTIVO *****/
-		public function getMotivosRcdcList(){
-			echo json_encode($this->Rcdcmodel->getMotivosRcdcList());
+		public function getMotivosMadList(){
+			echo json_encode($this->Madmodel->getMotivosMadList());
 		}
 
 		public function listaMotivos(){
 			$tipo=$this->security->xss_clean(strip_tags($this->input->get_post("tipo")));
-			echo json_encode($this->Rcdcmodel->listaMotivos($tipo));
+			echo json_encode($this->Madmodel->listaMotivos($tipo));
 		}
 
-		public function formMotivosRcdc(){
+		public function formMotivosMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_motivo")));
 				$id_tipo = $this->security->xss_clean(strip_tags($this->input->post("tipo_m")));
 				$motivo = $this->security->xss_clean(strip_tags($this->input->post("motivo")));
 
-				if ($this->form_validation->run("formMotivosRcdc") == FALSE){
+				if ($this->form_validation->run("formMotivosMad") == FALSE){
 					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 				}else{	
 					if($hash==""){
@@ -440,7 +433,7 @@ class Rcdc extends CI_Controller {
 							'id_tipo' => $id_tipo,
 							'motivo' => $motivo,
 						);
-						if($this->Rcdcmodel->formIngresoMotivo($data)){
+						if($this->Madmodel->formIngresoMotivo($data)){
 							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
@@ -450,7 +443,7 @@ class Rcdc extends CI_Controller {
 							'id_tipo' => $id_tipo,
 							'motivo' => $motivo,
 						);
-						if($this->Rcdcmodel->formActualizarMotivo($hash,$data_mod)){
+						if($this->Madmodel->formActualizarMotivo($hash,$data_mod)){
 							echo json_encode(array('res'=>"ok",  'msg' => MOD_MSG));exit;
 						}else{
 							echo json_encode(array('res'=>"error",'msg' => "Error actualizando el registro, intente nuevamente."));exit;
@@ -463,20 +456,20 @@ class Rcdc extends CI_Controller {
 			}
 		}
 
-		public function eliminaMotivosRcdc(){
+		public function eliminaMotivosMad(){
 			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-			if($this->Rcdcmodel->eliminaMotivosRcdc($hash)){
+			if($this->Madmodel->eliminaMotivosMad($hash)){
 			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
 			}else{
 			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
 			}
 		}
 
-		public function getDataMotivosRcdc(){
+		public function getDataMotivosMad(){
 			if($this->input->is_ajax_request()){
 				$this->checkLogin();	
 				$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
-				$data=$this->Rcdcmodel->getDataMotivosRcdc($hash);
+				$data=$this->Madmodel->getDataMotivosMad($hash);
 				if($data){
 					echo json_encode(array('res'=>"ok", 'datos' => $data));exit;
 				}else{
