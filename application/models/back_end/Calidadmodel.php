@@ -72,16 +72,26 @@ class Calidadmodel extends CI_Model {
 
 	public function formCalidad($data){
 		if($this->db->insert('productividad_calidad', $data)){
+			return $this->db->insert_id();
+		}
+		return FALSE;
+	}
+
+	public function actualizarCalidad($hash,$data){
+		$this->db->where('id', $hash);
+		if($this->db->update('productividad_calidad', $data)){
 			return TRUE;
 		}
 		return FALSE;
 	}
 
 	public function existeOrdenCalidad($orden){
+		$this->db->select('id');
 		$this->db->where('ot', $orden);
 		$res=$this->db->get('productividad_calidad');
 		if($res->num_rows()>0){
-			return TRUE;
+			$row = $res->row_array();
+			return $row["id"];
 		}
 		return FALSE;
 	}

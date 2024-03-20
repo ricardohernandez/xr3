@@ -187,36 +187,40 @@ class Calidad extends CI_Controller {
 							$falla = "error";
 						}
 
-						if(!$this->Calidadmodel->existeOrdenCalidad($data[2])){
+						$id = $this->Calidadmodel->existeOrdenCalidad($data[2]);
 
-							$array = array(
-						    	"rut_tecnico"=>$rutf,
-								"comuna"=>$data[1],
-								"ot"=>$data[2],
-								"fecha"=>$fechaf1,
-								"descripcion"=>($data[4]),
-								"cierre"=>$data[5],
-								"ot_2davisita"=>$data[6],
-								"fecha_2davisita"=>$fechaf2,
-								"descripcion_2davisita"=>($data[8]),
-								"cierre_2davisita"=>$data[9],
-								"diferencia_dias"=>$data[12],
-								"tipo_red"=>$data[10],
-								"falla"=>$falla,
-								"ultima_actualizacion"=>$ultima_actualizacion);	
+						$array = array(
+							"rut_tecnico"=>$rutf,
+							"comuna"=>$data[1],
+							"ot"=>$data[2],
+							"fecha"=>$fechaf1,
+							"descripcion"=>($data[4]),
+							"cierre"=>$data[5],
+							"ot_2davisita"=>$data[6],
+							"fecha_2davisita"=>$fechaf2,
+							"descripcion_2davisita"=>($data[8]),
+							"cierre_2davisita"=>$data[9],
+							"diferencia_dias"=>$data[12],
+							"tipo_red"=>$data[10],
+							"falla"=>$falla,
+							"ultima_actualizacion"=>$ultima_actualizacion);
+
+						if($id == FALSE){
 
 							  if($this->Calidadmodel->formCalidad($array));
-
 							  $array=array();
 
 					 	  	  $i++;
 						}else{
+
+							if($this->Calidadmodel->actualizarCalidad($id,$array));
+							$array=array();
 							$z++;
 						}
 					}
 		        } 
 
-			    echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas, ".$z." filas ignoradas."));exit;
+			    echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas, ".$z." filas actualizadas."));exit;
 		        
 		        fclose($handle); 
 
