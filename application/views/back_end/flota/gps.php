@@ -1,9 +1,12 @@
 <style type="text/css">
   .centered {
-    text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según tu preferencia */
+    text-align: left!important ; 
   }
   .margen-td {
-  text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según lo que necesites */
+  text-align: left!important ; 
+  }
+  .select2-selection__clear {
+    color: grey!important;
   }
 </style>
 
@@ -17,19 +20,13 @@
     $("#hasta_t").val(hasta);
     $("#gps").val(gps);
 
-    $("#patente").select2({
+      $("#patente").select2({
             placeholder: 'Seleccione Patente | Todas',
             data: <?php echo $patentes; ?>,
             allowClear: true,
             width: 'resolve',
       });
 
-      $("#supervisor").select2({
-            placeholder: 'Seleccione Supervisor | Todos',
-            data: <?php echo $supervisores; ?>,
-            allowClear: true,
-            width: 'resolve',
-      });
 
       $("#chofer").select2({
             placeholder: 'Seleccione Conductor | Todos',
@@ -38,12 +35,6 @@
             width: 'resolve',
       });
 
-      $("#comuna").select2({
-            placeholder: 'Seleccione Comuna | Todos',
-            data: <?php echo $comunas; ?>,
-            allowClear: true,
-            width: 'resolve',
-      });
 
       String.prototype.capitalize = function() {
           return this.charAt(0).toUpperCase() + this.slice(1);
@@ -101,17 +92,13 @@
               param.desde = $("#desde_t").val();
               param.hasta = $("#hasta_t").val();
               param.chofer = $("#chofer").val();
-              param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
-              param.comuna = $("#comuna").val();
               param.gps = $("#gps").val();
             },
           },    
         "columns": [
             { "data": "patente" ,"class":"margen-td centered"},
             { "data": "nombre_chofer" ,"class":"margen-td centered"},
-            { "data": "nombre_supervisor" ,"class":"margen-td centered"},
-            { "data": "comuna" ,"class":"margen-td centered"},
             { "data": "infracciones" ,"class":"margen-td centered"},
           ],
         });
@@ -157,17 +144,22 @@
               param.desde = $("#desde_t").val();
               param.hasta = $("#hasta_t").val();
               param.chofer = $("#chofer").val();
-              param.supervisor = $("#supervisor").val();
               param.patente = $("#patente").val();
-              param.comuna = $("#comuna").val();
               param.gps = $("#gps").val();
             },
           },    
         "columns": [
-            { "data": "patente" ,"class":"margen-td centered"},
-            { "data": "velocidad" ,"class":"margen-td centered"},
             { "data": "fecha" ,"class":"margen-td centered"},
-            { "data": "direccion" ,"class":"margen-td centered"},
+            { "data": "patente" ,"class":"margen-td centered"},
+            { "data": "v_max" ,"class":"margen-td centered"},
+            { "data": "lim_v" ,"class":"margen-td centered"},
+            { "data": "hora_inicio" ,"class":"margen-td centered"},
+            { "data": "hora_fin" ,"class":"margen-td centered"},
+            { "data": "rut" ,"class":"margen-td centered"},
+            { "data": "nombre_chofer" ,"class":"margen-td centered"},
+            { "data": "direccion_inicio" ,"class":"margen-td centered"},
+            { "data": "direccion_fin" ,"class":"margen-td centered"},
+            { "data": "duracion" ,"class":"margen-td centered"},
           ],
         });
     
@@ -203,9 +195,7 @@
                 desde:$("#desde_t").val(),
                 hasta:$("#hasta_t").val(),
                 chofer:$("#chofer").val(),
-                supervisor:$("#supervisor").val(),
                 patente:$("#patente").val(),
-                comuna:$("#comuna").val(),
                 gps:$("#gps").val(),
               },
               dataType:"json",
@@ -214,7 +204,11 @@
                 var options = {
                   is3D:true,
                   width: "100%",
-                  height: 300,
+                  height: 400,
+                  hAxis: { 
+                  slantedText: true, 
+                  slantedTextAngle: 45 // Ángulo de rotación
+                }
                 };
                 var chart = new google.visualization.ColumnChart(document.getElementById('listaTotal'));
                 chart.draw(data, options);
@@ -222,7 +216,7 @@
           });
         }
 
-      $(document).off('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna').on('change', '#desde_t,#hasta_t,#chofer,#supervisor,#patente,#comuna',function(event) {
+      $(document).off('change', '#desde_t,#hasta_t,#chofer,#patente').on('change', '#desde_t,#hasta_t,#chofer,#patente',function(event) {
         listaTotal();
         Actualizar();
         lista_infractor.ajax.reload();
@@ -294,14 +288,6 @@
 
     <div class="col-6 col-lg-2">
       <div class="form-group">
-        <select id="supervisor" name="supervisor" class="custom-select custom-select-sm">
-          <option value="">Seleccione Supervisor | Todos</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="col-6 col-lg-2">
-      <div class="form-group">
         <select id="chofer" name="chofer" class="custom-select custom-select-sm">
         <option value="">Seleccione Conductor | Todos</option>
         </select>
@@ -316,19 +302,12 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-2">
-      <div class="form-group">
-        <select id="comuna" name="comuna" class="custom-select custom-select-sm">
-          <option value="">Seleccione Patente | Todas</option>
-        </select>
-      </div>
-    </div>
 
   </div>      
 
   <div class="body">
     <div class="form-row mt-2">
-      <div class="col-12 col-lg-6 mt-2">
+      <div class="col-12 col-lg-3 mt-2">
         <div class="card">
           <div class="col-12">
             <span class="title_section">Infractor</span>
@@ -337,8 +316,6 @@
                 <tr>    
                   <th class="centered">Patente</th> 
                   <th class="centered">Nombre conductor</th> 
-                  <th class="centered">Nombre supervisor</th> 
-                  <th class="centered">Comuna</th> 
                   <th class="centered">Num infracciones</th> 
                 </tr>
               </thead>
@@ -346,17 +323,24 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-lg-6 mt-2">
+      <div class="col-12 col-lg-9 mt-2">
         <div class="card">
           <div class="col-12">
               <span class="title_section">Detalle de infracciones</span>
               <table id="lista_detalle" class="table table-striped table-hover table-bordered dt-responsive" style="width:100%">
                 <thead>
                   <tr>    
-                    <th class="centered">Patente</th> 
-                    <th class="centered">Velocidad</th> 
                     <th class="centered">Fecha</th> 
-                    <th class="centered">Direccion</th> 
+                    <th class="centered">Patente</th> 
+                    <th class="centered">Velocidad máxima</th> 
+                    <th class="centered">Velocidad límite</th> 
+                    <th class="centered">Hora inicio</th> 
+                    <th class="centered">Hora fin</th> 
+                    <th class="centered">Rut</th> 
+                    <th class="centered">Conductor</th> 
+                    <th class="centered">Direccion inicio</th> 
+                    <th class="centered">Direccion fin</th> 
+                    <th class="centered">Duración</th> 
                   </tr>
                 </thead>
               </table>

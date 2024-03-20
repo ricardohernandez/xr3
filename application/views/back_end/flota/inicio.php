@@ -66,6 +66,17 @@
       });
     });
 
+    $(document).off('click', '#menu_gps_muevo').on('click', '#menu_gps_muevo',function(event) {
+      event.preventDefault();
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+
+      $.get(base_url+"getGPSInicioMuevo", { gps : "MUEVO" }, function( data ) {
+        $(".contenedor_app").html(data);  
+        $("#menu_gps_muevo").addClass('menuActivo');  
+      });
+    });
+
     $(document).off('click', '#menu_gps_salfa').on('click', '#menu_gps_salfa',function(event) {
       event.preventDefault();
       $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
@@ -88,6 +99,17 @@
       });
     });
 
+    $(document).off('click', '#menu_gps').on('click', '#menu_gps',function(event) {
+      event.preventDefault();
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+
+      $.get(base_url+"getGPSInicio", { gps : "WEBFLEET" } , function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_gps").addClass('menuActivo');  
+      });
+    });
+
   })
 </script>
 
@@ -102,9 +124,9 @@
     <div class="col-12">
     <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-       <li id="menu_combustible" class="active"><a> <i class="fa fa-droplet"></i> Combustible </a></li>   
-       <li id="menu_gps_salfa" class="active"><a> <i class="fa fa-location-dot"></i> GPS - SALFA  </a></li>   
-       <li id="menu_gps_black" class="active"><a> <i class="fa fa-location-dot"></i> GPS - BLACK </a></li>   
+       <li id="menu_combustible" class="active"><a> <i class="fa fa-droplet"></i> TCT </a></li> 
+       <li id="menu_gps_muevo" class="active"><a> <i class="fa fa-droplet"></i> MUEVO </a></li>     
+       <li id="menu_gps" class="active"><a> <i class="fa fa-droplet"></i> GPS - WEBFLEET </a></li>   
       </ul>  
       </div> 
       </div> 

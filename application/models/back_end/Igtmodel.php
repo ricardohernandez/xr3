@@ -874,10 +874,6 @@ class Igtmodel extends CI_Model {
 					
 					foreach($res->result_array() as $key){
 						
-						if($key["work_orden"]==0){
-							return FALSE;
-						}
-
 						$temp = array();
 						$temp[] = array("Label","Value"); 
 						$temp[] = array("",(float)$key["work_orden"]); 
@@ -935,9 +931,6 @@ class Igtmodel extends CI_Model {
 					
 					foreach($res->result_array() as $key){
 						
-						if($key["calidad_sin_30"]==0){
-							return FALSE;
-						}
 
 						$temp = array();
 						$temp[] = array("Label","Value"); 
@@ -993,10 +986,6 @@ class Igtmodel extends CI_Model {
 				if($res->num_rows()>0){
 					
 					foreach($res->result_array() as $key){
-						
-						if($key["encuesta_3_3"]==0){
-							return FALSE;
-						}
 
 						$temp = array();
 						$temp[] = array("Label","Value"); 
@@ -1054,9 +1043,6 @@ class Igtmodel extends CI_Model {
 					
 					foreach($res->result_array() as $key){
 						
-						if($key["cicle_time"]==0){
-							return FALSE;
-						}
 
 						$temp = array();
 						$temp[] = array("Label","Value"); 
@@ -1114,9 +1100,6 @@ class Igtmodel extends CI_Model {
 					
 					foreach($res->result_array() as $key){
 						
-						if($key["optimus"]==0){
-							return FALSE;
-						}
 
 						$temp = array();
 						$temp[] = array("Label","Value"); 

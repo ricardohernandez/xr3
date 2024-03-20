@@ -85,7 +85,7 @@ class Flota extends CI_Controller {
 						foreach ($columnas as $index => $columna) {
 							if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
 								if ($index === 11) {
-									$fecha = date('Y-m-d', strtotime('1900-01-00') + (($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() - 1) * 86400));
+									$fecha = date('Y-m-d', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
 									$datos[$columna] = $fecha;
 								}
 								elseif ($index === 12){
@@ -109,32 +109,46 @@ class Flota extends CI_Controller {
 					}
 				}
 
+			$this->db->query("TRUNCATE TABLE flota_gps");
 
-			//BLACK
-				$hoja = $spreadsheet->getSheet(1);
+			//WEBFLEET
+				$hoja = $spreadsheet->getSheetByName("GPS WEBFLEET");
 				$ultima_fila = $hoja->getHighestRow();
-				$filas_black = 0;
+				$filas_gps = 0;
 
 				$columnas = array(
-					'patente',
-					'velocidad',
 					'fecha',
-					'direccion',
+					'patente',
+					'hora_inicio',
+					'hora_fin',
+					'rut',
 					'nombre_chofer',
-					'nombre_supervisor',
-					'comuna',
-					'num_semana',
+					'direccion_inicio',
+					'direccion_fin',
+					'duracion',
+					'v_max',
+					'lim_v',
 				);
-
-				$this->db->query("TRUNCATE TABLE flota_gps");
 
 				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
 					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
 						$datos = array();
 						foreach ($columnas as $index => $columna) {
 							if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
-								if ($index === 2) {
-									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + (($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() - 1) * 86400));
+								if ($index === 0) {
+									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 2) {
+									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 3) {
+									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 8) {
+									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
 									$datos[$columna] = $fecha;
 								}
 								else{
@@ -146,69 +160,75 @@ class Flota extends CI_Controller {
 							}
 						}
 
-						$datos["gps"] = "BLACK";
+						$datos["gps"] = "WEBFLEET";
 						$datos["ultima_actualizacion"] = $ultima_actualizacion;
 
 						$this->Flotamodel->insertarFlotaGPS($datos);
-						$filas_black++;
+						$filas_gps++;
 						$i++;
 					}
 				}
 
+			//MUEVO
 
-			
-			//SALFA
-				$hoja = $spreadsheet->getSheet(2);
-				$ultima_fila = $hoja->getHighestRow();
-				$filas_salfa = 0;
+			$hoja = $spreadsheet->getSheetByName("MUEVO");
+			$ultima_fila = $hoja->getHighestRow();
+			$filas_muevo = 0;
 
-				$columnas = array(
-					'patente',
-					'velocidad',
-					'fecha',
-					'direccion',
-					'nombre_chofer',
-					'nombre_supervisor',
-					'comuna',
-					'num_semana',
-				);
+			$columnas = array(
+				'fecha',
+				'nombre_chofer',
+				'patente',
+				'odometro',
+				'metodo_pago',
+				'direccion',
+				'monto',
+				'num_folio',
+				'factura',
+				'rut_chofer',
+				'nombre_supervisor',
+				'zona',
+				'region',
+				'meta_litros_mensual',
+			);
 
-				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
-					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
-						$datos = array();
-						foreach ($columnas as $index => $columna) {
-							if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
-								if ($index === 2) {
-									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + (($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() - 1) * 86400));
-									$datos[$columna] = $fecha;
-								}
-								else{
-									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
-								}
+			$this->db->query("TRUNCATE TABLE flota_gps_muevo");
+
+			for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+				if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+					$datos = array();
+					foreach ($columnas as $index => $columna) {
+						if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
+							if ($index === 0) {
+								$fecha = date('Y-m-d', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+								$datos[$columna] = $fecha;
 							}
 							else{
-								$datos[$columna] = "-";
+								$datos[$columna] = strval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
 							}
 						}
-
-						$datos["gps"] = "SALFA";
-						$datos["ultima_actualizacion"] = $ultima_actualizacion;
-
-						$this->Flotamodel->insertarFlotaGPS($datos);
-						$filas_salfa++;
-						$i++;
+						else{
+							$datos[$columna] = "-";
+						}
 					}
-				}
+					$datos["gps"] = "MUEVO";
+					$datos["ultima_actualizacion"] = $ultima_actualizacion;
 
-				echo json_encode(array(
-					'res' => 'ok',
-					'tipo' => 'success',
-					'msg' => 'Archivo cargado con éxito.
-					'.$filas_combustible.' filas combustible insertadas,
-					'.$filas_black.' filas de black gps insertadas,
-					'.$filas_salfa.' filas de gps salfa insertadas'
-					
-				));exit;
+					$this->Flotamodel->insertarFlotaGPSMuevo($datos);
+					$filas_muevo++;
+					$i++;
+				}
+			}
+
+			echo json_encode(array(
+				'res' => 'ok',
+				'tipo' => 'success',
+				'msg' => 'Archivo cargado con éxito.
+				'.$filas_combustible.' filas combustible insertadas,
+				'.$filas_gps.' filas de gps webfleet insertadas.
+				'.$filas_muevo.' filas de gps muevo insertadas.'
+				
+			));exit;
 
            	echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
         }else{
@@ -262,157 +282,252 @@ class Flota extends CI_Controller {
 
 	/************ COMBUSTIBLE ************/
 
-	public function listaCombustible(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode($this->Flotamodel->listaCombustible($desde,$hasta,$chofer,$supervisor,$patente,$region));
-	}	
+		public function listaCombustible(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode($this->Flotamodel->listaCombustible($desde,$hasta,$chofer,$supervisor,$patente,$region));
+		}	
 
-	public function listaMax(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode($this->Flotamodel->listaMax($desde,$hasta,$chofer,$supervisor,$patente,$region));
-	}	
+		public function listaMax(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode($this->Flotamodel->listaMax($desde,$hasta,$chofer,$supervisor,$patente,$region));
+		}	
 
-	public function listaCarga(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode(array("data"=>$this->Flotamodel->listaCarga($desde,$hasta,$chofer,$supervisor,$patente,$region)));
-	}
+		public function listaCarga(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->listaCarga($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
 
-	public function GastoRegion(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoRegion($desde,$hasta,$chofer,$supervisor,$patente,$region)));
-	}
+		public function GastoRegion(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->GastoRegion($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
 
-	public function GastoSemana(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoSemana($desde,$hasta,$chofer,$supervisor,$patente,$region)));
-	}
-	public function GastoCombustibleRegion(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$patente,$region)));
-	}
+		public function GastoSemana(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->GastoSemana($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
 
-	public function GastoCombustibleSemana(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
-		
-		
-		echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$patente,$region)));
-	}
+		public function GastoCombustibleRegion(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleRegion($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
 
-	public function getActualizacionCombustible(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		echo json_encode($this->Flotamodel->getActualizacionCombustible($desde, $hasta));
-	}	
+		public function GastoCombustibleSemana(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->GastoCombustibleSemana($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
+
+		public function getActualizacionCombustible(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			echo json_encode($this->Flotamodel->getActualizacionCombustible($desde, $hasta));
+		}	
 
 	/************** GPS *********************/
 
-	public function getGPSInicio(){
-		$this->visitas("Inicio");
-		if($this->input->is_ajax_request()){
-			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-			$desde=date('Y-m-d', strtotime("-1 year"));
-			$hasta=date('Y-m-d');
-			$patentes= $this->Flotamodel->getPatenteGPS($gps);
-			$supervisores= $this->Flotamodel->getSupervisorGPS($gps);
-			$choferes= $this->Flotamodel->getChoferGPS($gps);
-			$comunas= $this->Flotamodel->getComunaGPS($gps);
-			$datos = array(	
-				'desde' => $desde,
-		        'hasta' => $hasta,
-		        'patentes' => $patentes,
-		        'supervisores' => $supervisores,
-		        'choferes' => $choferes,
-		        'comunas' => $comunas,
-				'gps' => $gps,
-		    );
+		public function getGPSInicio(){
+			$this->visitas("Inicio");
+			if($this->input->is_ajax_request()){
+				$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+				$desde=date('Y-m-d', strtotime("-1 year"));
+				$hasta=date('Y-m-d');
+				$patentes= $this->Flotamodel->getPatenteGPS($gps);
+				//$supervisores= $this->Flotamodel->getSupervisorGPS($gps);
+				$choferes= $this->Flotamodel->getChoferGPS($gps);
+				//$comunas= $this->Flotamodel->getComunaGPS($gps);
+				$datos = array(	
+					'desde' => $desde,
+					'hasta' => $hasta,
+					'patentes' => $patentes,
+					//'supervisores' => $supervisores,
+					'choferes' => $choferes,
+					//'comunas' => $comunas,
+					'gps' => $gps,
+				);
 
-			$this->load->view('back_end/flota/gps',$datos);
+				$this->load->view('back_end/flota/gps',$datos);
+			}
+
 		}
 
-	}
+		public function listaGPS(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			echo json_encode($this->Flotamodel->listaGPS($desde,$hasta,$chofer,$supervisor,$patente,$comuna,$gps));
+		}	
 
-	public function listaGPS(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
-		$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-		echo json_encode($this->Flotamodel->listaGPS($desde,$hasta,$chofer,$supervisor,$patente,$comuna,$gps));
-	}	
-	public function listaDetalleFlota(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
-		$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-		echo json_encode($this->Flotamodel->listaDetalleFlota($desde,$hasta,$chofer,$supervisor,$patente,$comuna,$gps));
-	}	
+		public function listaDetalleFlota(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			echo json_encode($this->Flotamodel->listaDetalleFlota($desde,$hasta,$chofer,$supervisor,$patente,$comuna,$gps));
+		}	
 
-	public function listaTotal(){
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
-		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
-		$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
-		$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
-		$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-		echo json_encode(array("data"=>$this->Flotamodel->ListaTotal($desde,$hasta,$chofer,$supervisor,$patente,$comuna,$gps)));
-	}	
-	public function getActualizacionGPS(){
-		$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
-		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
-		echo json_encode($this->Flotamodel->getActualizacionGPS($gps,$desde,$hasta));
-	}	
+		public function listaTotal(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			echo json_encode(array("data"=>$this->Flotamodel->ListaTotal($desde,$hasta,$chofer,$supervisor,$patente,$comuna,$gps)));
+		}	
+
+		public function getActualizacionGPS(){
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			echo json_encode($this->Flotamodel->getActualizacionGPS($gps,$desde,$hasta));
+		}	
+
+	/********MUEVO ***********/
+
+		public function getGPSInicioMuevo(){
+			$this->visitas("Inicio");
+			if($this->input->is_ajax_request()){
+				$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+				$desde=date('Y-m-d', strtotime("-1 year"));
+				$hasta=date('Y-m-d');
+				$patentes= $this->Flotamodel->getPatenteGPSMuevo($gps);
+				$supervisores= $this->Flotamodel->getSupervisorGPSMuevo($gps);
+				$choferes= $this->Flotamodel->getChoferGPSMuevo($gps);
+				$regiones= $this->Flotamodel->getRegionesGPSMuevo($gps);
+
+				$datos = array(	
+					'desde' => $desde,
+					'hasta' => $hasta,
+					'patentes' => $patentes,
+					'supervisores' => $supervisores,
+					'choferes' => $choferes,
+					'regiones' => $regiones,
+					'gps' => $gps,
+				);
+	
+				$this->load->view('back_end/flota/gps_muevo',$datos);
+			}
+		}
+	
+		public function listaGPSMuevo(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			echo json_encode($this->Flotamodel->listaGPSMuevo($desde,$hasta,$chofer,$supervisor,$patente,$gps,$region));
+		}
+
+		public function listaMontoMuevo(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			echo json_encode(array("data"=>$this->Flotamodel->listaMontoMuevo($desde,$hasta,$chofer,$supervisor,$patente,$gps,$region)));
+		}	
+	
+		public function listaOdometroMuevo(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			echo json_encode(array("data"=>$this->Flotamodel->listaOdometroMuevo($desde,$hasta,$chofer,$supervisor,$patente,$gps,$region)));
+		}	
+
+		public function getActualizacionGPSMuevo(){
+			$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			echo json_encode($this->Flotamodel->getActualizacionGPSMuevo($gps,$desde,$hasta,$region));
+		}	
+
+		public function GastoRegionMuevo(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->GastoRegionMuevo($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
+	
+		public function GastoSemanaMuevo(){
+			$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+			$chofer=$this->security->xss_clean(strip_tags($this->input->get_post("chofer")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			$region=$this->security->xss_clean(strip_tags($this->input->get_post("region")));
+			
+			
+			echo json_encode(array("data"=>$this->Flotamodel->GastoSemanaMuevo($desde,$hasta,$chofer,$supervisor,$patente,$region)));
+		}
 }

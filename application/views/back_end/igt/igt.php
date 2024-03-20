@@ -1056,7 +1056,7 @@
           //DTV
             //WORK ORDEN
 
-            if(json.hasOwnProperty("data_work_orden") && json.data_work_orden.meta!="0"){
+            if(json.hasOwnProperty("data_work_orden")){
 
               $("#work_orden").text(json.data_work_orden.data.promedio).show()
               $(".work_orden").show()
@@ -1106,7 +1106,7 @@
 
             //CALIDAD SIN 30
 
-            if(json.hasOwnProperty("data_calidad_sin_30") && json.data_calidad_sin_30.meta!="0"){
+            if(json.hasOwnProperty("data_calidad_sin_30")){
 
               $("#calidad_sin_30").text(json.data_calidad_sin_30.data.promedio).show()
               $(".calidad_sin_30").show()
@@ -1156,7 +1156,7 @@
 
             //ENCUESTA 3 DE 3
 
-            if(json.hasOwnProperty("data_encuesta_3_3") && json.data_encuesta_3_3.meta!="0"){
+            if(json.hasOwnProperty("data_encuesta_3_3")){
 
               $("#encuesta_3_3").text(json.data_encuesta_3_3.data.promedio).show()
               $(".encuesta_3_3").show()
@@ -1206,7 +1206,7 @@
 
             //CICLE TIME
 
-            if(json.hasOwnProperty("data_cicle_time") && json.data_cicle_time.meta!="0"){
+            if(json.hasOwnProperty("data_cicle_time")){
 
               $("#cicle_time").text(json.data_cicle_time.data.promedio).show()
               $(".cicle_time").show()
@@ -1256,7 +1256,7 @@
 
             //OPTIMUS
 
-            if(json.hasOwnProperty("data_optimus") && json.data_optimus.meta!="0"){
+            if(json.hasOwnProperty("data_optimus")){
 
               $("#optimus").text(json.data_optimus.data.promedio).show()
               $(".optimus").show()

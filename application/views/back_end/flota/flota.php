@@ -9,6 +9,9 @@
   .margen-td {
   text-align: left!important ; /* Cambia 'justify' por 'left' o 'right' según lo que necesites */
   }
+  .select2-selection__clear {
+    color: grey!important;
+  }
 
 </style>
 
@@ -173,7 +176,6 @@
             },
           },    
         "columns": [
-            { "data": "id" ,"class":"margen-td centered"},
             { "data": "patente" ,"class":"margen-td centered"},
             { "data": "rut_chofer" ,"class":"margen-td centered"},
             { "data": "nombre_chofer" ,"class":"margen-td centered"},
@@ -587,13 +589,12 @@
             <table id="lista_flota" class="table table-striped table-hover table-bordered dt-responsive nowrap" style="width:100%">
               <thead>
                 <tr>    
-                  <th class="centered">id</th> 
                   <th class="centered">Patente</th> 
                   <th class="centered">Rut conductor</th> 
                   <th class="centered">Nombre conductor</th> 
                   <th class="centered">Nombre supervisor</th> 
                   <th class="centered">Región</th> 
-                  <th class="centered">Meta litros mensual</th> 
+                  <th class="centered">Meta litros semanal</th> 
                   <th class="centered">Litros cargados</th> 
                   <th class="centered">Meta kms mes</th> 
                   <th class="centered">Kms recorridos</th> 
