@@ -6,23 +6,12 @@
     border-radius: 10px;
     margin: auto;
   }
-  .avg_cm{
-    background-color: #395A7F!important;;
-    color:white!important;;
-    text-align: center!important;
-  }
-  .avg_ca{
-    background-color: #6E9FC1!important;;
-    color:white!important;;
-    text-align: center!important;
-  }
-  .avg_as{
-    background-color: #A3CAE9!important;;
-    color:white!important;;
-    text-align: center!important;
-  }
   .centered2{
     text-align: center!important;
+  }
+
+  .left {
+    text-align: left!important ;
   }
 
   .table thead th , .table tfoot th  {
@@ -97,33 +86,46 @@ const procesaDatatable = (reload) => {
     .then(data => {
           if(data.data.length!=0){
             if(reload){
-                $('#tabla_cumplimiento').html("");
                 $('#tabla_cumplimiento').DataTable().clear().destroy();
-                $("#tabla_cumplimiento tbody").html("");
-                $("#tabla_cumplimiento thead").html("");
-                $("#tabla_cumplimiento tbody").html('<tr class="tfoot_table"></tr>');
-                $("#tabla_cumplimiento tfoot").html("");
-                //$("#tabla_cumplimiento tfoot").html('<tr class="tfoot_table"></tr>')
+                $('#tabla_cumplimiento').empty();
+                $("#tabla_cumplimiento").append('<thead class="centered2 thead_table"></thead>')
+                $("#tabla_cumplimiento").append('<tbody class="centered2 tbody_table"></tbody>')
+                $("#tabla_cumplimiento").append('<tfoot class="centered2 tfoot_table"></tfoot>')
               }else{
-                $("#tabla_cumplimiento").append('<tbody><tr class="tfoot_table"></tr></tbody>')
-                //$("#tabla_cumplimiento").append('<tfoot><tr class="tfoot_table"></tr></tfoot>')
+                $('#tabla_cumplimiento').empty();
+                $("#tabla_cumplimiento").append('<thead class="centered2 thead_table"></thead>')
+                $("#tabla_cumplimiento").append('<tbody class="centered2 tbody_table"></tbody>')
+                $("#tabla_cumplimiento").append('<tfoot class="centered2 tfoot_table"></tfoot>')
               }
+
+              header = ["% Producción","% Calidad","% Asistencia"]
+              avg = ["avg_cm","avg_ca","avg_as"]
               
               columns = [];
               columnNames = (data.data);
 
-              $(".tfoot_table").append('<th class="tbody"></th>')
+              //generar los headers
+
+              $(".thead_table").append('<tr class="header1"></tr>')
+              $(".header1").append('<th rowspan="2"></th>')
+              for (var i in header) {
+                  $(".header1").append('<th colspan="' + (columnNames.length) + '" class="thead">' + header[i] + '</th>');
+              }
+              $(".thead_table").append('<tr class="header2"></tr>')
+              for (var i in header) { 
+                for (var j in columnNames) {
+                  $(".header2").append('<th>'+columnNames[j]+'</th>')
+                }
+              }
+
+              if(columnNames[0] != ""){
                 columns.push({
                     data: "tecnico",
                     class : " ",
                     title: "Usuario"
-              })
-              header = ["% Producción","% Calidad","% Asistencia"]
-              avg = ["avg_cm","avg_ca","avg_as"]
-              if(columnNames[0] != ""){
+                })
                 for (var i in avg) { 
                   for (var j in columnNames) {
-                    $(".tfoot_table").append('<th class="tbody"></th>')
                     columns.push({
                         data: columnNames[j]+"_"+avg[i],
                         class :avg[i],
@@ -149,6 +151,9 @@ const procesaDatatable = (reload) => {
                 scrollCollapse: true,
                 paging:false,
                 responsive:false,
+                fixedColumns: {
+                  start: 1,
+                },
                 oLanguage: { 
                   sProcessing:"<i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i>",
                 },
@@ -187,7 +192,7 @@ const procesaDatatable = (reload) => {
 
           }else{
             $("#tabla_cumplimiento").DataTable().clear().draw()
-            $(".tfoot_table").html("");
+            $(".tbody_table").html("");
           }
     
     $(".btn_filtro_turnos").html('<i class="fa fa-cog fa-1x"></i><span class="sr-only"></span> Filtrar').prop("disabled",false);
@@ -197,7 +202,7 @@ const procesaDatatable = (reload) => {
 procesaDatatable(false)
 
 
-$(document).off('change', '#jefe,#anio,#mes').on('change', '#jefe,#anio,#mes', function(event) {
+$(document).off('change', '#jefe,#anio,#anio_f,#mes').on('change', '#jefe,#anio,#anio_f,#mes', function(event) {
    procesaDatatable(true)
 }); 
 
@@ -215,6 +220,15 @@ $(document).off('change', '#jefe,#anio,#mes').on('change', '#jefe,#anio,#mes', f
           <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Año<span></span> 
         </div>
         <select id="anio" name="anio" class="custom-select custom-select-sm">
+          <?php 
+            foreach($anios as $a){
+              ?>
+              <option value="<?php echo $a["anio"] ?>"><?php echo $a["anio"]?></option>
+              <?php
+            }
+          ?>
+        </select>
+        <select id="anio_f" name="anio_f" class="custom-select custom-select-sm">
           <?php 
             foreach($anios as $a){
               ?>
@@ -256,22 +270,13 @@ $(document).off('change', '#jefe,#anio,#mes').on('change', '#jefe,#anio,#mes', f
     </select>
     </div>
   </div>
-
-  <div class="col-3 col-lg-1 avg avg_cm"> % Producción</div>
-  <div class="col-3 col-lg-1 avg avg_ca"> % Calidad</div>
-  <div class="col-3 col-lg-1 avg avg_as"> % Asistencia </div>
-
-
-
-
-
 </div>   
 
 <div class="row">
   <div class="col-lg-12">
     <div class="row">
       <div class="col-lg-12">
-        <table id="tabla_cumplimiento" class="table tabla_fixed table-bordered table-striped dt-responsive nowrap dataTable trow-border order-column" style="width:100%">
+        <table id="tabla_cumplimiento" class="left table tabla_fixed table-bordered table-striped dt-responsive nowrap dataTable trow-border order-column" style="width:100%">
         </table>
       </div>
     </div>
