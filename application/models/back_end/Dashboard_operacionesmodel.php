@@ -670,9 +670,9 @@ class Dashboard_operacionesmodel extends CI_Model {
 					$monthsArray[] = $mes;
 				}
 				$avgArray[$tecnico]["tecnico"] = $tecnico;
-				$avgArray[$tecnico][$mes."_avg_ca"] = $avg_ca."%";
-				$avgArray[$tecnico][$mes."_avg_as"] = $avg_as."%";
-				$avgArray[$tecnico][$mes."_avg_cm"] = $avg_cm."%";
+				$avgArray[$tecnico][$anio."_".$mes."_avg_ca"] = $avg_ca."%";
+				$avgArray[$tecnico][$anio."_".$mes."_avg_as"] = $avg_as."%";
+				$avgArray[$tecnico][$anio."_".$mes."_avg_cm"] = $avg_cm."%";
 			}
 
 			foreach ($monthsArray as $mes) {
@@ -686,14 +686,14 @@ class Dashboard_operacionesmodel extends CI_Model {
 						if (!isset($avgArray[$tecnico])) {
 							$avgArray[$tecnico] = [];
 						}
-						if (!isset($avgArray[$tecnico][$mes."_avg_as"])) {
-							$avgArray[$tecnico][$mes."_avg_as"] = "";
+						if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_as"])) {
+							$avgArray[$tecnico][$anio."_".$mes."_avg_as"] = "";
 						}
-						if (!isset($avgArray[$tecnico][$mes."_avg_cm"])) {
-							$avgArray[$tecnico][$mes."_avg_cm"] = "";
+						if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_cm"])) {
+							$avgArray[$tecnico][$anio."_".$mes."_avg_cm"] = "";
 						}
-						if (!isset($avgArray[$tecnico][$mes."_avg_ca"])) {
-							$avgArray[$tecnico][$mes."_avg_ca"] = "";
+						if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_ca"])) {
+							$avgArray[$tecnico][$anio."_".$mes."_avg_ca"] = "";
 						}
 					}
 	

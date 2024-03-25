@@ -376,6 +376,9 @@ class Inicio extends CI_Controller {
 		public function listaUsuarios(){
 			 echo $this->Iniciomodel->listaUsuarios();exit;
 		}
+		public function listaJefatura(){
+			 echo $this->Iniciomodel->listaJefatura();exit;
+		}
 		
 
 		public function verComo(){

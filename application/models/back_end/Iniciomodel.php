@@ -268,6 +268,7 @@ class InicioModel extends CI_Model {
 				u.correo_empresa as 'correo',
 				u.celular_empresa as 'telefono',
 				pl.plaza as 'plaza',
+				u.foto,
 
 
 			");
@@ -295,6 +296,32 @@ class InicioModel extends CI_Model {
 			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto'");
 
 			$this->db->where('estado',"1");
+
+			$this->db->order_by('nombres', 'asc');
+			$res=$this->db->get("usuarios");
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["id"];
+					$temp["text"]=$key["nombre_completo"];
+					$temp["image"]=$key["foto"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
+		}
+
+		public function listaJefatura(){
+			$this->db->select("concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+				empresa,sha1(id) as 'id',rut,
+			    CONCAT(nombres,'  ',apellidos) as 'nombre_completo',
+				foto,
+			    CONCAT(SUBSTRING_INDEX(nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto'");
+
+			$this->db->where('estado',"1");
+			$this->db->where_in('id_perfil',0);
 
 			$this->db->order_by('nombres', 'asc');
 			$res=$this->db->get("usuarios");

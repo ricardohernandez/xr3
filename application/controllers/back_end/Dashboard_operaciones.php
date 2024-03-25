@@ -451,6 +451,7 @@ class Dashboard_operaciones extends CI_Controller {
 
 			$datos=array(
 				'anio' =>  date('Y'),
+				'anio_f' =>  date('Y'),
 				'anios' =>  $this->Dashboard_operacionesmodel->getAnioCumplimientoFacturacion(),
 				'meses' =>  $this->Dashboard_operacionesmodel->getMesesCumplimientoFacturacion(),
 				'jefes' => $this->Dashboard_operacionesmodel->getJefeCumplimientoFacturacion(),
@@ -460,20 +461,92 @@ class Dashboard_operaciones extends CI_Controller {
 
 		public function graficoCumpFact(){
 			$anio=$this->security->xss_clean(strip_tags($this->input->get_post("anio")));
+			$anio_f=$this->security->xss_clean(strip_tags($this->input->get_post("anio_f")));
 			$jefe=$this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
 			$mes=$this->security->xss_clean(strip_tags($this->input->get_post("mes")));
+
+			$resultados_por_anio = array();
+			for ($i = $anio; $i <= $anio_f; $i++) {
+				$resultados_por_anio[$i] = $this->Dashboard_operacionesmodel->getDataCumplimientoFacturacion($i, $jefe, $mes);
+			}
+
+			$keys = array(); // Array para almacenar las claves distintas
+			// Recorremos los datos por año
+			foreach ($resultados_por_anio as $year => $technicians) {
+				// Verificamos si hay técnicos en el año actual
+				if (!empty($technicians)) {
+					// Obtenemos el primer técnico del año y obtenemos todas sus claves
+					$first_technician_data = reset($technicians);
+					$keys = array_merge($keys, array_keys($first_technician_data));
+				}
+			}
+			// Eliminamos las claves duplicadas y conservamos solo las claves distintas
+			$keys = array_unique($keys);
+
+			// Inicializamos el array para almacenar los datos unificados
+			$merged_data = array();
+
+			// Recorremos los datos por año
+			foreach ($resultados_por_anio as $year => $technicians) {
+				// Verificamos si hay técnicos en el año actual
+				if (!empty($technicians)) {
+					// Obtenemos el primer técnico del año
+					$first_technician_data = reset($technicians);
+					
+					// Agregamos las claves de este técnico a $keys
+					$keys = array_merge($keys, array_keys($first_technician_data));
+					
+					// Iteramos sobre los técnicos de este año
+					foreach ($technicians as $technician_data) {
+						$technician_name = $technician_data['tecnico'];
+
+						// Verificamos si el técnico ya existe en el array unificado
+						if (!isset($merged_data[$technician_name])) {
+							// Si no existe, creamos un conjunto completo de claves basado en $keys
+							$merged_data[$technician_name] = array_fill_keys($keys, "");
+						}
+
+						// Completamos los datos del técnico para el año actual con los valores disponibles
+						foreach ($technician_data as $key => $value) {
+							// Actualizamos el valor solo si no es nulo o si ya está establecido como una cadena vacía
+							if ($value !== null || $merged_data[$technician_name][$key] === "") {
+								$merged_data[$technician_name][$key] = $value;
+							}
+						}
+					}
+				}
+			}
+
+			// Convertimos todas las cadenas vacías a ""
+			$merged_data = array_map(function ($row) {
+				return array_map(function ($value) {
+					return $value === null ? "" : $value;
+				}, $row);
+			}, $merged_data);
+
+			// Convertimos el array asociativo en un array simple
+			$merged_data = array_values($merged_data);
+
 			$data = $this->Dashboard_operacionesmodel->getDataCumplimientoFacturacion($anio,$jefe,$mes);
-			echo json_encode(array("data" =>$data));exit;
+			echo json_encode(array("data" =>$data, "data2" => $merged_data));exit;
 		}
 
 		public function getCabecerasCumplimientoFacturacion(){
 			$data=json_decode(file_get_contents('php://input'),1);
 			$jefe=$data["jefe"];
 			$anio=$data["anio"];
+			$anio_f=$data["anio_f"];
 			$mes=$data["mes"];
+
+			$resultados_por_anio = array();
+
+			for ($i = $anio; $i <= $anio_f; $i++) {
+				$resultados_por_anio[$i] = $this->Dashboard_operacionesmodel->getCabecerasCumplimientoFacturacion($i, $jefe, $mes);
+			}
+
 			$data = $this->Dashboard_operacionesmodel->getCabecerasCumplimientoFacturacion($anio,$jefe,$mes);
 
-			echo json_encode(array("data" => $data));
+			echo json_encode(array("data" => $data, "data2" => $resultados_por_anio));
 		}
 
 

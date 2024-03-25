@@ -57,6 +57,7 @@
 const procesaDatatable = (reload) => {
   var jefe = $("#jefe").val()
   var anio = $("#anio").val()
+  var anio_f = $("#anio_f").val()
   var mes = $("#mes").val()
 
   async function enviaDatos(url = '', data = {}) {
@@ -81,11 +82,12 @@ const procesaDatatable = (reload) => {
 
       jefe:jefe,
       anio:anio,
+      anio_f:anio_f,
       mes:mes,
     })
     .then(data => {
           if(data.data.length!=0){
-            if(reload){
+              if(reload){
                 $('#tabla_cumplimiento').DataTable().clear().destroy();
                 $('#tabla_cumplimiento').empty();
                 $("#tabla_cumplimiento").append('<thead class="centered2 thead_table"></thead>')
@@ -102,40 +104,45 @@ const procesaDatatable = (reload) => {
               avg = ["avg_cm","avg_ca","avg_as"]
               
               columns = [];
-              columnNames = (data.data);
+              columns.push({
+                  data: "tecnico",
+                  class : " ",
+                  title: "Usuario"
+              })
 
               //generar los headers
-
               $(".thead_table").append('<tr class="header1"></tr>')
-              $(".header1").append('<th rowspan="2"></th>')
-              for (var i in header) {
-                  $(".header1").append('<th colspan="' + (columnNames.length) + '" class="thead">' + header[i] + '</th>');
-              }
               $(".thead_table").append('<tr class="header2"></tr>')
-              for (var i in header) { 
-                for (var j in columnNames) {
-                  $(".header2").append('<th>'+columnNames[j]+'</th>')
-                }
-              }
+              $(".thead_table").append('<tr class="header3"></tr>')
+              $(".header1").append('<th rowspan="3"></th>') //tecnico
 
-              if(columnNames[0] != ""){
-                columns.push({
-                    data: "tecnico",
-                    class : " ",
-                    title: "Usuario"
-                })
-                for (var i in avg) { 
+              for(var key in data.data2){
+                
+                columnNames = (data.data2[key]);
+  
+                $(".header1").append('<th colspan="' + (columnNames.length*header.length) + '" class="thead">' +key + '</th>'); //header de año
+  
+                for (var i in header) { //header de %
+                    $(".header2").append('<th colspan="' + (columnNames.length) + '" class="thead">' + header[i] + '</th>');
+                }
+  
+                for (var i in header) { //header de meses
                   for (var j in columnNames) {
-                    columns.push({
-                        data: columnNames[j]+"_"+avg[i],
-                        class :avg[i],
-                        title: ""+columnNames[j]+""
-                    })
+                    $(".header3").append('<th>'+columnNames[j]+'</th>')
                   }
                 }
-              }
-              else{
-                console.log("nulo");
+  
+
+                  for (var i in avg) { 
+                    for (var j in columnNames) {
+                      columns.push({
+                          data: key+"_"+columnNames[j]+"_"+avg[i],
+                          class :avg[i],
+                          title: ""+columnNames[j]+""
+                      })
+                    }
+                  }
+                
               }
 
             var tabla_cumplimiento = $('#tabla_cumplimiento').DataTable({
@@ -159,13 +166,15 @@ const procesaDatatable = (reload) => {
                 },
                 "ajax": {
                   "url":"<?php echo base_url();?>graficoCumpFact",
-                  "dataSrc": "data",
+                  "dataSrc": "data2",
                   data: function(param){
                     var jefe =$("#jefe").val()
                     var anio =$("#anio").val()
                     var mes =$("#mes").val()
+                    var anio_f =$("#anio_f").val()
                     param.jefe = jefe;
                     param.anio = anio;
+                    param.anio_f = anio_f;
                     param.mes = mes;
                 }
               },    

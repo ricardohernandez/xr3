@@ -33,7 +33,7 @@
    	$(document).off('submit', '#formCambiarPass').on('submit', '#formCambiarPass',function(event) {
 
          var url="<?php echo base_url()?>";
-
+         
          var formElement = document.querySelector("#formCambiarPass");
 
          var formData = new FormData(formElement);
@@ -142,9 +142,33 @@
 
       }).done(function() {
 
-         $("#usuario").select2({
+         $("#buscador_usuario").select2({
 
             placeholder: 'Buscador de usuario',
+
+            data: response,
+
+            width: 'resolve',
+
+            allowClear:true,
+
+            templateResult: formatUsuarioOption,
+
+         });
+
+      });
+
+     $.getJSON(base + "listaJefaturaInicio",{}, function(data) {
+
+      response = data;
+
+      console.log(response);
+
+      }).done(function() {
+
+         $("#buscador_jefatura").select2({
+
+            placeholder: 'Buscador de jefatura',
 
             data: response,
 
@@ -163,56 +187,40 @@
       function formatUsuarioOption(data) {
 
          if (!data.id) {
-
             return data.text;
-
          }
-
          // Crea un elemento `<span>` que incluye la imagen y el texto del usuario
 
          if(data.image !=""){
-
             var $usuarioOption = $(
-
             '<span><img src="' +base+'fotos_usuarios/'+ data.image + '" class="user-image" /> ' + data.text + '</span>'
-
             );
-
          }else{
-
             var $usuarioOption = $(
-
             '<span><i class="fas fa-user-circle user-image nofoto lazyload"></i> ' + data.text + '</span>'
-
             );
 
          }
-
-         
-
-
-
          return $usuarioOption;
-
       }
 
 
 
-      $(document).off('change', '#usuario').on('change', '#usuario', function(event) {
+      $(document).off('change', '#buscador_usuario').on('change', '#buscador_usuario', function(event) {
 
          event.preventDefault();
 
-         hash=$("#usuario").val(); 
+         hash=$("#buscador_usuario").val(); 
 
          $("#modal_user").modal('toggle'); 
 
    	   $("#cierra_modal").attr("disabled", false);
 
-         $("#usuario").val(null);
+         $("#buscador_usuario").val(null);
 
          $('#formusuario')[0].reset()
 
-         $("#formusuario input,#formusuario select,#formusuario button,#formusuario").prop("disabled", true)
+         $("#formusuario input,#formusuario select,#formusuario").prop("disabled", true)
 
          $.ajax({
 
@@ -324,7 +332,134 @@
 
                   });
 
-                  $('#modal_rcdc').modal("toggle");
+                  $('#modal_user').modal("toggle");
+
+               }
+
+            } , timeout:35000
+
+         })   
+
+      }); 
+
+      $(document).off('change', '#buscador_jefatura').on('change', '#buscador_jefatura', function(event) {
+
+         event.preventDefault();
+         hash=$("#buscador_jefatura").val(); 
+         $("#modal_jefe").modal('toggle'); 
+   	   $("#cierra_modal").attr("disabled", false);
+         $("#buscador_jefatura").val(null);
+         $('#formjefatura')[0].reset()
+         $("#formjefatura input,#formjefatura select,#formjefatura").prop("disabled", true)
+
+         $.ajax({
+
+            url: base+"infoUsuario"+"?"+$.now(),  
+
+            type: 'POST',
+
+            cache: false,
+
+            tryCount : 0,
+
+            retryLimit : 3,
+
+            data:{hash:hash},
+
+            dataType:"json",
+
+            beforeSend:function(){
+
+               $(".btn_guardar_detalle").prop("disabled",true); 
+
+               $("#cierra_modal").prop("disabled",true); 
+
+            },
+
+            success: function (data) {
+
+               if(data.res=="ok"){
+
+                  for(dato in data.usuario){
+
+                  $("#jefatura_nombre").val(data.usuario[dato].nombre_completo);
+
+                  $("#jefatura_fono_contacto").val(data.usuario[dato].telefono);
+
+                  $("#jefatura_correo").val(data.usuario[dato].correo);
+
+                  $('#jefatura_imagen').attr('src', base+"fotos_usuarios/"+data.usuario[dato].foto);
+                  
+
+                  }
+
+                  $("#cierra_modal").prop("disabled", false);
+
+                  $(".btn_guardar_detalle").prop("disabled", false);
+
+
+
+               }else if(data.res == "sess"){
+
+                  window.location="../";
+
+               }
+
+               $(".btn_guardar_detalle").prop("disabled",false); 
+
+               $("#cierra_modal").prop("disabled",false); 
+
+            },
+
+            error : function(xhr, textStatus, errorThrown ) {
+
+               if (textStatus == 'timeout') {
+
+                  this.tryCount++;
+
+                  if (this.tryCount <= this.retryLimit) {
+
+                        $.notify("Reintentando...", {
+
+                        className:'info',
+
+                        globalPosition: 'top right'
+
+                        });
+
+                        $.ajax(this);
+
+                        return;
+
+                  } else{
+
+                        $.notify("Problemas en el servidor, intente nuevamente.", {
+
+                        className:'warn',
+
+                        globalPosition: 'top right'
+
+                        });     
+
+                        $('#modal_nuevo_usuario').modal("toggle");
+
+                  }    
+
+                  return;
+
+               }
+
+               if (xhr.status == 500) {
+
+                  $.notify("Problemas en el servidor, intente más tarde.", {
+
+                     className:'warn',
+
+                     globalPosition: 'top right'
+
+                  });
+
+                  $('#modal_jefe').modal("toggle");
 
                }
 
@@ -360,6 +495,24 @@
 
    }
 
+   .cont_img {
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    height: 300px; /* Tamaño del contenedor */
+    width: 300px; /* Tamaño del contenedor */
+    border: 1px solid black; /* Solo para visualización */
+    overflow: hidden; /* Para ocultar cualquier parte de la imagen que se salga del contenedor */
+   }
+
+   .cont_img img {
+      max-width: 100%; /* Para asegurar que la imagen no sea más grande que el contenedor */
+      max-height: 100%; /* Para asegurar que la imagen no sea más grande que el contenedor */
+      width: auto; /* Para hacer la imagen responsive */
+      height: auto; /* Para hacer la imagen responsive */
+      margin: auto; /* Para centrar la imagen dentro del contenedor */
+   }
+
    @media (min-width: 1024px) {
 
       .modal_pass{
@@ -369,6 +522,11 @@
       }
 
       .modal_user{
+
+         width:45%!important;
+
+      }
+      .modal_jefe{
 
          width:45%!important;
 
@@ -387,6 +545,11 @@
       }
 
       .modal_user{
+
+         width:95%!important;
+
+      }
+      .modal_jefe{
 
          width:95%!important;
 
@@ -1183,9 +1346,41 @@
 
                      <li>                  
 
-                        <select id="usuario" name="usuario" >
+                        <select id="buscador_usuario" name="buscador_usuario" >
 
                            <option value="">Buscador de usuario</option>
+
+                        </select> 
+
+                     </li>
+
+                     <?php
+
+                        }
+
+                     ?>
+
+                     </ul>
+
+                  </li>
+
+                  <li class="nav__dropdown ">
+
+                     <a href="#">Conoce a tu jefatura</a>
+
+                     <ul class="nav__dropdown-menu">
+
+                     <?php  
+
+                     if($perfil==1 || $perfil==2){
+
+                     ?>
+
+                     <li>                  
+
+                        <select id="buscador_jefatura" name="buscador_jefatura" >
+
+                           <option value="">Buscador de jefatura</option>
 
                         </select> 
 
@@ -1563,4 +1758,47 @@
 
    
 
+</div>
+
+<!-- MODAL JEFATURA-->
+
+<div class="modal fade" id="modal_jefe" tabindex="-1"  data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="" aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document"> <!-- Agregamos la clase modal-lg para un tamaño grande -->
+      <div class="modal-content">
+         <div class="modal-header">
+            <p class="title_section" style="margin: auto;">Información de jefatura</p>
+         </div>
+         <?php echo form_open_multipart("formjefatura",array("id"=>"formjefatura","class"=>"formjefatura"))?>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="cont_img">
+                     <img name="jefatura_imagen" id="jefatura_imagen" src="<?php echo base_url() ?>fotos_usuarios/Foto.png" alt="Foto.png">
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <input type="hidden" value="" name="hash" id="hash">
+                  <div class="form-row">
+                     <div class="form-group col-md-12">
+                        <label for="">Nombre de jefatura</label>
+                        <input  id="jefatura_nombre" name="jefatura_nombre"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Número de contacto</label>
+                        <input  id="jefatura_fono_contacto" name="jefatura_fono_contacto"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Correo electrónico</label>
+                        <input  id="jefatura_correo" name="jefatura_correo"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cierra_modal"><i class="fa fa-window-close icono_btn"></i> Cerrar</button>
+            </div>
+            <?php echo form_close(); ?>
+         </div>
+      </div>
+   </div>
 </div>

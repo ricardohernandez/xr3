@@ -38,6 +38,8 @@
 
 	$route['listaUsuariosInicio'] = "inicio/listaUsuarios";
 
+	$route['listaJefaturaInicio'] = "inicio/listaJefatura";
+
 	$route['cambiarPass'] = "inicio/cambiarPass";
 
 	$route['verComo'] = "inicio/verComo";
