@@ -709,6 +709,8 @@
 
                   <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>liquidaciones"> RLV - Registro de Liquidación variable </a></li>
 
+                  <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>flota/documentacion"> Flota</a></li>
+
                <?php
 
                   //}
@@ -774,6 +776,7 @@
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistHFC"> CLC - Checklist coaxial HFC</a></li>
 
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>checklistFTTH"> CLF - Checklist fibra FTTH</a></li>
+                     
 
 
 
@@ -784,8 +787,6 @@
                         ?>
 
                      <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
-
-
 
                      <?php  
 
@@ -1093,6 +1094,8 @@
 
                            <li><a class="menu_list"  href="<?php echo base_url() ?>liquidaciones"> RLV - Registro de Liquidación variable </a></li>
 
+                           <li><a  class="menu_list" href="<?php echo base_url() ?>flota/documentacion"> Flota</a></li>
+
                         <?php
 
                            //}
@@ -1158,14 +1161,16 @@
                               <li><a  class="menu_list" href="<?php echo base_url() ?>checklistHFC">CLC - Checklist coaxial HFC</a></li>
 
                               <li><a  class="menu_list" href="<?php echo base_url() ?>checklistFTTH">CLF - Checklist fibra FTTH</a></li>
-
+                              
+                              
                               <?php
 
-                                 }
+                              }
 
-                                 ?>
+                              ?>
 
                               <li><a  class="menu_list" href="<?php echo base_url() ?>ast">CLA - Checklist AST Análisis seguro de trabajo</a></li>
+
 
 
 

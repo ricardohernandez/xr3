@@ -1709,6 +1709,31 @@ $config = array(
 
              ),
 
+             'formDocumentoFlota' => array(
+
+                  array(
+
+                        'field'   => 'patentes[]',
+
+                        'label'   => 'patente',
+
+                        'rules'   => 'trim|required'
+
+                  ),
+
+                  array(
+
+                        'field'   => 'titulo_archivos[]',
+
+                        'label'   => 'titulo de documento',
+
+                        'rules'   => 'trim|required'
+
+                  ),
+
+
+             ) , 
+
 
               
 

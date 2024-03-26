@@ -530,4 +530,178 @@ class Flota extends CI_Controller {
 			
 			echo json_encode(array("data"=>$this->Flotamodel->GastoSemanaMuevo($desde,$hasta,$chofer,$supervisor,$patente,$region)));
 		}
+
+
+
+		/******* DOCUMENTACION *******/
+
+		public function docindex(){
+			//$this->acceso();
+			$datos = array(
+				'titulo' => "Flota - Documentacion",
+				'contenido' => "flota/documentacion/inicio",
+				'perfiles' => $this->Iniciomodel->listaPerfiles(),
+			);  
+			$this->load->view('plantillas/plantilla_back_end',$datos);
+		}
+
+		public function getDocumentoFlotaInicio(){
+			$this->visitas("Inicio");
+			if($this->input->is_ajax_request()){
+				$desde=date('Y-m-d', strtotime("-1 year"));
+				$hasta=date('Y-m-d');
+				$patentes= $this->Flotamodel->getPatenteCombustible();
+				$datos = array(	
+					'desde' => $desde,
+					'hasta' => $hasta,
+					'patentes' => $patentes,
+				);
+				$this->load->view('back_end/flota/documentacion/flota',$datos);
+			}
+	
+		}
+
+		public function listaDocumentoFlota(){
+			$patente=$this->security->xss_clean(strip_tags($this->input->get_post("patente")));
+			echo json_encode($this->Flotamodel->listaDocumentoFlota($patente));
+		}
+
+		public function formDocumentoFlota(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$this->security->xss_clean(strip_tags($hash = $this->input->post("hash_liqui")));
+
+				$ultima_actualizacion = date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
+				$patentes=$this->input->post("patentes");
+				$titulo_archivos=$this->input->post("titulo_archivos");
+				
+				$archivos = array();
+				if (!isset($_FILES['archivos'])) {
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe subir al menos un documento.'));exit;
+				}
+
+				foreach ($_FILES['archivos'] as $key => $value) {
+					for ($i = 0; $i < count($value); $i++) {
+						$archivos[$i][$key] = $value[$i];
+					}
+				}
+
+				if($patentes == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe subir al menos un documento.'));exit;
+				}
+				elseif($titulo_archivos == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe agregar título a los documentos.'));exit;
+				}
+				elseif($archivos == null){
+					echo json_encode(array('res'=>"error", 'msg' => 'Debe agregar archivo a los documentos.'));exit;
+				}
+
+				$carpeta = "archivos/flota/";
+				$datos = array();
+				for ($i = 0; $i < count($patentes); $i++) {
+					if($patentes[$i]==""){
+						echo json_encode(array('res'=>"error", 'msg' => 'Debe subir la patente de todos los documentos.'));exit;
+					}
+					if($titulo_archivos[$i]==""){
+						echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el título de todos los documentos.'));exit;
+					}
+					if($archivos[$i]["name"]==""){
+						echo json_encode(array('res'=>"error", 'msg' => 'Debe subir el archivo de todos los documentos.'));exit;
+					}
+				}
+
+				if ($this->form_validation->run("formDocumentoFlota") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));
+					exit;}
+				else{
+					if($hash==""){
+						
+						for ($i = 0; $i < count($patentes); $i++) {
+							$adjunto = $archivos[$i]["name"];
+							$titulo = $titulo_archivos[$i];
+							$patente = $patentes[$i];
+			
+							if($adjunto!=""){
+								$path = $adjunto;
+								$ext = pathinfo($path, PATHINFO_EXTENSION);
+								$archivo =  date("ymdHis")."_".$titulo."_".$patente.".".$ext;
+								$data = array(
+									"patente" => $patente,
+									"titulo" => $titulo,
+									"archivo" => $archivo,
+									"ultima_actualizacion" => $ultima_actualizacion,
+								);
+								$this->procesaArchivo($archivos[$i],$archivo,$carpeta);
+								$insert_id = $this->Flotamodel->ingresarDocumento($data);   
+							}
+						}
+			
+						if($insert_id != FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));
+							exit;
+						} else {
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));
+							exit;
+						}
+
+					}else{
+						$data_mod= array(
+							"patente" => $patentes[$i],
+							"titulo" => $titulo_archivos[$i],
+							"archivo" => $adjunto,
+							"ultima_actualizacion" => $ultima_actualizacion,
+						);
+						if($this->Prevencion_checklistmodel->ActualizarDocumento($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+					}
+				}
+			}
+			else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function eliminaDocumentoFlota(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			if($this->Flotamodel->eliminaDocumentoFlota($hash)){
+			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{
+			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+			}
+		}
+
+		public function procesaArchivo($file,$titulo,$carpeta){
+			$path = $file['name'];
+ 			$config['upload_path'] = $carpeta;
+			$config['allowed_types'] = 'pdf|PDF|jpg|JPG|jpeg|JPEG|png|PNG';
+		    $config['file_name'] = $titulo;
+			$config['max_size']	= '5300';
+			$config['overwrite']	= FALSE;
+			$this->load->library('upload', $config);
+			$_FILES['userfile']['name'] = $titulo;
+		    $_FILES['userfile']['type'] = $file['type'];
+		    $_FILES['userfile']['tmp_name'] = $file['tmp_name'];
+		    $_FILES['userfile']['error'] = $file['error'];
+			$_FILES['userfile']['size'] = $file['size'];
+			$this->upload->initialize($config);
+
+			if (!$this->upload->do_upload()){ 
+			    echo json_encode(array('res'=>"error", 'msg' =>strip_tags($this->upload->display_errors())));exit;
+		    }else{
+		    	unset($config);
+		    	return $titulo;
+		    }
+    }
+
+
+
+
+
+
+
+
+
 }

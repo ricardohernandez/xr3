@@ -862,4 +862,60 @@ class Flotamodel extends CI_Model {
 			return FALSE;
 		}
 
+
+	/* DOCUMENTACION */
+
+		public function listaDocumentoFlota($patente){
+			$this->db->select("
+				sha1(r.id) as hash,
+				r.*
+			");
+			$this->db->from('flota_documento as r');
+			if($patente != ""){
+				$this->db->where('r.patente',$patente);
+			}
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+	
+		public function ingresarDocumento($data){
+			if($this->db->insert('flota_documento', $data)){
+				return TRUE;
+			}
+			return FALSE;
+		} 
+
+		public function ActualizarDocumento($id,$data){
+			$this->db->where('sha1(id)', $id);
+			if($this->db->update('flota_documento', $data)){
+				
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function eliminaDocumentoFlota($id){
+			$this->db->where('sha1(id)', $id);
+			if($this->db->delete('flota_documento')){
+				
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function getDocumentoFlota($hash){
+			$this->db->select("
+				sha1(r.id) as hash,
+				r.*
+			");
+			$this->db->from('flota_documento as r');		
+			$this->db->where('sha1(r.id)', $hash);
+			$res=$this->db->get();
+			return $res->result_array();
+		
+		}
+
 }

@@ -118,67 +118,47 @@
 
 /*******FLOTA*******/
 
-
-
 	$route['flota'] = "back_end/flota/index";
 
-
-
 	$route['getFlotaInicio'] = "back_end/flota/getFlotaInicio";
-
 	$route['getActualizacionCombustible'] = "back_end/flota/getActualizacionCombustible";
-
 	$route['listaCombustible'] = "back_end/flota/listaCombustible";
-
 	$route['listaCarga'] = "back_end/flota/listaCarga";
-
 	$route['listaMax'] = "back_end/flota/listaMax";
-
 	$route['GastoZona'] = "back_end/flota/GastoZona";
-
 	$route['GastoRegion'] = "back_end/flota/GastoRegion";
-
 	$route['GastoSemana'] = "back_end/flota/GastoSemana";
-
 	$route['GastoCombustibleRegion'] = "back_end/flota/GastoCombustibleRegion";
-
 	$route['GastoCombustibleZona'] = "back_end/flota/GastoCombustibleZona";
-
 	$route['GastoCombustibleSemana'] = "back_end/flota/GastoCombustibleSemana";
 
-
-
-
+	/***** GPS *****/
 
 	$route['getGPSInicio'] = "back_end/flota/getGPSInicio";
-
 	$route['getActualizacionGPS'] = "back_end/flota/getActualizacionGPS";
-
 	$route['listaGPS'] = "back_end/flota/listaGPS";
-
 	$route['listaDetalleFlota'] = "back_end/flota/listaDetalleFlota";
-
 	$route['listaTotal'] = "back_end/flota/listaTotal";
 
-
-
 	$route['getGPSInicioMuevo'] = "back_end/flota/getGPSInicioMuevo";
-
 	$route['getActualizacionGPSMuevo'] = "back_end/flota/getActualizacionGPSMuevo";
-
 	$route['listaGPSMuevo'] = "back_end/flota/listaGPSMuevo";
-
 	$route['listaMontoMuevo'] = "back_end/flota/listaMontoMuevo";
-
 	$route['listaOdometroMuevo'] = "back_end/flota/listaOdometroMuevo";
-
 	$route['GastoRegionMuevo'] = "back_end/flota/GastoRegionMuevo";
-
 	$route['GastoSemanaMuevo'] = "back_end/flota/GastoSemanaMuevo";
 
-
-
 	$route['formCargaMasivaFlota'] = "back_end/flota/formCargaMasivaFlota";
+
+	/*******FLOTA - DOCUMENTACION*******/
+
+	$route['flota/documentacion'] = "back_end/flota/docindex";
+	$route['getDocumentoFlotaInicio'] = "back_end/flota/getDocumentoFlotaInicio";
+
+	$route['listaDocumentoFlota'] = "back_end/flota/listaDocumentoFlota"; 
+	$route['getDocumentoFlota'] = "back_end/flota/getDocumentoFlota";
+	$route['formDocumentoFlota'] = "back_end/flota/formDocumentoFlota";
+	$route['eliminaDocumentoFlota'] = "back_end/flota/eliminaDocumentoFlota";
 
 	
 
