@@ -387,8 +387,11 @@
                   $("#jefatura_fono_contacto").val(data.usuario[dato].telefono);
 
                   $("#jefatura_correo").val(data.usuario[dato].correo);
+                  
+                  $("#jefatura_cargo").val(data.usuario[dato].cargo);
 
                   $('#jefatura_imagen').attr('src', base+"fotos_usuarios/"+data.usuario[dato].foto);
+
                   
 
                   }
@@ -499,8 +502,8 @@
     display: flex;
     justify-content: center; /* Centrado horizontal */
     align-items: center; /* Centrado vertical */
-    height: 300px; /* Tamaño del contenedor */
-    width: 300px; /* Tamaño del contenedor */
+    height: 200px; /* Tamaño del contenedor */
+    width: 200px; /* Tamaño del contenedor */
     border: 1px solid black; /* Solo para visualización */
     overflow: hidden; /* Para ocultar cualquier parte de la imagen que se salga del contenedor */
    }
@@ -1371,7 +1374,7 @@
 
                   <li class="nav__dropdown ">
 
-                     <a href="#">Conoce a tu jefatura</a>
+                     <a href="#">Lideres XR3</a>
 
                      <ul class="nav__dropdown-menu">
 
@@ -1385,7 +1388,7 @@
 
                         <select id="buscador_jefatura" name="buscador_jefatura" >
 
-                           <option value="">Buscador de jefatura</option>
+                           <option value="">Buscador de lider</option>
 
                         </select> 
 
@@ -1776,12 +1779,12 @@
          <?php echo form_open_multipart("formjefatura",array("id"=>"formjefatura","class"=>"formjefatura"))?>
          <div class="modal-body">
             <div class="row">
-               <div class="col-md-6">
+               <div class="col-md-4" style="display: flex; justify-content:center!important; align-items:center!important;">
                   <div class="cont_img">
                      <img name="jefatura_imagen" id="jefatura_imagen" src="<?php echo base_url() ?>fotos_usuarios/Foto.png" alt="Foto.png">
                   </div>
                </div>
-               <div class="col-md-6">
+               <div class="col-md-8">
                   <input type="hidden" value="" name="hash" id="hash">
                   <div class="form-row">
                      <div class="form-group col-md-12">
@@ -1795,6 +1798,10 @@
                      <div class="form-group col-md-12">
                         <label for="">Correo electrónico</label>
                         <input  id="jefatura_correo" name="jefatura_correo"  type="text" class="form-control form-control-sm" placeholder=""> 
+                     </div>
+                     <div class="form-group col-md-12">
+                        <label for="">Cargo</label>
+                        <input  id="jefatura_cargo" name="jefatura_cargo"  type="text" class="form-control form-control-sm" placeholder=""> 
                      </div>
                   </div>
                </div>
