@@ -1734,6 +1734,19 @@ $config = array(
 
              ) , 
 
+             'formMantenedorFlota' => array(
+
+                  array(
+
+                        'field'   => 'patente',
+
+                        'label'   => 'patente',
+
+                        'rules'   => 'trim|required'
+
+                  ),
+             ) , 
+
 
               
 

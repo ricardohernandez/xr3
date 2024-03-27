@@ -160,6 +160,15 @@
 	$route['formDocumentoFlota'] = "back_end/flota/formDocumentoFlota";
 	$route['eliminaDocumentoFlota'] = "back_end/flota/eliminaDocumentoFlota";
 
+		/** MANTENEDOR **/
+
+		$route['getMantenedorFlotaInicio'] = "back_end/flota/getMantenedorFlotaInicio";
+
+		$route['listaMantenedorFlota'] = "back_end/flota/listaMantenedorFlota"; 
+		$route['getMantenedorFlota'] = "back_end/flota/getMantenedorFlota";
+		$route['formMantenedorFlota'] = "back_end/flota/formMantenedorFlota";
+		$route['eliminaMantenedorFlota'] = "back_end/flota/eliminaMantenedorFlota";
+
 	
 
 /*******DOCUMENTACION*******/

@@ -66,6 +66,17 @@
       });
     });
 
+    $(document).off('click', '#menu_mantenedor').on('click', '#menu_mantenedor',function(event) {
+      event.preventDefault();
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+
+      $.get(base_url+"getMantenedorFlotaInicio", function( data ) {
+        $(".contenedor_app").html(data);  
+        $("#menu_mantenedor").addClass('menuActivo');  
+      });
+    });
+
   })
 </script>
 
@@ -81,6 +92,7 @@
     <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
        <li id="menu_documentacion" class="active"><a> <i class="fa fa-file"></i> Documentos </a></li> 
+       <li id="menu_mantenedor" class="active"><a> <i class="fa fa-gear"></i> Mantenedor </a></li> 
       </ul>  
       </div> 
       </div> 

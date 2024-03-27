@@ -550,7 +550,7 @@ class Flota extends CI_Controller {
 			if($this->input->is_ajax_request()){
 				$desde=date('Y-m-d', strtotime("-1 year"));
 				$hasta=date('Y-m-d');
-				$patentes= $this->Flotamodel->getPatenteCombustible();
+				$patentes= $this->Flotamodel->getPatenteMantenedor();
 				$datos = array(	
 					'desde' => $desde,
 					'hasta' => $hasta,
@@ -694,7 +694,77 @@ class Flota extends CI_Controller {
 		    	unset($config);
 		    	return $titulo;
 		    }
-    }
+    	}
+
+		/***** MANTENEDOR *****/
+
+		public function getMantenedorFlotaInicio(){
+			$this->visitas("Inicio");
+			if($this->input->is_ajax_request()){
+				$desde=date('Y-m-d', strtotime("-1 year"));
+				$hasta=date('Y-m-d');
+				$datos = array(	
+					'desde' => $desde,
+					'hasta' => $hasta,
+				);
+				$this->load->view('back_end/flota/documentacion/mantenedor',$datos);
+			}
+		}
+
+		public function listaMantenedorFlota(){
+			echo json_encode($this->Flotamodel->listaMantenedorFlota());
+		}
+
+		public function formMantenedorFlota(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+				$hash = $this->security->xss_clean(strip_tags($this->input->post("hash_liqui")));
+				$patente = $this->security->xss_clean(strip_tags($this->input->post("patente")));
+
+				if ($this->form_validation->run("formMantenedorFlota") == FALSE){
+					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));
+					exit;}
+				else{
+					if($hash==""){
+						
+						$data = array(
+							"patente" => $patente,
+						);
+						$insert_id = $this->Flotamodel->ingresarFlota($data);   
+			
+						if($insert_id != FALSE){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));
+							exit;
+						} else {
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));
+							exit;
+						}
+
+					}else{
+						$data_mod= array(
+							"patente" => $patente,
+						);
+						if($this->Flotamodel->ActualizarFlota($hash,$data_mod)){
+							echo json_encode(array('res'=>"ok",  'msg' => OK_MSG));exit;
+						}else{
+							echo json_encode(array('res'=>"error", 'msg' => ERROR_MSG));exit;
+						}
+					}
+				}
+			}
+			else{
+				exit('No direct script access allowed');
+			}
+		}
+
+		public function eliminaMantenedorFlota(){
+			$hash=$this->security->xss_clean(strip_tags($this->input->post("hash")));
+			if($this->Flotamodel->eliminaMantenedorFlota($hash)){
+			echo json_encode(array("res" => "ok" , "msg" => "Registro eliminado correctamente."));
+			}else{
+			echo json_encode(array("res" => "error" , "msg" => "Problemas eliminando el registro, intente nuevamente."));
+			}
+		}
 
 
 

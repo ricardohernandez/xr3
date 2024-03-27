@@ -868,7 +868,9 @@ class Flotamodel extends CI_Model {
 		public function listaDocumentoFlota($patente){
 			$this->db->select("
 				sha1(r.id) as hash,
-				r.*
+				r.*,
+				REPLACE(r.archivo,' ','_') as archivo,
+
 			");
 			$this->db->from('flota_documento as r');
 			if($patente != ""){
@@ -916,6 +918,64 @@ class Flotamodel extends CI_Model {
 			$res=$this->db->get();
 			return $res->result_array();
 		
+		}
+
+		/**** MANTENEDOR *****/
+
+		public function listaMantenedorFlota(){
+			$this->db->select("
+				sha1(r.id) as hash,
+				r.*,
+			");
+			$this->db->from('flota_vehiculos as r');
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				return $res->result_array();
+			}
+			return FALSE;
+		}
+	
+		public function ingresarFlota($data){
+			if($this->db->insert('flota_vehiculos', $data)){
+				return TRUE;
+			}
+			return FALSE;
+		} 
+
+		public function ActualizarFlota($id,$data){
+			$this->db->where('sha1(id)', $id);
+			if($this->db->update('flota_vehiculos', $data)){
+				
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function eliminaMantenedorFlota($id){
+			$this->db->where('sha1(id)', $id);
+			if($this->db->delete('flota_vehiculos')){
+				
+				return TRUE;
+			}
+			return FALSE;
+		}
+
+		public function getPatenteMantenedor(){
+			$this->db->distinct();
+			$this->db->select('patente');
+			$res = $this->db->get('flota_vehiculos');
+			$this->db->order_by('patente', 'asc');
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["patente"];
+					$temp["text"]=$key["patente"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
 		}
 
 }
