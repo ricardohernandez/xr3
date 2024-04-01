@@ -656,48 +656,58 @@ class Dashboard_operacionesmodel extends CI_Model {
 				"12" => 'Diciembre'
 			);
 
-			foreach ($data as $item) {
-				$tecnico = $item["tecnico"];
-				$mes = $nmes[$item["mes"]];
-				$avg_ca = $item["avg_ca"]; 
-				$avg_as = $item["avg_as"]; 
-				$avg_cm = $item["avg_cm"]; 
+			if($res->num_rows() > 0 and $res2->num_rows() > 0){
 
-				if (!isset($avgArray[$tecnico])) {
-					$avgArray[$tecnico] = [];
-				}
-				if (!in_array($mes, $monthsArray)) {
-					$monthsArray[] = $mes;
-				}
-				$avgArray[$tecnico]["tecnico"] = $tecnico;
-				$avgArray[$tecnico][$anio."_".$mes."_avg_ca"] = $avg_ca."%";
-				$avgArray[$tecnico][$anio."_".$mes."_avg_as"] = $avg_as."%";
-				$avgArray[$tecnico][$anio."_".$mes."_avg_cm"] = $avg_cm."%";
-			}
-
-			foreach ($monthsArray as $mes) {
 				foreach ($data as $item) {
 					$tecnico = $item["tecnico"];
+					$mes = $nmes[$item["mes"]];
 					$avg_ca = $item["avg_ca"]; 
 					$avg_as = $item["avg_as"]; 
 					$avg_cm = $item["avg_cm"]; 
-
-					if($avg_ca !="" || $avg_as !="" || $avg_cm !=""){
-						if (!isset($avgArray[$tecnico])) {
-							$avgArray[$tecnico] = [];
-						}
-						if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_as"])) {
-							$avgArray[$tecnico][$anio."_".$mes."_avg_as"] = "";
-						}
-						if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_cm"])) {
-							$avgArray[$tecnico][$anio."_".$mes."_avg_cm"] = "";
-						}
-						if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_ca"])) {
-							$avgArray[$tecnico][$anio."_".$mes."_avg_ca"] = "";
-						}
-					}
 	
+					if (!isset($avgArray[$tecnico])) {
+						$avgArray[$tecnico] = [];
+					}
+					if (!in_array($mes, $monthsArray)) {
+						$monthsArray[] = $mes;
+					}
+					$avgArray[$tecnico]["tecnico"] = $tecnico;
+					$avgArray[$tecnico][$anio."_".$mes."_avg_ca"] = $avg_ca."%";
+					$avgArray[$tecnico][$anio."_".$mes."_avg_as"] = $avg_as."%";
+					$avgArray[$tecnico][$anio."_".$mes."_avg_cm"] = $avg_cm."%";
 				}
+	
+				foreach ($monthsArray as $mes) {
+					foreach ($data as $item) {
+						$tecnico = $item["tecnico"];
+						$avg_ca = $item["avg_ca"]; 
+						$avg_as = $item["avg_as"]; 
+						$avg_cm = $item["avg_cm"]; 
+	
+						if($avg_ca !="" || $avg_as !="" || $avg_cm !=""){
+							if (!isset($avgArray[$tecnico])) {
+								$avgArray[$tecnico] = [];
+							}
+							if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_as"])) {
+								$avgArray[$tecnico][$anio."_".$mes."_avg_as"] = "";
+							}
+							if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_cm"])) {
+								$avgArray[$tecnico][$anio."_".$mes."_avg_cm"] = "";
+							}
+							if (!isset($avgArray[$tecnico][$anio."_".$mes."_avg_ca"])) {
+								$avgArray[$tecnico][$anio."_".$mes."_avg_ca"] = "";
+							}
+						}
+		
+					}
+				}
+			}
+			else{
+				$avgArray[""] = [];
+				$avgArray[""]["tecnico"] = "";
+				$avgArray[""][$anio."__avg_as"] = "";
+				$avgArray[""][$anio."__avg_cm"] = "";
+				$avgArray[""][$anio."__avg_ca"] = "";
 			}
 
 			$array = array();
