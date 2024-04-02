@@ -98,6 +98,9 @@ class Mad extends CI_Controller {
 				$proyecto = $this->security->xss_clean(strip_tags($this->input->post("proyecto")));
 				$cam_con = $this->security->xss_clean(strip_tags($this->input->post("cam_con")));
 				$rssi = $this->security->xss_clean(strip_tags($this->input->post("rssi")));
+				$pareo_inal = $this->security->xss_clean(strip_tags($this->input->post("pareo_inal")));
+				$tipo_auditoria = $this->security->xss_clean(strip_tags($this->input->post("tipo_auditoria")));
+				$id_orden_ot = $this->security->xss_clean(strip_tags($this->input->post("id_orden_ot")));
 				$codigo = $this->security->xss_clean(strip_tags($this->input->post("codigo")));
 				$observacion = $this->security->xss_clean(strip_tags($this->input->post("observacion")));
 				$ultima_actualizacion = date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
@@ -117,6 +120,9 @@ class Mad extends CI_Controller {
 							'id_proyecto' => $proyecto,
 							'cam_con' => $cam_con,
 							'rssi' => $rssi,
+							'pareo_inal' => $pareo_inal,
+							'tipo_auditoria' => $tipo_auditoria,
+							'id_orden_ot' => $id_orden_ot,
 							'observacion' => $observacion,
 							'ultima_actualizacion' => $ultima_actualizacion,
                         );
@@ -135,6 +141,9 @@ class Mad extends CI_Controller {
 							'id_coordinador' => $id_coordinador,
 							'cam_con' => $cam_con,
 							'rssi' => $rssi,
+							'pareo_inal' => $pareo_inal,
+							'tipo_auditoria' => $tipo_auditoria,
+							'id_orden_ot' => $id_orden_ot,
 							'id_tipo' => $tipo,
 							'id_proyecto' => $proyecto,
 							'observacion' => $observacion,
@@ -224,6 +233,9 @@ class Mad extends CI_Controller {
 						<th class="head">Proyecto</th> 
 						<th class="head">Cert. cambio conectores</th>  
             			<th class="head">Cert. RSSI</th>   
+            			<th class="head">Par&eacute;o inal&aacute;mbrico</th>   
+            			<th class="head">Tipo Auditor&iacute;a</th>   
+            			<th class="head">C&oacute;digo OT</th>   
 						<th class="head">Observaci&oacute;n</th> 
 						<th class="head">&Uacute;ltima actualizaci&oacute;n</th> 
 					</tr>
@@ -245,6 +257,9 @@ class Mad extends CI_Controller {
 									<td><?php echo utf8_decode($d["proyecto"]); ?></td>
 									<td><?php echo utf8_decode($d["cam_con"]); ?></td>
 									<td><?php echo utf8_decode($d["rssi"]); ?></td>
+									<td><?php echo utf8_decode($d["pareo_inal"]); ?></td>
+									<td><?php echo utf8_decode($d["tipo_auditoria"]); ?></td>
+									<td><?php echo utf8_decode($d["id_orden_ot"]); ?></td>
 									<td><?php echo utf8_decode($d["observacion"]); ?></td>
 									<td><?php echo utf8_decode($d["ultima_actualizacion"]); ?></td>
 								</tr>

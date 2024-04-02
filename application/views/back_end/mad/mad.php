@@ -88,6 +88,9 @@
           { "data": "proyecto" ,"class":"margen-td centered"},
           { "data": "cam_con" ,"class":"margen-td centered"},
           { "data": "rssi" ,"class":"margen-td centered"},
+          { "data": "pareo_inal" ,"class":"margen-td centered"},
+          { "data": "tipo_auditoria" ,"class":"margen-td centered"},
+          { "data": "id_orden_ot" ,"class":"margen-td centered"},
           { "class":"margen-td centered", "data": function(row,type,val,meta){
             if(row.observacion!="" && row.observacion!=null){
                    if(row.observacion.length > 30) {
@@ -277,6 +280,9 @@
               $('#proyecto').val(data.datos[dato].id_proyecto).trigger('change');
               $('#cam_con').val(data.datos[dato].cam_con).trigger('change');
               $('#rssi').val(data.datos[dato].rssi).trigger('change');
+              $('#pareo_inal').val(data.datos[dato].pareo_inal).trigger('change');
+              $('#tipo_auditoria').val(data.datos[dato].tipo_auditoria).trigger('change');
+              $('#id_orden_ot').val(data.datos[dato].id_orden_ot).trigger('change');
 
               $("#observacion").val(data.datos[dato].observacion);
 
@@ -550,6 +556,9 @@
             <th class="centered">Proyecto</th>  
             <th class="centered">Cert. cambio conect.</th>  
             <th class="centered">Cert. RSSI</th>  
+            <th class="centered">Paréo inalámbrico</th>  
+            <th class="centered">Tipo Auditoría</th>  
+            <th class="centered">Código OT</th>  
             <th class="centered">Observación</th> 
             <th class="centered">Última actualización</th> 
           </tr>
@@ -698,6 +707,34 @@
                     <option value="SI" >SI </option>
                     <option value="NO" >NO </option>
                   </select>
+                </div>
+              </div>
+              <div class="col-lg-3">  
+                <div class="form-group">
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Paréo inalámbrico</label>
+                  <select id="pareo_inal" name="pareo_inal" class="custom-select custom-select-sm">
+                    <option value="" selected>Seleccione </option>
+                    <option value="SI" >SI </option>
+                    <option value="NO" >NO </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-lg-3">  
+                <div class="form-group">
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Tipo auditoría</label>
+                  <select id="tipo_auditoria" name="tipo_auditoria" class="custom-select custom-select-sm">
+                    <option value="" selected>Seleccione </option>
+                    <option value="POST" >Post</option>
+                    <option value="En linea" >En linea</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="col-lg-3">  
+                <div class="form-group">
+                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Órden OT</label>         
+                <input type="text"  placeholder="Ingrese código OT" class="form-control form-control-sm"  name="id_orden_ot" id="id_orden_ot">
                 </div>
               </div>
 

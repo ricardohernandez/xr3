@@ -566,6 +566,7 @@ class Productividadmodel extends CI_Model {
  
 			if($trabajador!=""){
 				$this->db->where('u.id', $trabajador);
+				$this->db->group_by('mes_completo');
 			}else{
 				$this->db->group_by('mes_completo');
 			}
