@@ -1,5 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+
 class Mad extends CI_Controller {
 
 	public function __construct(){
@@ -52,7 +58,9 @@ class Mad extends CI_Controller {
 		$this->load->view('plantillas/plantilla_back_end',$datos);
 	}
 
-	/********* RCDC ***********/
+	/********* MAD ***********/
+
+
 
 		public function getMadInicio(){
 			if($this->input->is_ajax_request()){
@@ -271,6 +279,115 @@ class Mad extends CI_Controller {
 				</table>
 			<?php
 			}
+		}
+
+		public function formCargaMasivaMad(){
+
+			if (!function_exists('str_contains')) {
+				function str_contains(string $haystack, string $needle): bool
+				{
+					return '' === $needle || false !== strpos($haystack, $needle);
+				}
+			}
+	
+			if($_FILES['userfile']['name']==""){
+				echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+			}
+			$fname = $_FILES['userfile']['name'];
+			$chk_ext = explode(".",$fname);
+	
+			if(strtolower(end($chk_ext)) == "xlsx")  {
+	
+	
+				$archivo = $_FILES['userfile']['tmp_name'];
+				$spreadsheet = IOFactory::load($archivo);
+				$i = 0;
+	
+				//GENERAL
+					$hoja = $spreadsheet->getSheet(0);
+					$ultima_fila = $hoja->getHighestRow();
+					$filas_general = 0;
+	
+					$columnas = array(
+						'id_orden_ot',
+						'fecha',
+						'id_zona',
+						'id_comuna',
+						'id_tecnico', //SELECT * FROM `usuarios` WHERE nombres LIKE "nombre%" AND apellidos LIKE "apellido%" AND estado=1
+						'id_coordinador', //SELECT * FROM `usuarios` WHERE nombres LIKE "nombre%" AND apellidos LIKE "apellido%" AND estado=1
+						'id_proyecto',
+						'id_tipo',
+						'cam_con',
+						'rssi',
+						'pareo_inal',
+						'tipo_auditoria', //HABLAR CON MATIAS, SE NECESITA AGREGAR EL VALOR AL EXCEL
+						'observacion',
+					);
+
+					$ultima_actualizacion = date("Y-m-d G:i:s")." | ".$this->session->userdata("nombre_completo");
+					$fecha_ingreso = date("Y-m-d G:i:s");
+	
+					for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+						if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+							$datos = array();
+							foreach ($columnas as $index => $columna) {
+								if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
+									if ($index === 1) { //DATE
+										$fecha = date('Y-m-d', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+										$datos[$columna] = $fecha;
+									} 
+									elseif ($index === 2) { //zona
+										$datos[$columna] = $this->Madmodel->GetZonaMasivo($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									}
+									elseif ($index === 3) { //ciudad
+										$datos[$columna] = $this->Madmodel->GetCiudadMasivo($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									}
+									elseif ($index === 4) { //tecnico
+										$tecnico =$hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+										$nombre_apellido = explode(" ", $tecnico);
+										$datos[$columna] = $this->Madmodel->GetTecnicoMasivo($nombre_apellido[0],$nombre_apellido[1]);
+									}
+									elseif ($index === 5) { //auditor
+										$tecnico =$hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+										$nombre_apellido = explode(" ", $tecnico);
+										$datos[$columna] = $this->Madmodel->GetTecnicoMasivo($nombre_apellido[0],$nombre_apellido[1]);
+									}
+									elseif ($index === 6) { //proyecto
+										$datos[$columna] = $this->Madmodel->GetProyectoMasivo($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									}
+									elseif ($index === 7) { //tipo
+										$datos[$columna] = $this->Madmodel->GetTipoMasivo($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									}
+									else {
+										$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+									}
+								}
+								else{
+									$datos[$columna] = "-";
+								}
+							}
+							$datos["ultima_actualizacion"]=$ultima_actualizacion;
+							$datos["fecha_ingreso"]=$fecha_ingreso;
+							
+							$this->Madmodel->formIngreso($datos);
+							$filas_general++;
+							$i++;
+						}
+					}
+	
+				
+					echo json_encode(array(
+						'res' => 'ok',
+						'tipo' => 'success',
+						'msg' => 'Archivo cargado con éxito.
+						'.$filas_general.' filas insertadas,'
+						
+					));exit;
+	
+				   echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+			}else{
+				echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo inválido."));exit;
+			}   
 		}
 
 	

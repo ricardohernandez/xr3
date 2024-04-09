@@ -91,6 +91,74 @@ class Madmodel extends CI_Model {
 
 	/************** OTROS ****************/
 
+		/*MASIVA*/
+		public function GetZonaMasivo($zona){
+			$this->db->select('a.id as id,a.area');	
+			$this->db->from('usuarios_areas as a');
+			$this->db->where('a.area LIKE', '%' . $zona . '%');
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					return $key["id"];
+				}
+			}
+			return 0;
+		}
+
+		public function GetCiudadMasivo($ciudad){
+			$this->db->select('c.id as id,c.titulo');	
+			$this->db->from('comunas_mad as c');
+			$this->db->where('c.titulo LIKE', '%' . $ciudad . '%');
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					return $key["id"];
+				}
+			}
+			return 0;
+		}
+
+		public function GetTecnicoMasivo($nombre,$apellido){
+			$this->db->select('u.id as id');	
+			$this->db->from('usuarios as u');
+			$this->db->where('u.nombres LIKE', '%' . $nombre . '%');
+			$this->db->where('u.apellidos LIKE', '%' . $apellido . '%');
+			$this->db->where('u.estado',1);
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					return $key["id"];
+				}
+			}
+			return 0;
+		}
+
+		public function GetProyectoMasivo($proyecto){
+			$this->db->select('p.id as id');	
+			$this->db->from('usuarios_proyectos as p');
+			$this->db->where('p.proyecto LIKE', '%' . $proyecto . '%');
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					return $key["id"];
+				}
+			}
+			return 0;
+		}
+
+		public function GetTipoMasivo($tipo){
+			$this->db->select('t.id as id');	
+			$this->db->from('mad_tipos as t');
+			$this->db->where('t.tipo LIKE', '%' . $tipo . '%');
+			$res=$this->db->get();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					return $key["id"];
+				}
+			}
+			return 0;
+		}
+
 	public function listaComunas(){
 		$this->db->select('c.*');	
 		$this->db->from('comunas_mad as c');

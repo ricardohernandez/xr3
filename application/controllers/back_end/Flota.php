@@ -88,6 +88,10 @@ class Flota extends CI_Controller {
 									$fecha = date('Y-m-d', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
 									$datos[$columna] = $fecha;
 								}
+								elseif ($index === 0){ //PATENTE
+									$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = str_replace('-', '', $patente);
+								}
 								elseif ($index === 12){
 									$fecha = date('H:i:s', strtotime('1900-01-00') + (($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() - 1) * 86400));
 									$datos[$columna] = $fecha;
@@ -138,6 +142,10 @@ class Flota extends CI_Controller {
 								if ($index === 0) {
 									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
 									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 1){ //PATENTE
+									$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = str_replace('-', '', $patente);
 								}
 								elseif ($index === 2) {
 									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
@@ -202,6 +210,10 @@ class Flota extends CI_Controller {
 							if ($index === 0) {
 								$fecha = date('Y-m-d', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
 								$datos[$columna] = $fecha;
+							}
+							elseif ($index === 2){ //PATENTE
+								$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								$datos[$columna] = str_replace('-', '', $patente);
 							}
 							else{
 								$datos[$columna] = strval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());

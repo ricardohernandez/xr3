@@ -421,7 +421,8 @@ class Flotamodel extends CI_Model {
 		public function listaDetalleFlota($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
 			$this->db->select("
 			sha1(f.id) as hash,
-			f.*");
+			f.*,
+			");
 
 			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
@@ -432,8 +433,37 @@ class Flotamodel extends CI_Model {
 
 			$this->db->order_by('v_max', 'desc');
 			$res=$this->db->get('flota_gps as f');
+
 			if($res->num_rows()>0){
-				return $res->result_array();
+				$array = array();
+				foreach($res->result_array() as $key){
+					$this->db->select("MAX(c.fecha) as fecha, c.rut_chofer, c.nombre_chofer");
+					$this->db->where('c.patente', str_replace("-", "", $key["patente"]));
+					$combustible=$this->db->get('flota_combustible as c');
+					if($combustible->num_rows()>0){
+						$data = $combustible->result_array();
+					}
+
+					$this->db->select("MAX(c.fecha) as fecha, c.rut_chofer, c.nombre_chofer");
+					$this->db->where('c.patente', str_replace("-", "", $key["patente"]));
+					$muevo=$this->db->get('flota_gps_muevo as c');
+					if($muevo->num_rows()>0){
+						$datam = $muevo->result_array();
+					}
+
+					if($datam[0]["fecha"] < $data[0]["fecha"]){
+						$key["rut"] = $data[0]["rut_chofer"];
+						$key["nombre_chofer"] = $data[0]["nombre_chofer"];
+					}else{
+						$key["rut"] = $datam[0]["rut_chofer"];
+						$key["nombre_chofer"] = $datam[0]["nombre_chofer"];
+					}
+					$array[] = $key;
+
+					//return $combustible->result_array();
+					//return $muevo->result_array();
+				}
+				return $array;
 			}else{
 				return FALSE;
 			}
@@ -445,6 +475,7 @@ class Flotamodel extends CI_Model {
 				f.patente as 'patente',
 				COUNT(f.v_max) as 'infracciones',
 			");
+			
 			$this->db->from('flota_gps as f');
 			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
 			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}

@@ -115,7 +115,6 @@
 	$route['formCargaMasivaIgt'] = "back_end/igt/formCargaMasivaIgt";
 
 
-
 /*******FLOTA*******/
 
 	$route['flota'] = "back_end/flota/index";
@@ -1308,6 +1307,8 @@
 	$route['eliminaMad'] = "back_end/mad/eliminaMad";
 	$route['getDataMad'] = "back_end/mad/getDataMad";
 	$route['excelmad/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/mad/excelmad/$1/$2/$3/$4/$5/$6";
+
+	$route['formCargaMasivaMad'] = "back_end/mad/formCargaMasivaMad";
 
 	/************ MAD - MANTENEDOR *****************/
 
