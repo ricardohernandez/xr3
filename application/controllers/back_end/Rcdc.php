@@ -268,19 +268,17 @@ class Rcdc extends CI_Controller {
 	
 	/**************** MANTENEDOR ***************/
 
-	public function getMantenedorRcdc(){
-		if($this->input->is_ajax_request()){
-			$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
-			$hasta = date('Y-m-d');
-			$datos = array(
-				'desde' => $desde,
-				'hasta' => $hasta,
-			);
-			$this->load->view('back_end/rcdc/mantenedor',$datos);
+		public function getMantenedorRcdc(){
+			if($this->input->is_ajax_request()){
+				$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
+				$hasta = date('Y-m-d');
+				$datos = array(
+					'desde' => $desde,
+					'hasta' => $hasta,
+				);
+				$this->load->view('back_end/rcdc/mantenedor',$datos);
+			}
 		}
-	}
-
-
 
 		/***** COMUNA *****/
 
@@ -487,4 +485,112 @@ class Rcdc extends CI_Controller {
 			}
 		}
 	
+
+	/********* GRAFICOS *******/
+
+		public function getGraficosRcdc(){
+			if($this->input->is_ajax_request()){
+				$datos = array(
+					'anio' => $this->Rcdcmodel->anioRegistros(),
+					'mes' => $this->Rcdcmodel->MesRegistros(),
+					'comuna' => $this->Rcdcmodel->listaComunas(),
+					'zona' => $this->Rcdcmodel->listaZonas(),
+					'coordinador' => $this->Rcdcmodel->listaTrabajadores(),
+				);
+				$this->load->view('back_end/rcdc/graficos',$datos);
+			}
+		}
+
+		public function getDataGraficosRcdc(){
+			if($this->input->is_ajax_request()){
+				$this->checkLogin();	
+
+				$anio=$this->security->xss_clean(strip_tags($this->input->post("anio")));
+				$mes=$this->security->xss_clean(strip_tags($this->input->post("mes")));
+				$comuna=$this->security->xss_clean(strip_tags($this->input->post("comuna")));
+				$zona=$this->security->xss_clean(strip_tags($this->input->post("zona")));
+				$encargado=$this->security->xss_clean(strip_tags($this->input->post("encargado")));
+
+				$lista_motivos = $this->Rcdcmodel->listaMotivos("");
+				$detalle = $this->Rcdcmodel->getDataGraficoMotivosxTecnicoDetalle($anio,$mes,$comuna,$zona,$encargado);
+
+				// Crear un array con todos los IDs de motivo
+				$ids_motivos = array_column($lista_motivos, 'id');
+				$nombre_motivos = array_column($lista_motivos, 'motivo');
+
+				// Array para almacenar el resultado
+				$resultado = [];
+
+				// Iterar sobre el detalle para contar las veces que cada usuario ha registrado cada motivo
+				foreach ($detalle as $registro) {
+					$usuario = $registro[0];
+					$id_motivo = $registro[1];
+					$cantidad = $registro[2];
+
+					// Si el usuario no existe en el resultado, inicializarlo
+					if (!isset($resultado[$usuario])) {
+						$resultado[$usuario] = [];
+						// Agregar el nombre de usuario como primer valor
+						$resultado[$usuario]["nombre"] = $usuario;
+					}
+
+					// Obtener el motivo por su ID
+					$motivo = $lista_motivos[array_search($id_motivo, $ids_motivos)]["motivo"] ?? null;
+
+					// Almacenar la cantidad
+					$resultado[$usuario][$motivo] = $cantidad;
+				}
+
+				// Rellenar con 0 para los motivos que no están presentes en el detalle
+				foreach ($resultado as &$usuario_motivos) {
+					foreach ($lista_motivos as $motivo) {
+						if (!isset($usuario_motivos[$motivo['motivo']])) {
+							$usuario_motivos[$motivo['motivo']] = 0;
+						}
+					}
+				}
+
+				$array = array();
+				array_unshift($nombre_motivos, "Motivo");
+				$array[] = $nombre_motivos;
+				foreach ($resultado as $res) {
+					$temp = array();
+					$temp[] = $res["nombre"];
+					foreach ($lista_motivos as $motivo) {
+						$temp[] = $res[$motivo["motivo"]];
+					}
+					$array[] = $temp;
+				}
+				// Calcular la suma de cada fila y almacenarla junto con el índice de la fila
+				$sumas = [];
+				foreach ($array as $indice => $fila) {
+					if ($indice === 0) continue; // Saltar el encabezado
+					$sumas[$indice] = array_sum(array_slice($fila, 1)); // Sumar desde el segundo elemento en adelante
+				}
+				// Ordenar el array en función de las sumas de cada fila de manera descendente
+				arsort($sumas);
+				// Crear un nuevo array ordenado en función de los índices obtenidos
+				$array_ordenado = [];
+				foreach ($sumas as $indice => $suma) {
+					$array_ordenado[] = $array[$indice];
+				}
+				// Agregar el encabezado al nuevo array
+				$array_ordenado = array_merge([$array[0]], $array_ordenado);
+
+				$data=array(
+					"graficoMotivosxZona" => $this->Rcdcmodel->getDataGraficoMotivosxZona($anio,$mes,$comuna,$zona,$encargado),
+					"graficoMotivos" => $this->Rcdcmodel->getDataGraficoMotivos($anio,$mes,$comuna,$zona,$encargado),
+					"graficoMotivosxTecnico" => $this->Rcdcmodel->getDataGraficoMotivosxTecnico($anio,$mes,$comuna,$zona,$encargado),
+					"graficoMotivosxComuna" => $this->Rcdcmodel->getDataGraficoMotivosxComuna($anio,$mes,$comuna,$zona,$encargado),
+					"graficoMotivosxTecnicoDetalle" => $array_ordenado,
+					"graficoMotivosxCoordinador" => $this->Rcdcmodel->getDataGraficoMotivosxCoordinador($anio,$mes,$comuna,$zona,$encargado),
+				);
+
+				echo json_encode($data);exit;
+
+			}else{
+				exit('No direct script access allowed');
+			}
+		}
+
 }

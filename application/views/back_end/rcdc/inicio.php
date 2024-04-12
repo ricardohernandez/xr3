@@ -72,6 +72,19 @@
       });
     });
 
+    $(document).off('click', '#menu_graficos').on('click', '#menu_graficos',function(event) {
+      event.preventDefault();
+      $("#menu_graficos").addClass('disabled_sub');
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+      $("#menu_graficos").addClass('menuActivo');  
+
+      $.get("getGraficosRcdc", function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_graficos").removeClass('disabled_sub');
+      });
+    });
+
     $(document).off('click', '#menu_mantenedor').on('click', '#menu_mantenedor',function(event) {
       event.preventDefault();
       $("#menu_mantenedor").addClass('disabled_sub');
@@ -101,6 +114,7 @@
      <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
         <li id="menu_detalle" class="active"><a> <i class="fa fa-list-alt"></i> Detalle </a></li>   
+        <li id="menu_graficos" class="active"><a> <i class="fa fa-list-alt"></i> Gráficos </a></li>   
         <li id="menu_mantenedor" class="active"><a> <i class="fa fa-list-alt"></i> Mantenedor </a></li>   
       </ul>  
       </div> 

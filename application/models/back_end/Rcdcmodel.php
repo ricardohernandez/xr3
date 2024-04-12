@@ -186,56 +186,94 @@ class Rcdcmodel extends CI_Model {
 		return FALSE;
 	}
 
+	public function anioRegistros(){
+		$this->db->distinct();
+		$this->db->select('YEAR(fecha) as anio');
+		$this->db->order_by('fecha', 'desc');
+		$res = $this->db->get('rcdc');
+		if($res->num_rows()>0){
+			$array=array();
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp["id"]=$key["anio"];
+				$temp["text"]=$key["anio"];
+				$array[]=$temp;
+			}
+			return json_encode($array);
+		}
+		return FALSE;
+	}
+
+	public function MesRegistros(){
+		$this->db->query("SET lc_time_names = 'es_ES'");
+		$this->db->distinct();
+		$this->db->select('MONTH(fecha) as mes,MONTHNAME(fecha) as nombre');
+		$this->db->order_by('fecha', 'desc');
+		$res = $this->db->get('rcdc');
+		if($res->num_rows()>0){
+			$array=array();
+			foreach($res->result_array() as $key){
+				$temp=array();
+				$temp["id"]=$key["mes"];
+				$temp["text"]=$key["nombre"];
+				$array[]=$temp;
+			}
+			return json_encode($array);
+		}
+		return FALSE;
+	}
+
+
 	/**********MANTENEDOR*************/
 
-	/**** COMUNAS ****/
+		/**** COMUNAS ****/
 
-		public function getComunasRcdcList(){
-			$this->db->select(
-				"sha1(r.id) as hash,
-				r.*,
-			");
+			public function getComunasRcdcList(){
+				$this->db->select(
+					"sha1(r.id) as hash,
+					r.*,
+				");
 
-			$this->db->order_by('r.titulo', 'desc');
-			$res = $this->db->get('comunas_rcdc as r');
-			return $res->result_array();
-		}
-
-		public function getDataComunasRcdc($hash){
-			$this->db->select('
-				sha1(r.id) as hash,
-				r.*,
-			');
-			$this->db->where('sha1(r.id)', $hash);
-			$res=$this->db->get('comunas_rcdc as r');
-			return $res->result_array();
-		}
-
-		public function formActualizarComuna($id,$data){
-			$this->db->where('sha1(id)', $id);
-			if($this->db->update('comunas_rcdc', $data)){
-				
-				return TRUE;
+				$this->db->order_by('r.titulo', 'desc');
+				$res = $this->db->get('comunas_rcdc as r');
+				return $res->result_array();
 			}
-			return FALSE;
-		}
 
-		public function formIngresoComuna($data){
-			if($this->db->insert('comunas_rcdc', $data)){
-				return $this->db->insert_id();
+			public function getDataComunasRcdc($hash){
+				$this->db->select('
+					sha1(r.id) as hash,
+					r.*,
+				');
+				$this->db->where('sha1(r.id)', $hash);
+				$res=$this->db->get('comunas_rcdc as r');
+				return $res->result_array();
 			}
-			return FALSE;
-		} 
-		
-		public function eliminaComunasRcdc($hash){
-			$this->db->where('sha1(id)', $hash);
-			if($this ->db->delete('comunas_rcdc')){
-				return TRUE;
-			}
-			return FALSE;
-		}
 
-	/***** TIPOS *****/
+			public function formActualizarComuna($id,$data){
+				$this->db->where('sha1(id)', $id);
+				if($this->db->update('comunas_rcdc', $data)){
+					
+					return TRUE;
+				}
+				return FALSE;
+			}
+
+			public function formIngresoComuna($data){
+				if($this->db->insert('comunas_rcdc', $data)){
+					return $this->db->insert_id();
+				}
+				return FALSE;
+			} 
+			
+			public function eliminaComunasRcdc($hash){
+				$this->db->where('sha1(id)', $hash);
+				if($this ->db->delete('comunas_rcdc')){
+					return TRUE;
+				}
+				return FALSE;
+			}
+
+		/***** TIPOS *****/
 
 		public function getTiposRcdcList(){
 			$this->db->select(
@@ -330,4 +368,305 @@ class Rcdcmodel extends CI_Model {
 			return FALSE;
 		}
 
+
+
+	/*******  GRAFICOS ************/
+
+		public function getDataGraficoMotivosxZona($anio,$mes,$comuna,$zona,$encargado){
+			$this->db->select("
+			COUNT(*) as cantidad,
+			a.area as zona,
+			");
+			$this->db->from('rcdc as r');
+			$this->db->join('usuarios_areas as a', 'r.id_zona = a.id', 'left');
+
+			if($anio != ''){
+				$this->db->where('YEAR(r.fecha) =',$anio);
+			}
+			if($mes != ''){
+				$this->db->where('MONTH(r.fecha)', $mes, false);
+			}
+			if($comuna != ''){
+				$this->db->where('r.id_comuna',$comuna);
+			}
+			if($zona != ''){
+				$this->db->where('r.id_zona',$zona);
+			}
+			if($encargado != ''){
+				$this->db->where('r.id_coordinador',$encargado);
+			}
+
+			$this->db->group_by('id_zona','desc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Zona",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['cantidad']." - ".$key['zona'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function getDataGraficoMotivos($anio,$mes,$comuna,$zona,$encargado){
+			$this->db->select("
+			COUNT(*) as cantidad,
+			m.motivo as motivo,
+			");
+			$this->db->from('rcdc as r');
+			$this->db->join('rcdc_motivos as m', 'r.id_motivo = m.id', 'left');
+
+			if($anio != ''){
+				$this->db->where('YEAR(r.fecha) =',$anio);
+			}
+			if($mes != ''){
+				$this->db->where('MONTH(r.fecha)', $mes, false);
+			}
+			if($comuna != ''){
+				$this->db->where('r.id_comuna',$comuna);
+			}
+			if($zona != ''){
+				$this->db->where('r.id_zona',$zona);
+			}
+			if($encargado != ''){
+				$this->db->where('r.id_coordinador',$encargado);
+			}
+
+			$this->db->group_by('id_motivo','desc');
+			$this->db->order_by('cantidad','desc');
+
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Motivo",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['motivo'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function getDataGraficoMotivosxTecnico($anio,$mes,$comuna,$zona,$encargado){
+			$this->db->select("
+			COUNT(*) as cantidad,
+			CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as tecnico,
+			");
+			$this->db->from('rcdc as r');
+			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
+
+			if($anio != ''){
+				$this->db->where('YEAR(r.fecha) =',$anio);
+			}
+			if($mes != ''){
+				$this->db->where('MONTH(r.fecha)', $mes, false);
+			}
+			if($comuna != ''){
+				$this->db->where('r.id_comuna',$comuna);
+			}
+			if($zona != ''){
+				$this->db->where('r.id_zona',$zona);
+			}
+			if($encargado != ''){
+				$this->db->where('r.id_coordinador',$encargado);
+			}
+
+			$this->db->group_by('id_tecnico','desc');
+			$this->db->order_by('cantidad','desc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Técnico",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['tecnico'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function getDataGraficoMotivosxComuna($anio,$mes,$comuna,$zona,$encargado){
+			$this->db->select("
+			COUNT(*) as cantidad,
+			pl.titulo as comuna,
+			");
+			$this->db->from('rcdc as r');
+			$this->db->join('comunas_rcdc as pl', 'pl.id = r.id_comuna', 'left');
+
+			if($anio != ''){
+				$this->db->where('YEAR(r.fecha) =',$anio);
+			}
+			if($mes != ''){
+				$this->db->where('MONTH(r.fecha)', $mes, false);
+			}
+			if($comuna != ''){
+				$this->db->where('r.id_comuna',$comuna);
+			}
+			if($zona != ''){
+				$this->db->where('r.id_zona',$zona);
+			}
+			if($encargado != ''){
+				$this->db->where('r.id_coordinador',$encargado);
+			}
+
+			$this->db->group_by('id_comuna','desc');
+			$this->db->order_by('cantidad','desc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Comuna",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['comuna'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function getDataGraficoMotivosxTecnicoDetalle($anio,$mes,$comuna,$zona,$encargado){
+			$this->db->select("
+			COUNT(*) as cantidad,
+			CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as tecnico,
+			m.id as id_motivo,
+			m.motivo as motivo,
+			");
+			$this->db->from('rcdc as r');
+			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
+			$this->db->join('rcdc_motivos as m', 'r.id_motivo = m.id', 'left');
+
+			if($anio != ''){
+				$this->db->where('YEAR(r.fecha) =',$anio);
+			}
+			if($mes != ''){
+				$this->db->where('MONTH(r.fecha)', $mes, false);
+			}
+			if($comuna != ''){
+				$this->db->where('r.id_comuna',$comuna);
+			}
+			if($zona != ''){
+				$this->db->where('r.id_zona',$zona);
+			}
+			if($encargado != ''){
+				$this->db->where('r.id_coordinador',$encargado);
+			}
+
+			$this->db->group_by('id_tecnico , id_motivo');
+			$this->db->order_by('id_tecnico, id_motivo');
+			$res=$this->db->get();
+
+			$array = array();
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['tecnico'];
+					$temp[] = (int) $key['id_motivo'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function getDataGraficoMotivosxCoordinador($anio,$mes,$comuna,$zona,$encargado){
+			$this->db->select("
+			COUNT(*) as cantidad,
+			CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as tecnico,
+			");
+			$this->db->from('rcdc as r');
+			$this->db->join('usuarios as u', 'r.id_coordinador = u.id', 'left');
+
+			if($anio != ''){
+				$this->db->where('YEAR(r.fecha) =',$anio);
+			}
+			if($mes != ''){
+				$this->db->where('MONTH(r.fecha)', $mes, false);
+			}
+			if($comuna != ''){
+				$this->db->where('r.id_comuna',$comuna);
+			}
+			if($zona != ''){
+				$this->db->where('r.id_zona',$zona);
+			}
+			if($encargado != ''){
+				$this->db->where('r.id_coordinador',$encargado);
+			}
+
+			$this->db->group_by('id_coordinador','desc');
+			$this->db->order_by('cantidad','desc');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Técnico",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['tecnico'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}	
+
+	/****/
 }

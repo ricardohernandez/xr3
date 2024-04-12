@@ -1190,43 +1190,29 @@
 
 	$route['getMantenedorRcdc'] = "back_end/rcdc/getMantenedorRcdc";
 
-
-
 	$route['getMotivosRcdcList'] = "back_end/rcdc/getMotivosRcdcList";
-
 	$route['formMotivosRcdc'] = "back_end/rcdc/formMotivosRcdc";
-
 	$route['eliminaMotivosRcdc'] = "back_end/rcdc/eliminaMotivosRcdc";
-
 	$route['getDataMotivosRcdc'] = "back_end/rcdc/getDataMotivosRcdc";
 
-
-
 	$route['getComunasRcdcList'] = "back_end/rcdc/getComunasRcdcList";
-
 	$route['formComunasRcdc'] = "back_end/rcdc/formComunasRcdc";
-
 	$route['eliminaComunasRcdc'] = "back_end/rcdc/eliminaComunasRcdc";
-
 	$route['getDataComunasRcdc'] = "back_end/rcdc/getDataComunasRcdc";
 
-
-
 	$route['getTiposRcdcList'] = "back_end/rcdc/getTiposRcdcList";
-
 	$route['formTiposRcdc'] = "back_end/rcdc/formTiposRcdc";
-
 	$route['eliminaTiposRcdc'] = "back_end/rcdc/eliminaTiposRcdc";
-
 	$route['getDataTiposRcdc'] = "back_end/rcdc/getDataTiposRcdc";
 
-
-
 	$route['listaMotivos'] = "back_end/rcdc/listaMotivos";
-
 	$route['listaTipos'] = "back_end/rcdc/listaTipos";
 
+	/**** GRAFICOS ****/
 
+	$route['getGraficosRcdc'] = "back_end/rcdc/getGraficosRcdc";
+	
+	$route['getDataGraficosRcdc'] = "back_end/rcdc/getDataGraficosRcdc";
 
 /************ RRE *************/
 
