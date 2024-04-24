@@ -29,6 +29,8 @@
       format_on: 'keyup'
     });
 
+    /*
+
     $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
       var myFormData = new FormData();
       myFormData.append('userfile', $('#userfile').prop('files')[0]);
@@ -100,6 +102,7 @@
         },timeout:120000
       });
     })
+    */
 
   /*****DATATABLE*****/   
     var indexLastColumn = $("#listaUsuarios").find('tr')[0].cells.length-1;
@@ -475,7 +478,73 @@
 
 
     });
-    
+
+    $(document).off('change', '.file_cs').on('change', '.file_cs',function(event) {
+      var myFormData = new FormData();
+      myFormData.append('userfile', $('#userfile').prop('files')[0]);
+      $.ajax({
+          url: "CargaMasivaUsuarios"+"?"+$.now(),  
+          type: 'POST',
+          data: myFormData,
+          cache: false,
+          tryCount : 0,
+          retryLimit : 3,
+          processData: false,
+          contentType : false,
+          dataType:"json",
+          beforeSend:function(){
+            $(".btn_file_cs").html('<i class="fa fa-cog fa-spin fa-1x fa-fw"></i><span class="sr-only"></span> Cargando...').prop("disabled",true);
+          },  
+          success: function (data) {
+             $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base ').prop("disabled",false);
+              if(data.res=="ok"){
+                $.notify(data.msg, {
+                    className:data.tipo,
+                    globalPosition: 'top center',
+                    autoHideDelay: 20000,
+                });
+                
+              }else{
+                $.notify(data.msg, {
+                    className:data.tipo,
+                    globalPosition: 'top center',
+                    autoHideDelay: 10000,
+                });
+              }
+              $("#userfile").val(null);
+          },
+          error : function(xhr, textStatus, errorThrown ) {
+            $("#userfile").val(null);
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    $.notify("Reintentando...", {
+                      className:'info',
+                      globalPosition: 'top center'
+                    });
+                    $.ajax(this);
+                    $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base productividad').prop("disabled",false);
+                    return;
+                } else{
+                   $.notify("Problemas cargando el archivo, intente nuevamente.", {
+                      className:'warn',
+                      globalPosition: 'top center',
+                      autoHideDelay: 10000,
+                    });
+                }    
+                return;
+            }
+            if (xhr.status == 500) {
+               $.notify("Problemas cargando el archivo, intente nuevamente.", {
+                  className:'warn',
+                  globalPosition: 'top center',
+                  autoHideDelay: 10000,
+               });
+            $(".btn_file_cs").html('<i class="fa fa-file-import"></i> Cargar base').prop("disabled",false);
+            }
+        },timeout:120000
+      });
+    })
 
   })
 
@@ -499,6 +568,14 @@
          <i class="fa fa-plus-circle"></i>  Crear 
          </button>
       </div>
+    </div>
+    
+    <div class=" col-xs-6 col-sm-6  col-md-6  col-lg-2 d-none d-sm-block">  
+       <div class="form-group">
+         <input hidden type="file" id="userfile" name="userfile" class="file_cs" />
+         <button type="button"  class="btn-block btn btn-sm btn-primary btn_file_cs btn_xr3" onclick="document.getElementById('userfile').click();">
+         <i class="fa fa-file-import"></i> Carga Masiva
+       </div>
     </div>
 
     <div class="col-6 col-lg-3">  

@@ -35,7 +35,7 @@ class Madmodel extends CI_Model {
 			$this->db->join('usuarios_proyectos as p', 'r.id_proyecto = p.id', 'left');
 
 			if($desde!="" and $hasta!=""){
-				$this->db->where("r.fecha_ingreso BETWEEN '".$desde."' AND '".$hasta."'");
+				$this->db->where("r.fecha BETWEEN '".$desde."' AND '".$hasta."'");
 			}
 			if($coordinador!=""){
 				$this->db->where('r.id_coordinador',$coordinador);
@@ -50,7 +50,7 @@ class Madmodel extends CI_Model {
 				$this->db->where('r.id_proyecto',$empresa);
 			}
 
-			$this->db->order_by('r.fecha_ingreso', 'desc');
+			$this->db->order_by('r.fecha', 'desc');
 			$res = $this->db->get('mad as r');
 			return $res->result_array();
 		}

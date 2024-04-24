@@ -116,6 +116,8 @@ class Ast extends CI_Controller {
 			$this->visitas("Listado");
 			$desde=date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d"))));
 	    	$hasta=date('Y-m-d');
+			$usuario = $this->session->userdata('id');
+
 			$tecnicos=$this->Astmodel->listaTecnicos();
 			$auditores=$this->Astmodel->listaAuditores();
     		$comunas=$this->Astmodel->listaComunas();
@@ -187,6 +189,10 @@ class Ast extends CI_Controller {
 				if ($this->form_validation->run("formAst") == FALSE){
 					echo json_encode(array('res'=>"error", 'msg' => strip_tags(validation_errors())));exit;
 				}else{	
+					
+					if ($this->Astmodel->AstDia($fecha,$tecnico) > 10){
+						echo json_encode(array('res'=>"error", 'msg' => "El usuario sobrepasó la cantidad de registros diarios."));exit;
+					}
 
 					$data_insert=array(
 						"id_actividad"=>$actividad,

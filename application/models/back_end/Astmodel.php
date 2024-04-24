@@ -263,6 +263,19 @@ class Astmodel extends CI_Model {
 			return $res->result_array();
 		}
 
+		public function AstDia($hoy,$usuario){
+			$this->db->select('COUNT(*) as num');
+			$this->db->where('fecha',$hoy);
+			$this->db->where('tecnico_id',$usuario);
+			$res = $this->db->get('ast_checklist');
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $ast){
+					return $ast["num"];
+				}
+			}
+			return FALSE;
+		}
+
 		public function listaTipos(){
 			$this->db->order_by('tipo', 'asc');
 			$res = $this->db->get('ast_checklist_tipos');

@@ -212,6 +212,17 @@ class Usuariosmodel extends CI_Model {
 			return FALSE;
 		}
 
+		public function inhabilitaUsuario($id){
+			$data = array('estado' => 0); // Definir el nuevo valor para la columna 'estado'
+			$this->db->where('id', $id);
+			if($this->db->update('usuarios', $data)){
+				/*echo $this->db->last_query();
+				echo "<br>";*/
+				return TRUE;
+			}
+			return FALSE;
+		}
+
 		public function getIdUsuarioPorRut($rut){
 			$this->db->select('id');
 			$this->db->where('rut', $rut);
@@ -224,20 +235,45 @@ class Usuariosmodel extends CI_Model {
 				return $row["id"];
 			}
 
-			
 		}
 
 		public function getIdCargoPorNombre($cargo){
 			$this->db->where('cargo', $cargo);
 			$res=$this->db->get('usuarios_cargos');
 			$row=$res->row_array();
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
 			return $row["id"];
 		}
 
-		public function getIdAreaPorNombre($area){
-			$this->db->where('area', $area);
-			$res=$this->db->get('usuarios_areas');
+		public function getIdPerfilPorNombre($perfil){
+			$this->db->like('perfil', $perfil);
+			$res=$this->db->get('usuarios_perfiles');
 			$row=$res->row_array();
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
+			return $row["id"];
+		}
+
+		public function getIdNivelPorNombre($nivel){
+			$this->db->where('nivel', $nivel);
+			$res=$this->db->get('usuarios_tecnicos_niveles');
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
+			$row=$res->row_array();
+			return $row["id"];
+		}
+
+		public function getIdPlazaPorNombre($plaza){
+			$this->db->like('plaza', $plaza);
+			$res=$this->db->get('usuarios_plazas');
+			$row=$res->row_array();
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
 			return $row["id"];
 		}
 
@@ -245,6 +281,19 @@ class Usuariosmodel extends CI_Model {
 			$this->db->where('proyecto', $proyecto);
 			$res=$this->db->get('usuarios_proyectos');
 			$row=$res->row_array();
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
+			return $row["id"];
+		}
+
+		public function getIdAreaPorNombre($area){
+			$this->db->where('area', $area);
+			$res=$this->db->get('usuarios_areas');
+			$row=$res->row_array();
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
 			return $row["id"];
 		}
 
@@ -260,6 +309,9 @@ class Usuariosmodel extends CI_Model {
 			/*echo $this->db->last_query();
 			echo "<br>";*/
 			$row=$res->row_array();
+			if($res->num_rows() <= 0){
+				return 0;	
+			}
 			return $row["id_jefe"];
 		}
 

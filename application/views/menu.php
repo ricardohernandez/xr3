@@ -346,7 +346,7 @@
 
          event.preventDefault();
          hash=$("#buscador_jefatura").val(); 
-         $("#modal_jefe").modal('toggle'); 
+         $("#modal_buscador_jefatura").modal('toggle'); 
    	   $("#cierra_modal").attr("disabled", false);
          $("#buscador_jefatura").val(null);
          $('#formjefatura')[0].reset()
@@ -462,7 +462,7 @@
 
                   });
 
-                  $('#modal_jefe').modal("toggle");
+                  $('#modal_buscador_jefatura').modal("toggle");
 
                }
 
@@ -529,7 +529,7 @@
          width:45%!important;
 
       }
-      .modal_jefe{
+      .modal_buscador_jefatura{
 
          width:45%!important;
 
@@ -552,7 +552,7 @@
          width:95%!important;
 
       }
-      .modal_jefe{
+      .modal_buscador_jefatura{
 
          width:95%!important;
 
@@ -1770,7 +1770,7 @@
 
 <!-- MODAL JEFATURA-->
 
-<div class="modal fade" id="modal_jefe" tabindex="-1"  data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal fade" id="modal_buscador_jefatura" tabindex="-1"  data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document"> <!-- Agregamos la clase modal-lg para un tamaño grande -->
       <div class="modal-content">
          <div class="modal-header">

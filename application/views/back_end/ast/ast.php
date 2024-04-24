@@ -166,6 +166,7 @@
       $("#hash_ast").val("");
       $(".btn_guardar_ast").html('<i class="fa fa-save"></i> Guardar').attr("disabled", false);
       $("#formAst input,#formAst select,#formAst button,#formAst").prop("disabled", false);
+      $("#fecha").attr("readonly", true);
       $(".estado").removeClass("red");
       $(".estado").removeClass("grey");
       $("#actividad").prop("disabled",false);
@@ -187,6 +188,14 @@
           $('#tabla_checklist_ast').DataTable().search("").draw();
           hash = $("#hash_ast").val()
         }, 1);
+      }
+
+      if($("#hash_ast").val() > 300){
+         $.notify("Límite de AST diario excedido.", {
+             className:'error',
+             globalPosition: 'top right'
+         });  
+         return false;
       }
 
       setTimeout(function(){ 
@@ -218,6 +227,7 @@
                 });
 
                 $("#formAst input,#formAst select,#formAst button,#formAst").prop("disabled", false);
+                $("#fecha").attr("readonly", true);
                 $("#actividad").prop("disabled",false);    
 
                 $("#id").prop("disabled",true)
@@ -238,6 +248,7 @@
                 getDataAst(data.hash)
                 $("#hash_ast").val(data.hash);
                 $("#formAst input,#formAst select,#formAst button,#formAst").prop("disabled", false);
+                $("#fecha").attr("readonly", true);
                 $("#actividad").prop("disabled",true);    
                 $("#id").prop("disabled",true)
                 $("#riesgos_no_controlados").prop("disabled",true)
@@ -307,11 +318,13 @@
           $(".btn_guardar_ast").attr("disabled", true);
           $(".cierra_modal_ast").attr("disabled", true);
           $("#formAst input,#formAst select,#formAst button,#formAst").prop("disabled", true);
+          $("#fecha").attr("readonly", true);
         },
         success: function (data) {
           $(".btn_guardar_ast").attr("disabled", false);
           $(".cierra_modal_ast").attr("disabled", false);
           $("#formAst input,#formAst select,#formAst button,#formAst").prop("disabled", false);
+          $("#fecha").attr("readonly", true);
           
           if(data.res=="ok"){
 
@@ -564,7 +577,7 @@
 </script>
 
 <!-- FILTROS -->
-  
+
   <div class="form-row">
 
       <!-- <div class="col-xs-6 col-sm-6 col-md-1 col-lg-1 no-padding">  

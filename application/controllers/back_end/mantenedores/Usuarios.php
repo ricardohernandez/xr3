@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class Usuarios extends CI_Controller {
 
 	public function __construct(){
@@ -100,6 +102,178 @@ class Usuarios extends CI_Controller {
 	        }else{
 	        	echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo CSV inválido."));exit;
 	        }   
+		}
+
+		public function CargaMasivaUsuarios(){
+
+			if (!function_exists('str_contains')) {
+				function str_contains(string $haystack, string $needle): bool
+				{
+					return '' === $needle || false !== strpos($haystack, $needle);
+				}
+			}
+	
+			if($_FILES['userfile']['name']==""){
+				echo json_encode(array('res'=>'error',  "tipo" => "error" , 'msg'=>"Debe seleccionar un archivo."));exit;
+			}
+			$fname = $_FILES['userfile']['name'];
+			$chk_ext = explode(".",$fname);
+	
+			if(strtolower(end($chk_ext)) == "xlsx")  {
+	
+	
+				$archivo = $_FILES['userfile']['tmp_name'];
+				$spreadsheet = IOFactory::load($archivo);
+				$i = 0;
+	
+				//INGRESAR
+					$hoja = $spreadsheet->getSheetByName("INGRESO");
+					$ultima_fila = $hoja->getHighestRow();
+					$filas_general = 0;
+	
+					$columnas = array(
+
+						'nombres',//
+						'apellidos',//
+						'empresa',//
+						'rut',//
+						'sexo',//
+
+						'nacionalidad',//
+						'estado_civil',//
+						'id_cargo', //
+						'id_area', //
+						'subzona', //
+
+						'id_plaza', //
+						'id_proyecto', //
+						'id_jefe', //
+						'id_tipo_contrato', //
+						'id_nivel_tecnico', //
+
+						'codigo', //
+						'domicilio', //
+						'comuna', //
+						'ciudad',//
+						'celular_empresa', //
+
+						'celular_personal', //
+						'correo_empresa', //
+						'correo_personal', //
+						'fecha_nacimiento', //
+
+						'fecha_ingreso', //
+						'id_perfil',
+					);
+	
+					for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+						if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+							$exists=$this->Usuariosmodel->existeUsuario(str_replace('-', '', $hoja->getCellByColumnAndRow(3 + 1, $fila)->getValue()));
+							if(!$exists){
+							$datos = array();
+							foreach ($columnas as $index => $columna) {
+								if ($index === 3) { //RUT SIN GUION
+									$datos[$columna] = str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								}elseif ($index === 23 or $index === 24) { //FECHA
+									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 4) { //sexo
+									if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() == "M"){
+										$datos[$columna] = "Masculino";
+									}
+									else{
+										$datos[$columna] = "Femenino";
+									}
+								}
+								elseif ($index === 7) { //id_cargo
+									$id_cargo = $this->Usuariosmodel->getIdCargoPorNombre($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = $id_cargo;
+								}
+								elseif ($index === 8) { //id_area
+									$id_area = $this->Usuariosmodel->getIdAreaPorNombre($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = $id_area;
+								}
+								elseif ($index === 10) { //id_plaza
+									$id_plaza = $this->Usuariosmodel->getIdPlazaPorNombre($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = $id_plaza;
+								}
+								elseif ($index === 11) { //id_proyecto
+									$id_proyecto = $this->Usuariosmodel->getIdProyectoPorNombre($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = $id_proyecto;
+								}
+								elseif ($index === 12) { //id_jefe
+									$jefe = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+									$id_jefe = $this->Usuariosmodel->getIdJefePorNombre($jefe);
+									$datos[$columna] = $id_jefe;
+								}
+								elseif ($index === 14) { //nivel_tecnico
+									if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() == "-"){
+										$datos[$columna] = 5;
+									}
+									else{
+										$nivel = $this->Usuariosmodel->getIdNivelPorNombre($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+										$datos[$columna] = $nivel;
+									}
+								}
+								elseif ($index === 25) { //perfil
+									$id_cargo = $this->Usuariosmodel->getIdPerfilPorNombre($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos[$columna] = $id_cargo;
+								}
+								elseif ($index === 9 or $index === 13 or $index === 15) { //NO HACER NADA
+								}
+								else {
+									$datos[$columna] = str_replace('%', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								}
+							}
+	
+							$datos["estado"] = 1;
+							$this->Usuariosmodel->formUsuario($datos);
+							$filas_general++;
+							$i++;
+							}
+						}
+					}
+	
+				//ELIMINAR
+					$hoja = $spreadsheet->getSheetByName("ELIMINAR");
+					$ultima_fila = $hoja->getHighestRow();
+					$filas_dtv = 0;
+			
+					$columnas = array(
+						'nombres',
+						'apellidos',
+						'empresa',
+						'rut',
+					);
+			
+					for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+						$datos = array();
+						if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+							foreach ($columnas as $index => $columna) {					
+								if ($index === 3) { //RUTgetIdUsuarioPorRut
+									$id = $this->Usuariosmodel->getIdUsuarioPorRut($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+								}
+							}
+							if($id != FALSE){
+								$this->Usuariosmodel->inhabilitaUsuario($id);
+								$filas_dtv++;
+							}
+							$i++;
+						}
+					}
+				echo json_encode(array(
+					'res' => 'ok',
+					'tipo' => 'success',
+					'msg' => 'Archivo cargado con éxito.
+					'.$filas_general.' usuarios insertados,
+					'.$filas_dtv.' usuarios desactivados.'
+				));exit;
+
+				echo json_encode(array('res'=>'ok', "tipo" => "success", 'msg' => "Archivo cargado con éxito, ".$i." filas insertadas."));exit;
+			}else{
+				echo json_encode(array('res'=>'error', "tipo" => "error", 'msg' => "Archivo inválido."));exit;
+			}   
 		}
 
 		public function index(){

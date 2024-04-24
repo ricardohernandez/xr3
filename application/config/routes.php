@@ -962,6 +962,8 @@
 
 	$route['eliminaUsuario'] = "back_end/mantenedores/usuarios/eliminaUsuario";
 
+	$route['CargaMasivaUsuarios'] = "back_end/mantenedores/usuarios/CargaMasivaUsuarios";
+
 	$route['correoDatosFaltantes'] = "back_end/mantenedores/usuarios/correoDatosFaltantes";
 
 	
