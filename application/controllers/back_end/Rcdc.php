@@ -67,6 +67,7 @@ class Rcdc extends CI_Controller {
 					'zonas' => $this->Rcdcmodel->listaZonas(),
 					'proyectos' => $this->Rcdcmodel->listaProyectos(),
 					'tipos' => $this->Rcdcmodel->listaTipos(),
+					'supervisores' => $this->Iniciomodel->listaSupervisores(),
 				);
 				$this->load->view('back_end/rcdc/rcdc',$datos);
 			}
@@ -79,10 +80,11 @@ class Rcdc extends CI_Controller {
 			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
 			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 			$empresa=$this->security->xss_clean(strip_tags($this->input->get_post("empresa")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
 
-			echo json_encode($this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa));
+			echo json_encode($this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor));
 		}
 
 		public function formRcdc(){
@@ -189,6 +191,7 @@ class Rcdc extends CI_Controller {
 			$comuna = $this->uri->segment(5);
 			$zona = $this->uri->segment(6);
 			$empresa = $this->uri->segment(7);
+			$supervisor= $this->uri->segment(8);
 
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}
@@ -196,7 +199,8 @@ class Rcdc extends CI_Controller {
 			if($comuna=="-"){$comuna="";}
 			if($zona=="-"){$zona="";}
 			if($empresa=="-"){$empresa="";}
-			$data = $this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa);
+			if($supervisor=="-"){$supervisor="";}
+			$data = $this->Rcdcmodel->getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
 
 			if(!$data){
 				return FALSE;
@@ -496,6 +500,7 @@ class Rcdc extends CI_Controller {
 					'comuna' => $this->Rcdcmodel->listaComunas(),
 					'zona' => $this->Rcdcmodel->listaZonas(),
 					'coordinador' => $this->Rcdcmodel->listaTrabajadores(),
+					'supervisores' => $this->Iniciomodel->listaSupervisores(),
 				);
 				$this->load->view('back_end/rcdc/graficos',$datos);
 			}
@@ -510,9 +515,10 @@ class Rcdc extends CI_Controller {
 				$comuna=$this->security->xss_clean(strip_tags($this->input->post("comuna")));
 				$zona=$this->security->xss_clean(strip_tags($this->input->post("zona")));
 				$encargado=$this->security->xss_clean(strip_tags($this->input->post("encargado")));
+				$supervisor=$this->security->xss_clean(strip_tags($this->input->post("supervisor")));
 
 				$lista_motivos = $this->Rcdcmodel->listaMotivos("");
-				$detalle = $this->Rcdcmodel->getDataGraficoMotivosxTecnicoDetalle($anio,$mes,$comuna,$zona,$encargado);
+				$detalle = $this->Rcdcmodel->getDataGraficoMotivosxTecnicoDetalle($anio,$mes,$comuna,$zona,$encargado,$supervisor);
 
 				// Crear un array con todos los IDs de motivo
 				$ids_motivos = array_column($lista_motivos, 'id');
@@ -578,12 +584,12 @@ class Rcdc extends CI_Controller {
 				$array_ordenado = array_merge([$array[0]], $array_ordenado);
 
 				$data=array(
-					"graficoMotivosxZona" => $this->Rcdcmodel->getDataGraficoMotivosxZona($anio,$mes,$comuna,$zona,$encargado),
-					"graficoMotivos" => $this->Rcdcmodel->getDataGraficoMotivos($anio,$mes,$comuna,$zona,$encargado),
-					"graficoMotivosxTecnico" => $this->Rcdcmodel->getDataGraficoMotivosxTecnico($anio,$mes,$comuna,$zona,$encargado),
-					"graficoMotivosxComuna" => $this->Rcdcmodel->getDataGraficoMotivosxComuna($anio,$mes,$comuna,$zona,$encargado),
+					"graficoMotivosxZona" => $this->Rcdcmodel->getDataGraficoMotivosxZona($anio,$mes,$comuna,$zona,$encargado,$supervisor),
+					"graficoMotivos" => $this->Rcdcmodel->getDataGraficoMotivos($anio,$mes,$comuna,$zona,$encargado,$supervisor),
+					"graficoMotivosxTecnico" => $this->Rcdcmodel->getDataGraficoMotivosxTecnico($anio,$mes,$comuna,$zona,$encargado,$supervisor),
+					"graficoMotivosxComuna" => $this->Rcdcmodel->getDataGraficoMotivosxComuna($anio,$mes,$comuna,$zona,$encargado,$supervisor),
 					"graficoMotivosxTecnicoDetalle" => $array_ordenado,
-					"graficoMotivosxCoordinador" => $this->Rcdcmodel->getDataGraficoMotivosxCoordinador($anio,$mes,$comuna,$zona,$encargado),
+					"graficoMotivosxCoordinador" => $this->Rcdcmodel->getDataGraficoMotivosxCoordinador($anio,$mes,$comuna,$zona,$encargado,$supervisor),
 				);
 
 				echo json_encode($data);exit;

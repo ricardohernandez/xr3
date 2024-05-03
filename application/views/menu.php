@@ -652,6 +652,8 @@
 
             <ul class="sidenav__menu-dropdown">
 
+               <li><a class="sidenav__menu-url" target="_blank" href="<?php echo base_url() ?>archivos_turnos/W018.xlsx" download title="Archivo" class="btn_archivo"> Turnos Operación técnica</a></li>      
+
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
 
                <?php  
@@ -835,7 +837,7 @@
 
                ?>
                
-
+               <li><a   class="sidenav__menu-url" href="<?php echo base_url() ?>rvt"> RVT - Registro referido de ventas</a></li>
 
                <li><a  class="sidenav__menu-url" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
 
@@ -1031,9 +1033,9 @@
 
                      <ul class="nav__dropdown-menu">
 
+                        
+                        <li><a class="menu_list" target="_blank" href="<?php echo base_url() ?>archivos_turnos/W018.xlsx" download title="Archivo" class="btn_archivo"> Turnos Operación técnica</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
-
-                       
 
                         <?php  
 
@@ -1041,11 +1043,7 @@
 
                         ?>
 
-
-
                            <li><a class="menu_list"  href="<?php echo base_url() ?>documentacion/datas_mandante"> Datas mandante</a></li> 
-
-
 
                         <?php
 
@@ -1158,6 +1156,7 @@
                                  if($perfil<=3){
 
                                   ?>
+                                  
 
                               <li><a  class="menu_list" href="<?php echo base_url() ?>checklist_herramientas"> CLH - Checklist herramientas</a></li>
 
@@ -1213,6 +1212,8 @@
                            }
 
                            ?>
+
+                        <li><a  class="menu_list" href="<?php echo base_url() ?>rvt"> RVT - Registro referido de ventas</a></li>
 
                         <li><a  class="menu_list" href="<?php echo base_url() ?>igt"> IGT - Indicadores de gestión del técnico</a></li>
 

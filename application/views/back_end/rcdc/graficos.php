@@ -45,6 +45,13 @@
     allowClear: true,
   });
 
+  $("#supervisor_f").select2({
+      placeholder: 'Seleccione Supervisor',
+      data: <?php echo $supervisores; ?>,
+      width: '100%',
+      allowClear:true,
+    });
+
   $(function(){
     google.charts.load('current', {'packages':['corechart']});
 
@@ -52,7 +59,7 @@
     var user="<?php echo $this->session->userdata('id'); ?>";
     const base = "<?php echo base_url() ?>";
 
-    $(document).off('change', '#anio , #mes ,#f_coordinador , #f_comuna , #f_zona').on('change', '#anio , #mes ,#f_coordinador , #f_comuna , #f_zona', function(event) {
+    $(document).off('change', '#anio , #mes ,#f_coordinador , #f_comuna , #f_zona, #supervisor_f').on('change', '#anio , #mes ,#f_coordinador , #f_comuna , #f_zona, #supervisor_f', function(event) {
       cargarGraficos();
     }); 
 
@@ -64,6 +71,7 @@
       const comuna = $("#f_comuna").val()
       const zona = $("#f_zona").val()
       const encargado = $("#f_coordinador").val()
+      const supervisor = $("#supervisor_f").val()
       
       $.ajax({
           url: base_url+'getDataGraficosRcdc',
@@ -74,6 +82,7 @@
             'comuna': comuna,
             'zona': zona,
             'encargado': encargado,
+            'supervisor': supervisor,
           },
           dataType: "json",
           beforeSend:function(){
@@ -360,6 +369,14 @@
             <?php
               }
             ?>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-lg-6">  
+        <div class="form-group">
+          <select id="supervisor_f" name="supervisor_f" class="custom-select custom-select-sm" style="width:100%!important;">
+          <option value="">Seleccione Supervisor | Todos</option>
           </select>
         </div>
       </div>

@@ -1745,6 +1745,70 @@ $config = array(
                         'rules'   => 'trim|required'
 
                   ),
+             ) ,
+             'formRvt' => array(
+                  array(
+                        'field'   => 'fecha_ingreso',
+                        'label'   => 'fecha',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'tecnico',
+                        'label'   => 'tecnico solicitante',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'titular_nombre',
+                        'label'   => 'nombre de titular',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'titular_rut',
+                        'label'   => 'rut de titular',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'titular_direccion',
+                        'label'   => 'direccion de titular',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'titular_comuna',
+                        'label'   => 'comuna de titular',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'titular_telefono1',
+                        'label'   => 'teléfono de titular',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'marca',
+                        'label'   => 'marca',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'pack',
+                        'label'   => 'pack',
+                        'rules'   => 'trim|required'
+                  ),
+             ) , 
+             'formEditRvt' => array(
+                  array(
+                        'field'   => 'estado',
+                        'label'   => 'estado',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'responsable1',
+                        'label'   => 'responsable 1',
+                        'rules'   => 'trim|required'
+                  ),
+                  array(
+                        'field'   => 'numero_ot',
+                        'label'   => 'numero de servicio',
+                        'rules'   => 'trim|required'
+                  ),
              ) , 
 
 

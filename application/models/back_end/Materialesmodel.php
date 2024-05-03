@@ -44,8 +44,7 @@ class Materialesmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function formMaterialesBatch($dataArr)
-		{
+		public function formMaterialesBatch($dataArr){
 			$this->db->insert_batch('materiales', $dataArr);
 		}
 				
@@ -89,6 +88,23 @@ class Materialesmodel extends CI_Model {
 			return FALSE;
 		}
 
+		public function listaComunasTrabajadores(){
+			$this->db->select("distinct(comuna)
+			");
+			$this->db->order_by('comuna', 'asc');
+			$res=$this->db->get("usuarios");
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["comuna"];
+					$temp["text"]=$key["comuna"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
+		}
 		
 		public function listaTecnico($desde,$hasta,$trabajador,$jefe){
 			$this->db->select("sha1(m.id) as hash,
@@ -134,16 +150,30 @@ class Materialesmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function listaSeriesDevolucion($desde,$hasta,$trabajador,$jefe){
-			$this->db->select("sha1(m.id) as hash,
-				concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
-				CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
-				m.*,
-			");
+		public function listaSeriesDevolucion($desde,$hasta,$trabajador,$jefe,$comuna){
+			if($comuna!=""){
+				$this->db->select("sha1(m.id) as hash,
+					concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+					CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
+					CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos,' - ',m.material) as material_comuna,
+					m.*,
+				");
+			}
+			else{
+				$this->db->select("sha1(m.id) as hash,
+					concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+					CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
+					CONCAT(m.material) as material_comuna,
+					m.*,
+				");
+			}
 
-			
+
 			if($trabajador!=""){
 				$this->db->where('m.id_tecnico', $trabajador);
+			}
+			if($comuna!=""){
+				$this->db->where('u.comuna', $comuna);
 			}
 
 			$this->db->where('tipo<>', 'OPERATIVO');
@@ -158,14 +188,29 @@ class Materialesmodel extends CI_Model {
 			return FALSE;
 		}
 
-		public function listaSeriesOperativos($desde,$hasta,$trabajador,$jefe){
-			$this->db->select("sha1(m.id) as hash,
-				concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
-				CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
-				m.*,
-			");
+		public function listaSeriesOperativos($desde,$hasta,$trabajador,$jefe,$comuna){
+			if($comuna!=""){
+				$this->db->select("sha1(m.id) as hash,
+					concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+					CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
+					CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos,' - ',m.material) as material_comuna,
+					m.*,
+				");
+			}
+			else{
+				$this->db->select("sha1(m.id) as hash,
+					concat(substr(replace(rut,'-',''),1,char_length(replace(rut,'-',''))-1),'-',substr(replace(rut,'-',''),char_length(replace(rut,'-','')))) as 'rut_format',
+					CONCAT(SUBSTRING_INDEX(CONCAT(u.nombres, ' ', u.apellidos), ' ', 1), ' ', u.apellidos) as 'tecnico',
+					CONCAT(m.material) as material_comuna,
+					m.*,
+				");
+			}
 
 			$this->db->where('tipo', "OPERATIVO");
+
+			if($comuna!=""){
+				$this->db->where('u.comuna', $comuna);
+			}
 			
 			$this->db->group_by('m.serie');
 			$this->db->order_by('m.material', 'asc');

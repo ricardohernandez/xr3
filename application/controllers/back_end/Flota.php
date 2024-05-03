@@ -79,6 +79,8 @@ class Flota extends CI_Controller {
 
 				$this->db->query("TRUNCATE TABLE flota_combustible");
 
+				$chofer=array();
+
 				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
 					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
 						$datos = array();
@@ -90,7 +92,26 @@ class Flota extends CI_Controller {
 								}
 								elseif ($index === 0){ //PATENTE
 									$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
-									$datos[$columna] = str_replace('-', '', $patente);
+									$patente_sin_guion = str_replace('-', '', $patente);
+									$patente_sin_guion = str_replace(' ', '', $patente_sin_guion);
+									$datos[$columna] = $patente_sin_guion;
+
+									if (!isset($chofer[$patente_sin_guion])) {
+										if($hoja->getCellByColumnAndRow(2, $fila)->getValue() == NULL){
+											$rut_chofer = "-";
+										}else{
+											$rut_chofer = $hoja->getCellByColumnAndRow(2, $fila)->getValue();
+										}
+										if($hoja->getCellByColumnAndRow(3, $fila)->getValue() == NULL){
+											$nombre_chofer = "-";
+										}else{
+											$nombre_chofer = $hoja->getCellByColumnAndRow(3, $fila)->getValue();
+										}
+										$chofer[$patente_sin_guion] = array(
+											'rut_chofer' => $rut_chofer,
+											'nombre_chofer' => $nombre_chofer
+										);
+									}
 								}
 								elseif ($index === 12){
 									$fecha = date('H:i:s', strtotime('1900-01-00') + (($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() - 1) * 86400));
@@ -114,69 +135,7 @@ class Flota extends CI_Controller {
 				}
 
 			$this->db->query("TRUNCATE TABLE flota_gps");
-
-			//WEBFLEET
-				$hoja = $spreadsheet->getSheetByName("GPS WEBFLEET");
-				$ultima_fila = $hoja->getHighestRow();
-				$filas_gps = 0;
-
-				$columnas = array(
-					'fecha',
-					'patente',
-					'hora_inicio',
-					'hora_fin',
-					'rut',
-					'nombre_chofer',
-					'direccion_inicio',
-					'direccion_fin',
-					'duracion',
-					'v_max',
-					'lim_v',
-				);
-
-				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
-					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
-						$datos = array();
-						foreach ($columnas as $index => $columna) {
-							if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
-								if ($index === 0) {
-									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
-									$datos[$columna] = $fecha;
-								}
-								elseif ($index === 1){ //PATENTE
-									$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
-									$datos[$columna] = str_replace('-', '', $patente);
-								}
-								elseif ($index === 2) {
-									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
-									$datos[$columna] = $fecha;
-								}
-								elseif ($index === 3) {
-									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
-									$datos[$columna] = $fecha;
-								}
-								elseif ($index === 8) {
-									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
-									$datos[$columna] = $fecha;
-								}
-								else{
-									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
-								}
-							}
-							else{
-								$datos[$columna] = "-";
-							}
-						}
-
-						$datos["gps"] = "WEBFLEET";
-						$datos["ultima_actualizacion"] = $ultima_actualizacion;
-
-						$this->Flotamodel->insertarFlotaGPS($datos);
-						$filas_gps++;
-						$i++;
-					}
-				}
-
+			
 			//MUEVO
 
 			$hoja = $spreadsheet->getSheetByName("MUEVO");
@@ -213,7 +172,26 @@ class Flota extends CI_Controller {
 							}
 							elseif ($index === 2){ //PATENTE
 								$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
-								$datos[$columna] = str_replace('-', '', $patente);
+								$patente_sin_guion = str_replace('-', '', $patente);
+								$patente_sin_guion = str_replace(' ', '', $patente_sin_guion);
+								$datos[$columna] = $patente_sin_guion;
+
+								if (!isset($chofer[$patente_sin_guion])) {
+									if($hoja->getCellByColumnAndRow(10, $fila)->getValue() == NULL){
+										$rut_chofer = "-";
+									}else{
+										$rut_chofer = $hoja->getCellByColumnAndRow(10, $fila)->getValue();
+									}
+									if($hoja->getCellByColumnAndRow(2, $fila)->getValue() == NULL){
+										$nombre_chofer = "-";
+									}else{
+										$nombre_chofer = $hoja->getCellByColumnAndRow(2, $fila)->getValue();
+									}
+									$chofer[$patente_sin_guion] = array(
+										'rut_chofer' => $rut_chofer,
+										'nombre_chofer' => $nombre_chofer
+									);
+								}
 							}
 							else{
 								$datos[$columna] = strval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
@@ -231,6 +209,87 @@ class Flota extends CI_Controller {
 					$i++;
 				}
 			}
+
+			//WEBFLEET
+				$hoja = $spreadsheet->getSheetByName("GPS WEBFLEET");
+				$ultima_fila = $hoja->getHighestRow();
+				$filas_gps = 0;
+
+				$columnas = array(
+					'fecha',
+					'patente',
+					'hora_inicio',
+					'hora_fin',
+					'rut',
+					'nombre_chofer',
+					'direccion_inicio',
+					'direccion_fin',
+					'duracion',
+					'v_max',
+					'lim_v',
+				);
+
+				for ($fila = 2; $fila <= $ultima_fila; $fila++) {
+					if($hoja->getCellByColumnAndRow(1, $fila)->getValue() != ""){
+						$datos = array();
+						foreach ($columnas as $index => $columna) {
+							if($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue() != NULL){
+								if ($index === 0) {
+									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 1){ //PATENTE
+									$patente = ($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$patente_sin_guion = str_replace('-', '', $patente);
+									$patente_sin_guion = str_replace(' ', '', $patente_sin_guion);
+									$datos[$columna] = $patente_sin_guion;
+
+									//si existe la patente en la hoja anterior
+									if(isset($chofer[$patente_sin_guion])){
+										$datos["rut"] = $chofer[$patente_sin_guion]["rut_chofer"];
+										$datos["nombre_chofer"] = $chofer[$patente_sin_guion]["nombre_chofer"];
+									}
+									else{
+										$datos["rut"] = "-";
+										$datos["nombre_chofer"] = "-";
+									}
+								}
+								elseif ($index === 2) {
+									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 3) {
+									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 8) {
+									$fecha = date('g:i:s A', strtotime('1900-01-00') + ((($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
+									$datos[$columna] = $fecha;
+								}
+								elseif ($index === 4 or $index === 5) {
+								}
+								else{
+									$datos[$columna] = $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue();
+								}
+							}
+							else{
+								if ($index === 4 or $index === 5) {
+								}else{
+									$datos[$columna] = "-";
+								}
+							}
+						}
+
+						$datos["gps"] = "WEBFLEET";
+						$datos["ultima_actualizacion"] = $ultima_actualizacion;
+						//echo(json_encode($datos));exit;
+
+						$this->Flotamodel->insertarFlotaGPS($datos);
+						$filas_gps++;
+						$i++;
+					}
+				}
+
 
 			echo json_encode(array(
 				'res' => 'ok',

@@ -441,7 +441,9 @@ class Materiales extends CI_Controller {
 		public function vistaSeriesPorTecnico(){
 			$this->visitas("series");
 			if($this->input->is_ajax_request()){
-				$datos = array();
+				$datos = array(
+					"comunas" => $this->Materialesmodel->listaComunasTrabajadores()
+				);
 				$this->load->view('back_end/materiales/series',$datos);
 			}
 		}
@@ -452,12 +454,14 @@ class Materiales extends CI_Controller {
 			$trabajador = $this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
 			$id_tecnico = $this->Materialesmodel->getIdTecnicoPorRut(str_replace(array('-', '.'), '', $trabajador));
 			$jefe = $this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-			echo json_encode($this->Materialesmodel->listaSeriesDevolucion($desde,$hasta,$id_tecnico,$jefe));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			echo json_encode($this->Materialesmodel->listaSeriesDevolucion($desde,$hasta,$id_tecnico,$jefe,$comuna));
 		}	
  
 		public function excel_series_devolucion(){
 			$trabajador = $this->uri->segment(2);
 			$jefe = $this->uri->segment(3);
+			$comuna = $this->uri->segment(4);
 			
 			if($trabajador=="-"){
 				$trabajador="";
@@ -467,8 +471,12 @@ class Materiales extends CI_Controller {
 				$jefe="";
 			}
 
+			if($comuna=="-"){
+				$comuna="";
+			}
+
 			$id_tecnico = $this->Materialesmodel->getIdTecnicoPorRut(str_replace(array('-', '.'), '', $trabajador));
-			$data=$this->Materialesmodel->listaSeriesDevolucion("","",$id_tecnico,$jefe);
+			$data=$this->Materialesmodel->listaSeriesDevolucion("","",$id_tecnico,$jefe,$comuna);
 
 			if(!$data){
 				echo "Sin datos disponibles.";
@@ -498,7 +506,7 @@ class Materiales extends CI_Controller {
 				      			?>
 				      			 <tr>
 								     <td><?php echo utf8_decode($d["rut_format"]); ?></td>
-									 <td><?php echo utf8_decode($d["material"]); ?></td>
+									 <td><?php echo utf8_decode($d["material_comuna"]); ?></td>
 									 <td><?php echo utf8_decode($d["serie"]); ?></td>
 								 </tr>
 				      			<?php
@@ -518,12 +526,14 @@ class Materiales extends CI_Controller {
 			$trabajador = $this->security->xss_clean(strip_tags($this->input->get_post("trabajador")));
 			$id_tecnico = $this->Materialesmodel->getIdTecnicoPorRut(str_replace(array('-', '.'), '', $trabajador));
 			$jefe = $this->security->xss_clean(strip_tags($this->input->get_post("jefe")));
-			echo json_encode($this->Materialesmodel->listaSeriesOperativos($desde,$hasta,$id_tecnico,$jefe));
+			$comuna = $this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+			echo json_encode($this->Materialesmodel->listaSeriesOperativos($desde,$hasta,$id_tecnico,$jefe,$comuna));
 		}	
  
 		public function excel_series_operativos(){
 			$trabajador = $this->uri->segment(2);
 			$jefe = $this->uri->segment(3);
+			$comuna = $this->uri->segment(4);
 			
 			if($trabajador=="-"){
 				$trabajador="";
@@ -533,8 +543,12 @@ class Materiales extends CI_Controller {
 				$jefe="";
 			}
 
+			if($comuna=="-"){
+				$comuna="";
+			}
+
 			$id_tecnico = $this->Materialesmodel->getIdTecnicoPorRut(str_replace(array('-', '.'), '', $trabajador));
-			$data=$this->Materialesmodel->listaSeriesOperativos("","",$id_tecnico,$jefe);
+			$data=$this->Materialesmodel->listaSeriesOperativos("","",$id_tecnico,$jefe,$comuna);
 
 			if(!$data){
 				echo "Sin datos disponibles.";
@@ -564,7 +578,7 @@ class Materiales extends CI_Controller {
 				      			?>
 				      			 <tr>
 								  	 <td><?php echo utf8_decode($d["rut_format"]); ?></td>
-									 <td><?php echo utf8_decode($d["material"]); ?></td>
+									 <td><?php echo utf8_decode($d["material_comuna"]); ?></td>
 									 <td><?php echo utf8_decode($d["serie"]); ?></td>
 								 </tr>
 				      			<?php

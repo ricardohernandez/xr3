@@ -15,7 +15,7 @@ class Rcdcmodel extends CI_Model {
 	
 	/**********RCDC*************/
 
-		public function getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa){
+		public function getRcdcList($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
 			$this->db->select(
 				"sha1(r.id) as hash,
 				pl.titulo as comuna,
@@ -51,6 +51,9 @@ class Rcdcmodel extends CI_Model {
 			}
 			if($empresa!=""){
 				$this->db->where('r.id_proyecto',$empresa);
+			}
+			if ($supervisor != "") {
+				$this->db->where('u.id_jefe', $supervisor);
 			}
 
 			$this->db->order_by('r.fecha_ingreso', 'desc');
@@ -223,7 +226,6 @@ class Rcdcmodel extends CI_Model {
 		return FALSE;
 	}
 
-
 	/**********MANTENEDOR*************/
 
 		/**** COMUNAS ****/
@@ -372,13 +374,14 @@ class Rcdcmodel extends CI_Model {
 
 	/*******  GRAFICOS ************/
 
-		public function getDataGraficoMotivosxZona($anio,$mes,$comuna,$zona,$encargado){
+		public function getDataGraficoMotivosxZona($anio,$mes,$comuna,$zona,$encargado,$supervisor){
 			$this->db->select("
 			COUNT(*) as cantidad,
 			a.area as zona,
 			");
 			$this->db->from('rcdc as r');
 			$this->db->join('usuarios_areas as a', 'r.id_zona = a.id', 'left');
+			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
 
 			if($anio != ''){
 				$this->db->where('YEAR(r.fecha) =',$anio);
@@ -394,6 +397,9 @@ class Rcdcmodel extends CI_Model {
 			}
 			if($encargado != ''){
 				$this->db->where('r.id_coordinador',$encargado);
+			}
+			if($supervisor != ''){
+				$this->db->where('u.id_jefe',$supervisor);
 			}
 
 			$this->db->group_by('id_zona','desc');
@@ -420,13 +426,14 @@ class Rcdcmodel extends CI_Model {
 			}
 			return $array;
 		}
-		public function getDataGraficoMotivos($anio,$mes,$comuna,$zona,$encargado){
+		public function getDataGraficoMotivos($anio,$mes,$comuna,$zona,$encargado,$supervisor){
 			$this->db->select("
 			COUNT(*) as cantidad,
 			m.motivo as motivo,
 			");
 			$this->db->from('rcdc as r');
 			$this->db->join('rcdc_motivos as m', 'r.id_motivo = m.id', 'left');
+			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
 
 			if($anio != ''){
 				$this->db->where('YEAR(r.fecha) =',$anio);
@@ -442,6 +449,9 @@ class Rcdcmodel extends CI_Model {
 			}
 			if($encargado != ''){
 				$this->db->where('r.id_coordinador',$encargado);
+			}
+			if($supervisor != ''){
+				$this->db->where('u.id_jefe',$supervisor);
 			}
 
 			$this->db->group_by('id_motivo','desc');
@@ -470,7 +480,7 @@ class Rcdcmodel extends CI_Model {
 			}
 			return $array;
 		}
-		public function getDataGraficoMotivosxTecnico($anio,$mes,$comuna,$zona,$encargado){
+		public function getDataGraficoMotivosxTecnico($anio,$mes,$comuna,$zona,$encargado,$supervisor){
 			$this->db->select("
 			COUNT(*) as cantidad,
 			CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as tecnico,
@@ -492,6 +502,9 @@ class Rcdcmodel extends CI_Model {
 			}
 			if($encargado != ''){
 				$this->db->where('r.id_coordinador',$encargado);
+			}
+			if($supervisor != ''){
+				$this->db->where('u.id_jefe',$supervisor);
 			}
 
 			$this->db->group_by('id_tecnico','desc');
@@ -519,13 +532,14 @@ class Rcdcmodel extends CI_Model {
 			}
 			return $array;
 		}
-		public function getDataGraficoMotivosxComuna($anio,$mes,$comuna,$zona,$encargado){
+		public function getDataGraficoMotivosxComuna($anio,$mes,$comuna,$zona,$encargado,$supervisor){
 			$this->db->select("
 			COUNT(*) as cantidad,
 			pl.titulo as comuna,
 			");
 			$this->db->from('rcdc as r');
 			$this->db->join('comunas_rcdc as pl', 'pl.id = r.id_comuna', 'left');
+			$this->db->join('usuarios as u', 'r.id_tecnico = u.id', 'left');
 
 			if($anio != ''){
 				$this->db->where('YEAR(r.fecha) =',$anio);
@@ -541,6 +555,9 @@ class Rcdcmodel extends CI_Model {
 			}
 			if($encargado != ''){
 				$this->db->where('r.id_coordinador',$encargado);
+			}
+			if($supervisor != ''){
+				$this->db->where('u.id_jefe',$supervisor);
 			}
 
 			$this->db->group_by('id_comuna','desc');
@@ -568,7 +585,7 @@ class Rcdcmodel extends CI_Model {
 			}
 			return $array;
 		}
-		public function getDataGraficoMotivosxTecnicoDetalle($anio,$mes,$comuna,$zona,$encargado){
+		public function getDataGraficoMotivosxTecnicoDetalle($anio,$mes,$comuna,$zona,$encargado,$supervisor){
 			$this->db->select("
 			COUNT(*) as cantidad,
 			CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as tecnico,
@@ -594,6 +611,9 @@ class Rcdcmodel extends CI_Model {
 			if($encargado != ''){
 				$this->db->where('r.id_coordinador',$encargado);
 			}
+			if($supervisor != ''){
+				$this->db->where('u.id_jefe',$supervisor);
+			}
 
 			$this->db->group_by('id_tecnico , id_motivo');
 			$this->db->order_by('id_tecnico, id_motivo');
@@ -618,7 +638,7 @@ class Rcdcmodel extends CI_Model {
 			}
 			return $array;
 		}
-		public function getDataGraficoMotivosxCoordinador($anio,$mes,$comuna,$zona,$encargado){
+		public function getDataGraficoMotivosxCoordinador($anio,$mes,$comuna,$zona,$encargado,$supervisor){
 			$this->db->select("
 			COUNT(*) as cantidad,
 			CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as tecnico,
@@ -640,6 +660,9 @@ class Rcdcmodel extends CI_Model {
 			}
 			if($encargado != ''){
 				$this->db->where('r.id_coordinador',$encargado);
+			}
+			if($supervisor != ''){
+				$this->db->where('u.id_jefe',$supervisor);
 			}
 
 			$this->db->group_by('id_coordinador','desc');

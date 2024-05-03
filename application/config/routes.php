@@ -770,9 +770,9 @@
 
 	$route['listaSeriesOperativos'] = "back_end/materiales/listaSeriesOperativos";
 
-	$route['excel_series_devolucion/(:any)/(:any)'] = "back_end/materiales/excel_series_devolucion/$1/$2";
+	$route['excel_series_devolucion/(:any)/(:any)/(:any)'] = "back_end/materiales/excel_series_devolucion/$1/$2/$3";
 
-	$route['excel_series_operativos/(:any)/(:any)'] = "back_end/materiales/excel_series_operativos/$1/$2";
+	$route['excel_series_operativos/(:any)/(:any)/(:any)'] = "back_end/materiales/excel_series_operativos/$1/$2/$3";
 
  
 
@@ -887,6 +887,8 @@
 	$route['eliminarTurnos'] = "back_end/cao/eliminarTurnos";
 
 	$route['excel_turnos/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/cao/excel_turnos/$1/$2/$3/$4/$5";
+
+
 
 
 
@@ -1180,9 +1182,7 @@
 
 	$route['getDataRcdc'] = "back_end/rcdc/getDataRcdc";
 
-
-
-	$route['excelrcdc/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/rcdc/excelrcdc/$1/$2/$3/$4/$5/$6";
+	$route['excelrcdc/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/rcdc/excelrcdc/$1/$2/$3/$4/$5/$6/$7";
 
 
 
@@ -1294,7 +1294,7 @@
 	$route['formMad'] = "back_end/mad/formMad";
 	$route['eliminaMad'] = "back_end/mad/eliminaMad";
 	$route['getDataMad'] = "back_end/mad/getDataMad";
-	$route['excelmad/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/mad/excelmad/$1/$2/$3/$4/$5/$6";
+	$route['excelmad/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = "back_end/mad/excelmad/$1/$2/$3/$4/$5/$6/$7";
 
 	$route['formCargaMasivaMad'] = "back_end/mad/formCargaMasivaMad";
 
@@ -1320,6 +1320,24 @@
 		$route['listaMotivosMad'] = "back_end/mad/listaMotivos";
 		$route['listaTiposMad'] = "back_end/mad/listaTipos";
 
+
+/******************RVT*************************/
+
+	$route['rvt'] = "back_end/rvt/index";
+	$route['getRvtInicio'] = "back_end/rvt/getRvtInicio";
+	$route['getRvtList'] = "back_end/rvt/getRvtList";
+	$route['formRvt'] = "back_end/rvt/formRvt";
+	$route['eliminaRvt'] = "back_end/rvt/eliminaRvt";
+	$route['getDataRvt'] = "back_end/rvt/getDataRvt";
+	$route['listaMarcasRvt'] = "back_end/rvt/listaMarcas";
+	
+	$route['getRvtAdministracion'] = "back_end/rvt/getRvtAdministracion";
+	$route['excel_rvt/(:any)/(:any)/(:any)'] = "back_end/rvt/excel_rvt/$1/$2/$3";
+
+/****** EXCEL TURNOS SEMANAL ******/
+
+	$route['TurnoSemana'] = "back_end/documentacion/TurnoSemana";
+	$route['CargaTurnoSemana'] = "back_end/documentacion/index";
 
 
 

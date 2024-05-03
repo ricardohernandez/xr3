@@ -15,7 +15,7 @@ class Madmodel extends CI_Model {
 	
 	/**********MAD*************/
 
-		public function getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa){
+		public function getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
 			$this->db->select(
 				"sha1(r.id) as hash,
 				pl.titulo as comuna,
@@ -48,6 +48,9 @@ class Madmodel extends CI_Model {
 			}
 			if($empresa!=""){
 				$this->db->where('r.id_proyecto',$empresa);
+			}
+			if ($supervisor != "") {
+				$this->db->where('u.id_jefe', $supervisor);
 			}
 
 			$this->db->order_by('r.fecha', 'desc');

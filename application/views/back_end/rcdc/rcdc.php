@@ -35,6 +35,13 @@
     $("#desde_f").val(desde);
     $("#hasta_f").val(hasta);
 
+    $("#supervisor_f").select2({
+      placeholder: 'Seleccione Supervisor',
+      data: <?php echo $supervisores; ?>,
+      width: '100%',
+      allowClear:true,
+    });
+
     function Actualizar($tipo){
       $.getJSON(base + "listaMotivos", {tipo : $tipo,} ,function(data) {
         $('#motivo').empty();
@@ -77,6 +84,7 @@
             param.comuna = $("#f_comuna").val();
             param.zona = $("#f_zona").val();
             param.empresa = $("#f_empresa").val();
+            param.supervisor = $("#supervisor_f").val();
           }
         },    
        "columns": [
@@ -436,6 +444,7 @@
       var comuna = $("#f_comuna").val();  
       var zona = $("#f_zona").val();  
       var empresa = $("#f_empresa").val(); 
+      var supervisor = $("#supervisor_f").val(); 
 
       if(coordinador==""){
         coordinador = "-"
@@ -449,11 +458,13 @@
       if(empresa==""){
         empresa = "-"
       }
-
-      window.location="excelrcdc/"+desde+"/"+hasta+"/"+coordinador+"/"+comuna+"/"+zona+"/"+empresa;
+      if(supervisor==""){
+        supervisor = "-"
+      }
+      window.location="excelrcdc/"+desde+"/"+hasta+"/"+coordinador+"/"+comuna+"/"+zona+"/"+empresa+"/"+supervisor;
     });
 
-    $(document).off('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa').on('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa', function(event) {
+    $(document).off('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa, #supervisor_f').on('change', '#desde_f , #hasta_f ,#f_coordinador , #f_comuna , #f_zona, #f_empresa, #supervisor_f', function(event) {
       lista_rcdc.ajax.reload()
     }); 
 
@@ -559,6 +570,14 @@
                   <?php
                 }
               ?>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-2">  
+        <div class="form-group">
+          <select id="supervisor_f" name="supervisor_f" class="custom-select custom-select-sm" style="width:100%!important;">
+          <option value="">Seleccione Supervisor | Todos</option>
           </select>
         </div>
       </div>

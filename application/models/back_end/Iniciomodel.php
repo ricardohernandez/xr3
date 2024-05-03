@@ -344,8 +344,31 @@ class InicioModel extends CI_Model {
 	      $res=$this->db->get('usuarios_perfiles');
 	      return $res->result_array();
 	    }
-	   
 
+		public function listaSupervisores(){
+			$this->db->select("
+				us.id as id,
+				CONCAT(u.nombres,' ',u.apellidos) as 'nombre_largo',
+				CONCAT(SUBSTRING_INDEX(u.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(u.apellidos, ' ', '-2'), ' ', '1')) as 'nombre_corto',
+			");
+
+			$this->db->join("usuarios as u", "u.id=us.id_jefe");
+			$this->db->where('u.estado', 1);
+			$this->db->order_by('u.nombres', 'asc');
+			$res = $this->db->get("usuarios_jefes as us");
+			if($res->num_rows()>0){
+				$array=array();
+				foreach($res->result_array() as $key){
+					$temp=array();
+					$temp["id"]=$key["id"];
+					$temp["text"]=$key["nombre_largo"];
+					$array[]=$temp;
+				}
+				return json_encode($array);
+			}
+			return FALSE;
+		}
+	
 	    public function dataVisitasHoy(){
 			$fecha_actual= date("Y-m-d");
 			$this->db->select('count(DISTINCT av.id_usuario) as usuarios,

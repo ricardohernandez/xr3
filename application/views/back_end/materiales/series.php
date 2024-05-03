@@ -11,6 +11,13 @@
     var perfil="<?php echo $this->session->userdata('id_perfil'); ?>";
     const base = "<?php echo base_url() ?>";
 
+    $("#comunas_f").select2({
+      placeholder: 'Seleccione Comuna',
+      data: <?php echo $comunas; ?>,
+      width: '100%',
+      allowClear:true,
+    });
+
   /*****DATATABLE*****/   
     var tabla_series_devolucion = $('#tabla_series_devolucion').DataTable({
        "aaSorting" : [[0,"asc"]],
@@ -35,12 +42,13 @@
             }else{
               param.trabajador = $("#trabajadores").val();
             }
+            param.comuna = $("#comunas_f").val();  
 
           }
         },    
         "columns": [
           /* { "data": "tipo" ,"class":"margen-td centered"}, */
-          { "data": "material" ,"class":"margen-td centered"},
+          { "data": "material_comuna" ,"class":"margen-td centered"},
           { "data": "serie" ,"class":"margen-td centered"},
           { "data": "tipo" ,"class":"margen-td centered"},
         ]
@@ -87,6 +95,7 @@
       }else{
         trabajador = $("#trabajadores").val();
       }
+      comunas = $("#comunas_f").val();
 
       var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
       jefe = jefe=="" ? "-" : jefe;
@@ -94,8 +103,11 @@
       if(trabajador==""){
          trabajador="-"
       }
+      if(comunas==""){
+         comunas="-"
+      }
 
-      window.location="excel_series_devolucion/"+trabajador+"/"+jefe;
+      window.location="excel_series_devolucion/"+trabajador+"/"+jefe+"/"+comunas;
 
     });
 
@@ -124,12 +136,13 @@
             }else{
               param.trabajador = $("#trabajadores").val();
             }
+            param.comuna = $("#comunas_f").val();
 
           }
         },    
         "columns": [
           /* { "data": "tipo" ,"class":"margen-td centered"}, */
-          { "data": "material" ,"class":"margen-td centered"},
+          { "data": "material_comuna" ,"class":"margen-td centered"},
           { "data": "serie" ,"class":"margen-td centered"},
         ]
       }); 
@@ -180,6 +193,7 @@
       }else{
         trabajador = $("#trabajadores").val();
       }
+      comunas = $("#comunas_f").val();
 
       var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
       jefe = jefe=="" ? "-" : jefe;
@@ -187,8 +201,11 @@
       if(trabajador==""){
          trabajador="-"
       }
+      if(comunas==""){
+         comunas="-"
+      }
 
-      window.location="excel_series_devolucion/"+trabajador+"/"+jefe;
+      window.location="excel_series_devolucion/"+trabajador+"/"+jefe+"/"+comunas;
 
     });
 
@@ -248,6 +265,7 @@
       }else{
         trabajador = $("#trabajadores").val();
       }
+      comunas = $("#comunas_f").val();
 
       var jefe = perfil<=3 ? $("#jefe_det").val() : "-";
       jefe = jefe=="" ? "-" : jefe;
@@ -255,8 +273,11 @@
       if(trabajador==""){
          trabajador="-"
       }
+      if(comunas==""){
+         comunas="-"
+      }
 
-      window.location="excel_series_operativos/"+trabajador+"/"+jefe;
+      window.location="excel_series_operativos/"+trabajador+"/"+jefe+"/"+comunas;
 
     });
 
@@ -272,7 +293,7 @@
         });
     });
  
-    $(document).off('change', '#periodo , #trabajadores ,#jefe_det').on('change', '#periodo , #trabajadores ,#jefe_det', function(event) {
+    $(document).off('change', '#periodo , #trabajadores ,#jefe_det, #comunas_f').on('change', '#periodo , #trabajadores ,#jefe_det, #comunas_f', function(event) {
       tabla_series_devolucion.ajax.reload()
       tabla_series_operativos.ajax.reload()
     }); 
@@ -308,6 +329,14 @@
       <?php
       }
     ?>
+
+      <div class="col-6 col-lg-2">  
+        <div class="form-group">
+          <select id="comunas_f" name="comunas_f" class="custom-select custom-select-sm" style="width:100%!important;">
+          <option selected value=""></option>
+          </select>
+        </div>
+      </div>
 
       <div class="col-12 col-lg-6">
         <center><span class="titulo_fecha_actualizacion_dias">

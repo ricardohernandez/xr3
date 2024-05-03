@@ -174,6 +174,8 @@ class Usuarios extends CI_Controller {
 							foreach ($columnas as $index => $columna) {
 								if ($index === 3) { //RUT SIN GUION
 									$datos[$columna] = str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue());
+									$datos["contrasena"] = sha1(str_replace('-', '', $hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()));
+									
 								}elseif ($index === 23 or $index === 24) { //FECHA
 									$fecha = date('Y-m-d H:i:s', strtotime('1900-01-00') + ((intval($hoja->getCellByColumnAndRow($index + 1, $fila)->getValue()) - 1) * 86400));
 									$datos[$columna] = $fecha;

@@ -521,6 +521,17 @@
     </div>
   </div>
 
+  <div class="col-3 col-lg-3">
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id=""><i class="fa fa-calendar-alt"></i> <span style="font-size:12px;margin-left:5px;"> Última carga<span></span> 
+        </div>  
+        <input value="<?php echo $ultima_actualizacion?>" type="date" disabled placeholder="Desde" class=" form-control form-control-sm"  name="ultima_actualizacion" id="ultima_actualizacion">
+      </div>
+    </div>
+  </div>
+
 
 </div>   
 

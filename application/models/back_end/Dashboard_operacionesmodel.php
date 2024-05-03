@@ -15,6 +15,15 @@ class Dashboard_operacionesmodel extends CI_Model {
 
 	/**********PRODUCTIVIDAD XR3************/
 
+		public function getUltimaCarga() {
+			$this->db->select("MAX(fecha) as fecha");
+			$res = $this->db->get('dashboard_productividad');
+			foreach ($res->result_array() as $key) {
+				return $key["fecha"];
+			}
+			return "";
+		}
+
 		public function getDataProductividad($tipo,$mes_inicio,$mes_termino) {
 			
 			$campos = $tipo['campos'];

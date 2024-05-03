@@ -75,6 +75,7 @@ class Mad extends CI_Controller {
 					'zonas' => $this->Madmodel->listaZonas(),
 					'proyectos' => $this->Madmodel->listaProyectos(),
 					'tipos' => $this->Madmodel->listaTipos(),
+					'supervisores' => $this->Iniciomodel->listaSupervisores(),
 				);
 				$this->load->view('back_end/mad/mad',$datos);
 			}
@@ -87,10 +88,11 @@ class Mad extends CI_Controller {
 			$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
 			$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
 			$empresa=$this->security->xss_clean(strip_tags($this->input->get_post("empresa")));
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
 
-			echo json_encode($this->Madmodel->getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa));
+			echo json_encode($this->Madmodel->getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor));
 		}
 
 		public function formMad(){
@@ -201,6 +203,7 @@ class Mad extends CI_Controller {
 			$comuna = $this->uri->segment(5);
 			$zona = $this->uri->segment(6);
 			$empresa = $this->uri->segment(7);
+			$supervisor = $this->uri->segment(8);
 
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
 			if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}
@@ -208,7 +211,8 @@ class Mad extends CI_Controller {
 			if($comuna=="-"){$comuna="";}
 			if($zona=="-"){$zona="";}
 			if($empresa=="-"){$empresa="";}
-			$data = $this->Madmodel->getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa);
+			if($supervisor=="-"){$supervisor="";}
+			$data = $this->Madmodel->getMadList($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
 
 			if(!$data){
 				return FALSE;

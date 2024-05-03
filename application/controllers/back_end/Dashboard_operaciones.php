@@ -68,6 +68,7 @@ class Dashboard_operaciones extends CI_Controller {
 			$datos=array(
 				'mes_inicio' => date('Y') . '-01',
 				'mes_termino' => date('Y-m'),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 			);
 
 			$this->load->view('back_end/dashboard_operaciones/productividad_calidad_xr3',$datos);
@@ -125,6 +126,7 @@ class Dashboard_operaciones extends CI_Controller {
 				'mes_inicio' => date('Y') . '-01',
 				'mes_termino' => date('Y-m'),
 				'zonas' => $this->Dashboard_operacionesmodel->getZonas(),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologias()
 			);
 
@@ -246,6 +248,7 @@ class Dashboard_operaciones extends CI_Controller {
 			$datos=array(
 				'mes_inicio' => date('Y') . '-01',
 				'mes_termino' => date('Y-m'),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 			);
 
 			$this->load->view('back_end/dashboard_operaciones/dotacion',$datos);
@@ -266,6 +269,7 @@ class Dashboard_operaciones extends CI_Controller {
 				'zonas' => $this->Dashboard_operacionesmodel->getZonas(),
 				'comunas' => $this->Dashboard_operacionesmodel->getComunas(),
 				'supervisores' => $this->Dashboard_operacionesmodel->getSupervisores(),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologias()
 			);
 			$this->load->view('back_end/dashboard_operaciones/analisis_calidad',$datos);
@@ -305,6 +309,7 @@ class Dashboard_operaciones extends CI_Controller {
 				'mes_termino' => date('Y-m'),
 				'comunas' => $this->Dashboard_operacionesmodel->getComunasProdCiudad(),
 				'supervisores' => $this->Dashboard_operacionesmodel->getSupervisoresProdCiudad(),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologiasProdCiudad()
 			);
 			$this->load->view('back_end/dashboard_operaciones/prod_cal_claro',$datos);
@@ -417,6 +422,7 @@ class Dashboard_operaciones extends CI_Controller {
 				'mes_termino' => date('Y-m'),
 				'comunas' => $this->Dashboard_operacionesmodel->getComunasXcomuna(),
 				'zonas' => $this->Dashboard_operacionesmodel->getZonasXcomuna(),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 				'tecnologias' => $this->Dashboard_operacionesmodel->getTecnologiasXcomuna()
 			);
 			$this->load->view('back_end/dashboard_operaciones/productividad_comuna',$datos);
@@ -455,6 +461,7 @@ class Dashboard_operaciones extends CI_Controller {
 				'anios' =>  $this->Dashboard_operacionesmodel->getAnioCumplimientoFacturacion(),
 				'meses' =>  $this->Dashboard_operacionesmodel->getMesesCumplimientoFacturacion(),
 				'jefes' => $this->Dashboard_operacionesmodel->getJefeCumplimientoFacturacion(),
+				'ultima_actualizacion' => $this->Dashboard_operacionesmodel->getUltimaCarga(),
 			);
 			$this->load->view('back_end/dashboard_operaciones/cumplimiento_facturacion',$datos);
 		}

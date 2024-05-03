@@ -4,41 +4,24 @@
       font-size: 13px;
   }
   .btn_eliminar_rop{
-
       display: inline;
-
       font-size: 15px!important;
-
       color:#CD2D00;
-
       margin-left: 10px;
-
       text-decoration: none!important;
-
   }
 
   .btn_editar_rop{
-
       display: inline;
-
       text-align: center!important;
-
       margin:0 auto!important;
-
       font-size: 15px!important;
-
   }
 
-
-
   @media(min-width: 768px){
-
     .modal_es{
-
       width: 74%!important;
-
     }
-
   }
 
 
@@ -66,7 +49,6 @@
 
 
 <script type="text/javascript" charset="utf-8"> 
-
   $(function(){ 
 
 
@@ -79,9 +61,12 @@
 
     $("#hasta_f").val(hasta);
 
-
-
-    
+    $("#supervisor_f").select2({
+      placeholder: 'Seleccione Supervisor',
+      data: <?php echo $supervisores; ?>,
+      width: '100%',
+      allowClear:true,
+    });
 
     /*****DATATABLE*****/  
 
@@ -90,8 +75,6 @@
       const p ="<?php echo $this->session->userdata('id_perfil'); ?>";
 
       const i ="<?php echo $this->session->userdata('id'); ?>";
-
-
 
       var tabla_es = $('#tabla_es').DataTable({
 
@@ -136,6 +119,8 @@
               param.hasta = $("#hasta_f").val();
 
               param.responsable = $("#responsable_f").val();
+
+              param.supervisor = $("#supervisor_f").val();
 
             }
 
@@ -989,7 +974,7 @@
 
 
 
-    $(document).off('change', '#estado_f, #desde_f, #hasta_f, #responsable_f').on('change', '#estado_f, #desde_f, #hasta_f, #responsable_f', function(event) {
+    $(document).off('change', '#estado_f, #desde_f, #hasta_f, #responsable_f, #supervisor_f').on('change', '#estado_f, #desde_f, #hasta_f, #responsable_f, #supervisor_f', function(event) {
 
       tabla_es.ajax.reload();
 
@@ -1292,7 +1277,7 @@
 
         <div class="form-group">
 
-          <select id="responsable_f" name="responsable_f" style="width:100%!important;">
+          <select id="responsable_f" name="responsable_f" class="custom-select custom-select-sm" style="width:100%!important;">
 
               <option value="">Seleccione Responsable | Todos</option>
 
@@ -1302,9 +1287,13 @@
 
       </div>
 
-
-
-
+      <div class="col-6 col-lg-2">  
+        <div class="form-group">
+          <select id="supervisor_f" name="supervisor_f" class="custom-select custom-select-sm" style="width:100%!important;">
+          <option value="">Seleccione Supervisor | Todos</option>
+          </select>
+        </div>
+      </div>
 
 	    <div class="col-6 col-lg-3">  
 
@@ -1768,4 +1757,3 @@
 	    </div>
 
     </div>
-

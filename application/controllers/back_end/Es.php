@@ -122,6 +122,8 @@ class Es extends CI_Controller {
 
 
 
+
+
 		$this->load->view('plantillas/plantilla_back_end',$datos);
 
 	}
@@ -166,6 +168,8 @@ class Es extends CI_Controller {
 
 					'cierres' => $cierres,
 
+					'supervisores' => $this->Iniciomodel->listaSupervisores(),
+
 				);
 
 				
@@ -186,6 +190,8 @@ class Es extends CI_Controller {
 
 			$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
 
+			$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+
 
 
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
@@ -196,7 +202,7 @@ class Es extends CI_Controller {
 
 			$responsable=$this->security->xss_clean(strip_tags($this->input->get_post("responsable")));
 
-			echo json_encode($this->Esmodel->getEsList($desde,$hasta,$estado,$responsable));
+			echo json_encode($this->Esmodel->getEsList($desde,$hasta,$estado,$responsable,$supervisor));
 
 		}
 
@@ -893,6 +899,8 @@ class Es extends CI_Controller {
 
 			$responsable = $this->uri->segment(5);
 
+			$supervisor=$this->uri->segment(6);
+
 
 
 			if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
@@ -903,9 +911,9 @@ class Es extends CI_Controller {
 
 			if($responsable=="-"){$responsable="";}
 
+			if($supervisor=="-"){$supervisor="";}
 
-
-			$data = $this->Esmodel->getEsList($desde,$hasta,$estado,$responsable);
+			$data = $this->Esmodel->getEsList($desde,$hasta,$estado,$responsable,$supervisor);
 
 
 
