@@ -144,7 +144,7 @@
 
          $("#buscador_usuario").select2({
 
-            placeholder: 'Buscador de usuario',
+            placeholder: 'Usuarios',
 
             data: response,
 
@@ -168,7 +168,7 @@
 
          $("#buscador_jefatura").select2({
 
-            placeholder: 'Buscador de jefatura',
+            placeholder: 'Jefaturas',
 
             data: response,
 
@@ -1229,12 +1229,6 @@
 
                         <li><a  class="menu_list" href="<?php echo base_url() ?>rre"> RRE - Registro Retiro De Equipos</a></li>
 
-
-
-
-
-                      
-
                         <!-- <li class="nav__dropdown">
 
                            <a class="menu_list" href="#!">sub</a>
@@ -1449,7 +1443,7 @@
 
 					?>
 
-					<li class="ver_como" style="margin-left: 40px;margin-right: 10px">
+					<li class="ver_como" style="margin-left: 20px;margin-right: 10px">
 
 					Ver como
 

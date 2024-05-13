@@ -151,7 +151,7 @@ const procesaDatatable = (reload) => {
                 destroy: true,
                 processing: true,  
                 aaSorting : [[0,"asc"]],
-                scrollY: "65vh",
+                scrollY: "60vh",
                 scrollX: true,
                 select:true,
                 bSort: true,
@@ -240,11 +240,13 @@ $(document).off('change', '#jefe,#anio,#anio_f,#mes').on('change', '#jefe,#anio,
         <select id="anio_f" name="anio_f" class="custom-select custom-select-sm">
           <?php 
             foreach($anios as $a){
-              ?>
-              <option value="<?php echo $a["anio"] ?>"><?php echo $a["anio"]?></option>
-              <?php
+                $selected = ($a["anio"] == 2024) ? "selected" : ""; // Verifica si el año es igual a 2024
+                ?>
+                <option value="<?php echo $a["anio"] ?>" <?php echo $selected ?>><?php echo $a["anio"]?></option>
+                <?php
             }
-          ?>
+            ?>
+
         </select>
       </div>
     </div>
@@ -271,11 +273,12 @@ $(document).off('change', '#jefe,#anio,#anio_f,#mes').on('change', '#jefe,#anio,
       <option value="">Seleccione jefe</option>
       <?php 
         foreach($jefes as $j){
-          ?>
-           <option selected value="<?php echo $j["jefe"]?>"><?php echo $j["jefe"]?></option>
-          <?php
+            $selected = ($j["jefe"] == "ALVARO PAREDES") ? "selected" : ""; // Verifica si es igual a "ALVARO PAREDES"
+            ?>
+            <option value="<?php echo $j["jefe"]?>" <?php echo $selected ?>><?php echo $j["jefe"]?></option>
+            <?php
         }
-      ?>
+        ?>
     </select>
     </div>
   </div>
