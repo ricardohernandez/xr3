@@ -76,21 +76,21 @@
 				modoNocheElements.forEach(element => element.style.display = 'none');
 				modoDiaElements.forEach(element => element.style.display = 'inline');
 
-				loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+				loadCSS(url + 'assets3/front_end/css/estilo_oscuro_home1.css');
 				$("body").show()
 				$(".logo_oscuro").show();
        			$(".logo_claro").hide();
 
-				unloadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+				unloadCSS(url + 'assets3/front_end/css/estilo_claro_home1.css');
 			} else if (modo === 'modo_dia') {
 				modoNocheElements.forEach(element => element.style.display = 'inline');
 				modoDiaElements.forEach(element => element.style.display = 'none');
 
-				loadCSS(url + 'assets3/front_end/css/estilo_claro_home.css');
+				loadCSS(url + 'assets3/front_end/css/estilo_claro_home1.css');
 				$("body").show()
 				$(".logo_claro").show();
       		    $(".logo_oscuro").hide();
-				unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home.css');
+				unloadCSS(url + 'assets3/front_end/css/estilo_oscuro_home1.css');
 			}
 		}
 
