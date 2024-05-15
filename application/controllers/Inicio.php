@@ -242,11 +242,11 @@ class Inicio extends CI_Controller {
 
 					$this->email->to($para);
 
-					if($prueba){
+					/* if($prueba){
 						$this->email->bcc(array("ricardo.hernandez@splice.cl","ricardo.hernandez@km-t.cl","soporteplataforma@xr3t.cl"));
 					}else{
 						$this->email->bcc(array("ricardo.hernandez@splice.cl","ricardo.hernandez@km-t.cl","soporteplataforma@xr3t.cl"));
-					}
+					} */
 
 					$pass=rand(100000,999999);
 					$datos=array("nombre"=>$nombre,"titulo"=>$asunto,"pass"=>$pass);
