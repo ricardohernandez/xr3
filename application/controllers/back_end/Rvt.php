@@ -204,7 +204,7 @@ class Rvt extends CI_Controller {
 		public function enviaCorreo($hash,$tipo){
 			$this->load->library('email');
 			$data = $this->Rvtmodel->getDataRvt($hash);
-			$prueba = TRUE;
+			$prueba = FALSE;
 
 			foreach($data as $key){			
 
@@ -247,6 +247,64 @@ class Rvt extends CI_Controller {
 					$html = $this->load->view('back_end/rvt/correo',$datos,TRUE);
 				}
 
+				if($prueba){
+					$para = array("sebastian.celis@splice.cl");
+					$copias = array("sebastian.celis@splice.cl");
+				}
+
+				//echo $html;exit;
+
+				$this->email->to($para);
+				$this->email->cc($copias);
+
+				//$this->email->bcc(array("sebastian.celis@splice.cl","ricardo.hernandez@km-telecomunicaciones.cl","german.cortes@km-telecomunicaciones.cl"));
+				$this->email->subject($asunto); 
+				$this->email->message($html); 
+
+				if(ENVIAR_CORREO){
+					$resp=$this->email->send();
+					return TRUE;
+				}else{
+					return FALSE;
+				}
+				
+			}
+		}
+
+		public function ReporteRvt(){
+			$this->load->library('email');
+			$fecha = date('Y-m-d',strtotime('-7 days')); // semana pasada
+			$data = $this->Rvtmodel->getRegistrosRvt($fecha); // posean estado "Venta ingresada" y se haya ingresado la semana pasada
+			$prueba = FALSE;
+
+			$config = array(
+				'mailtype' => 'html',
+				'charset' => 'UTF-8',
+				'priority' => '1',
+				'wordwrap' =>TRUE,
+				'protocol' =>  'smtp',
+				'smtp_port' => 587,
+				'smtp_host' => $this->config->item('syr_smtp_host'),
+				'smtp_user' => $this->config->item('syr_smtp_user'),
+				'smtp_pass' => $this->config->item('syr_smtp_pass')
+			);
+
+			foreach($data as $key){			
+
+				$this->email->initialize($config);
+
+				if($tipo==0){ //NUEVO
+					$asunto = "Solicitud de Venta N°".$key["id_rvt"]." [".$key["nombre_solicitante"]."] ";
+					$cuerpo = "Le informamos que se ha ingresado la solicitud de venta N°".$key["id_rvt"]." con el siguiente detalle.";
+					$cuerpo2 = "Informamos a usted que de acuerdo a los plazos preestablecidos por su organización el plazo para responder esta solicitud es en 7 días aprox, terminado dicho plazo la solicitud sera escalada al responsable superior predefinido por su organización.<br> 
+					Para contestar puede ingresar al siguiente link con previo ingreso de sus credenciales de seguridad.";
+					$this->email->from("syr@xr3t.cl","Solicitudes y requerimientos plataforma XR3");
+
+					$para = array("javiera.fetis@xr3.cl");
+					$copias = !empty($key["correo_solicitante"]) ? [$key["correo_solicitante"],$key["correo_responsable1"]] : [];
+					$datos = array("dato"=>$key,"asunto"=>$asunto,"cuerpo"=>$cuerpo,"cuerpo2"=>$cuerpo2);
+					$html = $this->load->view('back_end/rvt/correo',$datos,TRUE);
+				}
 				if($prueba){
 					$para = array("sebastian.celis@splice.cl");
 					$copias = array("sebastian.celis@splice.cl");

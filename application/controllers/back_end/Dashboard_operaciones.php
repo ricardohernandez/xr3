@@ -598,6 +598,7 @@ class Dashboard_operaciones extends CI_Controller {
 					}
 			
 					$datos["fecha"] = $anio . '-' . $mes . '-01';
+					$datos["ultima_actualizacion"] = $date('Y-m-d');
 					
 					$this->Dashboard_operacionesmodel->formProductividadXr3($datos);
 					$filas_productividad++;

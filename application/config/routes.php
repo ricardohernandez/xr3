@@ -1334,12 +1334,29 @@
 	$route['getRvtAdministracion'] = "back_end/rvt/getRvtAdministracion";
 	$route['excel_rvt/(:any)/(:any)/(:any)'] = "back_end/rvt/excel_rvt/$1/$2/$3";
 
+	$route['ReporteRvt'] = "back_end/rvt/ReporteRvt";
+
 /****** EXCEL TURNOS SEMANAL ******/
 
 	$route['TurnoSemana'] = "back_end/documentacion/TurnoSemana";
 	$route['CargaTurnoSemana'] = "back_end/documentacion/index";
 
 
+/****** PAGOS ******/
+
+	$route['pagos'] = "back_end/pagos/index";
+	$route['CargaPagos'] = "back_end/pagos/CargaPagos";
+
+	$route['getPagosGeneralInicio'] = "back_end/pagos/getPagosGeneralInicio";
+	$route['dataGraficosGeneral'] = "back_end/pagos/dataGraficosGeneral";
+
+	$route['getPagosDetalleInicio'] = "back_end/pagos/getPagosDetalleInicio";
+	$route['dataGraficosDetalle'] = "back_end/pagos/dataGraficosDetalle";
+
+	$route['getPagosVariableInicio'] = "back_end/pagos/getPagosVariableInicio";
+	$route['dataGraficosVariable'] = "back_end/pagos/dataGraficosVariable";
+	
+	$route['getPagosExcepcionInicio'] = "back_end/pagos/getPagosExcepcionInicio";
 
 /* End of file routes.php */
 

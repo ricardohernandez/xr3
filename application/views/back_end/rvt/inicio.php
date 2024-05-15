@@ -124,8 +124,8 @@
     <div class="col-12">
       <div class="scrollable-menu">
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
-       <li id="menu_rop" class="active"><a> <i class="fa fa-list-alt"></i>tecnicos</a></li>   
-       <li id="menu_adm" class="active"><a> <i class="fa fa-list-alt"></i>administracion</a></li> 
+       <li id="menu_rop" class="active"><a> <i class="fa fa-list-alt"></i>Técnicos</a></li>   
+       <li id="menu_adm" class="active"><a> <i class="fa fa-list-alt"></i>Administración</a></li> 
       </ul>  
       </div> 
     </div> 
