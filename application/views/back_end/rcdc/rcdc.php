@@ -62,7 +62,7 @@
 
   /*****DATATABLE*****/   
     var lista_rcdc = $('#lista_rcdc').DataTable({
-       "aaSorting" : [[1,"desc"]],
+       "aaSorting" : [[13,"desc"]],
        "scrollY": "65vh",
        "scrollX": true,
        "sAjaxDataProp": "result",        
@@ -770,7 +770,7 @@
               <div class="col-lg-3 codigo"> 
                 <div class="form-group">
                   <label id="label_codigo" for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Código</label>
-                  <input readonly type="text" placeholder="Ingrese código" name="codigo"  id="codigo" size="9" maxlength="9" class="form-control form-control-sm" autocomplete="off"/>
+                  <input readonly type="text" placeholder="Ingrese código" name="codigo"  id="codigo" size="12" maxlength="12" class="form-control form-control-sm" autocomplete="off"/>
                 </div>
               </div>
 
