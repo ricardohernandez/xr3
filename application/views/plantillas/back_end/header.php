@@ -98,11 +98,11 @@
         modoNocheElements.forEach(element => element.style.display = 'none');
         modoDiaElements.forEach(element => element.style.display = 'inline');
         
-        loadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro1.css');
+        loadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro11.css');
         loadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
         loadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
         
-        unloadCSS(url + 'assets3/back_end/css/estilos_menu_claro1.css');
+        unloadCSS(url + 'assets3/back_end/css/estilos_menu_claro11.css');
         unloadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-claro.css');
         $("body").css("display", "")
@@ -117,11 +117,11 @@
         modoNocheElements.forEach(element => element.style.display = 'inline');
         modoDiaElements.forEach(element => element.style.display = 'none');
         
-        loadCSS(url + 'assets3/back_end/css/estilos_menu_claro1.css');
+        loadCSS(url + 'assets3/back_end/css/estilos_menu_claro11.css');
         loadCSS(url + 'assets3/back_end/css/bootstrap.min.css');
         loadCSS(url + 'assets3/back_end/css/estilos-claro.css');
         
-        unloadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro1.css');
+        unloadCSS(url + 'assets3/back_end/css/estilos_menu_oscuro11.css');
         unloadCSS(url + 'assets3/back_end/css/bootstrap-night.css');
         unloadCSS(url + 'assets3/back_end/css/estilos-oscuro.css');
         $("body").css("display", "")

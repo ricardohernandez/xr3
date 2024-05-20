@@ -191,6 +191,27 @@ class Rvtmodel extends CI_Model {
 			return $res->result_array();
 		}
 
+		public function getRegistrosRvt($fecha){
+			$this->db->select("r.*,
+				sha1(r.id) as hash,
+				r.id as id_rvt,
+				CONCAT(SUBSTRING_INDEX(us.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(us.apellidos, ' ', '-2'), ' ', '1')) as 'nombre_solicitante',
+				CONCAT(SUBSTRING_INDEX(ur1.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(ur1.apellidos, ' ', '-2'), ' ', '1')) as 'nombre_responsable1',
+				CONCAT(SUBSTRING_INDEX(ur2.nombres, ' ', '1'),'  ',SUBSTRING_INDEX(SUBSTRING_INDEX(ur2.apellidos, ' ', '-2'), ' ', '1')) as 'nombre_responsable2',
+				p.proyecto as marca,
+			");
+
+			$this->db->join("usuarios us", 'us.id = r.id_solicitante', 'left' );
+			$this->db->join("usuarios ur1", 'ur1.id = r.id_responsable1', 'left');
+			$this->db->join("usuarios ur2", 'ur2.id = r.id_responsable2', 'left');
+			$this->db->join("usuarios_proyectos p", 'p.id = r.id_marca', 'left');
+
+			$this->db->where('r.fecha_ingreso', $fecha);
+			$this->db->where('r.estado', "Venta ingresada");
+			$res = $this->db->get('rvt as r');
+			return $res->result_array();
+		}
+		
 
 		public function listaRequerimientos($tipo){
 			$this->db->select("id,requerimiento");
