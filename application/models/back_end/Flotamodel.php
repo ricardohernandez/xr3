@@ -418,7 +418,7 @@ class Flotamodel extends CI_Model {
 			}
 		}
 
-		public function listaDetalleFlota($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
+		/* public function listaDetalleFlota($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
 			$this->db->select("
 			sha1(f.id) as hash,
 			f.*,
@@ -432,6 +432,8 @@ class Flotamodel extends CI_Model {
 			if($gps!=""){	$this->db->where('f.gps', $gps);}
 
 			$this->db->order_by('v_max', 'desc');
+			$this->db->limit(100);
+			
 			$res=$this->db->get('flota_gps as f');
 
 			if($res->num_rows()>0){
@@ -452,21 +454,55 @@ class Flotamodel extends CI_Model {
 					}
 
 					if($datam[0]["fecha"] < $data[0]["fecha"]){
-						$key["rut"] = $data[0]["rut_chofer"];
+						$key["rut_chofer"] = $data[0]["rut_chofer"];
 						$key["nombre_chofer"] = $data[0]["nombre_chofer"];
 					}else{
-						$key["rut"] = $datam[0]["rut_chofer"];
+						$key["rut_chofer"] = $datam[0]["rut_chofer"];
 						$key["nombre_chofer"] = $datam[0]["nombre_chofer"];
 					}
 					$array[] = $key;
 
-					//return $combustible->result_array();
-					//return $muevo->result_array();
+					 
 				}
 				return $array;
 			}else{
 				return FALSE;
 			}
+		} */
+
+		public function listaDetalleFlota($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){
+			$this->db->select("
+			sha1(f.id) as hash,
+			f.*,
+
+			(SELECT c.nombre_chofer 
+			FROM flota_combustible as c 
+			WHERE c.patente = f.patente 
+			ORDER BY c.fecha,c.hora DESC 
+			LIMIT 1) as nombre_chofer,
+
+			(SELECT c.rut_chofer 
+			FROM flota_combustible as c 
+			WHERE c.patente = f.patente 
+			ORDER BY c.fecha,c.hora DESC 
+			LIMIT 1) as rut
+
+
+
+			");
+
+			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
+			if($asignacion!=""){	$this->db->where('f.nombre_chofer', $asignacion);}
+			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
+			if($comuna!=""){	$this->db->where('f.comuna', $comuna);}
+			if($gps!=""){	$this->db->where('f.gps', $gps);}
+
+			$this->db->order_by('v_max', 'desc');
+			/* $this->db->limit(100); */
+			
+			$res=$this->db->get('flota_gps as f');
+			return $res->result_array();
 		}
 
 		public function listaTotal($desde,$hasta,$asignacion,$supervisor,$vehiculo,$comuna,$gps){

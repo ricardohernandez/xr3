@@ -127,13 +127,14 @@
 
         var lista_detalle = $('#lista_detalle').DataTable({
         "responsive":false,
-        "aaSorting" : [[1,"desc"]],
+        "aaSorting" : [[0,"desc"]],
         "scrollY": "300px",
         "scrollX": true,
         "sAjaxDataProp": "result",        
         "bDeferRender": true,
         "bInfo" : false,
         "select" : true,
+        "paginate" : true,
         // "columnDefs": [{ orderable: false, targets: 0 }  ],
         "ajax": {
             "url":"<?php echo base_url();?>listaDetalleFlota",    
