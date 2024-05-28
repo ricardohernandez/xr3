@@ -302,7 +302,7 @@ class Documentacion extends CI_Controller {
 			$config['upload_path'] = './archivos_documentacion/reportes';
 			$config['allowed_types'] = 'xlsx|csv|xls|pdf|PDF|XLS|XLSX|jpg|jpeg|bmp|png|doc|docx|ppt|pptx|html|htm|DOC|mp4|MP4';
 		    $config['file_name'] = $archivo;
-			$config['max_size']	= '15300';
+			$config['max_size']	= '26000';
 			$config['overwrite']	= FALSE;
 			$this->load->library('upload', $config);
 			$_FILES['userfile']['name'] = $archivo;
