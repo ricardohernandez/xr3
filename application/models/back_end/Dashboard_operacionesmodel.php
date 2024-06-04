@@ -16,7 +16,7 @@ class Dashboard_operacionesmodel extends CI_Model {
 	/**********PRODUCTIVIDAD XR3************/
 
 		public function getUltimaCarga() {
-			$this->db->select("MAX(ultima_actualizacion) as fecha");
+			$this->db->select("DATE_FORMAT(ultima_actualizacion, '%d-%m-%Y %H:%i') as fecha");
 			$res = $this->db->get('dashboard_productividad');
 			foreach ($res->result_array() as $key) {
 				return $key["fecha"];

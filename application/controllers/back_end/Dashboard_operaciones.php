@@ -414,7 +414,6 @@ class Dashboard_operaciones extends CI_Controller {
 			echo json_encode($datos);
 		}
 		
-		
 		public function prodXComuna(){
 			$this->visitas("Productividad x comuna y eps",23);
 			$datos=array(
@@ -427,7 +426,6 @@ class Dashboard_operaciones extends CI_Controller {
 			);
 			$this->load->view('back_end/dashboard_operaciones/productividad_comuna',$datos);
 		}
-		
 		
 		public function graficoXComuna(){
 			$mes_inicio=$this->security->xss_clean(strip_tags($this->input->get_post("mes_inicio")));
@@ -556,7 +554,6 @@ class Dashboard_operaciones extends CI_Controller {
 			echo json_encode(array("data" => $data, "data2" => $resultados_por_anio));
 		}
 
-
 		public function cargaDashboardProductividadXR3() {
 			$archivo = $_FILES['userfile']['tmp_name'];
 			$spreadsheet = IOFactory::load($archivo);
@@ -598,7 +595,7 @@ class Dashboard_operaciones extends CI_Controller {
 					}
 			
 					$datos["fecha"] = $anio . '-' . $mes . '-01';
-					$datos["ultima_actualizacion"] = $date('Y-m-d');
+					$datos["ultima_actualizacion"] = date("Y-m-d G:i:s");//." | ".$this->session->userdata("nombre_completo")
 					
 					$this->Dashboard_operacionesmodel->formProductividadXr3($datos);
 					$filas_productividad++;
