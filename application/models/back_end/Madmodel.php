@@ -92,6 +92,200 @@ class Madmodel extends CI_Model {
 			return FALSE;
 		}
 
+	/***** GRAFICOS *****/
+
+		public function DataGraficoResultadosxZona($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
+			$this->db->select('
+				COUNT(*) as cantidad,
+				a.area as zona,
+			');
+			$this->db->from('mad');
+			if($desde!="" and $hasta!=""){$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($coordinador!=""){	$this->db->where('id_coordinador', $coordinador);}
+			if($comuna!=""){	$this->db->where('id_comuna', $comuna);}
+			if($zona!=""){	$this->db->where('id_zona', $zona);}
+			if($empresa!=""){	$this->db->where('id_proyecto', $empresa);}
+			if($supervisor!=""){	$this->db->where('id_tecnico', $supervisor);}
+
+			$this->db->join('usuarios_areas as a', 'id_zona = a.id', 'left');
+			$this->db->group_by('zona');
+			$res=$this->db->get();
+			$array = array();
+			$array[]= array(
+				"Zona",
+				"Resultado",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] =$key['zona'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function DataGraficoResultadosxComuna($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
+			$this->db->select('
+				COUNT(*) as cantidad,
+				a.titulo as comuna,
+			');
+			$this->db->from('mad');
+			if($desde!="" and $hasta!=""){$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($coordinador!=""){	$this->db->where('id_coordinador', $coordinador);}
+			if($comuna!=""){	$this->db->where('id_comuna', $comuna);}
+			if($zona!=""){	$this->db->where('id_zona', $zona);}
+			if($empresa!=""){	$this->db->where('id_proyecto', $empresa);}
+			if($supervisor!=""){	$this->db->where('id_tecnico', $supervisor);}
+
+			$this->db->join('comunas_mad as a', 'id_comuna = a.id', 'left');
+			$this->db->group_by('comuna');
+			$res=$this->db->get();
+			$array = array();
+			$array[]= array(
+				"Comuna",
+				"Resultado",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] =$key['comuna'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function DataGraficoResultadosxEmpresa($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
+			$this->db->select('
+				COUNT(*) as cantidad,
+				a.proyecto as proyecto,
+			');
+			$this->db->from('mad');
+			if($desde!="" and $hasta!=""){$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($coordinador!=""){	$this->db->where('id_coordinador', $coordinador);}
+			if($comuna!=""){	$this->db->where('id_comuna', $comuna);}
+			if($zona!=""){	$this->db->where('id_zona', $zona);}
+			if($empresa!=""){	$this->db->where('id_proyecto', $empresa);}
+			if($supervisor!=""){	$this->db->where('id_tecnico', $supervisor);}
+
+			$this->db->join('usuarios_proyectos as a', 'id_proyecto = a.id', 'left');
+			$this->db->group_by('proyecto');
+			$res=$this->db->get();
+			$array = array();
+			$array[]= array(
+				"Proyecto",
+				"Resultado",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] =$key['proyecto'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function DataGraficoResultadosxSupervisor($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
+			$this->db->select("
+				COUNT(*) as cantidad,
+				CONCAT(SUBSTRING_INDEX(a.nombres, ' ',1), ' ',SUBSTRING_INDEX(a.apellidos, ' ', 1)) as usuario,
+				mt.tipo as tipo,
+			");
+			$this->db->from('mad');
+			if($desde!="" and $hasta!=""){$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($coordinador!=""){	$this->db->where('id_coordinador', $coordinador);}
+			if($comuna!=""){	$this->db->where('id_comuna', $comuna);}
+			if($zona!=""){	$this->db->where('id_zona', $zona);}
+			if($empresa!=""){	$this->db->where('id_proyecto', $empresa);}
+			if($supervisor!=""){	$this->db->where('id_tecnico', $supervisor);}
+
+			$this->db->join('usuarios as a', 'id_tecnico = a.id', 'left');
+			$this->db->join('mad_tipos as mt', 'id_tipo = mt.id', 'left');
+			$this->db->group_by('usuario');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Supervisor",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['usuario'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+		public function DataGraficoResultadosxCoordinador($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor){
+			$this->db->select("
+				COUNT(*) as cantidad,
+				CONCAT(SUBSTRING_INDEX(a.nombres, ' ', 1), ' ', SUBSTRING_INDEX(a.apellidos, ' ', 1)) as usuario,
+				mt.tipo as tipo,
+			");
+			$this->db->from('mad');
+			if($desde!="" and $hasta!=""){$this->db->where("fecha BETWEEN '".$desde."' AND '".$hasta."'");}
+			if($coordinador!=""){	$this->db->where('id_coordinador', $coordinador);}
+			if($comuna!=""){	$this->db->where('id_comuna', $comuna);}
+			if($zona!=""){	$this->db->where('id_zona', $zona);}
+			if($empresa!=""){	$this->db->where('id_proyecto', $empresa);}
+			if($supervisor!=""){	$this->db->where('id_tecnico', $supervisor);}
+
+			$this->db->join('usuarios as a', 'id_coordinador = a.id', 'left');
+			$this->db->join('mad_tipos as mt', 'id_tipo = mt.id', 'left');
+			$this->db->group_by('usuario');
+			$res=$this->db->get();
+
+			$array = array();
+			$array[]= array(
+				"Coordinador",
+				"Cantidad",
+			);
+			if($res->num_rows()>0){
+				foreach($res->result_array() as $key){
+					$temp = array();
+					$temp[] = $key['usuario'];
+					$temp[] = (int) $key['cantidad'];
+					$array[] = $temp;
+				}
+			}
+			else{
+				$temp = array();
+				$temp[] = "";
+				$temp[] = 0;
+				$array[] = $temp;
+			}
+			return $array;
+		}
+
 	/************** OTROS ****************/
 
 		/*MASIVA*/

@@ -37,28 +37,45 @@ class Flotamodel extends CI_Model {
 
 		public function listaCombustible($desde,$hasta,$chofer,$supervisor,$vehiculo,$region){
 			$this->db->select("
-			sha1(f.id) as hash,
-			f.*,
-			FORMAT(SUM(f.volumen),0) AS litros_cargados,
-			FORMAT(SUM(f.kms_recorridos),0) AS kms_recorridos_total,
-			FORMAT(SUM(f.monto),0) AS monto_total,
-			FORMAT(MAX(f.meta_monto), 0) as meta_monto,
-			FORMAT((SUM(f.kms_recorridos)/SUM(f.volumen)), 0) as km_lt,
-			FORMAT((SUM(f.monto)/SUM(f.volumen)), 0) as clp_lt,
+				sha1(f.id) as hash,
+				f.*,
+				FORMAT(SUM(f.volumen),0) AS litros_cargados,
+				FORMAT(SUM(f.kms_recorridos),0) AS kms_recorridos_total,
+				FORMAT(SUM(f.monto),0) AS monto_total,
+				FORMAT(MAX(f.meta_monto), 0) as meta_monto,
+				FORMAT((SUM(f.kms_recorridos)/SUM(f.volumen)), 0) as km_lt,
+				FORMAT((SUM(f.monto)/SUM(f.volumen)), 0) as clp_lt
 			");
-
-			if($desde!="" and $hasta!=""){$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");}
-			if($chofer!=""){	$this->db->where('f.nombre_chofer', $chofer);}
-			if($supervisor!=""){	$this->db->where('f.nombre_supervisor', $supervisor);}
-			if($vehiculo!=""){	$this->db->where('f.patente', $vehiculo);}
-			if($region!=""){	$this->db->where('f.region', $region);}
 			
-			$res=$this->db->group_by('f.patente');
-			$res=$this->db->get('flota_combustible as f');
+			$this->db->from('flota_combustible as f');
 			
-			if($res->num_rows()>0){
+			// Subconsulta para obtener la fecha más reciente por patente
+			$subquery = '(SELECT MAX(fecha) FROM flota_combustible WHERE patente = f.patente)';
+			$this->db->where('f.fecha = ' . $subquery, NULL, FALSE);
+			
+			if ($desde != "" && $hasta != "") {
+				$this->db->where("f.fecha BETWEEN '".$desde."' AND '".$hasta."'");
+			}
+			if ($chofer != "") {
+				$this->db->where('f.nombre_chofer', $chofer);
+			}
+			if ($supervisor != "") {
+				$this->db->where('f.nombre_supervisor', $supervisor);
+			}
+			if ($vehiculo != "") {
+				$this->db->where('f.patente', $vehiculo);
+			}
+			if ($region != "") {
+				$this->db->where('f.region', $region);
+			}
+			
+			$this->db->group_by('f.patente');
+			
+			$res = $this->db->get();
+			
+			if ($res->num_rows() > 0) {
 				return $res->result_array();
-			}else{
+			} else {
 				return FALSE;
 			}
 		}

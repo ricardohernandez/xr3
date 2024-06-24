@@ -149,6 +149,11 @@
 
 	$route['formCargaMasivaFlota'] = "back_end/flota/formCargaMasivaFlota";
 
+	/***** RESUMEN *****/
+
+	$route['getResumenFlotaInicio'] = "back_end/flota/getResumenFlotaInicio";
+	$route['getDataResumenFlota'] = "back_end/flota/getDataResumenFlota";
+
 	/*******FLOTA - DOCUMENTACION*******/
 
 	$route['flota/documentacion'] = "back_end/flota/docindex";
@@ -1319,6 +1324,11 @@
 
 		$route['listaMotivosMad'] = "back_end/mad/listaMotivos";
 		$route['listaTiposMad'] = "back_end/mad/listaTipos";
+	
+	/****** MAD - GRAFICOS ******/
+
+		$route['getGraficosMad'] = "back_end/mad/getGraficosMad";
+		$route['getDataGraficosMad'] = "back_end/mad/getDataGraficosMad";
 
 
 /******************RVT*************************/

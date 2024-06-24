@@ -110,6 +110,17 @@
       });
     });
 
+    $(document).off('click', '#menu_resumen').on('click', '#menu_resumen',function(event) {
+      event.preventDefault();
+      $(".contenedor_app").html("<center><i id='processingIcon' class='fa-solid fa-circle-notch fa-spin fa-2x'></i></center>");
+      $(".menu_lista li").removeClass('menuActivo');       
+
+      $.get(base_url+"getResumenInicio", {} , function( data ) {
+        $(".contenedor_app").html(data);    
+        $("#menu_resumen").addClass('menuActivo');  
+      });
+    });
+
   })
 </script>
 
@@ -126,7 +137,8 @@
        <ul class="nav nav-tabs navbar-left nav-tabs-int menu_lista">
        <li id="menu_combustible" class="active"><a> <i class="fa fa-droplet"></i> TCT </a></li> 
        <li id="menu_gps_muevo" class="active"><a> <i class="fa fa-droplet"></i> MUEVO </a></li>     
-       <li id="menu_gps" class="active"><a> <i class="fa fa-droplet"></i> GPS - WEBFLEET </a></li>   
+       <li id="menu_gps" class="active"><a> <i class="fa fa-solid fa-location-dot"></i> GPS - WEBFLEET </a></li>   
+       <li id="menu_resumen" class="active"><a> <i class="fa fa-file"></i> Resumen </a></li>   
       </ul>  
       </div> 
       </div> 

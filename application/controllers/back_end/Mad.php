@@ -394,6 +394,56 @@ class Mad extends CI_Controller {
 			}   
 		}
 
+	/******* Graficos ******/
+
+	public function getGraficosMad(){
+		if($this->input->is_ajax_request()){
+			$desde = date('Y-m-d', strtotime('-365 day', strtotime(date("d-m-Y"))));
+			$hasta = date('Y-m-d');
+			$datos = array(
+				'desde' => $desde,
+				'hasta' => $hasta,
+				'usuarios' => $this->Madmodel->listaTrabajadores(),
+				'comunas' => $this->Madmodel->listaComunas(),
+				'plazas' => $this->Madmodel->listaPlazas(),
+				'zonas' => $this->Madmodel->listaZonas(),
+				'proyectos' => $this->Madmodel->listaProyectos(),
+				'tipos' => $this->Madmodel->listaTipos(),
+				'supervisores' => $this->Iniciomodel->listaSupervisores(),
+			);
+			$this->load->view('back_end/mad/graficos',$datos);
+		}
+	}
+
+	public function getDataGraficosMad(){
+		$desde=$this->security->xss_clean(strip_tags($this->input->get_post("desde")));
+		$hasta=$this->security->xss_clean(strip_tags($this->input->get_post("hasta")));
+		$coordinador=$this->security->xss_clean(strip_tags($this->input->get_post("coordinador")));
+		$comuna=$this->security->xss_clean(strip_tags($this->input->get_post("comuna")));
+		$zona=$this->security->xss_clean(strip_tags($this->input->get_post("zona")));
+		$empresa=$this->security->xss_clean(strip_tags($this->input->get_post("empresa")));
+		$supervisor=$this->security->xss_clean(strip_tags($this->input->get_post("supervisor")));
+
+		if($desde!=""){$desde=date("Y-m-d",strtotime($desde));}else{$desde="";}
+		if($hasta!=""){$hasta=date("Y-m-d",strtotime($hasta));}else{$hasta="";}	
+		$array_data = array();	
+
+		$DataGraficoResultadosxZona = $this->Madmodel->DataGraficoResultadosxZona($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
+		$DataGraficoResultadosxComuna = $this->Madmodel->DataGraficoResultadosxComuna($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
+		$DataGraficoResultadosxEmpresa = $this->Madmodel->DataGraficoResultadosxEmpresa($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
+		$DataGraficoResultadosxSupervisor = $this->Madmodel->DataGraficoResultadosxSupervisor($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
+		$DataGraficoResultadosxCoordinador = $this->Madmodel->DataGraficoResultadosxCoordinador($desde,$hasta,$coordinador,$comuna,$zona,$empresa,$supervisor);
+
+		$array_data["GraficoResultadosxZona"] = array("data" => $DataGraficoResultadosxZona);
+		$array_data["GraficoResultadosxComuna"] = array("data" => $DataGraficoResultadosxComuna);
+		$array_data["GraficoResultadosxEmpresa"] = array("data" => $DataGraficoResultadosxEmpresa);
+		$array_data["GraficoResultadosxSupervisor"] = array("data" => $DataGraficoResultadosxSupervisor);
+		$array_data["GraficoResultadosxCoordinador"] = array("data" => $DataGraficoResultadosxCoordinador);
+		echo json_encode($array_data);
+	}
+
+
+
 	
 	/**************** MANTENEDOR ***************/
 
