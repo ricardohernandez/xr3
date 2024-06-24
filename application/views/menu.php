@@ -652,7 +652,7 @@
 
             <ul class="sidenav__menu-dropdown">
 
-               <li><a class="sidenav__menu-url" target="_blank" href="<?php echo base_url() ?>archivos_turnos/W018.xlsx" download title="Archivo" class="btn_archivo"> Turnos Operación técnica</a></li>      
+               <li><a class="sidenav__menu-url" target="_blank" href="<?php echo base_url() ?>archivos_turnos/W025.xlsx" download title="Archivo" class="btn_archivo"> Turnos Operación técnica</a></li>      
 
                <li><a class="sidenav__menu-url"  href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
 
@@ -1034,7 +1034,7 @@
                      <ul class="nav__dropdown-menu">
 
                         
-                        <li><a class="menu_list" target="_blank" href="<?php echo base_url() ?>archivos_turnos/W018.xlsx" download title="Archivo" class="btn_archivo"> Turnos Operación técnica</a></li>
+                        <li><a class="menu_list" target="_blank" href="<?php echo base_url() ?>archivos_turnos/W025.xlsx" download title="Archivo" class="btn_archivo"> Turnos Operación técnica</a></li>
                         <li><a  class="menu_list" href="<?php echo base_url() ?>documentacion/capacitacion"> Capacitación </a></li>
 
                         <?php  

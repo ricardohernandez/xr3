@@ -501,7 +501,7 @@ class Flota extends CI_Controller {
 			$this->visitas("Inicio");
 			if($this->input->is_ajax_request()){
 				$gps=$this->security->xss_clean(strip_tags($this->input->get_post("gps")));
-				$desde=date('Y-m-d', strtotime("-1 year"));
+				$desde = date('Y-m-d', strtotime("-1 month"));
 				$hasta=date('Y-m-d');
 				$patentes= $this->Flotamodel->getPatenteGPS($gps);
 				//$supervisores= $this->Flotamodel->getSupervisorGPS($gps);

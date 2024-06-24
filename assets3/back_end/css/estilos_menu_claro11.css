@@ -444,10 +444,10 @@ hr {
     .nav__menu > li > a {
       font-family: "Source Sans Pro", sans-serif;
       color: #171821;
-      font-size: 15px;
+      font-size: 14px!important;
       font-weight: 600;
       /* text-transform: uppercase; */
-      padding: 0 12px;
+      padding: 0 5px!important;
       display: block;
       position: relative;
       line-height: 62px; }
